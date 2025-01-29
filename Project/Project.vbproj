@@ -1,0 +1,443 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6D62ADBE-11C7-46F8-A10A-831E5CA4E394}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Project.My.MyApplication</StartupObject>
+    <RootNamespace>Project</RootNamespace>
+    <AssemblyName>Secretaria</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <ApplicationIcon>sec-icon.ico</ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>Secretaria.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>Secretaria.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DocumentationFile>Secretaria.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DocumentationFile>Secretaria.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>..\packages\BouncyCastle.Cryptography.2.4.0\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.4, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.4\lib\net461\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data">
+      <HintPath>..\..\AgendaTrevo\AgendasTrevo\bin\x86\Debug\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Services, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\assembly\GAC_MSIL\System.Web.Services\2.0.0.0__b03f5f7f11d50a3a\System.Web.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Caixa.vb" />
+    <Compile Include="Clientes.vb" />
+    <Compile Include="Cmain.vb" />
+    <Compile Include="Fbackground.Designer.vb">
+      <DependentUpon>Fbackground.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Fbackground.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Fbackup.designer.vb">
+      <DependentUpon>Fbackup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Fbackup.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FcadEmendas.Designer.vb">
+      <DependentUpon>FcadEmendas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FcadEmendas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FcadPacientesEMTU.Designer.vb">
+      <DependentUpon>FcadPacientesEMTU.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FcadPacientesEMTU.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeditarProtocolo.Designer.vb">
+      <DependentUpon>FeditarProtocolo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FeditarProtocolo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Fmail.Designer.vb">
+      <DependentUpon>Fmail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Fmail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FmainEMTU.Designer.vb">
+      <DependentUpon>FmainEMTU.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FmainEMTU.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FmainEmendas.Designer.vb">
+      <DependentUpon>FmainEmendas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FmainEmendas.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FnovoProtocolo.Designer.vb">
+      <DependentUpon>FnovoProtocolo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FnovoProtocolo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FConnSettings.designer.vb">
+      <DependentUpon>FConnSettings.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FConnSettings.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Fimpressao.designer.vb">
+      <DependentUpon>Fimpressao.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Fimpressao.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Flogin.designer.vb">
+      <DependentUpon>Flogin.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Flogin.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Flogs.Designer.vb">
+      <DependentUpon>Flogs.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Flogs.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FmainOuvidoria.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FmainOuvidoria.Designer.vb">
+      <DependentUpon>FmainOuvidoria.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAME.Designer.vb">
+      <DependentUpon>FormAME.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormAME.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FplanejCNES.Designer.vb">
+      <DependentUpon>FplanejCNES.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FplanejCNES.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FRelatorioPrazos.Designer.vb">
+      <DependentUpon>FRelatorioPrazos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FRelatorioPrazos.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Fstart.Designer.vb">
+      <DependentUpon>Fstart.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Fstart.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Fusuarios.Designer.vb">
+      <DependentUpon>Fusuarios.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Fusuarios.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="List.vb" />
+    <Compile Include="Logs.vb" />
+    <Compile Include="Mail.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="PDF.vb" />
+    <Compile Include="Produtos.vb" />
+    <Compile Include="Usuarios.vb" />
+    <Compile Include="Vendas.vb" />
+    <Compile Include="XML.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Fbackground.resx">
+      <DependentUpon>Fbackground.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Fbackup.resx">
+      <DependentUpon>Fbackup.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FcadEmendas.resx">
+      <DependentUpon>FcadEmendas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FcadPacientesEMTU.resx">
+      <DependentUpon>FcadPacientesEMTU.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeditarProtocolo.resx">
+      <DependentUpon>FeditarProtocolo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Fmail.resx">
+      <DependentUpon>Fmail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FmainEMTU.resx">
+      <DependentUpon>FmainEMTU.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FmainEmendas.resx">
+      <DependentUpon>FmainEmendas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FnovoProtocolo.resx">
+      <DependentUpon>FnovoProtocolo.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FConnSettings.resx">
+      <DependentUpon>FConnSettings.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Fimpressao.resx">
+      <DependentUpon>Fimpressao.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Flogin.resx">
+      <DependentUpon>Flogin.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Flogs.resx">
+      <DependentUpon>Flogs.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FmainOuvidoria.resx">
+      <DependentUpon>FmainOuvidoria.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAME.resx">
+      <DependentUpon>FormAME.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FplanejCNES.resx">
+      <DependentUpon>FplanejCNES.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FRelatorioPrazos.resx">
+      <DependentUpon>FRelatorioPrazos.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Fstart.resx">
+      <DependentUpon>Fstart.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Fusuarios.resx">
+      <DependentUpon>Fusuarios.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Resources\l2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Add-Male-User-icon32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save-icon32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\reload.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\trash-icon28.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button_cancel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logout_menor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cli.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\setas.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cliDis1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\setasDis.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icone_relatorio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icone_gerador_de_relatorio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\add.png" />
+    <None Include="Resources\print-icon1.png" />
+    <None Include="Resources\icone-imprimir.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{967B4E0D-AD0C-4609-AB67-0FA40C0206D8}" />
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon.ico" />
+    <Content Include="icone_e-ouv.ico" />
+    <Content Include="sec-icon.ico" />
+    <None Include="Resources\icone_e-ouv.png" />
+    <None Include="Resources\sendmail.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
