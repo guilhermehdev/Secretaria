@@ -446,6 +446,7 @@ Partial Class FplanejCNES
         Me.dgPlanejamento.Location = New System.Drawing.Point(12, 265)
         Me.dgPlanejamento.MultiSelect = False
         Me.dgPlanejamento.Name = "dgPlanejamento"
+        Me.dgPlanejamento.ReadOnly = True
         Me.dgPlanejamento.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
         DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
