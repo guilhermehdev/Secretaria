@@ -4,7 +4,7 @@ Imports iTextSharp.text.pdf.parser
 Imports System.Linq
 
 Public Class PDF
-    Dim pdfPath As String = Application.StartupPath & "/PDF/profissionais.pdf"
+    Dim pdfPath As String = Application.StartupPath & "/PDF/cnes.pdf"
     Dim xml As New XML
 
     Public Function getProf(fc As String, cbo As String, cnes As String, gestao As String)

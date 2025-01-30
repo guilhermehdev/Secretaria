@@ -1,4 +1,5 @@
-﻿Imports com.itextpdf.text.pdf
+﻿Imports System.IO
+Imports com.itextpdf.text.pdf
 
 Public Class FplanejCNES
     Dim xml As New XML
@@ -219,6 +220,29 @@ Public Class FplanejCNES
                 main.msgInfo("Copiado!")
                 'MessageBox.Show($"Célula selecionada: Linha {e.RowIndex}, Coluna {e.ColumnIndex}")
             End If
+        End If
+    End Sub
+
+    Private Sub FecharToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FecharToolStripMenuItem.Click
+        Me.Close()
+    End Sub
+    Private Sub ImportarPDFToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportarPDFToolStripMenuItem.Click
+        Dim filePath = Application.StartupPath & "\PDF\cnes.pdf"
+        OpenFileDialog1.Filter = "pdf Files (*.pdf)|*.pdf"
+        OpenFileDialog1.FileName = "cnes.pdf"
+
+        If OpenFileDialog1.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+            Dim pdfFile = OpenFileDialog1.FileName
+            If File.Exists(filePath) Then
+                If MessageBox.Show("Substituir arquivo existente?", "Atenção", MessageBoxButtons.YesNoCancel) = DialogResult.Yes Then
+                    File.Copy(pdfFile, filePath, True)
+                Else
+                    Exit Sub
+                End If
+            Else
+                File.Copy(pdfFile, filePath, False)
+            End If
+            MessageBox.Show("Importado com sucesso!", "Importar arquivo PDF", MessageBoxButtons.OK)
         End If
     End Sub
 

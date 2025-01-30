@@ -66,6 +66,11 @@ Partial Class FplanejCNES
         Me.TextBoxNome = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
+        Me.ConfiguraçõesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ImportarPDFToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.FecharToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.TabControl.SuspendLayout()
@@ -77,6 +82,7 @@ Partial Class FplanejCNES
         Me.StatusStrip1.SuspendLayout()
         CType(Me.dgPlanejamento, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
+        Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'cbFormaContratoEstab
@@ -141,7 +147,7 @@ Partial Class FplanejCNES
         Me.GroupBox2.Controls.Add(Me.cbcbFormaContratoEmpreg)
         Me.GroupBox2.Controls.Add(Me.cbDetalhamento)
         Me.GroupBox2.Controls.Add(Me.Label2)
-        Me.GroupBox2.Location = New System.Drawing.Point(12, 12)
+        Me.GroupBox2.Location = New System.Drawing.Point(12, 28)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(698, 191)
         Me.GroupBox2.TabIndex = 38
@@ -303,7 +309,7 @@ Partial Class FplanejCNES
         Me.TabControl.Controls.Add(Me.tpCBOnivelSuperior)
         Me.TabControl.Controls.Add(Me.tpCBOnivelMedio)
         Me.TabControl.Controls.Add(Me.tpCBOacs)
-        Me.TabControl.Location = New System.Drawing.Point(716, 12)
+        Me.TabControl.Location = New System.Drawing.Point(716, 24)
         Me.TabControl.Name = "TabControl"
         Me.TabControl.SelectedIndex = 0
         Me.TabControl.Size = New System.Drawing.Size(297, 247)
@@ -462,7 +468,7 @@ Partial Class FplanejCNES
         DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dgPlanejamento.DefaultCellStyle = DataGridViewCellStyle1
         Me.dgPlanejamento.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
-        Me.dgPlanejamento.Location = New System.Drawing.Point(12, 265)
+        Me.dgPlanejamento.Location = New System.Drawing.Point(12, 276)
         Me.dgPlanejamento.MultiSelect = False
         Me.dgPlanejamento.Name = "dgPlanejamento"
         Me.dgPlanejamento.ReadOnly = True
@@ -478,7 +484,7 @@ Partial Class FplanejCNES
         Me.dgPlanejamento.RowHeadersWidth = 4
         Me.dgPlanejamento.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgPlanejamento.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgPlanejamento.Size = New System.Drawing.Size(997, 202)
+        Me.dgPlanejamento.Size = New System.Drawing.Size(997, 191)
         Me.dgPlanejamento.TabIndex = 30
         Me.dgPlanejamento.TabStop = False
         '
@@ -488,7 +494,7 @@ Partial Class FplanejCNES
         Me.GroupBox3.Controls.Add(Me.TextBoxNome)
         Me.GroupBox3.Controls.Add(Me.Label4)
         Me.GroupBox3.Controls.Add(Me.Label1)
-        Me.GroupBox3.Location = New System.Drawing.Point(12, 209)
+        Me.GroupBox3.Location = New System.Drawing.Point(12, 221)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(698, 50)
         Me.GroupBox3.TabIndex = 41
@@ -529,6 +535,38 @@ Partial Class FplanejCNES
         Me.Label1.TabIndex = 1
         Me.Label1.Text = "CPF:"
         '
+        'MenuStrip1
+        '
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConfiguraçõesToolStripMenuItem, Me.FecharToolStripMenuItem})
+        Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
+        Me.MenuStrip1.Name = "MenuStrip1"
+        Me.MenuStrip1.Size = New System.Drawing.Size(1025, 24)
+        Me.MenuStrip1.TabIndex = 42
+        Me.MenuStrip1.Text = "MenuStrip1"
+        '
+        'ConfiguraçõesToolStripMenuItem
+        '
+        Me.ConfiguraçõesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ImportarPDFToolStripMenuItem})
+        Me.ConfiguraçõesToolStripMenuItem.Name = "ConfiguraçõesToolStripMenuItem"
+        Me.ConfiguraçõesToolStripMenuItem.Size = New System.Drawing.Size(96, 20)
+        Me.ConfiguraçõesToolStripMenuItem.Text = "Configurações"
+        '
+        'ImportarPDFToolStripMenuItem
+        '
+        Me.ImportarPDFToolStripMenuItem.Name = "ImportarPDFToolStripMenuItem"
+        Me.ImportarPDFToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
+        Me.ImportarPDFToolStripMenuItem.Text = "Importar PDF"
+        '
+        'FecharToolStripMenuItem
+        '
+        Me.FecharToolStripMenuItem.Name = "FecharToolStripMenuItem"
+        Me.FecharToolStripMenuItem.Size = New System.Drawing.Size(54, 20)
+        Me.FecharToolStripMenuItem.Text = "Fechar"
+        '
+        'OpenFileDialog1
+        '
+        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
+        '
         'FplanejCNES
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -536,10 +574,12 @@ Partial Class FplanejCNES
         Me.ClientSize = New System.Drawing.Size(1025, 503)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.StatusStrip1)
+        Me.Controls.Add(Me.MenuStrip1)
         Me.Controls.Add(Me.TabControl)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.dgPlanejamento)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.MainMenuStrip = Me.MenuStrip1
         Me.MaximizeBox = False
         Me.Name = "FplanejCNES"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
@@ -559,6 +599,8 @@ Partial Class FplanejCNES
         CType(Me.dgPlanejamento, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
+        Me.MenuStrip1.ResumeLayout(False)
+        Me.MenuStrip1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -603,4 +645,9 @@ Partial Class FplanejCNES
     Friend WithEvents TextBoxNome As TextBox
     Friend WithEvents Label4 As Label
     Friend WithEvents TextBoxCPF As TextBox
+    Friend WithEvents MenuStrip1 As MenuStrip
+    Friend WithEvents ConfiguraçõesToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ImportarPDFToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents FecharToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents OpenFileDialog1 As OpenFileDialog
 End Class
