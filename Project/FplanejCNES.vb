@@ -214,10 +214,9 @@ Public Class FplanejCNES
                 dgPlanejamento.ClearSelection()
                 dgPlanejamento.Rows(e.RowIndex).Cells(e.ColumnIndex).Selected = True
 
-                If main.msgQuestion("Copiar valor?", "") Then
-                    columnIndex = e.ColumnIndex
-                    main.copyFromDatagridview(dgPlanejamento, columnIndex)
-                End If
+                columnIndex = e.ColumnIndex
+                main.copyFromDatagridview(dgPlanejamento, columnIndex)
+                main.msgInfo("Copiado!")
                 'MessageBox.Show($"Célula selecionada: Linha {e.RowIndex}, Coluna {e.ColumnIndex}")
             End If
         End If
