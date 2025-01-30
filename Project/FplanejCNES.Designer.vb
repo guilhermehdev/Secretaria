@@ -33,6 +33,17 @@ Partial Class FplanejCNES
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cbDetalhamento = New System.Windows.Forms.ComboBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label60 = New System.Windows.Forms.Label()
+        Me.lbNMTotal = New System.Windows.Forms.Label()
+        Me.Label26 = New System.Windows.Forms.Label()
+        Me.lbNSTotal = New System.Windows.Forms.Label()
+        Me.Label18 = New System.Windows.Forms.Label()
+        Me.lbACStotal = New System.Windows.Forms.Label()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.lbEnfTotal = New System.Windows.Forms.Label()
+        Me.lbMedTotal = New System.Windows.Forms.Label()
+        Me.Label10 = New System.Windows.Forms.Label()
         Me.rbPrivado = New System.Windows.Forms.RadioButton()
         Me.rbPublico = New System.Windows.Forms.RadioButton()
         Me.TabControl = New System.Windows.Forms.TabControl()
@@ -40,42 +51,31 @@ Partial Class FplanejCNES
         Me.lbMedicos = New System.Windows.Forms.ListBox()
         Me.tpCBOenfermeiro = New System.Windows.Forms.TabPage()
         Me.lbEnfermeiro = New System.Windows.Forms.ListBox()
-        Me.tpCBOacs = New System.Windows.Forms.TabPage()
-        Me.lbACS = New System.Windows.Forms.ListBox()
         Me.tpCBOnivelSuperior = New System.Windows.Forms.TabPage()
         Me.lbSuperior = New System.Windows.Forms.ListBox()
         Me.tpCBOnivelMedio = New System.Windows.Forms.TabPage()
         Me.lbMedio = New System.Windows.Forms.ListBox()
-        Me.lbMedTotal = New System.Windows.Forms.Label()
-        Me.Label60 = New System.Windows.Forms.Label()
-        Me.lbEnfTotal = New System.Windows.Forms.Label()
-        Me.Label10 = New System.Windows.Forms.Label()
-        Me.lbACStotal = New System.Windows.Forms.Label()
-        Me.Label14 = New System.Windows.Forms.Label()
-        Me.lbNSTotal = New System.Windows.Forms.Label()
-        Me.Label18 = New System.Windows.Forms.Label()
-        Me.lbNMTotal = New System.Windows.Forms.Label()
-        Me.Label26 = New System.Windows.Forms.Label()
+        Me.tpCBOacs = New System.Windows.Forms.TabPage()
+        Me.lbACS = New System.Windows.Forms.ListBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.dgPlanejamento = New System.Windows.Forms.DataGridView()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.TextBoxNome = New System.Windows.Forms.TextBox()
         Me.TextBoxCPF = New System.Windows.Forms.TextBox()
+        Me.TextBoxNome = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.GroupBox2.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.TabControl.SuspendLayout()
         Me.tpCBOmedico.SuspendLayout()
         Me.tpCBOenfermeiro.SuspendLayout()
-        Me.tpCBOacs.SuspendLayout()
         Me.tpCBOnivelSuperior.SuspendLayout()
         Me.tpCBOnivelMedio.SuspendLayout()
+        Me.tpCBOacs.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         CType(Me.dgPlanejamento, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox1.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -147,6 +147,130 @@ Partial Class FplanejCNES
         Me.GroupBox2.TabIndex = 38
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Dados de contratação"
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.Label60)
+        Me.GroupBox1.Controls.Add(Me.lbNMTotal)
+        Me.GroupBox1.Controls.Add(Me.Label26)
+        Me.GroupBox1.Controls.Add(Me.lbNSTotal)
+        Me.GroupBox1.Controls.Add(Me.Label18)
+        Me.GroupBox1.Controls.Add(Me.lbACStotal)
+        Me.GroupBox1.Controls.Add(Me.Label14)
+        Me.GroupBox1.Controls.Add(Me.lbEnfTotal)
+        Me.GroupBox1.Controls.Add(Me.lbMedTotal)
+        Me.GroupBox1.Controls.Add(Me.Label10)
+        Me.GroupBox1.Location = New System.Drawing.Point(461, 0)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(237, 191)
+        Me.GroupBox1.TabIndex = 39
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Resultados encontrados"
+        '
+        'Label60
+        '
+        Me.Label60.AutoSize = True
+        Me.Label60.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label60.Location = New System.Drawing.Point(61, 46)
+        Me.Label60.Name = "Label60"
+        Me.Label60.Size = New System.Drawing.Size(63, 13)
+        Me.Label60.TabIndex = 60
+        Me.Label60.Text = "MÉDICOS"
+        '
+        'lbNMTotal
+        '
+        Me.lbNMTotal.AutoSize = True
+        Me.lbNMTotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbNMTotal.ForeColor = System.Drawing.Color.DarkKhaki
+        Me.lbNMTotal.Location = New System.Drawing.Point(27, 86)
+        Me.lbNMTotal.Name = "lbNMTotal"
+        Me.lbNMTotal.Size = New System.Drawing.Size(31, 16)
+        Me.lbNMTotal.TabIndex = 135
+        Me.lbNMTotal.Text = "000"
+        '
+        'Label26
+        '
+        Me.Label26.AutoSize = True
+        Me.Label26.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label26.Location = New System.Drawing.Point(61, 88)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(143, 13)
+        Me.Label26.TabIndex = 134
+        Me.Label26.Text = "OUTROS NIVEL MÉDIO"
+        '
+        'lbNSTotal
+        '
+        Me.lbNSTotal.AutoSize = True
+        Me.lbNSTotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbNSTotal.ForeColor = System.Drawing.Color.SeaGreen
+        Me.lbNSTotal.Location = New System.Drawing.Point(27, 107)
+        Me.lbNSTotal.Name = "lbNSTotal"
+        Me.lbNSTotal.Size = New System.Drawing.Size(31, 16)
+        Me.lbNSTotal.TabIndex = 101
+        Me.lbNSTotal.Text = "000"
+        '
+        'Label18
+        '
+        Me.Label18.AutoSize = True
+        Me.Label18.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label18.Location = New System.Drawing.Point(61, 109)
+        Me.Label18.Name = "Label18"
+        Me.Label18.Size = New System.Drawing.Size(167, 13)
+        Me.Label18.TabIndex = 100
+        Me.Label18.Text = "OUTROS NIVEL SUPERIOR"
+        '
+        'lbACStotal
+        '
+        Me.lbACStotal.AutoSize = True
+        Me.lbACStotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbACStotal.ForeColor = System.Drawing.Color.DarkViolet
+        Me.lbACStotal.Location = New System.Drawing.Point(27, 128)
+        Me.lbACStotal.Name = "lbACStotal"
+        Me.lbACStotal.Size = New System.Drawing.Size(31, 16)
+        Me.lbACStotal.TabIndex = 67
+        Me.lbACStotal.Text = "000"
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label14.Location = New System.Drawing.Point(61, 130)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(31, 13)
+        Me.Label14.TabIndex = 66
+        Me.Label14.Text = "ACS"
+        '
+        'lbEnfTotal
+        '
+        Me.lbEnfTotal.AutoSize = True
+        Me.lbEnfTotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbEnfTotal.ForeColor = System.Drawing.Color.IndianRed
+        Me.lbEnfTotal.Location = New System.Drawing.Point(27, 65)
+        Me.lbEnfTotal.Name = "lbEnfTotal"
+        Me.lbEnfTotal.Size = New System.Drawing.Size(31, 16)
+        Me.lbEnfTotal.TabIndex = 63
+        Me.lbEnfTotal.Text = "000"
+        '
+        'lbMedTotal
+        '
+        Me.lbMedTotal.AutoSize = True
+        Me.lbMedTotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbMedTotal.ForeColor = System.Drawing.Color.DodgerBlue
+        Me.lbMedTotal.Location = New System.Drawing.Point(27, 44)
+        Me.lbMedTotal.Name = "lbMedTotal"
+        Me.lbMedTotal.Size = New System.Drawing.Size(31, 16)
+        Me.lbMedTotal.TabIndex = 61
+        Me.lbMedTotal.Text = "000"
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.Location = New System.Drawing.Point(61, 67)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(96, 13)
+        Me.Label10.TabIndex = 62
+        Me.Label10.Text = "ENFERMEIROS"
         '
         'rbPrivado
         '
@@ -229,27 +353,6 @@ Partial Class FplanejCNES
         Me.lbEnfermeiro.Size = New System.Drawing.Size(277, 214)
         Me.lbEnfermeiro.TabIndex = 64
         '
-        'tpCBOacs
-        '
-        Me.tpCBOacs.BackColor = System.Drawing.SystemColors.ButtonFace
-        Me.tpCBOacs.Controls.Add(Me.lbACS)
-        Me.tpCBOacs.Location = New System.Drawing.Point(4, 22)
-        Me.tpCBOacs.Name = "tpCBOacs"
-        Me.tpCBOacs.Size = New System.Drawing.Size(289, 221)
-        Me.tpCBOacs.TabIndex = 2
-        Me.tpCBOacs.Text = "CBOs ACS"
-        '
-        'lbACS
-        '
-        Me.lbACS.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbACS.FormattingEnabled = True
-        Me.lbACS.ItemHeight = 15
-        Me.lbACS.Location = New System.Drawing.Point(6, 1)
-        Me.lbACS.Name = "lbACS"
-        Me.lbACS.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lbACS.Size = New System.Drawing.Size(277, 214)
-        Me.lbACS.TabIndex = 68
-        '
         'tpCBOnivelSuperior
         '
         Me.tpCBOnivelSuperior.BackColor = System.Drawing.SystemColors.ButtonFace
@@ -292,110 +395,26 @@ Partial Class FplanejCNES
         Me.lbMedio.Size = New System.Drawing.Size(277, 214)
         Me.lbMedio.TabIndex = 136
         '
-        'lbMedTotal
+        'tpCBOacs
         '
-        Me.lbMedTotal.AutoSize = True
-        Me.lbMedTotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbMedTotal.ForeColor = System.Drawing.Color.DodgerBlue
-        Me.lbMedTotal.Location = New System.Drawing.Point(27, 44)
-        Me.lbMedTotal.Name = "lbMedTotal"
-        Me.lbMedTotal.Size = New System.Drawing.Size(31, 16)
-        Me.lbMedTotal.TabIndex = 61
-        Me.lbMedTotal.Text = "000"
+        Me.tpCBOacs.BackColor = System.Drawing.SystemColors.ButtonFace
+        Me.tpCBOacs.Controls.Add(Me.lbACS)
+        Me.tpCBOacs.Location = New System.Drawing.Point(4, 22)
+        Me.tpCBOacs.Name = "tpCBOacs"
+        Me.tpCBOacs.Size = New System.Drawing.Size(289, 221)
+        Me.tpCBOacs.TabIndex = 2
+        Me.tpCBOacs.Text = "CBOs ACS"
         '
-        'Label60
+        'lbACS
         '
-        Me.Label60.AutoSize = True
-        Me.Label60.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label60.Location = New System.Drawing.Point(61, 46)
-        Me.Label60.Name = "Label60"
-        Me.Label60.Size = New System.Drawing.Size(63, 13)
-        Me.Label60.TabIndex = 60
-        Me.Label60.Text = "MÉDICOS"
-        '
-        'lbEnfTotal
-        '
-        Me.lbEnfTotal.AutoSize = True
-        Me.lbEnfTotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbEnfTotal.ForeColor = System.Drawing.Color.IndianRed
-        Me.lbEnfTotal.Location = New System.Drawing.Point(27, 65)
-        Me.lbEnfTotal.Name = "lbEnfTotal"
-        Me.lbEnfTotal.Size = New System.Drawing.Size(31, 16)
-        Me.lbEnfTotal.TabIndex = 63
-        Me.lbEnfTotal.Text = "000"
-        '
-        'Label10
-        '
-        Me.Label10.AutoSize = True
-        Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.Location = New System.Drawing.Point(61, 67)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(96, 13)
-        Me.Label10.TabIndex = 62
-        Me.Label10.Text = "ENFERMEIROS"
-        '
-        'lbACStotal
-        '
-        Me.lbACStotal.AutoSize = True
-        Me.lbACStotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbACStotal.ForeColor = System.Drawing.Color.DarkViolet
-        Me.lbACStotal.Location = New System.Drawing.Point(27, 128)
-        Me.lbACStotal.Name = "lbACStotal"
-        Me.lbACStotal.Size = New System.Drawing.Size(31, 16)
-        Me.lbACStotal.TabIndex = 67
-        Me.lbACStotal.Text = "000"
-        '
-        'Label14
-        '
-        Me.Label14.AutoSize = True
-        Me.Label14.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(61, 130)
-        Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(31, 13)
-        Me.Label14.TabIndex = 66
-        Me.Label14.Text = "ACS"
-        '
-        'lbNSTotal
-        '
-        Me.lbNSTotal.AutoSize = True
-        Me.lbNSTotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbNSTotal.ForeColor = System.Drawing.Color.SeaGreen
-        Me.lbNSTotal.Location = New System.Drawing.Point(27, 107)
-        Me.lbNSTotal.Name = "lbNSTotal"
-        Me.lbNSTotal.Size = New System.Drawing.Size(31, 16)
-        Me.lbNSTotal.TabIndex = 101
-        Me.lbNSTotal.Text = "000"
-        '
-        'Label18
-        '
-        Me.Label18.AutoSize = True
-        Me.Label18.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label18.Location = New System.Drawing.Point(61, 109)
-        Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(167, 13)
-        Me.Label18.TabIndex = 100
-        Me.Label18.Text = "OUTROS NIVEL SUPERIOR"
-        '
-        'lbNMTotal
-        '
-        Me.lbNMTotal.AutoSize = True
-        Me.lbNMTotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbNMTotal.ForeColor = System.Drawing.Color.DarkKhaki
-        Me.lbNMTotal.Location = New System.Drawing.Point(27, 86)
-        Me.lbNMTotal.Name = "lbNMTotal"
-        Me.lbNMTotal.Size = New System.Drawing.Size(31, 16)
-        Me.lbNMTotal.TabIndex = 135
-        Me.lbNMTotal.Text = "000"
-        '
-        'Label26
-        '
-        Me.Label26.AutoSize = True
-        Me.Label26.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label26.Location = New System.Drawing.Point(61, 88)
-        Me.Label26.Name = "Label26"
-        Me.Label26.Size = New System.Drawing.Size(143, 13)
-        Me.Label26.TabIndex = 134
-        Me.Label26.Text = "OUTROS NIVEL MÉDIO"
+        Me.lbACS.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbACS.FormattingEnabled = True
+        Me.lbACS.ItemHeight = 15
+        Me.lbACS.Location = New System.Drawing.Point(6, 1)
+        Me.lbACS.Name = "lbACS"
+        Me.lbACS.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+        Me.lbACS.Size = New System.Drawing.Size(277, 214)
+        Me.lbACS.TabIndex = 68
         '
         'ToolTip1
         '
@@ -463,25 +482,6 @@ Partial Class FplanejCNES
         Me.dgPlanejamento.TabIndex = 30
         Me.dgPlanejamento.TabStop = False
         '
-        'GroupBox1
-        '
-        Me.GroupBox1.Controls.Add(Me.Label60)
-        Me.GroupBox1.Controls.Add(Me.lbNMTotal)
-        Me.GroupBox1.Controls.Add(Me.Label26)
-        Me.GroupBox1.Controls.Add(Me.lbNSTotal)
-        Me.GroupBox1.Controls.Add(Me.Label18)
-        Me.GroupBox1.Controls.Add(Me.lbACStotal)
-        Me.GroupBox1.Controls.Add(Me.Label14)
-        Me.GroupBox1.Controls.Add(Me.lbEnfTotal)
-        Me.GroupBox1.Controls.Add(Me.lbMedTotal)
-        Me.GroupBox1.Controls.Add(Me.Label10)
-        Me.GroupBox1.Location = New System.Drawing.Point(461, 0)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(237, 191)
-        Me.GroupBox1.TabIndex = 39
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Resultados encontrados"
-        '
         'GroupBox3
         '
         Me.GroupBox3.Controls.Add(Me.TextBoxCPF)
@@ -495,14 +495,21 @@ Partial Class FplanejCNES
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Busca "
         '
-        'Label1
+        'TextBoxCPF
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(14, 23)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(30, 13)
-        Me.Label1.TabIndex = 1
-        Me.Label1.Text = "CPF:"
+        Me.TextBoxCPF.Location = New System.Drawing.Point(44, 20)
+        Me.TextBoxCPF.MaxLength = 11
+        Me.TextBoxCPF.Name = "TextBoxCPF"
+        Me.TextBoxCPF.Size = New System.Drawing.Size(100, 20)
+        Me.TextBoxCPF.TabIndex = 4
+        '
+        'TextBoxNome
+        '
+        Me.TextBoxNome.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
+        Me.TextBoxNome.Location = New System.Drawing.Point(194, 20)
+        Me.TextBoxNome.Name = "TextBoxNome"
+        Me.TextBoxNome.Size = New System.Drawing.Size(495, 20)
+        Me.TextBoxNome.TabIndex = 3
         '
         'Label4
         '
@@ -513,21 +520,14 @@ Partial Class FplanejCNES
         Me.Label4.TabIndex = 2
         Me.Label4.Text = "Nome:"
         '
-        'TextBoxNome
+        'Label1
         '
-        Me.TextBoxNome.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
-        Me.TextBoxNome.Location = New System.Drawing.Point(194, 20)
-        Me.TextBoxNome.Name = "TextBoxNome"
-        Me.TextBoxNome.Size = New System.Drawing.Size(495, 20)
-        Me.TextBoxNome.TabIndex = 3
-        '
-        'TextBoxCPF
-        '
-        Me.TextBoxCPF.Location = New System.Drawing.Point(44, 20)
-        Me.TextBoxCPF.MaxLength = 11
-        Me.TextBoxCPF.Name = "TextBoxCPF"
-        Me.TextBoxCPF.Size = New System.Drawing.Size(100, 20)
-        Me.TextBoxCPF.TabIndex = 4
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(14, 23)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(30, 13)
+        Me.Label1.TabIndex = 1
+        Me.Label1.Text = "CPF:"
         '
         'FplanejCNES
         '
@@ -546,17 +546,17 @@ Partial Class FplanejCNES
         Me.Text = "CNES - Planejamento"
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.TabControl.ResumeLayout(False)
         Me.tpCBOmedico.ResumeLayout(False)
         Me.tpCBOenfermeiro.ResumeLayout(False)
-        Me.tpCBOacs.ResumeLayout(False)
         Me.tpCBOnivelSuperior.ResumeLayout(False)
         Me.tpCBOnivelMedio.ResumeLayout(False)
+        Me.tpCBOacs.ResumeLayout(False)
         Me.StatusStrip1.ResumeLayout(False)
         Me.StatusStrip1.PerformLayout()
         CType(Me.dgPlanejamento, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
         Me.ResumeLayout(False)

@@ -62,6 +62,16 @@ Public Class Main
         End If
     End Sub
 
+    Public Sub copyFromDatagridview(ByVal datagrid As DataGridView, cellIndex As Integer)
+        Dim copy_buffer As New System.Text.StringBuilder
+        'For Each item As DataGridViewRow In datagrid.SelectedRows
+        copy_buffer.AppendLine(datagrid.SelectedCells(cellIndex).Value)
+        'Next
+        If copy_buffer.Length > 0 Then
+            Clipboard.SetText(copy_buffer.ToString)
+        End If
+    End Sub
+
     Public Sub restoreBackup(ByVal ofd As OpenFileDialog)
         Dim comando As String
 
@@ -748,8 +758,8 @@ Public Class Main
 
     Public Sub copyFromDataGrid(ByVal datagrid As DataGridView)
         datagrid.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithoutHeaderText
-
         Clipboard.SetDataObject(datagrid.GetClipboardContent)
+        ' msgAlert(Clipboard.GetText)
     End Sub
 
     Public Sub copyFromDataGridWithHeaders(ByVal dg As DataGridView)

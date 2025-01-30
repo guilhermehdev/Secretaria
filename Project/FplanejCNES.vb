@@ -5,6 +5,8 @@ Public Class FplanejCNES
     Dim pdf As New PDF
     Dim profs As DataTable
     Dim arrayOfMedicos As Array
+    Dim columnIndex As Integer
+    Dim main As New Main
 
     Private Sub FplanejCNES_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         xml.cbFormaContEstab(cbFormaContratoEstab)
@@ -202,6 +204,22 @@ Public Class FplanejCNES
         If TextBoxNome.Text.Length >= 5 Then
             dgPlanejamento.DataSource = pdf.getProfByNameORCPF(Nothing, TextBoxNome.Text)
             datagridConfig()
+        End If
+    End Sub
+
+    Private Sub dgPlanejamento_CellMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles dgPlanejamento.CellMouseClick
+        If e.Button = MouseButtons.Right Then
+            If e.RowIndex >= 0 AndAlso e.ColumnIndex >= 0 Then
+                ' Seleciona a célula clicada
+                dgPlanejamento.ClearSelection()
+                dgPlanejamento.Rows(e.RowIndex).Cells(e.ColumnIndex).Selected = True
+
+                If main.msgQuestion("Copiar valor?", "") Then
+                    columnIndex = e.ColumnIndex
+                    main.copyFromDatagridview(dgPlanejamento, columnIndex)
+                End If
+                'MessageBox.Show($"Célula selecionada: Linha {e.RowIndex}, Coluna {e.ColumnIndex}")
+            End If
         End If
     End Sub
 
