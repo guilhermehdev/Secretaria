@@ -25,11 +25,10 @@ Partial Class FeditarProtocolo
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FeditarProtocolo))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.Label7 = New System.Windows.Forms.Label()
+        Me.btResposta = New System.Windows.Forms.Button()
         Me.mtbEditar1contato = New System.Windows.Forms.MaskedTextBox()
         Me.btSendEmail = New System.Windows.Forms.Button()
         Me.btHoje = New System.Windows.Forms.Button()
-        Me.btSair = New System.Windows.Forms.Button()
         Me.mtbEditarEncerramento = New System.Windows.Forms.MaskedTextBox()
         Me.btEditarExclusao = New System.Windows.Forms.Button()
         Me.mtbEditarAbertura = New System.Windows.Forms.DateTimePicker()
@@ -48,16 +47,17 @@ Partial Class FeditarProtocolo
         Me.Label1 = New System.Windows.Forms.Label()
         Me.tbEditarProtocolo = New System.Windows.Forms.TextBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.btClose = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.Label7)
+        Me.GroupBox1.Controls.Add(Me.btClose)
+        Me.GroupBox1.Controls.Add(Me.btResposta)
         Me.GroupBox1.Controls.Add(Me.mtbEditar1contato)
         Me.GroupBox1.Controls.Add(Me.btSendEmail)
         Me.GroupBox1.Controls.Add(Me.btHoje)
-        Me.GroupBox1.Controls.Add(Me.btSair)
         Me.GroupBox1.Controls.Add(Me.mtbEditarEncerramento)
         Me.GroupBox1.Controls.Add(Me.btEditarExclusao)
         Me.GroupBox1.Controls.Add(Me.mtbEditarAbertura)
@@ -82,14 +82,14 @@ Partial Class FeditarProtocolo
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Dados"
         '
-        'Label7
+        'btResposta
         '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(299, 152)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(35, 13)
-        Me.Label7.TabIndex = 27
-        Me.Label7.Text = "Email:"
+        Me.btResposta.Location = New System.Drawing.Point(321, 139)
+        Me.btResposta.Name = "btResposta"
+        Me.btResposta.Size = New System.Drawing.Size(67, 39)
+        Me.btResposta.TabIndex = 27
+        Me.btResposta.Text = "Adicionar resposta"
+        Me.btResposta.UseVisualStyleBackColor = True
         '
         'mtbEditar1contato
         '
@@ -108,7 +108,7 @@ Partial Class FeditarProtocolo
         Me.btSendEmail.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btSendEmail.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btSendEmail.ForeColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.btSendEmail.Location = New System.Drawing.Point(335, 139)
+        Me.btSendEmail.Location = New System.Drawing.Point(270, 139)
         Me.btSendEmail.Name = "btSendEmail"
         Me.btSendEmail.Size = New System.Drawing.Size(45, 39)
         Me.btSendEmail.TabIndex = 25
@@ -123,20 +123,6 @@ Partial Class FeditarProtocolo
         Me.btHoje.TabIndex = 22
         Me.btHoje.Text = "H"
         Me.btHoje.UseVisualStyleBackColor = True
-        '
-        'btSair
-        '
-        Me.btSair.BackColor = System.Drawing.Color.DarkGray
-        Me.btSair.FlatAppearance.BorderSize = 0
-        Me.btSair.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btSair.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btSair.ForeColor = System.Drawing.Color.White
-        Me.btSair.Location = New System.Drawing.Point(386, 139)
-        Me.btSair.Name = "btSair"
-        Me.btSair.Size = New System.Drawing.Size(51, 39)
-        Me.btSair.TabIndex = 7
-        Me.btSair.Text = "Sair"
-        Me.btSair.UseVisualStyleBackColor = False
         '
         'mtbEditarEncerramento
         '
@@ -157,7 +143,7 @@ Partial Class FeditarProtocolo
         Me.btEditarExclusao.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btEditarExclusao.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btEditarExclusao.ForeColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.btEditarExclusao.Location = New System.Drawing.Point(222, 139)
+        Me.btEditarExclusao.Location = New System.Drawing.Point(208, 139)
         Me.btEditarExclusao.Name = "btEditarExclusao"
         Me.btEditarExclusao.Size = New System.Drawing.Size(47, 39)
         Me.btEditarExclusao.TabIndex = 19
@@ -210,7 +196,7 @@ Partial Class FeditarProtocolo
         Me.btAtualizarProtocolo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btAtualizarProtocolo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btAtualizarProtocolo.ForeColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.btAtualizarProtocolo.Location = New System.Drawing.Point(167, 139)
+        Me.btAtualizarProtocolo.Location = New System.Drawing.Point(153, 139)
         Me.btAtualizarProtocolo.Name = "btAtualizarProtocolo"
         Me.btAtualizarProtocolo.Size = New System.Drawing.Size(49, 39)
         Me.btAtualizarProtocolo.TabIndex = 7
@@ -314,15 +300,30 @@ Partial Class FeditarProtocolo
         Me.tbEditarProtocolo.TabStop = False
         Me.tbEditarProtocolo.Tag = "Nº Protocolo"
         '
+        'btClose
+        '
+        Me.btClose.BackColor = System.Drawing.Color.IndianRed
+        Me.btClose.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btClose.FlatAppearance.BorderSize = 0
+        Me.btClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.btClose.ForeColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.btClose.Location = New System.Drawing.Point(394, 139)
+        Me.btClose.Name = "btClose"
+        Me.btClose.Size = New System.Drawing.Size(43, 39)
+        Me.btClose.TabIndex = 28
+        Me.btClose.Text = "Sair"
+        Me.btClose.UseVisualStyleBackColor = False
+        '
         'FeditarProtocolo
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(487, 227)
+        Me.ClientSize = New System.Drawing.Size(487, 215)
         Me.Controls.Add(Me.GroupBox1)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "FeditarProtocolo"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Editar Protocolos"
@@ -346,7 +347,6 @@ Partial Class FeditarProtocolo
     Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents cbEditarStatus As System.Windows.Forms.ComboBox
-    Friend WithEvents btSair As System.Windows.Forms.Button
     Friend WithEvents mtbEditarAbertura As System.Windows.Forms.DateTimePicker
     Friend WithEvents btEditarExclusao As System.Windows.Forms.Button
     Friend WithEvents mtbEditarEncerramento As System.Windows.Forms.MaskedTextBox
@@ -354,5 +354,6 @@ Partial Class FeditarProtocolo
     Friend WithEvents btSendEmail As System.Windows.Forms.Button
     Friend WithEvents mtbEditar1contato As System.Windows.Forms.MaskedTextBox
     Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
-    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents btResposta As Button
+    Friend WithEvents btClose As Button
 End Class

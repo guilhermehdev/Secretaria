@@ -221,6 +221,12 @@
     <Compile Include="FormAME.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormOuvidoriaAndamento.Designer.vb">
+      <DependentUpon>FormOuvidoriaAndamento.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormOuvidoriaAndamento.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FplanejCNES.Designer.vb">
       <DependentUpon>FplanejCNES.vb</DependentUpon>
     </Compile>
@@ -323,6 +329,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormAME.resx">
       <DependentUpon>FormAME.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormOuvidoriaAndamento.resx">
+      <DependentUpon>FormOuvidoriaAndamento.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FplanejCNES.resx">
       <DependentUpon>FplanejCNES.vb</DependentUpon>

@@ -1,11 +1,81 @@
-﻿Imports System.Text.RegularExpressions
+﻿Imports System.Text
+Imports System.Text.RegularExpressions
 Imports iTextSharp.text.pdf
 Imports iTextSharp.text.pdf.parser
-Imports System.Linq
 
 Public Class PDF
     Dim pdfPath As String = Application.StartupPath & "/PDF/cnes.pdf"
     Dim xml As New XML
+
+    Public Function ExtrairDadosOuvidoria(ByVal pdfOuvidoria As String) As Dictionary(Of String, String)
+        Dim resultado As New Dictionary(Of String, String) From {
+        {"MANIFESTAÇÃO", ""},
+        {"Recebido em", ""},
+        {"Solicitante", ""},
+        {"Telefone", ""},
+        {"Manifestação", ""}
+    }
+
+        Try
+            ' Criar um StringBuilder para armazenar o texto extraído
+            Dim textoExtraido As New StringBuilder()
+
+            ' Ler o PDF usando iTextSharp
+            Using reader As New PdfReader(pdfOuvidoria)
+                For i As Integer = 1 To reader.NumberOfPages
+                    textoExtraido.AppendLine(PdfTextExtractor.GetTextFromPage(reader, i))
+                Next
+            End Using
+
+            ' Converter o texto extraído em uma única string
+            Dim texto As String = textoExtraido.ToString()
+
+            Dim regexRemoverTrechos1 As New Regex("(?<=Endereço).*?(?=Reincidente)", RegexOptions.Singleline)
+            texto = regexRemoverTrechos1.Replace(texto, "")
+
+            ' Dim regexRemoverTrechos2 As New Regex("(?<=Usuário).*", RegexOptions.Singleline)
+            'texto = regexRemoverTrechos2.Replace(texto, "")
+
+            texto = Regex.Replace(texto, "Usuário.*", "", RegexOptions.Singleline)
+
+            ' Definir expressões regulares para extrair os campos necessários
+            Dim regexManifestacaoID As New Regex("MANIFESTAÇÃO\s*:\s*(?<valor>\d+)")
+            Dim regexRecebidoEm As New Regex("Recebido em\s*:\s*(?<valor>.+)")
+            Dim regexSolicitante As New Regex("Solicitante\s*:\s*(?<valor>.+)")
+            Dim regexTelefone As New Regex("Telefone\s*:\s*﴾(?<ddd>\d{2})﴿\s*(?<numero>\d{5}‐\d{4})")
+            Dim regexManifestacao As New Regex("Manifestação\s*:\s*(?<valor>.+)", RegexOptions.Singleline)
+
+            ' Extrair e armazenar os valores correspondentes
+            Dim matchManifestacaoID = regexManifestacaoID.Match(texto)
+            If matchManifestacaoID.Success Then resultado("MANIFESTAÇÃO") = matchManifestacaoID.Groups("valor").Value.Trim()
+
+            Dim matchRecebido = regexRecebidoEm.Match(texto)
+            If matchRecebido.Success Then resultado("Recebido em") = matchRecebido.Groups("valor").Value.Trim()
+
+            Dim matchSolicitante = regexSolicitante.Match(texto)
+            If matchSolicitante.Success Then resultado("Solicitante") = matchSolicitante.Groups("valor").Value.Trim()
+
+            Dim matchTelefone As Match = regexTelefone.Match(texto)
+
+            If matchTelefone.Success Then
+                Dim ddd As String = matchTelefone.Groups("ddd").Value
+                Dim numero As String = matchTelefone.Groups("numero").Value
+
+                resultado("Telefone") = String.Format("({0}) {1}", ddd, numero)
+            Else
+                resultado("Telefone") = "Não encontrado" ' Ou um valor padrão
+            End If
+
+            Dim matchManifestacao = regexManifestacao.Match(texto)
+            If matchManifestacao.Success Then resultado("Manifestação") = matchManifestacao.Groups("valor").Value.Trim()
+
+        Catch ex As Exception
+            Console.WriteLine("Erro ao processar o PDF: " & ex.Message)
+        End Try
+
+        Return resultado
+
+    End Function
 
     Public Function getProf(fc As String, cbo As String, cnes As String, gestao As String)
         Dim textoExtraido As String = ExtrairTextoDoPDF() ' Substitua pelo texto extraído.

@@ -1,13 +1,8 @@
 ﻿Public Class FeditarProtocolo
     Dim m As New Main
 
-    Private Sub btSair_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btSair.Click
-        Me.Close()
-    End Sub
-
     Private Sub btAtualizarProtocolo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btAtualizarProtocolo.Click
         Dim contato1 As Object
-        Dim contato2 As Object
         Dim encerramento As Object
 
         If mtbEditar1contato.Text = "  /  /" Then
@@ -36,7 +31,7 @@
             Next
 
             m.msgUpdate("Atualizado com sucesso!")
-           
+
         Catch ex As Exception
             m.msgError(ex.Message)
         End Try
@@ -64,8 +59,13 @@
         Fmail.ShowDialog()
     End Sub
 
-   
-    Private Sub FeditarProtocolo_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub btResposta_Click(sender As Object, e As EventArgs) Handles btResposta.Click
+        FormOuvidoriaAndamento.Show()
+        FormOuvidoriaAndamento.Text = FormOuvidoriaAndamento.Text & " - " & tbEditarProtocolo.Text
 
     End Sub
+    Private Sub btClose_Click(sender As Object, e As EventArgs) Handles btClose.Click
+        Me.Close()
+    End Sub
+
 End Class

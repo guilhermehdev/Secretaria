@@ -1,4 +1,6 @@
-﻿Public Class FmainOuvidoria
+﻿Imports System.IO
+
+Public Class FmainOuvidoria
     Dim m As New Main
     Dim qryProtocolos = "SELECT ouvidoria.id_destino AS iddestino,ouvidoria.id AS id,ouvidoria.protocolo,ouvidoria.sistema,ouvidoria.forma_envio,ouvidoria.abertura,ouvidoria.1contato,ouvidoria.encerramento,ouvidoria.`status`,destinos.descricao AS destino,coordenador.nome AS coordenador FROM ouvidoria JOIN destinos ON ouvidoria.id_destino = destinos.id JOIN coordenador ON coordenador.id = destinos.id_coordenador "
     Dim dgProtocolosCollumsHeaderText() As String = {"iddestino", "ID", "Protocolo", "Canal", "Forma de envio", "Abertura", "1º contato", "Encerramento", "Status", "Destino", "Coordenador", "Prazo"}
@@ -101,26 +103,26 @@
                     End If
                 End If
 
-            Select Case sts
-                Case "Em andamento"
-                    dgListProtocolos.Rows.Item(row).DefaultCellStyle.BackColor = Color.Yellow
-                Case "Concluido"
-                    dgListProtocolos.Rows.Item(row).DefaultCellStyle.BackColor = Color.YellowGreen
-                Case "Duplicado"
-                    dgListProtocolos.Rows.Item(row).DefaultCellStyle.BackColor = Color.DarkOrange
-                    dgListProtocolos.Rows.Item(row).DefaultCellStyle.ForeColor = Color.White
-                Case "Cancelado"
-                    dgListProtocolos.Rows.Item(row).DefaultCellStyle.BackColor = Color.Gray
-                    dgListProtocolos.Rows.Item(row).DefaultCellStyle.ForeColor = Color.White
-                Case "Elogio"
-                    dgListProtocolos.Rows.Item(row).DefaultCellStyle.BackColor = Color.SkyBlue
-                    dgListProtocolos.Rows.Item(row).DefaultCellStyle.ForeColor = Color.Black
-                Case "Reencaminhado"
-                    dgListProtocolos.Rows.Item(row).DefaultCellStyle.BackColor = Color.RosyBrown
-                    dgListProtocolos.Rows.Item(row).DefaultCellStyle.ForeColor = Color.Black
-                Case "Vencido"
-                    dgListProtocolos.Rows.Item(row).DefaultCellStyle.BackColor = Color.IndianRed
-                    dgListProtocolos.Rows.Item(row).DefaultCellStyle.ForeColor = Color.White
+                Select Case sts
+                    Case "Em andamento"
+                        dgListProtocolos.Rows.Item(row).DefaultCellStyle.BackColor = Color.Yellow
+                    Case "Concluido"
+                        dgListProtocolos.Rows.Item(row).DefaultCellStyle.BackColor = Color.YellowGreen
+                    Case "Duplicado"
+                        dgListProtocolos.Rows.Item(row).DefaultCellStyle.BackColor = Color.DarkOrange
+                        dgListProtocolos.Rows.Item(row).DefaultCellStyle.ForeColor = Color.White
+                    Case "Cancelado"
+                        dgListProtocolos.Rows.Item(row).DefaultCellStyle.BackColor = Color.Gray
+                        dgListProtocolos.Rows.Item(row).DefaultCellStyle.ForeColor = Color.White
+                    Case "Elogio"
+                        dgListProtocolos.Rows.Item(row).DefaultCellStyle.BackColor = Color.SkyBlue
+                        dgListProtocolos.Rows.Item(row).DefaultCellStyle.ForeColor = Color.Black
+                    Case "Reencaminhado"
+                        dgListProtocolos.Rows.Item(row).DefaultCellStyle.BackColor = Color.RosyBrown
+                        dgListProtocolos.Rows.Item(row).DefaultCellStyle.ForeColor = Color.Black
+                    Case "Vencido"
+                        dgListProtocolos.Rows.Item(row).DefaultCellStyle.BackColor = Color.IndianRed
+                        dgListProtocolos.Rows.Item(row).DefaultCellStyle.ForeColor = Color.White
                 End Select
 
             Catch ex As Exception
@@ -249,19 +251,46 @@
 
     Private Sub cbBuscaOrigem_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbBuscaOrigem.SelectedIndexChanged
         reloadGrid()
-        ' Dim destino = ""
-        'Dim sts = ""
-        'If cbBuscaDestinatario.SelectedIndex >= 0 Then
-        'destino = " AND ouvidoria.id_destino=" & cbBuscaDestinatario.SelectedValue
-        'End If
-        'If cbBuscaStatus.SelectedIndex > 0 Then
-        'sts = " AND ouvidoria.status='" & cbBuscaStatus.Text & "'"
-        'End If
-        'loadProtocolos("WHERE ouvidoria.sistema ='" & cbBuscaOrigem.Text & "' " & sts & " " & destino)
     End Sub
 
     Private Sub PrazosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PrazosToolStripMenuItem.Click
         FRelatorioPrazos.Show()
+    End Sub
+
+    Private Sub ImportarOuvidoriasToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportarOuvidoriasToolStripMenuItem.Click
+        Dim pdfFiles As New List(Of String)()
+        Dim pdfData As New List(Of String)()
+        Dim pdf As New PDF
+
+        OpenFileDialog1.Filter = "PDF Files (*.pdf)|*.pdf"
+        OpenFileDialog1.Multiselect = True
+
+        If OpenFileDialog1.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+            pdfFiles.AddRange(OpenFileDialog1.FileNames)
+        End If
+
+        For Each pdfFile As String In pdfFiles
+            Dim dataOuvidoria As Dictionary(Of String, String) = pdf.ExtrairDadosOuvidoria(pdfFile)
+            Dim datatable = m.getDataset($"SELECT id FROM ouvidoria WHERE protocolo ={dataOuvidoria("MANIFESTAÇÃO")}")
+            Dim id As Integer
+
+            If datatable.Rows.Count > 0 Then
+                Dim dataManifestacao As String
+                id = datatable.Rows(0).Item(0)
+
+                dataManifestacao = "Data: " & dataOuvidoria("Recebido em") & vbCrLf & "Solicitante: " & dataOuvidoria("Solicitante") & vbCrLf & "Telefone: " & dataOuvidoria("Telefone") & vbCrLf & vbCrLf & "Manifestação: " & dataOuvidoria("Manifestação")
+
+                m.SQLinsert("manifestacoes", "manifest,id_ouvidoria", "'" & dataManifestacao & "'," & id, ,,,, True)
+            Else
+
+            End If
+
+            Console.WriteLine(dataOuvidoria("Recebido em") & vbCrLf & dataOuvidoria("Solicitante") & vbCrLf & dataOuvidoria("Telefone") & vbCrLf & dataOuvidoria("Manifestação"))
+
+        Next
+
+        MessageBox.Show($"{pdfFiles.Count} arquivo(s) PDF importado(s) com sucesso!", "Importar arquivos PDF", MessageBoxButtons.OK)
+
     End Sub
 
 End Class

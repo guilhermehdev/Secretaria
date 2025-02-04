@@ -21,9 +21,9 @@ Public Class Main
     Public dgCVisible(30) As Boolean
     Public dgCHeader(30) As String
     Public dgCWidth(30) As Integer
-   
 
-    Public Sub connection(ByVal conectar As Boolean)
+
+    Private Sub connection(ByVal conectar As Boolean)
 
         If conectar Then
             Try

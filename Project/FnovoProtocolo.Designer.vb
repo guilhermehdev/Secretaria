@@ -57,7 +57,7 @@ Partial Class FnovoProtocolo
         Me.gbDadosProtocolo.Controls.Add(Me.tbProtocolo)
         Me.gbDadosProtocolo.Location = New System.Drawing.Point(12, 12)
         Me.gbDadosProtocolo.Name = "gbDadosProtocolo"
-        Me.gbDadosProtocolo.Size = New System.Drawing.Size(366, 194)
+        Me.gbDadosProtocolo.Size = New System.Drawing.Size(367, 192)
         Me.gbDadosProtocolo.TabIndex = 0
         Me.gbDadosProtocolo.TabStop = False
         Me.gbDadosProtocolo.Text = "Dados"
@@ -67,11 +67,11 @@ Partial Class FnovoProtocolo
         Me.btSair.BackColor = System.Drawing.Color.DarkGray
         Me.btSair.FlatAppearance.BorderSize = 0
         Me.btSair.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btSair.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btSair.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btSair.ForeColor = System.Drawing.Color.White
-        Me.btSair.Location = New System.Drawing.Point(287, 137)
+        Me.btSair.Location = New System.Drawing.Point(287, 151)
         Me.btSair.Name = "btSair"
-        Me.btSair.Size = New System.Drawing.Size(56, 34)
+        Me.btSair.Size = New System.Drawing.Size(56, 20)
         Me.btSair.TabIndex = 6
         Me.btSair.Text = "Sair"
         Me.btSair.UseVisualStyleBackColor = False
@@ -79,12 +79,13 @@ Partial Class FnovoProtocolo
         'btEnviarEmail
         '
         Me.btEnviarEmail.BackColor = System.Drawing.Color.DarkOrange
+        Me.btEnviarEmail.FlatAppearance.BorderSize = 0
         Me.btEnviarEmail.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btEnviarEmail.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btEnviarEmail.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btEnviarEmail.ForeColor = System.Drawing.Color.White
-        Me.btEnviarEmail.Location = New System.Drawing.Point(199, 135)
+        Me.btEnviarEmail.Location = New System.Drawing.Point(199, 151)
         Me.btEnviarEmail.Name = "btEnviarEmail"
-        Me.btEnviarEmail.Size = New System.Drawing.Size(82, 36)
+        Me.btEnviarEmail.Size = New System.Drawing.Size(81, 20)
         Me.btEnviarEmail.TabIndex = 16
         Me.btEnviarEmail.Text = "Email"
         Me.btEnviarEmail.UseVisualStyleBackColor = False
@@ -94,11 +95,11 @@ Partial Class FnovoProtocolo
         Me.btSalvarProtocolo.BackColor = System.Drawing.Color.DarkSeaGreen
         Me.btSalvarProtocolo.FlatAppearance.BorderSize = 0
         Me.btSalvarProtocolo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btSalvarProtocolo.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btSalvarProtocolo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btSalvarProtocolo.ForeColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.btSalvarProtocolo.Location = New System.Drawing.Point(112, 137)
+        Me.btSalvarProtocolo.Location = New System.Drawing.Point(112, 151)
         Me.btSalvarProtocolo.Name = "btSalvarProtocolo"
-        Me.btSalvarProtocolo.Size = New System.Drawing.Size(81, 34)
+        Me.btSalvarProtocolo.Size = New System.Drawing.Size(81, 20)
         Me.btSalvarProtocolo.TabIndex = 7
         Me.btSalvarProtocolo.Text = "Salvar"
         Me.btSalvarProtocolo.UseVisualStyleBackColor = False
@@ -201,7 +202,7 @@ Partial Class FnovoProtocolo
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(392, 255)
+        Me.ClientSize = New System.Drawing.Size(398, 221)
         Me.Controls.Add(Me.gbDadosProtocolo)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
