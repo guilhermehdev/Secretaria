@@ -36,6 +36,8 @@ Partial Class FormOuvidoriaAndamento
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.TextBoxManifestacao)
+        Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox1.ForeColor = System.Drawing.Color.DodgerBlue
         Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(618, 306)
@@ -46,6 +48,8 @@ Partial Class FormOuvidoriaAndamento
         'GroupBox2
         '
         Me.GroupBox2.Controls.Add(Me.TextBoxResposta)
+        Me.GroupBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox2.ForeColor = System.Drawing.Color.DodgerBlue
         Me.GroupBox2.Location = New System.Drawing.Point(12, 324)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(618, 306)
@@ -98,11 +102,11 @@ Partial Class FormOuvidoriaAndamento
         Me.TextBoxManifestacao.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBoxManifestacao.Cursor = System.Windows.Forms.Cursors.Arrow
         Me.TextBoxManifestacao.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBoxManifestacao.Location = New System.Drawing.Point(6, 19)
+        Me.TextBoxManifestacao.Location = New System.Drawing.Point(6, 38)
         Me.TextBoxManifestacao.Name = "TextBoxManifestacao"
         Me.TextBoxManifestacao.ReadOnly = True
         Me.TextBoxManifestacao.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical
-        Me.TextBoxManifestacao.Size = New System.Drawing.Size(606, 281)
+        Me.TextBoxManifestacao.Size = New System.Drawing.Size(606, 262)
         Me.TextBoxManifestacao.TabIndex = 0
         Me.TextBoxManifestacao.Text = ""
         '
@@ -110,10 +114,11 @@ Partial Class FormOuvidoriaAndamento
         '
         Me.TextBoxResposta.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBoxResposta.Cursor = System.Windows.Forms.Cursors.IBeam
-        Me.TextBoxResposta.Location = New System.Drawing.Point(6, 19)
+        Me.TextBoxResposta.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxResposta.Location = New System.Drawing.Point(6, 33)
         Me.TextBoxResposta.Name = "TextBoxResposta"
         Me.TextBoxResposta.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical
-        Me.TextBoxResposta.Size = New System.Drawing.Size(606, 281)
+        Me.TextBoxResposta.Size = New System.Drawing.Size(606, 267)
         Me.TextBoxResposta.TabIndex = 0
         Me.TextBoxResposta.Text = ""
         '
