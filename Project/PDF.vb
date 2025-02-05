@@ -42,7 +42,18 @@ Public Class PDF
             Dim regexSolicitante As New Regex("Solicitante\s*:\s*(?<valor>.+)")
             Dim regexTelefone As New Regex("Telefone\s*:\s*﴾(?<ddd>\d{2})﴿\s*(?<numero>\d{5}‐\d{4})")
             'Dim regexManifestacao As New Regex("Manifestação\s*:\s*(?<valor>.+)", RegexOptions.Singleline)
-            Dim regexManifestacao As New Regex("Manifestação\s*:\s*(?<valor>[\s\S]*?)Andamento", RegexOptions.Multiline)
+            Dim regexAndamento As New Regex("Manifestação.*Andamento", RegexOptions.Singleline)
+
+            If regexAndamento.IsMatch(texto) Then
+                Dim regexManifestacao As New Regex("Manifestação\s*:\s*(?<valor>[\s\S]*?)Andamento", RegexOptions.Multiline)
+
+                Dim matchManifestacao = regexManifestacao.Match(texto)
+                If matchManifestacao.Success Then resultado("Manifestação") = matchManifestacao.Groups("valor").Value.Trim()
+            Else
+
+            End If
+
+
 
             ' Extrair e armazenar os valores correspondentes
             Dim matchManifestacaoID = regexManifestacaoID.Match(texto)
@@ -64,9 +75,6 @@ Public Class PDF
             Else
                 resultado("Telefone") = "Não encontrado" ' Ou um valor padrão
             End If
-
-            Dim matchManifestacao = regexManifestacao.Match(texto)
-            If matchManifestacao.Success Then resultado("Manifestação") = matchManifestacao.Groups("valor").Value.Trim()
 
             Dim matchAndamento As Match = Regex.Match(texto, "Andamento:(.*)", RegexOptions.Singleline)
             Dim andamento As String = ""
