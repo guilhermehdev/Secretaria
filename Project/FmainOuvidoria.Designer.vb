@@ -23,8 +23,8 @@ Partial Class FmainOuvidoria
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FmainOuvidoria))
         Me.Tbackup = New System.Windows.Forms.Timer(Me.components)
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
@@ -37,6 +37,7 @@ Partial Class FmainOuvidoria
         Me.BancoDeDadosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.BackupToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PlanoDeFundoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ImportarOuvidoriasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SairToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.niMinimizar = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.btNovoProtocolo = New System.Windows.Forms.Button()
@@ -55,7 +56,6 @@ Partial Class FmainOuvidoria
         Me.tbBuscaProtocolo = New System.Windows.Forms.TextBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.pbBackground = New System.Windows.Forms.PictureBox()
-        Me.ImportarOuvidoriasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.dgListProtocolos, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -87,7 +87,7 @@ Partial Class FmainOuvidoria
         'UsuáriosToolStripMenuItem
         '
         Me.UsuáriosToolStripMenuItem.Name = "UsuáriosToolStripMenuItem"
-        Me.UsuáriosToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.UsuáriosToolStripMenuItem.Size = New System.Drawing.Size(119, 22)
         Me.UsuáriosToolStripMenuItem.Text = "Usuários"
         '
         'RelatóriosToolStripMenuItem
@@ -100,13 +100,13 @@ Partial Class FmainOuvidoria
         'PrazosToolStripMenuItem
         '
         Me.PrazosToolStripMenuItem.Name = "PrazosToolStripMenuItem"
-        Me.PrazosToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.PrazosToolStripMenuItem.Size = New System.Drawing.Size(108, 22)
         Me.PrazosToolStripMenuItem.Text = "Prazos"
         '
         'LogsToolStripMenuItem
         '
         Me.LogsToolStripMenuItem.Name = "LogsToolStripMenuItem"
-        Me.LogsToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.LogsToolStripMenuItem.Size = New System.Drawing.Size(108, 22)
         Me.LogsToolStripMenuItem.Text = "Logs"
         '
         'OpçõesToolStripMenuItem
@@ -134,6 +134,12 @@ Partial Class FmainOuvidoria
         Me.PlanoDeFundoToolStripMenuItem.Name = "PlanoDeFundoToolStripMenuItem"
         Me.PlanoDeFundoToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.PlanoDeFundoToolStripMenuItem.Text = "Plano de Fundo"
+        '
+        'ImportarOuvidoriasToolStripMenuItem
+        '
+        Me.ImportarOuvidoriasToolStripMenuItem.Name = "ImportarOuvidoriasToolStripMenuItem"
+        Me.ImportarOuvidoriasToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.ImportarOuvidoriasToolStripMenuItem.Text = "Importar Ouvidorias"
         '
         'SairToolStripMenuItem
         '
@@ -168,27 +174,27 @@ Partial Class FmainOuvidoria
         Me.dgListProtocolos.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgListProtocolos.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleVertical
         Me.dgListProtocolos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.SteelBlue
-        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgListProtocolos.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.SteelBlue
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgListProtocolos.DefaultCellStyle = DataGridViewCellStyle1
         Me.dgListProtocolos.Location = New System.Drawing.Point(12, 95)
         Me.dgListProtocolos.MultiSelect = False
         Me.dgListProtocolos.Name = "dgListProtocolos"
         Me.dgListProtocolos.ReadOnly = True
         Me.dgListProtocolos.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.ControlDark
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgListProtocolos.RowHeadersDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.ControlDark
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgListProtocolos.RowHeadersDefaultCellStyle = DataGridViewCellStyle2
         Me.dgListProtocolos.RowHeadersWidth = 4
         Me.dgListProtocolos.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgListProtocolos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
@@ -334,16 +340,6 @@ Partial Class FmainOuvidoria
         Me.pbBackground.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.pbBackground.TabIndex = 4
         Me.pbBackground.TabStop = False
-        '
-        'ImportarOuvidoriasToolStripMenuItem
-        '
-        Me.ImportarOuvidoriasToolStripMenuItem.Name = "ImportarOuvidoriasToolStripMenuItem"
-        Me.ImportarOuvidoriasToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.ImportarOuvidoriasToolStripMenuItem.Text = "Importar Ouvidorias"
-        '
-        'OpenFileDialog1
-        '
-        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
         '
         'FmainOuvidoria
         '

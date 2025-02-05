@@ -13,7 +13,8 @@ Public Class PDF
         {"Recebido em", ""},
         {"Solicitante", ""},
         {"Telefone", ""},
-        {"Manifestação", ""}
+        {"Manifestação", ""},
+        {"Andamento", ""}
     }
 
         Try
@@ -33,9 +34,6 @@ Public Class PDF
             Dim regexRemoverTrechos1 As New Regex("(?<=Endereço).*?(?=Reincidente)", RegexOptions.Singleline)
             texto = regexRemoverTrechos1.Replace(texto, "")
 
-            ' Dim regexRemoverTrechos2 As New Regex("(?<=Usuário).*", RegexOptions.Singleline)
-            'texto = regexRemoverTrechos2.Replace(texto, "")
-
             texto = Regex.Replace(texto, "Usuário.*", "", RegexOptions.Singleline)
 
             ' Definir expressões regulares para extrair os campos necessários
@@ -43,7 +41,8 @@ Public Class PDF
             Dim regexRecebidoEm As New Regex("Recebido em\s*:\s*(?<valor>.+)")
             Dim regexSolicitante As New Regex("Solicitante\s*:\s*(?<valor>.+)")
             Dim regexTelefone As New Regex("Telefone\s*:\s*﴾(?<ddd>\d{2})﴿\s*(?<numero>\d{5}‐\d{4})")
-            Dim regexManifestacao As New Regex("Manifestação\s*:\s*(?<valor>.+)", RegexOptions.Singleline)
+            'Dim regexManifestacao As New Regex("Manifestação\s*:\s*(?<valor>.+)", RegexOptions.Singleline)
+            Dim regexManifestacao As New Regex("Manifestação\s*:\s*(?<valor>[\s\S]*?)Andamento", RegexOptions.Multiline)
 
             ' Extrair e armazenar os valores correspondentes
             Dim matchManifestacaoID = regexManifestacaoID.Match(texto)
@@ -68,6 +67,12 @@ Public Class PDF
 
             Dim matchManifestacao = regexManifestacao.Match(texto)
             If matchManifestacao.Success Then resultado("Manifestação") = matchManifestacao.Groups("valor").Value.Trim()
+
+            Dim matchAndamento As Match = Regex.Match(texto, "Andamento:(.*)", RegexOptions.Singleline)
+            Dim andamento As String = ""
+            If matchAndamento.Success Then
+                resultado("Andamento") = matchAndamento.Groups(1).Value.Trim()
+            End If
 
         Catch ex As Exception
             Console.WriteLine("Erro ao processar o PDF: " & ex.Message)

@@ -259,7 +259,7 @@ Public Class FmainOuvidoria
 
     Private Sub ImportarOuvidoriasToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportarOuvidoriasToolStripMenuItem.Click
         Dim pdfFiles As New List(Of String)()
-        Dim pdfData As New List(Of String)()
+        Dim pdfNotFound As New List(Of String)()
         Dim pdf As New PDF
 
         OpenFileDialog1.Filter = "PDF Files (*.pdf)|*.pdf"
@@ -278,18 +278,26 @@ Public Class FmainOuvidoria
                 Dim dataManifestacao As String
                 id = datatable.Rows(0).Item(0)
 
-                dataManifestacao = "Data: " & dataOuvidoria("Recebido em") & vbCrLf & "Solicitante: " & dataOuvidoria("Solicitante") & vbCrLf & "Telefone: " & dataOuvidoria("Telefone") & vbCrLf & vbCrLf & "Manifestação: " & dataOuvidoria("Manifestação")
+                dataManifestacao = "Protocolo: " & dataOuvidoria("MANIFESTAÇÃO") & vbCrLf & vbCrLf & "Data: " & dataOuvidoria("Recebido em") & vbCrLf & vbCrLf & "Solicitante: " & dataOuvidoria("Solicitante") & vbCrLf & vbCrLf & "Telefone: " & dataOuvidoria("Telefone") & vbCrLf & vbCrLf & "Manifestação: " & dataOuvidoria("Manifestação") & vbCrLf & vbCrLf & dataOuvidoria("Andamento")
 
-                m.SQLinsert("manifestacoes", "manifest,id_ouvidoria", "'" & dataManifestacao & "'," & id, ,,,, True)
+                Try
+                    m.SQLinsert("manifestacoes", "manifest,id_ouvidoria", "'" & dataManifestacao & "'," & id)
+                Catch ex As Exception
+                    m.doQuery($"UPDATE manifestacoes SET manifest={dataManifestacao} WHERE id_ouvidoria={id}")
+                End Try
+
             Else
-
+                pdfNotFound.Add(dataOuvidoria("MANIFESTAÇÃO"))
             End If
-
-            Console.WriteLine(dataOuvidoria("Recebido em") & vbCrLf & dataOuvidoria("Solicitante") & vbCrLf & dataOuvidoria("Telefone") & vbCrLf & dataOuvidoria("Manifestação"))
-
         Next
 
         MessageBox.Show($"{pdfFiles.Count} arquivo(s) PDF importado(s) com sucesso!", "Importar arquivos PDF", MessageBoxButtons.OK)
+
+        Dim joinProtocols As String = String.Join(vbCrLf, pdfNotFound)
+
+        If joinProtocols.Count > 0 Then
+            m.msgAlert($"Protocolos não cadastrados:{vbCrLf & vbCrLf & joinProtocols}")
+        End If
 
     End Sub
 

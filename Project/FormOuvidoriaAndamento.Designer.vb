@@ -23,12 +23,12 @@ Partial Class FormOuvidoriaAndamento
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.TextBoxManifestacao = New System.Windows.Forms.TextBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.TextBoxResposta = New System.Windows.Forms.TextBox()
         Me.CheckBoxOKResposta = New System.Windows.Forms.CheckBox()
         Me.btSalvarResposta = New System.Windows.Forms.Button()
         Me.btClose = New System.Windows.Forms.Button()
+        Me.TextBoxManifestacao = New System.Windows.Forms.RichTextBox()
+        Me.TextBoxResposta = New System.Windows.Forms.RichTextBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
@@ -43,15 +43,6 @@ Partial Class FormOuvidoriaAndamento
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Manifestação"
         '
-        'TextBoxManifestacao
-        '
-        Me.TextBoxManifestacao.Location = New System.Drawing.Point(6, 19)
-        Me.TextBoxManifestacao.Multiline = True
-        Me.TextBoxManifestacao.Name = "TextBoxManifestacao"
-        Me.TextBoxManifestacao.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TextBoxManifestacao.Size = New System.Drawing.Size(606, 281)
-        Me.TextBoxManifestacao.TabIndex = 0
-        '
         'GroupBox2
         '
         Me.GroupBox2.Controls.Add(Me.TextBoxResposta)
@@ -62,19 +53,10 @@ Partial Class FormOuvidoriaAndamento
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Resposta"
         '
-        'TextBoxResposta
-        '
-        Me.TextBoxResposta.Location = New System.Drawing.Point(6, 19)
-        Me.TextBoxResposta.Multiline = True
-        Me.TextBoxResposta.Name = "TextBoxResposta"
-        Me.TextBoxResposta.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TextBoxResposta.Size = New System.Drawing.Size(606, 281)
-        Me.TextBoxResposta.TabIndex = 0
-        '
         'CheckBoxOKResposta
         '
         Me.CheckBoxOKResposta.AutoSize = True
-        Me.CheckBoxOKResposta.Location = New System.Drawing.Point(530, 630)
+        Me.CheckBoxOKResposta.Location = New System.Drawing.Point(137, 643)
         Me.CheckBoxOKResposta.Name = "CheckBoxOKResposta"
         Me.CheckBoxOKResposta.Size = New System.Drawing.Size(100, 17)
         Me.CheckBoxOKResposta.TabIndex = 2
@@ -83,37 +65,63 @@ Partial Class FormOuvidoriaAndamento
         '
         'btSalvarResposta
         '
-        Me.btSalvarResposta.BackColor = System.Drawing.Color.DarkSeaGreen
+        Me.btSalvarResposta.BackColor = System.Drawing.Color.ForestGreen
+        Me.btSalvarResposta.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btSalvarResposta.FlatAppearance.BorderSize = 0
         Me.btSalvarResposta.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btSalvarResposta.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btSalvarResposta.ForeColor = System.Drawing.SystemColors.ButtonFace
-        Me.btSalvarResposta.Location = New System.Drawing.Point(18, 630)
+        Me.btSalvarResposta.Location = New System.Drawing.Point(12, 635)
         Me.btSalvarResposta.Name = "btSalvarResposta"
-        Me.btSalvarResposta.Size = New System.Drawing.Size(75, 23)
+        Me.btSalvarResposta.Size = New System.Drawing.Size(119, 32)
         Me.btSalvarResposta.TabIndex = 3
-        Me.btSalvarResposta.Text = "Salvar"
+        Me.btSalvarResposta.Text = "Gravar resposta"
         Me.btSalvarResposta.UseVisualStyleBackColor = False
         '
         'btClose
         '
         Me.btClose.BackColor = System.Drawing.Color.IndianRed
+        Me.btClose.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btClose.FlatAppearance.BorderSize = 0
         Me.btClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btClose.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btClose.ForeColor = System.Drawing.SystemColors.ButtonFace
-        Me.btClose.Location = New System.Drawing.Point(99, 630)
+        Me.btClose.Location = New System.Drawing.Point(555, 635)
         Me.btClose.Name = "btClose"
-        Me.btClose.Size = New System.Drawing.Size(75, 23)
+        Me.btClose.Size = New System.Drawing.Size(75, 32)
         Me.btClose.TabIndex = 4
         Me.btClose.Text = "Sair"
         Me.btClose.UseVisualStyleBackColor = False
+        '
+        'TextBoxManifestacao
+        '
+        Me.TextBoxManifestacao.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TextBoxManifestacao.Cursor = System.Windows.Forms.Cursors.Arrow
+        Me.TextBoxManifestacao.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxManifestacao.Location = New System.Drawing.Point(6, 19)
+        Me.TextBoxManifestacao.Name = "TextBoxManifestacao"
+        Me.TextBoxManifestacao.ReadOnly = True
+        Me.TextBoxManifestacao.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical
+        Me.TextBoxManifestacao.Size = New System.Drawing.Size(606, 281)
+        Me.TextBoxManifestacao.TabIndex = 0
+        Me.TextBoxManifestacao.Text = ""
+        '
+        'TextBoxResposta
+        '
+        Me.TextBoxResposta.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TextBoxResposta.Cursor = System.Windows.Forms.Cursors.IBeam
+        Me.TextBoxResposta.Location = New System.Drawing.Point(6, 19)
+        Me.TextBoxResposta.Name = "TextBoxResposta"
+        Me.TextBoxResposta.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical
+        Me.TextBoxResposta.Size = New System.Drawing.Size(606, 281)
+        Me.TextBoxResposta.TabIndex = 0
+        Me.TextBoxResposta.Text = ""
         '
         'FormOuvidoriaAndamento
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(642, 660)
+        Me.ClientSize = New System.Drawing.Size(642, 672)
         Me.Controls.Add(Me.btClose)
         Me.Controls.Add(Me.btSalvarResposta)
         Me.Controls.Add(Me.CheckBoxOKResposta)
@@ -126,19 +134,17 @@ Partial Class FormOuvidoriaAndamento
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Andamento Protocolo"
         Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox2.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
 
     Friend WithEvents GroupBox1 As GroupBox
-    Friend WithEvents TextBoxManifestacao As TextBox
     Friend WithEvents GroupBox2 As GroupBox
-    Friend WithEvents TextBoxResposta As TextBox
     Friend WithEvents CheckBoxOKResposta As CheckBox
     Friend WithEvents btSalvarResposta As Button
     Friend WithEvents btClose As Button
+    Friend WithEvents TextBoxManifestacao As RichTextBox
+    Friend WithEvents TextBoxResposta As RichTextBox
 End Class

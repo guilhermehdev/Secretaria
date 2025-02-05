@@ -61,8 +61,7 @@
 
     Private Sub btResposta_Click(sender As Object, e As EventArgs) Handles btResposta.Click
         FormOuvidoriaAndamento.Show()
-        FormOuvidoriaAndamento.Text = FormOuvidoriaAndamento.Text & " - " & tbEditarProtocolo.Text
-
+        FormOuvidoriaAndamento.getManifestacoes(tbEditarProtocolo.Text)
     End Sub
     Private Sub btClose_Click(sender As Object, e As EventArgs) Handles btClose.Click
         Me.Close()
