@@ -301,4 +301,10 @@ Public Class FmainOuvidoria
 
     End Sub
 
+    Private Sub dgListProtocolos_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgListProtocolos.CellClick
+        If e.RowIndex >= 0 AndAlso e.ColumnIndex >= 0 Then
+            Dim valorCelula As String = dgListProtocolos.Rows(e.RowIndex).Cells(e.ColumnIndex).Value.ToString()
+            Clipboard.SetText(valorCelula)
+        End If
+    End Sub
 End Class
