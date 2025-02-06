@@ -194,7 +194,8 @@ Public Class Main
 
             Return True
         Catch ex As Exception
-            Return ex.Message.ToString
+            Console.WriteLine(ex.Message.ToString)
+            Return False
         End Try
 
     End Function

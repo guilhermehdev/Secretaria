@@ -25,6 +25,7 @@ Partial Class FeditarProtocolo
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FeditarProtocolo))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.btClose = New System.Windows.Forms.Button()
         Me.btResposta = New System.Windows.Forms.Button()
         Me.mtbEditar1contato = New System.Windows.Forms.MaskedTextBox()
         Me.btSendEmail = New System.Windows.Forms.Button()
@@ -47,7 +48,6 @@ Partial Class FeditarProtocolo
         Me.Label1 = New System.Windows.Forms.Label()
         Me.tbEditarProtocolo = New System.Windows.Forms.TextBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.btClose = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -82,14 +82,33 @@ Partial Class FeditarProtocolo
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Dados"
         '
+        'btClose
+        '
+        Me.btClose.BackColor = System.Drawing.Color.IndianRed
+        Me.btClose.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btClose.FlatAppearance.BorderSize = 0
+        Me.btClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btClose.ForeColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.btClose.Location = New System.Drawing.Point(394, 139)
+        Me.btClose.Name = "btClose"
+        Me.btClose.Size = New System.Drawing.Size(43, 39)
+        Me.btClose.TabIndex = 28
+        Me.btClose.Text = "Sair"
+        Me.btClose.UseVisualStyleBackColor = False
+        '
         'btResposta
         '
-        Me.btResposta.Location = New System.Drawing.Point(321, 139)
+        Me.btResposta.BackColor = System.Drawing.Color.SteelBlue
+        Me.btResposta.FlatAppearance.BorderSize = 0
+        Me.btResposta.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btResposta.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btResposta.ForeColor = System.Drawing.Color.White
+        Me.btResposta.Location = New System.Drawing.Point(303, 139)
         Me.btResposta.Name = "btResposta"
-        Me.btResposta.Size = New System.Drawing.Size(67, 39)
+        Me.btResposta.Size = New System.Drawing.Size(85, 39)
         Me.btResposta.TabIndex = 27
-        Me.btResposta.Text = "Adicionar resposta"
-        Me.btResposta.UseVisualStyleBackColor = True
+        Me.btResposta.Text = "Manifestação"
+        Me.btResposta.UseVisualStyleBackColor = False
         '
         'mtbEditar1contato
         '
@@ -108,7 +127,7 @@ Partial Class FeditarProtocolo
         Me.btSendEmail.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btSendEmail.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btSendEmail.ForeColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.btSendEmail.Location = New System.Drawing.Point(270, 139)
+        Me.btSendEmail.Location = New System.Drawing.Point(252, 139)
         Me.btSendEmail.Name = "btSendEmail"
         Me.btSendEmail.Size = New System.Drawing.Size(45, 39)
         Me.btSendEmail.TabIndex = 25
@@ -143,7 +162,7 @@ Partial Class FeditarProtocolo
         Me.btEditarExclusao.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btEditarExclusao.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btEditarExclusao.ForeColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.btEditarExclusao.Location = New System.Drawing.Point(208, 139)
+        Me.btEditarExclusao.Location = New System.Drawing.Point(199, 139)
         Me.btEditarExclusao.Name = "btEditarExclusao"
         Me.btEditarExclusao.Size = New System.Drawing.Size(47, 39)
         Me.btEditarExclusao.TabIndex = 19
@@ -299,20 +318,6 @@ Partial Class FeditarProtocolo
         Me.tbEditarProtocolo.TabIndex = 0
         Me.tbEditarProtocolo.TabStop = False
         Me.tbEditarProtocolo.Tag = "Nº Protocolo"
-        '
-        'btClose
-        '
-        Me.btClose.BackColor = System.Drawing.Color.IndianRed
-        Me.btClose.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btClose.FlatAppearance.BorderSize = 0
-        Me.btClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.btClose.ForeColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.btClose.Location = New System.Drawing.Point(394, 139)
-        Me.btClose.Name = "btClose"
-        Me.btClose.Size = New System.Drawing.Size(43, 39)
-        Me.btClose.TabIndex = 28
-        Me.btClose.Text = "Sair"
-        Me.btClose.UseVisualStyleBackColor = False
         '
         'FeditarProtocolo
         '

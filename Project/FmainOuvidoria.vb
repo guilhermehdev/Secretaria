@@ -280,14 +280,14 @@ Public Class FmainOuvidoria
 
                 dataManifestacao = "Protocolo: " & dataOuvidoria("MANIFESTAÇÃO") & vbCrLf & vbCrLf & "Data: " & dataOuvidoria("Recebido em") & vbCrLf & vbCrLf & "Solicitante: " & dataOuvidoria("Solicitante") & vbCrLf & vbCrLf & "Telefone: " & dataOuvidoria("Telefone") & vbCrLf & vbCrLf & "Manifestação: " & dataOuvidoria("Manifestação") & vbCrLf & vbCrLf & dataOuvidoria("Andamento")
 
-                Try
-                    m.SQLinsert("manifestacoes", "manifest,id_ouvidoria", "'" & dataManifestacao & "'," & id)
-                Catch ex As Exception
-                    m.doQuery($"UPDATE manifestacoes SET manifest={dataManifestacao} WHERE id_ouvidoria={id}")
-                End Try
+                Dim res = m.SQLinsert("manifestacoes", "manifest,id_ouvidoria", "'" & dataManifestacao & "'," & id)
+
+                If res <> True Then
+                    m.doQuery($"UPDATE manifestacoes SET manifest='{dataManifestacao}' WHERE id_ouvidoria={id}")
+                End If
 
             Else
-                pdfNotFound.Add(dataOuvidoria("MANIFESTAÇÃO"))
+                    pdfNotFound.Add(dataOuvidoria("MANIFESTAÇÃO"))
             End If
         Next
 
