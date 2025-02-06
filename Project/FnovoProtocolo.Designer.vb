@@ -64,14 +64,14 @@ Partial Class FnovoProtocolo
         '
         'btSair
         '
-        Me.btSair.BackColor = System.Drawing.Color.DarkGray
+        Me.btSair.BackColor = System.Drawing.Color.IndianRed
         Me.btSair.FlatAppearance.BorderSize = 0
         Me.btSair.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btSair.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btSair.ForeColor = System.Drawing.Color.White
-        Me.btSair.Location = New System.Drawing.Point(287, 151)
+        Me.btSair.Location = New System.Drawing.Point(286, 148)
         Me.btSair.Name = "btSair"
-        Me.btSair.Size = New System.Drawing.Size(56, 20)
+        Me.btSair.Size = New System.Drawing.Size(56, 23)
         Me.btSair.TabIndex = 6
         Me.btSair.Text = "Sair"
         Me.btSair.UseVisualStyleBackColor = False
@@ -83,23 +83,23 @@ Partial Class FnovoProtocolo
         Me.btEnviarEmail.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btEnviarEmail.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btEnviarEmail.ForeColor = System.Drawing.Color.White
-        Me.btEnviarEmail.Location = New System.Drawing.Point(199, 151)
+        Me.btEnviarEmail.Location = New System.Drawing.Point(199, 148)
         Me.btEnviarEmail.Name = "btEnviarEmail"
-        Me.btEnviarEmail.Size = New System.Drawing.Size(81, 20)
+        Me.btEnviarEmail.Size = New System.Drawing.Size(81, 23)
         Me.btEnviarEmail.TabIndex = 16
         Me.btEnviarEmail.Text = "Email"
         Me.btEnviarEmail.UseVisualStyleBackColor = False
         '
         'btSalvarProtocolo
         '
-        Me.btSalvarProtocolo.BackColor = System.Drawing.Color.DarkSeaGreen
+        Me.btSalvarProtocolo.BackColor = System.Drawing.Color.ForestGreen
         Me.btSalvarProtocolo.FlatAppearance.BorderSize = 0
         Me.btSalvarProtocolo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btSalvarProtocolo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btSalvarProtocolo.ForeColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.btSalvarProtocolo.Location = New System.Drawing.Point(112, 151)
+        Me.btSalvarProtocolo.Location = New System.Drawing.Point(112, 148)
         Me.btSalvarProtocolo.Name = "btSalvarProtocolo"
-        Me.btSalvarProtocolo.Size = New System.Drawing.Size(81, 20)
+        Me.btSalvarProtocolo.Size = New System.Drawing.Size(81, 23)
         Me.btSalvarProtocolo.TabIndex = 7
         Me.btSalvarProtocolo.Text = "Salvar"
         Me.btSalvarProtocolo.UseVisualStyleBackColor = False
