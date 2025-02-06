@@ -291,6 +291,8 @@ Public Class FmainOuvidoria
             End If
         Next
 
+
+
         MessageBox.Show($"{pdfFiles.Count} arquivo(s) PDF importado(s) com sucesso!", "Importar arquivos PDF", MessageBoxButtons.OK)
 
         Dim joinProtocols As String = String.Join(vbCrLf, pdfNotFound)
