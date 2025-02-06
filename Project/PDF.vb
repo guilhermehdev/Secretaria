@@ -61,7 +61,7 @@ Public Class PDF
 
                 resultado("Telefone") = String.Format("({0}) {1}", ddd, numero)
             Else
-                resultado("Telefone") = "Não encontrado" ' Ou um valor padrão
+                resultado("Telefone") = "Não informado" ' Ou um valor padrão
             End If
 
             ' Extrair "Manifestação" (até "Andamento" ou final do texto)

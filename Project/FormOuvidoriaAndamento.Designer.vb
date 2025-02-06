@@ -23,12 +23,12 @@ Partial Class FormOuvidoriaAndamento
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.TextBoxManifestacao = New System.Windows.Forms.RichTextBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.TextBoxResposta = New System.Windows.Forms.RichTextBox()
         Me.CheckBoxOKResposta = New System.Windows.Forms.CheckBox()
         Me.btSalvarResposta = New System.Windows.Forms.Button()
         Me.btClose = New System.Windows.Forms.Button()
-        Me.TextBoxManifestacao = New System.Windows.Forms.RichTextBox()
-        Me.TextBoxResposta = New System.Windows.Forms.RichTextBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
@@ -45,6 +45,19 @@ Partial Class FormOuvidoriaAndamento
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Manifestação"
         '
+        'TextBoxManifestacao
+        '
+        Me.TextBoxManifestacao.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TextBoxManifestacao.Cursor = System.Windows.Forms.Cursors.Arrow
+        Me.TextBoxManifestacao.Font = New System.Drawing.Font("Calibri", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxManifestacao.Location = New System.Drawing.Point(6, 38)
+        Me.TextBoxManifestacao.Name = "TextBoxManifestacao"
+        Me.TextBoxManifestacao.ReadOnly = True
+        Me.TextBoxManifestacao.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical
+        Me.TextBoxManifestacao.Size = New System.Drawing.Size(606, 262)
+        Me.TextBoxManifestacao.TabIndex = 0
+        Me.TextBoxManifestacao.Text = ""
+        '
         'GroupBox2
         '
         Me.GroupBox2.Controls.Add(Me.TextBoxResposta)
@@ -56,6 +69,18 @@ Partial Class FormOuvidoriaAndamento
         Me.GroupBox2.TabIndex = 0
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Resposta"
+        '
+        'TextBoxResposta
+        '
+        Me.TextBoxResposta.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TextBoxResposta.Cursor = System.Windows.Forms.Cursors.IBeam
+        Me.TextBoxResposta.Font = New System.Drawing.Font("Calibri", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxResposta.Location = New System.Drawing.Point(6, 33)
+        Me.TextBoxResposta.Name = "TextBoxResposta"
+        Me.TextBoxResposta.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical
+        Me.TextBoxResposta.Size = New System.Drawing.Size(606, 267)
+        Me.TextBoxResposta.TabIndex = 0
+        Me.TextBoxResposta.Text = ""
         '
         'CheckBoxOKResposta
         '
@@ -96,31 +121,6 @@ Partial Class FormOuvidoriaAndamento
         Me.btClose.TabIndex = 4
         Me.btClose.Text = "Sair"
         Me.btClose.UseVisualStyleBackColor = False
-        '
-        'TextBoxManifestacao
-        '
-        Me.TextBoxManifestacao.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TextBoxManifestacao.Cursor = System.Windows.Forms.Cursors.Arrow
-        Me.TextBoxManifestacao.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBoxManifestacao.Location = New System.Drawing.Point(6, 38)
-        Me.TextBoxManifestacao.Name = "TextBoxManifestacao"
-        Me.TextBoxManifestacao.ReadOnly = True
-        Me.TextBoxManifestacao.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical
-        Me.TextBoxManifestacao.Size = New System.Drawing.Size(606, 262)
-        Me.TextBoxManifestacao.TabIndex = 0
-        Me.TextBoxManifestacao.Text = ""
-        '
-        'TextBoxResposta
-        '
-        Me.TextBoxResposta.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TextBoxResposta.Cursor = System.Windows.Forms.Cursors.IBeam
-        Me.TextBoxResposta.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBoxResposta.Location = New System.Drawing.Point(6, 33)
-        Me.TextBoxResposta.Name = "TextBoxResposta"
-        Me.TextBoxResposta.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical
-        Me.TextBoxResposta.Size = New System.Drawing.Size(606, 267)
-        Me.TextBoxResposta.TabIndex = 0
-        Me.TextBoxResposta.Text = ""
         '
         'FormOuvidoriaAndamento
         '
