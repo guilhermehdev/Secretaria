@@ -257,7 +257,18 @@ Public Class FmainOuvidoria
         FRelatorioPrazos.Show()
     End Sub
 
-    Private Sub ImportarOuvidoriasToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportarOuvidoriasToolStripMenuItem.Click
+    Private Sub dgListProtocolos_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgListProtocolos.CellClick
+        If e.RowIndex >= 0 AndAlso e.ColumnIndex >= 0 Then
+            Try
+                Dim valorCelula As String = dgListProtocolos.Rows(e.RowIndex).Cells(e.ColumnIndex).Value.ToString()
+                Clipboard.SetText(valorCelula)
+            Catch ex As Exception
+
+            End Try
+        End If
+    End Sub
+
+    Private Sub ImportarDoEOuveToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportarDoEOuveToolStripMenuItem.Click
         Dim pdfFiles As New List(Of String)()
         Dim pdfNotFound As New List(Of String)()
         Dim pdf As New PDF
@@ -287,7 +298,7 @@ Public Class FmainOuvidoria
                 End If
 
             Else
-                    pdfNotFound.Add(dataOuvidoria("MANIFESTAÇÃO"))
+                pdfNotFound.Add(dataOuvidoria("MANIFESTAÇÃO"))
             End If
         Next
 
@@ -303,14 +314,8 @@ Public Class FmainOuvidoria
 
     End Sub
 
-    Private Sub dgListProtocolos_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgListProtocolos.CellClick
-        If e.RowIndex >= 0 AndAlso e.ColumnIndex >= 0 Then
-            Try
-                Dim valorCelula As String = dgListProtocolos.Rows(e.RowIndex).Cells(e.ColumnIndex).Value.ToString()
-                Clipboard.SetText(valorCelula)
-            Catch ex As Exception
-
-            End Try
-        End If
+    Private Sub ProntasParaEnvioToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ProntasParaEnvioToolStripMenuItem.Click
+        FormOuvidoriasOK.Show()
     End Sub
+
 End Class

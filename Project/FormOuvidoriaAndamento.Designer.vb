@@ -85,7 +85,7 @@ Partial Class FormOuvidoriaAndamento
         'CheckBoxOKResposta
         '
         Me.CheckBoxOKResposta.AutoSize = True
-        Me.CheckBoxOKResposta.Location = New System.Drawing.Point(137, 643)
+        Me.CheckBoxOKResposta.Location = New System.Drawing.Point(324, 643)
         Me.CheckBoxOKResposta.Name = "CheckBoxOKResposta"
         Me.CheckBoxOKResposta.Size = New System.Drawing.Size(100, 17)
         Me.CheckBoxOKResposta.TabIndex = 2
@@ -100,7 +100,7 @@ Partial Class FormOuvidoriaAndamento
         Me.btSalvarResposta.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btSalvarResposta.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btSalvarResposta.ForeColor = System.Drawing.SystemColors.ButtonFace
-        Me.btSalvarResposta.Location = New System.Drawing.Point(12, 635)
+        Me.btSalvarResposta.Location = New System.Drawing.Point(430, 635)
         Me.btSalvarResposta.Name = "btSalvarResposta"
         Me.btSalvarResposta.Size = New System.Drawing.Size(119, 32)
         Me.btSalvarResposta.TabIndex = 3

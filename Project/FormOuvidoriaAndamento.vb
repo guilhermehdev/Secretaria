@@ -28,22 +28,26 @@
         Me.Close()
     End Sub
     Private Sub btSalvarResposta_Click(sender As Object, e As EventArgs) Handles btSalvarResposta.Click
-        If idManifest <> Nothing Then
-            If main.doQuery($"UPDATE manifestacoes SET resposta='{TextBoxResposta.Text}' WHERE id={idManifest}") Then
-                main.msgInfo("Resposta cadastrada!")
-            End If
-        Else
-            main.msgInfo("Manifestação inexistente.")
-        End If
-    End Sub
-    Private Sub CheckBoxOKResposta_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxOKResposta.CheckedChanged
         Dim sts As Integer
-        If CheckBoxOKResposta.Checked = True Then
-            sts = 1
+
+        If idManifest <> Nothing Then
+            If TextBoxResposta.TextLength > 0 Then
+                If main.doQuery($"UPDATE manifestacoes SET resposta='{TextBoxResposta.Text}' WHERE id={idManifest}") Then
+                    main.msgInfo("Resposta cadastrada!")
+                End If
+                If CheckBoxOKResposta.Checked = True Then
+                    sts = 1
+                Else
+                    sts = 0
+                End If
+                main.doQuery($"UPDATE manifestacoes SET ok={sts} WHERE id= {idManifest}")
+            Else
+                main.msgAlert("Resposta nãopode ser vazio!")
+            End If
+
         Else
-            sts = 0
+                main.msgInfo("Manifestação inexistente.")
         End If
-        main.doQuery($"UPDATE manifestacoes SET ok={sts} WHERE id= {idManifest}")
     End Sub
 
 End Class
