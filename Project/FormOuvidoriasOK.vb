@@ -1,4 +1,6 @@
-﻿Public Class FormOuvidoriasOK
+﻿Imports System.Windows.Forms.VisualStyles.VisualStyleElement
+
+Public Class FormOuvidoriasOK
     Dim main As New Main
     Dim protocolsData As DataTable
     Private Sub FormOuvidoriasOK_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -7,10 +9,15 @@
         dgProtocolosOK.DataSource = protocolsData
         dgProtocolosOK.Columns(0).Visible = False
         dgProtocolosOK.Columns(1).HeaderText = "Protocolo"
+        dgProtocolosOK.Columns(1).Width = 60
         dgProtocolosOK.Columns(2).HeaderText = "Destino"
+        dgProtocolosOK.Columns(2).Width = 200
         dgProtocolosOK.Columns(3).HeaderText = "Data abertura"
+        dgProtocolosOK.Columns(3).Width = 80
         dgProtocolosOK.Columns(4).HeaderText = "1º Contato"
+        dgProtocolosOK.Columns(4).Width = 80
         dgProtocolosOK.Columns(5).HeaderText = "Status"
+        dgProtocolosOK.Columns(5).Width = 80
         dgProtocolosOK.Columns(6).Visible = False
         dgProtocolosOK.Columns(7).Visible = False
         dgProtocolosOK.Columns(8).Visible = False
@@ -85,5 +92,22 @@
         End Try
 
     End Sub
+    Private Sub btCopiaResposta_Click(sender As Object, e As EventArgs) Handles btCopiaResposta.Click
+        If RichTextBoxRespostaAutorizada.TextLength > 0 Then
+            Clipboard.SetText(RichTextBoxRespostaAutorizada.Text)
+            main.msgInfo("Copiado!")
+        End If
 
+    End Sub
+    Private Sub tbBuscaProtocolo_TextChanged(sender As Object, e As EventArgs) Handles tbBuscaProtocolo.TextChanged
+        Dim filtro As String = tbBuscaProtocolo.Text.ToLower() ' Obtém o texto do TextBox em minúsculas
+        For Each row As DataGridViewRow In dgProtocolosOK.Rows
+            Dim valorCelula As String = row.Cells("Protocolo").Value.ToString().ToLower() ' Obtém o valor da coluna em minúsculas
+            If valorCelula.Contains(filtro) Then
+                row.Visible = True ' Exibe a linha se o valor da célula contém o filtro
+            Else
+                row.Visible = False ' Oculta a linha se o valor da célula não contém o filtro
+            End If
+        Next
+    End Sub
 End Class

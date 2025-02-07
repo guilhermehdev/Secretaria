@@ -22,8 +22,8 @@ Partial Class FormOuvidoriasOK
     'Não o modifique usando o editor de códigos.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.dgProtocolosOK = New System.Windows.Forms.DataGridView()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
@@ -31,6 +31,7 @@ Partial Class FormOuvidoriasOK
         Me.btCopiaResposta = New System.Windows.Forms.Button()
         Me.tbBuscaProtocolo = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
         CType(Me.dgProtocolosOK, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -50,28 +51,28 @@ Partial Class FormOuvidoriasOK
         Me.dgProtocolosOK.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgProtocolosOK.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
         Me.dgProtocolosOK.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle3.ForeColor = System.Drawing.Color.DodgerBlue
-        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.SteelBlue
-        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgProtocolosOK.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle18.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle18.ForeColor = System.Drawing.Color.DodgerBlue
+        DataGridViewCellStyle18.SelectionBackColor = System.Drawing.Color.SteelBlue
+        DataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgProtocolosOK.DefaultCellStyle = DataGridViewCellStyle18
         Me.dgProtocolosOK.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
         Me.dgProtocolosOK.Location = New System.Drawing.Point(6, 50)
         Me.dgProtocolosOK.MultiSelect = False
         Me.dgProtocolosOK.Name = "dgProtocolosOK"
         Me.dgProtocolosOK.ReadOnly = True
         Me.dgProtocolosOK.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.ControlDark
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgProtocolosOK.RowHeadersDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle19.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.ControlDark
+        DataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgProtocolosOK.RowHeadersDefaultCellStyle = DataGridViewCellStyle19
         Me.dgProtocolosOK.RowHeadersWidth = 4
         Me.dgProtocolosOK.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgProtocolosOK.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
@@ -81,17 +82,17 @@ Partial Class FormOuvidoriasOK
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.tbBuscaProtocolo)
         Me.GroupBox1.Controls.Add(Me.dgProtocolosOK)
-        Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox1.ForeColor = System.Drawing.Color.DodgerBlue
         Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(563, 289)
         Me.GroupBox1.TabIndex = 32
         Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Protocolos"
         '
         'GroupBox2
         '
@@ -122,6 +123,7 @@ Partial Class FormOuvidoriasOK
         'btCopiaResposta
         '
         Me.btCopiaResposta.BackColor = System.Drawing.Color.Gainsboro
+        Me.btCopiaResposta.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btCopiaResposta.FlatAppearance.BorderSize = 0
         Me.btCopiaResposta.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btCopiaResposta.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -158,6 +160,16 @@ Partial Class FormOuvidoriasOK
         Me.Label2.TabIndex = 35
         Me.Label2.Text = "Nº Protocolo:"
         '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(5, -4)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(83, 18)
+        Me.Label1.TabIndex = 36
+        Me.Label1.Text = "Protocolo"
+        '
         'FormOuvidoriasOK
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -186,4 +198,5 @@ Partial Class FormOuvidoriasOK
     Friend WithEvents btCopiaResposta As Button
     Friend WithEvents tbBuscaProtocolo As TextBox
     Friend WithEvents Label2 As Label
+    Friend WithEvents Label1 As Label
 End Class
