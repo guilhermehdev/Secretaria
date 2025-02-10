@@ -5,8 +5,7 @@ Public Class FormOuvidoriasOK
     Dim protocolsData As DataTable
     Private Sub FormOuvidoriasOK_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Icon = FmainOuvidoria.Icon
-        protocolsData = getProtocols()
-        dgProtocolosOK.DataSource = protocolsData
+        getProtocols()
         dgProtocolosOK.Columns(0).Visible = False
         dgProtocolosOK.Columns(1).HeaderText = "Protocolo"
         dgProtocolosOK.Columns(1).Width = 60
@@ -30,11 +29,16 @@ Public Class FormOuvidoriasOK
         FROM manifestacoes
         JOIN ouvidoria ON ouvidoria.id = manifestacoes.id_ouvidoria
         JOIN destinos ON destinos.id = ouvidoria.id_destino
-        WHERE manifestacoes.ok = 1")
+        WHERE manifestacoes.ok = 1 AND ouvidoria.status != 'Concluido'")
 
         If data.Rows.Count > 0 Then
+            dgProtocolosOK.DataSource = data
+            protocolsData = data
+            dgProtocolosOK.ClearSelection()
             Return data
         Else
+            ' main.msgInfo("Não existem registros.")
+            RichTextBoxRespostaAutorizada.Clear()
             Return False
         End If
 
@@ -82,16 +86,6 @@ Public Class FormOuvidoriasOK
 
     End Function
 
-
-    Private Sub dgProtocolosOK_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles dgProtocolosOK.RowEnter
-        Try
-            Dim resposta = protocolsData.Rows(dgProtocolosOK.SelectedRows.Item(0).Index).Item(7).ToString
-            RichTextBoxRespostaAutorizada.Text = getDestino(protocolsData.Rows(dgProtocolosOK.SelectedRows.Item(0).Index).Item(9), resposta)
-        Catch ex As Exception
-            'MsgBox(ex.Message)
-        End Try
-
-    End Sub
     Private Sub btCopiaResposta_Click(sender As Object, e As EventArgs) Handles btCopiaResposta.Click
         If RichTextBoxRespostaAutorizada.TextLength > 0 Then
             Clipboard.SetText(RichTextBoxRespostaAutorizada.Text)
@@ -110,4 +104,62 @@ Public Class FormOuvidoriasOK
             End If
         Next
     End Sub
+
+    Private Sub btRefresh_Click(sender As Object, e As EventArgs) Handles btRefresh.Click
+        dgProtocolosOK.DataSource = getProtocols()
+    End Sub
+
+    Private Sub dgProtocolosOK_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgProtocolosOK.CellClick
+        If e.RowIndex >= 0 AndAlso e.ColumnIndex >= 0 Then
+            Try
+                Dim valorCelula As String = dgProtocolosOK.Rows(e.RowIndex).Cells(e.ColumnIndex).Value.ToString()
+                Clipboard.SetText(valorCelula)
+            Catch ex As Exception
+
+            End Try
+        End If
+    End Sub
+
+    Private Sub dgProtocolosOK_RowsAdded(sender As Object, e As DataGridViewRowsAddedEventArgs) Handles dgProtocolosOK.RowsAdded
+        StatusLabelRegistrosOuve.Text = $"Registros: {dgProtocolosOK.Rows.Count}"
+    End Sub
+
+    Private Sub dgProtocolosOK_RowsRemoved(sender As Object, e As DataGridViewRowsRemovedEventArgs) Handles dgProtocolosOK.RowsRemoved
+        StatusLabelRegistrosOuve.Text = $"Registros: {dgProtocolosOK.Rows.Count}"
+    End Sub
+
+    Private Sub btConcluirOuvidoria_Click(sender As Object, e As EventArgs) Handles btConcluirOuvidoria.Click
+        Try
+            Dim dataAtual As DateTime = DateTime.Now
+            Dim dataEncerramento As String = dataAtual.ToString("dd/MM/yyyy HH:mm")
+            Dim protocolo = dgProtocolosOK.SelectedRows.Item(0).Cells(1).Value
+
+            If protocolo <> Nothing And RichTextBoxRespostaAutorizada.TextLength > 0 Then
+
+                If main.doQuery($"UPDATE ouvidoria SET status='Concluido', encerramento='{dataEncerramento}' WHERE protocolo={protocolo}") Then
+                    main.msgInfo("Ouvidoria concluida com sucesso!")
+                    RichTextBoxRespostaAutorizada.Clear()
+                    getProtocols()
+
+                End If
+
+            Else
+                main.msgAlert("Selecione um protocolo.")
+            End If
+
+        Catch ex As Exception
+            'MsgBox($"Falha ao atualizar! {vbCrLf & vbCrLf} {ex.Message}")
+            main.msgAlert("Selecione um protocolo.")
+        End Try
+    End Sub
+
+    Private Sub dgProtocolosOK_CellEnter(sender As Object, e As DataGridViewCellEventArgs) Handles dgProtocolosOK.CellEnter
+        Try
+            Dim resposta = protocolsData.Rows(dgProtocolosOK.SelectedRows.Item(0).Index).Item(7).ToString
+            RichTextBoxRespostaAutorizada.Text = getDestino(protocolsData.Rows(dgProtocolosOK.SelectedRows.Item(0).Index).Item(9), resposta)
+        Catch ex As Exception
+            'MsgBox(ex.Message)
+        End Try
+    End Sub
+
 End Class

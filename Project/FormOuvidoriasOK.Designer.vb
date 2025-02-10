@@ -22,19 +22,24 @@ Partial Class FormOuvidoriasOK
     'Não o modifique usando o editor de códigos.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.dgProtocolosOK = New System.Windows.Forms.DataGridView()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.RichTextBoxRespostaAutorizada = New System.Windows.Forms.RichTextBox()
-        Me.btCopiaResposta = New System.Windows.Forms.Button()
-        Me.tbBuscaProtocolo = New System.Windows.Forms.TextBox()
-        Me.Label2 = New System.Windows.Forms.Label()
+        Me.btRefresh = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.tbBuscaProtocolo = New System.Windows.Forms.TextBox()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.btCopiaResposta = New System.Windows.Forms.Button()
+        Me.RichTextBoxRespostaAutorizada = New System.Windows.Forms.RichTextBox()
+        Me.btConcluirOuvidoria = New System.Windows.Forms.Button()
+        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
+        Me.StatusLabelRegistrosOuve = New System.Windows.Forms.ToolStripStatusLabel()
         CType(Me.dgProtocolosOK, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
+        Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'dgProtocolosOK
@@ -51,28 +56,28 @@ Partial Class FormOuvidoriasOK
         Me.dgProtocolosOK.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgProtocolosOK.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
         Me.dgProtocolosOK.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle18.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle18.ForeColor = System.Drawing.Color.DodgerBlue
-        DataGridViewCellStyle18.SelectionBackColor = System.Drawing.Color.SteelBlue
-        DataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgProtocolosOK.DefaultCellStyle = DataGridViewCellStyle18
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.SteelBlue
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgProtocolosOK.DefaultCellStyle = DataGridViewCellStyle1
         Me.dgProtocolosOK.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
         Me.dgProtocolosOK.Location = New System.Drawing.Point(6, 50)
         Me.dgProtocolosOK.MultiSelect = False
         Me.dgProtocolosOK.Name = "dgProtocolosOK"
         Me.dgProtocolosOK.ReadOnly = True
         Me.dgProtocolosOK.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
-        DataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle19.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.ControlDark
-        DataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgProtocolosOK.RowHeadersDefaultCellStyle = DataGridViewCellStyle19
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.ControlDark
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgProtocolosOK.RowHeadersDefaultCellStyle = DataGridViewCellStyle2
         Me.dgProtocolosOK.RowHeadersWidth = 4
         Me.dgProtocolosOK.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgProtocolosOK.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
@@ -82,17 +87,70 @@ Partial Class FormOuvidoriasOK
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.btRefresh)
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.tbBuscaProtocolo)
         Me.GroupBox1.Controls.Add(Me.dgProtocolosOK)
         Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox1.ForeColor = System.Drawing.Color.DodgerBlue
+        Me.GroupBox1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
         Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(563, 289)
         Me.GroupBox1.TabIndex = 32
         Me.GroupBox1.TabStop = False
+        '
+        'btRefresh
+        '
+        Me.btRefresh.BackColor = System.Drawing.SystemColors.ButtonFace
+        Me.btRefresh.BackgroundImage = Global.Project.My.Resources.Resources.reload
+        Me.btRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btRefresh.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btRefresh.FlatAppearance.BorderSize = 0
+        Me.btRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btRefresh.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btRefresh.ForeColor = System.Drawing.Color.White
+        Me.btRefresh.Location = New System.Drawing.Point(188, 11)
+        Me.btRefresh.Name = "btRefresh"
+        Me.btRefresh.Size = New System.Drawing.Size(45, 36)
+        Me.btRefresh.TabIndex = 37
+        Me.btRefresh.UseVisualStyleBackColor = False
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.ForeColor = System.Drawing.Color.DodgerBlue
+        Me.Label1.Location = New System.Drawing.Point(5, -4)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(83, 18)
+        Me.Label1.TabIndex = 36
+        Me.Label1.Text = "Protocolo"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.Label2.Location = New System.Drawing.Point(7, 30)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(70, 13)
+        Me.Label2.TabIndex = 35
+        Me.Label2.Text = "Nº Protocolo:"
+        '
+        'tbBuscaProtocolo
+        '
+        Me.tbBuscaProtocolo.BackColor = System.Drawing.SystemColors.ControlText
+        Me.tbBuscaProtocolo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.tbBuscaProtocolo.Cursor = System.Windows.Forms.Cursors.Arrow
+        Me.tbBuscaProtocolo.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tbBuscaProtocolo.ForeColor = System.Drawing.Color.Orange
+        Me.tbBuscaProtocolo.Location = New System.Drawing.Point(77, 25)
+        Me.tbBuscaProtocolo.MaxLength = 8
+        Me.tbBuscaProtocolo.Name = "tbBuscaProtocolo"
+        Me.tbBuscaProtocolo.Size = New System.Drawing.Size(105, 22)
+        Me.tbBuscaProtocolo.TabIndex = 34
+        Me.tbBuscaProtocolo.Tag = "Nº Protocolo"
         '
         'GroupBox2
         '
@@ -107,18 +165,6 @@ Partial Class FormOuvidoriasOK
         Me.GroupBox2.TabIndex = 33
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Resposta"
-        '
-        'RichTextBoxRespostaAutorizada
-        '
-        Me.RichTextBoxRespostaAutorizada.BackColor = System.Drawing.Color.Ivory
-        Me.RichTextBoxRespostaAutorizada.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.RichTextBoxRespostaAutorizada.Font = New System.Drawing.Font("Calibri", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RichTextBoxRespostaAutorizada.Location = New System.Drawing.Point(6, 43)
-        Me.RichTextBoxRespostaAutorizada.Name = "RichTextBoxRespostaAutorizada"
-        Me.RichTextBoxRespostaAutorizada.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical
-        Me.RichTextBoxRespostaAutorizada.Size = New System.Drawing.Size(551, 240)
-        Me.RichTextBoxRespostaAutorizada.TabIndex = 0
-        Me.RichTextBoxRespostaAutorizada.Text = ""
         '
         'btCopiaResposta
         '
@@ -135,46 +181,54 @@ Partial Class FormOuvidoriasOK
         Me.btCopiaResposta.Text = "Copiar"
         Me.btCopiaResposta.UseVisualStyleBackColor = False
         '
-        'tbBuscaProtocolo
+        'RichTextBoxRespostaAutorizada
         '
-        Me.tbBuscaProtocolo.BackColor = System.Drawing.SystemColors.ControlText
-        Me.tbBuscaProtocolo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.tbBuscaProtocolo.Cursor = System.Windows.Forms.Cursors.Arrow
-        Me.tbBuscaProtocolo.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.tbBuscaProtocolo.ForeColor = System.Drawing.Color.Orange
-        Me.tbBuscaProtocolo.Location = New System.Drawing.Point(77, 25)
-        Me.tbBuscaProtocolo.MaxLength = 8
-        Me.tbBuscaProtocolo.Name = "tbBuscaProtocolo"
-        Me.tbBuscaProtocolo.Size = New System.Drawing.Size(105, 22)
-        Me.tbBuscaProtocolo.TabIndex = 34
-        Me.tbBuscaProtocolo.Tag = "Nº Protocolo"
+        Me.RichTextBoxRespostaAutorizada.BackColor = System.Drawing.Color.Ivory
+        Me.RichTextBoxRespostaAutorizada.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.RichTextBoxRespostaAutorizada.Font = New System.Drawing.Font("Calibri", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.RichTextBoxRespostaAutorizada.Location = New System.Drawing.Point(6, 43)
+        Me.RichTextBoxRespostaAutorizada.Name = "RichTextBoxRespostaAutorizada"
+        Me.RichTextBoxRespostaAutorizada.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical
+        Me.RichTextBoxRespostaAutorizada.Size = New System.Drawing.Size(551, 240)
+        Me.RichTextBoxRespostaAutorizada.TabIndex = 0
+        Me.RichTextBoxRespostaAutorizada.Text = ""
         '
-        'Label2
+        'btConcluirOuvidoria
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.Label2.Location = New System.Drawing.Point(7, 30)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(70, 13)
-        Me.Label2.TabIndex = 35
-        Me.Label2.Text = "Nº Protocolo:"
+        Me.btConcluirOuvidoria.BackColor = System.Drawing.Color.ForestGreen
+        Me.btConcluirOuvidoria.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btConcluirOuvidoria.FlatAppearance.BorderSize = 0
+        Me.btConcluirOuvidoria.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btConcluirOuvidoria.ForeColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.btConcluirOuvidoria.Location = New System.Drawing.Point(456, 603)
+        Me.btConcluirOuvidoria.Name = "btConcluirOuvidoria"
+        Me.btConcluirOuvidoria.Size = New System.Drawing.Size(119, 23)
+        Me.btConcluirOuvidoria.TabIndex = 34
+        Me.btConcluirOuvidoria.Text = "Concluir Ouvidoria"
+        Me.btConcluirOuvidoria.UseVisualStyleBackColor = False
         '
-        'Label1
+        'StatusStrip1
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(5, -4)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(83, 18)
-        Me.Label1.TabIndex = 36
-        Me.Label1.Text = "Protocolo"
+        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.StatusLabelRegistrosOuve})
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 633)
+        Me.StatusStrip1.Name = "StatusStrip1"
+        Me.StatusStrip1.Size = New System.Drawing.Size(585, 22)
+        Me.StatusStrip1.TabIndex = 35
+        Me.StatusStrip1.Text = "StatusStrip1"
+        '
+        'StatusLabelRegistrosOuve
+        '
+        Me.StatusLabelRegistrosOuve.Name = "StatusLabelRegistrosOuve"
+        Me.StatusLabelRegistrosOuve.Size = New System.Drawing.Size(38, 17)
+        Me.StatusLabelRegistrosOuve.Text = "status"
         '
         'FormOuvidoriasOK
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(587, 608)
+        Me.ClientSize = New System.Drawing.Size(585, 655)
+        Me.Controls.Add(Me.StatusStrip1)
+        Me.Controls.Add(Me.btConcluirOuvidoria)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
@@ -182,12 +236,15 @@ Partial Class FormOuvidoriasOK
         Me.MinimizeBox = False
         Me.Name = "FormOuvidoriasOK"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Ouvidorias autorizadas para envio"
+        Me.Text = "Ouvidorias autorizadas para concluir"
         CType(Me.dgProtocolosOK, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
+        Me.StatusStrip1.ResumeLayout(False)
+        Me.StatusStrip1.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 
@@ -199,4 +256,8 @@ Partial Class FormOuvidoriasOK
     Friend WithEvents tbBuscaProtocolo As TextBox
     Friend WithEvents Label2 As Label
     Friend WithEvents Label1 As Label
+    Friend WithEvents btRefresh As Button
+    Friend WithEvents btConcluirOuvidoria As Button
+    Friend WithEvents StatusStrip1 As StatusStrip
+    Friend WithEvents StatusLabelRegistrosOuve As ToolStripStatusLabel
 End Class
