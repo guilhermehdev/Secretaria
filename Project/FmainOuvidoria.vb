@@ -2,6 +2,7 @@
 
 Public Class FmainOuvidoria
     Dim m As New Main
+    Dim pdf As New PDF
     Dim qryProtocolos = "SELECT ouvidoria.id_destino AS iddestino,ouvidoria.id AS id,ouvidoria.protocolo,ouvidoria.sistema,ouvidoria.forma_envio,ouvidoria.abertura,ouvidoria.1contato,ouvidoria.encerramento,ouvidoria.`status`,destinos.descricao AS destino,coordenador.nome AS coordenador FROM ouvidoria JOIN destinos ON ouvidoria.id_destino = destinos.id JOIN coordenador ON coordenador.id = destinos.id_coordenador "
     Dim dgProtocolosCollumsHeaderText() As String = {"iddestino", "ID", "Protocolo", "Canal", "Forma de envio", "Abertura", "1º contato", "Encerramento", "Status", "Destino", "Coordenador", "Prazo"}
     Dim dgProtocolosCollums() As Boolean = {False, False, True, True, True, True, True, True, True, True, True, True}
@@ -269,49 +270,7 @@ Public Class FmainOuvidoria
     End Sub
 
     Private Sub ImportarDoEOuveToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportarDoEOuveToolStripMenuItem.Click
-        Dim pdfFiles As New List(Of String)()
-        Dim pdfNotFound As New List(Of String)()
-        Dim pdf As New PDF
-
-        OpenFileDialog1.Filter = "PDF Files (*.pdf)|*.pdf"
-        OpenFileDialog1.Multiselect = True
-
-        If OpenFileDialog1.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
-            pdfFiles.AddRange(OpenFileDialog1.FileNames)
-        End If
-
-        For Each pdfFile As String In pdfFiles
-            Dim dataOuvidoria As Dictionary(Of String, String) = pdf.ExtrairDadosOuvidoria(pdfFile)
-            Dim datatable = m.getDataset($"SELECT id FROM ouvidoria WHERE protocolo ={dataOuvidoria("MANIFESTAÇÃO")}")
-            Dim id As Integer
-
-            If datatable.Rows.Count > 0 Then
-                Dim dataManifestacao As String
-                id = datatable.Rows(0).Item(0)
-
-                dataManifestacao = "Protocolo: " & dataOuvidoria("MANIFESTAÇÃO") & vbCrLf & vbCrLf & "Data: " & dataOuvidoria("Recebido em") & vbCrLf & vbCrLf & "Solicitante: " & dataOuvidoria("Solicitante") & vbCrLf & vbCrLf & "Telefone: " & dataOuvidoria("Telefone") & vbCrLf & vbCrLf & "Manifestação: " & dataOuvidoria("Manifestação") & vbCrLf & vbCrLf & dataOuvidoria("Andamento")
-
-                Dim res = m.SQLinsert("manifestacoes", "manifest,id_ouvidoria", "'" & dataManifestacao & "'," & id)
-
-                If res <> True Then
-                    m.doQuery($"UPDATE manifestacoes SET manifest='{dataManifestacao}' WHERE id_ouvidoria={id}")
-                End If
-
-            Else
-                pdfNotFound.Add(dataOuvidoria("MANIFESTAÇÃO"))
-            End If
-        Next
-
-
-
-        MessageBox.Show($"{pdfFiles.Count} arquivo(s) PDF importado(s) com sucesso!", "Importar arquivos PDF", MessageBoxButtons.OK)
-
-        Dim joinProtocols As String = String.Join(vbCrLf, pdfNotFound)
-
-        If joinProtocols.Count > 0 Then
-            m.msgAlert($"Protocolos não cadastrados:{vbCrLf & vbCrLf & joinProtocols}")
-        End If
-
+        pdf.importPDFManifest(OpenFileDialog1, True)
     End Sub
 
     Private Sub ProntasParaEnvioToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ProntasParaEnvioToolStripMenuItem.Click

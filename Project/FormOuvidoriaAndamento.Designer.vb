@@ -31,6 +31,7 @@ Partial Class FormOuvidoriaAndamento
         Me.btClose = New System.Windows.Forms.Button()
         Me.btAtualizarManifest = New System.Windows.Forms.Button()
         Me.btExcluirManifest = New System.Windows.Forms.Button()
+        Me.OFDUpdateManifest = New System.Windows.Forms.OpenFileDialog()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
@@ -191,4 +192,5 @@ Partial Class FormOuvidoriaAndamento
     Friend WithEvents TextBoxResposta As RichTextBox
     Friend WithEvents btAtualizarManifest As Button
     Friend WithEvents btExcluirManifest As Button
+    Friend WithEvents OFDUpdateManifest As OpenFileDialog
 End Class

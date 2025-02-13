@@ -7,6 +7,52 @@ Public Class PDF
     Dim pdfPath As String = Application.StartupPath & "/PDF/cnes.pdf"
     Dim xml As New XML
 
+    Public Sub importPDFManifest(dialog As OpenFileDialog, multiselect As Boolean)
+        Dim pdfFiles As New List(Of String)()
+        Dim pdfNotFound As New List(Of String)()
+        Dim m As New Main
+        Dim pdf As New PDF
+
+        dialog.Filter = "PDF Files (*.pdf)|*.pdf"
+        dialog.Multiselect = multiselect
+
+        If dialog.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+            pdfFiles.AddRange(dialog.FileNames)
+        Else
+            Exit Sub
+        End If
+
+        For Each pdfFile As String In pdfFiles
+            Dim dataOuvidoria As Dictionary(Of String, String) = pdf.ExtrairDadosOuvidoria(pdfFile)
+            Dim datatable = m.getDataset($"SELECT id FROM ouvidoria WHERE protocolo ={dataOuvidoria("MANIFESTAÇÃO")}")
+            Dim id As Integer
+
+            If datatable.Rows.Count > 0 Then
+                Dim dataManifestacao As String
+                id = datatable.Rows(0).Item(0)
+
+                dataManifestacao = "Protocolo: " & dataOuvidoria("MANIFESTAÇÃO") & vbCrLf & vbCrLf & "Data: " & dataOuvidoria("Recebido em") & vbCrLf & vbCrLf & "Solicitante: " & dataOuvidoria("Solicitante") & vbCrLf & vbCrLf & "Telefone: " & dataOuvidoria("Telefone") & vbCrLf & vbCrLf & "Manifestação: " & dataOuvidoria("Manifestação") & vbCrLf & vbCrLf & dataOuvidoria("Andamento")
+
+                Dim res = m.SQLinsert("manifestacoes", "manifest,id_ouvidoria", "'" & dataManifestacao & "'," & id)
+
+                If res <> True Then
+                    m.doQuery($"UPDATE manifestacoes SET manifest='{dataManifestacao}' WHERE id_ouvidoria={id}")
+                End If
+
+            Else
+                pdfNotFound.Add(dataOuvidoria("MANIFESTAÇÃO"))
+            End If
+        Next
+
+        MessageBox.Show($"{pdfFiles.Count} arquivo(s) PDF importado(s) com sucesso!", "Importar arquivos PDF", MessageBoxButtons.OK)
+
+        Dim joinProtocols As String = String.Join(vbCrLf, pdfNotFound)
+
+        If joinProtocols.Count > 0 Then
+            m.msgAlert($"Protocolos não cadastrados:{vbCrLf & vbCrLf & joinProtocols}")
+        End If
+    End Sub
+
     Public Function ExtrairDadosOuvidoria(ByVal pdfOuvidoria As String) As Dictionary(Of String, String)
         Dim resultado As New Dictionary(Of String, String) From {
         {"MANIFESTAÇÃO", ""},
