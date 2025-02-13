@@ -65,6 +65,7 @@ Partial Class FnovoProtocolo
         'btSair
         '
         Me.btSair.BackColor = System.Drawing.Color.IndianRed
+        Me.btSair.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btSair.FlatAppearance.BorderSize = 0
         Me.btSair.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btSair.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -79,6 +80,7 @@ Partial Class FnovoProtocolo
         'btEnviarEmail
         '
         Me.btEnviarEmail.BackColor = System.Drawing.Color.DarkOrange
+        Me.btEnviarEmail.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btEnviarEmail.FlatAppearance.BorderSize = 0
         Me.btEnviarEmail.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btEnviarEmail.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -93,6 +95,7 @@ Partial Class FnovoProtocolo
         'btSalvarProtocolo
         '
         Me.btSalvarProtocolo.BackColor = System.Drawing.Color.ForestGreen
+        Me.btSalvarProtocolo.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btSalvarProtocolo.FlatAppearance.BorderSize = 0
         Me.btSalvarProtocolo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btSalvarProtocolo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))

@@ -22,8 +22,8 @@ Partial Class FormOuvidoriasOK
     'Não o modifique usando o editor de códigos.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.dgProtocolosOK = New System.Windows.Forms.DataGridView()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.btRefresh = New System.Windows.Forms.Button()
@@ -56,28 +56,28 @@ Partial Class FormOuvidoriasOK
         Me.dgProtocolosOK.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgProtocolosOK.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
         Me.dgProtocolosOK.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.SteelBlue
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgProtocolosOK.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.SteelBlue
+        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgProtocolosOK.DefaultCellStyle = DataGridViewCellStyle5
         Me.dgProtocolosOK.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
         Me.dgProtocolosOK.Location = New System.Drawing.Point(6, 50)
         Me.dgProtocolosOK.MultiSelect = False
         Me.dgProtocolosOK.Name = "dgProtocolosOK"
         Me.dgProtocolosOK.ReadOnly = True
         Me.dgProtocolosOK.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.ControlDark
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgProtocolosOK.RowHeadersDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.ControlDark
+        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgProtocolosOK.RowHeadersDefaultCellStyle = DataGridViewCellStyle6
         Me.dgProtocolosOK.RowHeadersWidth = 4
         Me.dgProtocolosOK.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgProtocolosOK.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
@@ -142,7 +142,7 @@ Partial Class FormOuvidoriasOK
         '
         Me.tbBuscaProtocolo.BackColor = System.Drawing.SystemColors.ControlText
         Me.tbBuscaProtocolo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.tbBuscaProtocolo.Cursor = System.Windows.Forms.Cursors.Arrow
+        Me.tbBuscaProtocolo.Cursor = System.Windows.Forms.Cursors.IBeam
         Me.tbBuscaProtocolo.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tbBuscaProtocolo.ForeColor = System.Drawing.Color.Orange
         Me.tbBuscaProtocolo.Location = New System.Drawing.Point(77, 25)
@@ -154,7 +154,7 @@ Partial Class FormOuvidoriasOK
         '
         'GroupBox2
         '
-        Me.GroupBox2.BackColor = System.Drawing.Color.Gainsboro
+        Me.GroupBox2.BackColor = System.Drawing.SystemColors.Control
         Me.GroupBox2.Controls.Add(Me.btCopiaResposta)
         Me.GroupBox2.Controls.Add(Me.RichTextBoxRespostaAutorizada)
         Me.GroupBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -183,7 +183,7 @@ Partial Class FormOuvidoriasOK
         '
         'RichTextBoxRespostaAutorizada
         '
-        Me.RichTextBoxRespostaAutorizada.BackColor = System.Drawing.Color.Ivory
+        Me.RichTextBoxRespostaAutorizada.BackColor = System.Drawing.Color.Linen
         Me.RichTextBoxRespostaAutorizada.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.RichTextBoxRespostaAutorizada.Font = New System.Drawing.Font("Calibri", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.RichTextBoxRespostaAutorizada.Location = New System.Drawing.Point(6, 43)

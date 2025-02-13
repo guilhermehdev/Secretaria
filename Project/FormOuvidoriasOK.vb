@@ -40,13 +40,14 @@ Public Class FormOuvidoriasOK
         If data.Rows.Count > 0 Then
             dgProtocolosOK.DataSource = data
             protocolsData = data
-            dgProtocolosOK.ClearSelection()
             Return data
         Else
             ' main.msgInfo("Não existem registros.")
             RichTextBoxRespostaAutorizada.Clear()
             Return False
         End If
+
+        dgProtocolosOK.ClearSelection()
 
     End Function
 
@@ -112,7 +113,7 @@ Public Class FormOuvidoriasOK
     End Sub
 
     Private Sub btRefresh_Click(sender As Object, e As EventArgs) Handles btRefresh.Click
-        dgProtocolosOK.DataSource = getProtocols()
+        getProtocols()
     End Sub
 
     Private Sub dgProtocolosOK_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgProtocolosOK.CellClick
@@ -146,7 +147,6 @@ Public Class FormOuvidoriasOK
                     main.msgInfo("Ouvidoria concluida com sucesso!")
                     RichTextBoxRespostaAutorizada.Clear()
                     getProtocols()
-
                 End If
 
             Else

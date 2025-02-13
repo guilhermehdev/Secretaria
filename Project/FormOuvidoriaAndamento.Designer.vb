@@ -29,12 +29,16 @@ Partial Class FormOuvidoriaAndamento
         Me.CheckBoxOKResposta = New System.Windows.Forms.CheckBox()
         Me.btSalvarResposta = New System.Windows.Forms.Button()
         Me.btClose = New System.Windows.Forms.Button()
+        Me.btAtualizarManifest = New System.Windows.Forms.Button()
+        Me.btExcluirManifest = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.btExcluirManifest)
+        Me.GroupBox1.Controls.Add(Me.btAtualizarManifest)
         Me.GroupBox1.Controls.Add(Me.TextBoxManifestacao)
         Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox1.ForeColor = System.Drawing.Color.DodgerBlue
@@ -47,6 +51,7 @@ Partial Class FormOuvidoriaAndamento
         '
         'TextBoxManifestacao
         '
+        Me.TextBoxManifestacao.BackColor = System.Drawing.Color.Linen
         Me.TextBoxManifestacao.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBoxManifestacao.Cursor = System.Windows.Forms.Cursors.Arrow
         Me.TextBoxManifestacao.DetectUrls = False
@@ -73,6 +78,7 @@ Partial Class FormOuvidoriaAndamento
         '
         'TextBoxResposta
         '
+        Me.TextBoxResposta.BackColor = System.Drawing.Color.Linen
         Me.TextBoxResposta.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBoxResposta.Cursor = System.Windows.Forms.Cursors.IBeam
         Me.TextBoxResposta.Font = New System.Drawing.Font("Calibri", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -123,6 +129,36 @@ Partial Class FormOuvidoriaAndamento
         Me.btClose.Text = "Sair"
         Me.btClose.UseVisualStyleBackColor = False
         '
+        'btAtualizarManifest
+        '
+        Me.btAtualizarManifest.BackColor = System.Drawing.Color.DodgerBlue
+        Me.btAtualizarManifest.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btAtualizarManifest.FlatAppearance.BorderSize = 0
+        Me.btAtualizarManifest.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btAtualizarManifest.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btAtualizarManifest.ForeColor = System.Drawing.SystemColors.ButtonFace
+        Me.btAtualizarManifest.Location = New System.Drawing.Point(472, 13)
+        Me.btAtualizarManifest.Name = "btAtualizarManifest"
+        Me.btAtualizarManifest.Size = New System.Drawing.Size(67, 20)
+        Me.btAtualizarManifest.TabIndex = 5
+        Me.btAtualizarManifest.Text = "Atualizar"
+        Me.btAtualizarManifest.UseVisualStyleBackColor = False
+        '
+        'btExcluirManifest
+        '
+        Me.btExcluirManifest.BackColor = System.Drawing.Color.IndianRed
+        Me.btExcluirManifest.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btExcluirManifest.FlatAppearance.BorderSize = 0
+        Me.btExcluirManifest.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btExcluirManifest.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btExcluirManifest.ForeColor = System.Drawing.SystemColors.ButtonFace
+        Me.btExcluirManifest.Location = New System.Drawing.Point(545, 13)
+        Me.btExcluirManifest.Name = "btExcluirManifest"
+        Me.btExcluirManifest.Size = New System.Drawing.Size(67, 20)
+        Me.btExcluirManifest.TabIndex = 6
+        Me.btExcluirManifest.Text = "Excluir"
+        Me.btExcluirManifest.UseVisualStyleBackColor = False
+        '
         'FormOuvidoriaAndamento
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -153,4 +189,6 @@ Partial Class FormOuvidoriaAndamento
     Friend WithEvents btClose As Button
     Friend WithEvents TextBoxManifestacao As RichTextBox
     Friend WithEvents TextBoxResposta As RichTextBox
+    Friend WithEvents btAtualizarManifest As Button
+    Friend WithEvents btExcluirManifest As Button
 End Class
