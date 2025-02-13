@@ -67,7 +67,7 @@ Public Class PDF
             ' Extrair "Manifestação" (até "Andamento" ou final do texto)
             Dim matchManifestacao As Match = regexManifestacao.Match(texto)
             If matchManifestacao.Success Then
-                resultado("Manifestação") = matchManifestacao.Groups("valor").Value.Trim()
+                resultado("Manifestação") = matchManifestacao.Groups("valor").Value.Trim().Replace("'", "`").Replace("﴾", "(").Replace("﴿", ")")
             End If
 
             ' Extrair "Andamento" (se existir)

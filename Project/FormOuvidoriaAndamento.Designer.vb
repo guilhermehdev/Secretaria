@@ -49,7 +49,8 @@ Partial Class FormOuvidoriaAndamento
         '
         Me.TextBoxManifestacao.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBoxManifestacao.Cursor = System.Windows.Forms.Cursors.Arrow
-        Me.TextBoxManifestacao.Font = New System.Drawing.Font("Calibri", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxManifestacao.DetectUrls = False
+        Me.TextBoxManifestacao.Font = New System.Drawing.Font("Calibri", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextBoxManifestacao.Location = New System.Drawing.Point(6, 38)
         Me.TextBoxManifestacao.Name = "TextBoxManifestacao"
         Me.TextBoxManifestacao.ReadOnly = True
