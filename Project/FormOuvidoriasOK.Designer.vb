@@ -22,8 +22,8 @@ Partial Class FormOuvidoriasOK
     'Não o modifique usando o editor de códigos.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.dgProtocolosOK = New System.Windows.Forms.DataGridView()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.btRefresh = New System.Windows.Forms.Button()
@@ -36,6 +36,7 @@ Partial Class FormOuvidoriasOK
         Me.btConcluirOuvidoria = New System.Windows.Forms.Button()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.StatusLabelRegistrosOuve = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.btClose = New System.Windows.Forms.Button()
         CType(Me.dgProtocolosOK, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -56,28 +57,28 @@ Partial Class FormOuvidoriasOK
         Me.dgProtocolosOK.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgProtocolosOK.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
         Me.dgProtocolosOK.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.SteelBlue
-        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgProtocolosOK.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.SteelBlue
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgProtocolosOK.DefaultCellStyle = DataGridViewCellStyle3
         Me.dgProtocolosOK.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
         Me.dgProtocolosOK.Location = New System.Drawing.Point(6, 50)
         Me.dgProtocolosOK.MultiSelect = False
         Me.dgProtocolosOK.Name = "dgProtocolosOK"
         Me.dgProtocolosOK.ReadOnly = True
         Me.dgProtocolosOK.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.ControlDark
-        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgProtocolosOK.RowHeadersDefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.ControlDark
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgProtocolosOK.RowHeadersDefaultCellStyle = DataGridViewCellStyle4
         Me.dgProtocolosOK.RowHeadersWidth = 4
         Me.dgProtocolosOK.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgProtocolosOK.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
@@ -200,9 +201,9 @@ Partial Class FormOuvidoriasOK
         Me.btConcluirOuvidoria.FlatAppearance.BorderSize = 0
         Me.btConcluirOuvidoria.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btConcluirOuvidoria.ForeColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.btConcluirOuvidoria.Location = New System.Drawing.Point(456, 603)
+        Me.btConcluirOuvidoria.Location = New System.Drawing.Point(375, 602)
         Me.btConcluirOuvidoria.Name = "btConcluirOuvidoria"
-        Me.btConcluirOuvidoria.Size = New System.Drawing.Size(119, 23)
+        Me.btConcluirOuvidoria.Size = New System.Drawing.Size(119, 32)
         Me.btConcluirOuvidoria.TabIndex = 34
         Me.btConcluirOuvidoria.Text = "Concluir Ouvidoria"
         Me.btConcluirOuvidoria.UseVisualStyleBackColor = False
@@ -210,7 +211,7 @@ Partial Class FormOuvidoriasOK
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.StatusLabelRegistrosOuve})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 633)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 642)
         Me.StatusStrip1.Name = "StatusStrip1"
         Me.StatusStrip1.Size = New System.Drawing.Size(585, 22)
         Me.StatusStrip1.TabIndex = 35
@@ -222,11 +223,27 @@ Partial Class FormOuvidoriasOK
         Me.StatusLabelRegistrosOuve.Size = New System.Drawing.Size(38, 17)
         Me.StatusLabelRegistrosOuve.Text = "status"
         '
+        'btClose
+        '
+        Me.btClose.BackColor = System.Drawing.Color.IndianRed
+        Me.btClose.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btClose.FlatAppearance.BorderSize = 0
+        Me.btClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btClose.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btClose.ForeColor = System.Drawing.SystemColors.ButtonFace
+        Me.btClose.Location = New System.Drawing.Point(500, 602)
+        Me.btClose.Name = "btClose"
+        Me.btClose.Size = New System.Drawing.Size(75, 32)
+        Me.btClose.TabIndex = 36
+        Me.btClose.Text = "Sair"
+        Me.btClose.UseVisualStyleBackColor = False
+        '
         'FormOuvidoriasOK
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(585, 655)
+        Me.ClientSize = New System.Drawing.Size(585, 664)
+        Me.Controls.Add(Me.btClose)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.btConcluirOuvidoria)
         Me.Controls.Add(Me.GroupBox2)
@@ -260,4 +277,5 @@ Partial Class FormOuvidoriasOK
     Friend WithEvents btConcluirOuvidoria As Button
     Friend WithEvents StatusStrip1 As StatusStrip
     Friend WithEvents StatusLabelRegistrosOuve As ToolStripStatusLabel
+    Friend WithEvents btClose As Button
 End Class

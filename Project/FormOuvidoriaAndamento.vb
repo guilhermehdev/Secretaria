@@ -65,6 +65,8 @@
                 sts = 0
             End If
             main.doQuery($"UPDATE manifestacoes SET ok={sts} WHERE id= {idManifest}")
+        Else
+            CheckBoxOKResposta.Checked = False
         End If
     End Sub
     Private Sub btAtualizarManifest_Click(sender As Object, e As EventArgs) Handles btAtualizarManifest.Click
