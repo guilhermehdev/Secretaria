@@ -42,7 +42,7 @@ Public Class FormOuvidoriasOK
             protocolsData = data
             Return data
         Else
-            ' main.msgInfo("Não existem registros.")
+            dgProtocolosOK.DataSource = Nothing
             RichTextBoxRespostaAutorizada.Clear()
             Return False
         End If
@@ -145,7 +145,6 @@ Public Class FormOuvidoriasOK
 
                 If main.doQuery($"UPDATE ouvidoria SET status='Concluido', encerramento='{dataEncerramento}' WHERE protocolo={protocolo}") Then
                     main.msgInfo("Ouvidoria concluida com sucesso!")
-                    RichTextBoxRespostaAutorizada.Clear()
                     getProtocols()
                 End If
 
