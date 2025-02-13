@@ -23,14 +23,14 @@ Partial Class FormOuvidoriaAndamento
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.btExcluirManifest = New System.Windows.Forms.Button()
+        Me.btAtualizarManifest = New System.Windows.Forms.Button()
         Me.TextBoxManifestacao = New System.Windows.Forms.RichTextBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.TextBoxResposta = New System.Windows.Forms.RichTextBox()
         Me.CheckBoxOKResposta = New System.Windows.Forms.CheckBox()
         Me.btSalvarResposta = New System.Windows.Forms.Button()
         Me.btClose = New System.Windows.Forms.Button()
-        Me.btAtualizarManifest = New System.Windows.Forms.Button()
-        Me.btExcluirManifest = New System.Windows.Forms.Button()
         Me.OFDUpdateManifest = New System.Windows.Forms.OpenFileDialog()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -49,6 +49,36 @@ Partial Class FormOuvidoriaAndamento
         Me.GroupBox1.TabIndex = 1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Manifestação"
+        '
+        'btExcluirManifest
+        '
+        Me.btExcluirManifest.BackColor = System.Drawing.Color.IndianRed
+        Me.btExcluirManifest.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btExcluirManifest.FlatAppearance.BorderSize = 0
+        Me.btExcluirManifest.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btExcluirManifest.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btExcluirManifest.ForeColor = System.Drawing.SystemColors.ButtonFace
+        Me.btExcluirManifest.Location = New System.Drawing.Point(545, 13)
+        Me.btExcluirManifest.Name = "btExcluirManifest"
+        Me.btExcluirManifest.Size = New System.Drawing.Size(67, 20)
+        Me.btExcluirManifest.TabIndex = 6
+        Me.btExcluirManifest.Text = "Excluir"
+        Me.btExcluirManifest.UseVisualStyleBackColor = False
+        '
+        'btAtualizarManifest
+        '
+        Me.btAtualizarManifest.BackColor = System.Drawing.Color.DodgerBlue
+        Me.btAtualizarManifest.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btAtualizarManifest.FlatAppearance.BorderSize = 0
+        Me.btAtualizarManifest.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btAtualizarManifest.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btAtualizarManifest.ForeColor = System.Drawing.SystemColors.ButtonFace
+        Me.btAtualizarManifest.Location = New System.Drawing.Point(472, 13)
+        Me.btAtualizarManifest.Name = "btAtualizarManifest"
+        Me.btAtualizarManifest.Size = New System.Drawing.Size(67, 20)
+        Me.btAtualizarManifest.TabIndex = 5
+        Me.btAtualizarManifest.Text = "Atualizar"
+        Me.btAtualizarManifest.UseVisualStyleBackColor = False
         '
         'TextBoxManifestacao
         '
@@ -129,36 +159,6 @@ Partial Class FormOuvidoriaAndamento
         Me.btClose.TabIndex = 4
         Me.btClose.Text = "Sair"
         Me.btClose.UseVisualStyleBackColor = False
-        '
-        'btAtualizarManifest
-        '
-        Me.btAtualizarManifest.BackColor = System.Drawing.Color.DodgerBlue
-        Me.btAtualizarManifest.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btAtualizarManifest.FlatAppearance.BorderSize = 0
-        Me.btAtualizarManifest.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btAtualizarManifest.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btAtualizarManifest.ForeColor = System.Drawing.SystemColors.ButtonFace
-        Me.btAtualizarManifest.Location = New System.Drawing.Point(472, 13)
-        Me.btAtualizarManifest.Name = "btAtualizarManifest"
-        Me.btAtualizarManifest.Size = New System.Drawing.Size(67, 20)
-        Me.btAtualizarManifest.TabIndex = 5
-        Me.btAtualizarManifest.Text = "Atualizar"
-        Me.btAtualizarManifest.UseVisualStyleBackColor = False
-        '
-        'btExcluirManifest
-        '
-        Me.btExcluirManifest.BackColor = System.Drawing.Color.IndianRed
-        Me.btExcluirManifest.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btExcluirManifest.FlatAppearance.BorderSize = 0
-        Me.btExcluirManifest.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btExcluirManifest.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btExcluirManifest.ForeColor = System.Drawing.SystemColors.ButtonFace
-        Me.btExcluirManifest.Location = New System.Drawing.Point(545, 13)
-        Me.btExcluirManifest.Name = "btExcluirManifest"
-        Me.btExcluirManifest.Size = New System.Drawing.Size(67, 20)
-        Me.btExcluirManifest.TabIndex = 6
-        Me.btExcluirManifest.Text = "Excluir"
-        Me.btExcluirManifest.UseVisualStyleBackColor = False
         '
         'FormOuvidoriaAndamento
         '
