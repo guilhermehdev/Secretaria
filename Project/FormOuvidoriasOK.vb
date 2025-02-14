@@ -146,6 +146,7 @@ Public Class FormOuvidoriasOK
                 If main.doQuery($"UPDATE ouvidoria SET status='Concluido', encerramento='{dataEncerramento}' WHERE protocolo={protocolo}") Then
                     main.msgInfo("Ouvidoria concluida com sucesso!")
                     getProtocols()
+                    RichTextBoxRespostaAutorizada.Clear()
                 End If
 
             Else
