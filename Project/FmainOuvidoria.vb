@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports ServiceStack.Redis
 
 Public Class FmainOuvidoria
     Dim m As New Main
@@ -62,6 +63,12 @@ Public Class FmainOuvidoria
 
 
     Private Sub Fmain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Dim redis As New RedisClient()
+
+        ' Inscrevendo-se no canal 'ouvidoria_ok' para ouvir as mensagens
+        redis.Subscribe("ouvidoria_ok")
+
+
         Try
 
             pbBackground.ImageLocation = My.Settings.background
