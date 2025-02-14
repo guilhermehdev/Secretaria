@@ -74,12 +74,10 @@
         pdf.importPDFManifest(OFDUpdateManifest, False)
         getManifestacoes()
     End Sub
-
-    Private Sub TextBoxResposta_TextChanged(sender As Object, e As EventArgs) Handles TextBoxResposta.TextChanged
-        If TextBoxResposta.Text.Length = 0 Then
-            main.doQuery($"UPDATE manifestacoes SET ok=0 WHERE id= {idManifest}")
+    Private Sub btLimparResposta_Click(sender As Object, e As EventArgs) Handles btLimparResposta.Click
+        If main.doQuery($"UPDATE manifestacoes SET ok=0, resposta='' WHERE id= {idManifest}") Then
+            TextBoxResposta.Clear()
         End If
-
     End Sub
 
 End Class

@@ -32,6 +32,7 @@ Partial Class FormOuvidoriaAndamento
         Me.btSalvarResposta = New System.Windows.Forms.Button()
         Me.btClose = New System.Windows.Forms.Button()
         Me.OFDUpdateManifest = New System.Windows.Forms.OpenFileDialog()
+        Me.btLimparResposta = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
@@ -123,7 +124,7 @@ Partial Class FormOuvidoriaAndamento
         'CheckBoxOKResposta
         '
         Me.CheckBoxOKResposta.AutoSize = True
-        Me.CheckBoxOKResposta.Location = New System.Drawing.Point(324, 643)
+        Me.CheckBoxOKResposta.Location = New System.Drawing.Point(198, 643)
         Me.CheckBoxOKResposta.Name = "CheckBoxOKResposta"
         Me.CheckBoxOKResposta.Size = New System.Drawing.Size(100, 17)
         Me.CheckBoxOKResposta.TabIndex = 2
@@ -140,7 +141,7 @@ Partial Class FormOuvidoriaAndamento
         Me.btSalvarResposta.ForeColor = System.Drawing.SystemColors.ButtonFace
         Me.btSalvarResposta.Location = New System.Drawing.Point(430, 635)
         Me.btSalvarResposta.Name = "btSalvarResposta"
-        Me.btSalvarResposta.Size = New System.Drawing.Size(119, 32)
+        Me.btSalvarResposta.Size = New System.Drawing.Size(120, 32)
         Me.btSalvarResposta.TabIndex = 3
         Me.btSalvarResposta.Text = "Gravar resposta"
         Me.btSalvarResposta.UseVisualStyleBackColor = False
@@ -160,11 +161,27 @@ Partial Class FormOuvidoriaAndamento
         Me.btClose.Text = "Sair"
         Me.btClose.UseVisualStyleBackColor = False
         '
+        'btLimparResposta
+        '
+        Me.btLimparResposta.BackColor = System.Drawing.Color.DarkOrange
+        Me.btLimparResposta.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btLimparResposta.FlatAppearance.BorderSize = 0
+        Me.btLimparResposta.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btLimparResposta.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btLimparResposta.ForeColor = System.Drawing.SystemColors.ButtonFace
+        Me.btLimparResposta.Location = New System.Drawing.Point(304, 635)
+        Me.btLimparResposta.Name = "btLimparResposta"
+        Me.btLimparResposta.Size = New System.Drawing.Size(120, 32)
+        Me.btLimparResposta.TabIndex = 5
+        Me.btLimparResposta.Text = "Limpar resposta"
+        Me.btLimparResposta.UseVisualStyleBackColor = False
+        '
         'FormOuvidoriaAndamento
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(642, 672)
+        Me.Controls.Add(Me.btLimparResposta)
         Me.Controls.Add(Me.btClose)
         Me.Controls.Add(Me.btSalvarResposta)
         Me.Controls.Add(Me.CheckBoxOKResposta)
@@ -193,4 +210,5 @@ Partial Class FormOuvidoriaAndamento
     Friend WithEvents btAtualizarManifest As Button
     Friend WithEvents btExcluirManifest As Button
     Friend WithEvents OFDUpdateManifest As OpenFileDialog
+    Friend WithEvents btLimparResposta As Button
 End Class
