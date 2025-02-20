@@ -2,7 +2,7 @@
     Dim m As New Main
 
     Public Sub getProtocols()
-        Dim data = FmainOuvidoria.chechAprova()
+        Dim data = FmainOuvidoria.checkAprova()
         Me.Icon = FmainOuvidoria.Icon
 
         lbAguardando.Items.Clear()

@@ -16,7 +16,7 @@ Public Class FormFadeNotify
         AddHandler fadeOutTimer.Tick, AddressOf FadeOut
     End Sub
     Private Sub FormFadeNotify_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Dim data = FmainOuvidoria.chechAprova()
+        Dim data = FmainOuvidoria.checkAprova()
         If data.count > 0 Then
 
             Me.Opacity = 0.8

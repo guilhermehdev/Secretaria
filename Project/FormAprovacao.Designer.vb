@@ -32,13 +32,13 @@ Partial Class FormAprovacao
         '
         'lbAguardando
         '
-        Me.lbAguardando.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbAguardando.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbAguardando.FormattingEnabled = True
-        Me.lbAguardando.ItemHeight = 15
+        Me.lbAguardando.ItemHeight = 18
         Me.lbAguardando.Location = New System.Drawing.Point(12, 12)
         Me.lbAguardando.Name = "lbAguardando"
         Me.lbAguardando.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lbAguardando.Size = New System.Drawing.Size(148, 334)
+        Me.lbAguardando.Size = New System.Drawing.Size(148, 328)
         Me.lbAguardando.TabIndex = 3
         Me.ToolTip1.SetToolTip(Me.lbAguardando, "Clique duas vezes no Protocolo para abri-lo" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
         '

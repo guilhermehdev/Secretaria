@@ -62,7 +62,7 @@ Public Class FmainOuvidoria
 
     End Function
 
-    Public Sub chechOk()
+    Public Sub checkOk()
         Try
             Dim data = m.getDataset("SELECT ouvidoria.protocolo AS protocolo ,manifestacoes.ok AS ok FROM
 ouvidoria JOIN manifestacoes ON manifestacoes.id_ouvidoria = ouvidoria.id WHERE manifestacoes.ok = 1 AND ouvidoria.status != 'Concluido'")
@@ -80,11 +80,12 @@ ouvidoria JOIN manifestacoes ON manifestacoes.id_ouvidoria = ouvidoria.id WHERE 
 
     End Sub
 
-    Public Function chechAprova()
+    Public Function checkAprova()
         Dim listProtocol = New List(Of String)
         Try
             Dim data = m.getDataset("SELECT ouvidoria.protocolo AS protocolo FROM
-ouvidoria JOIN manifestacoes ON manifestacoes.id_ouvidoria = ouvidoria.id WHERE manifestacoes.resposta != '' AND ouvidoria.status = 'Em andamento' AND manifestacoes.ok = 0")
+ouvidoria JOIN manifestacoes ON manifestacoes.id_ouvidoria = ouvidoria.id WHERE manifestacoes.resposta != '' 
+AND manifestacoes.ok = 0 AND (ouvidoria.status = 'Em andamento' OR ouvidoria.status = 'Vencido')")
 
             For Each protocol In data.Rows
                 listProtocol.Add(protocol("protocolo"))
@@ -104,18 +105,13 @@ ouvidoria JOIN manifestacoes ON manifestacoes.id_ouvidoria = ouvidoria.id WHERE 
         End Try
 
     End Function
-
-
     Private Sub Fmain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-
-            chechOk()
-            chechAprova()
-
+            Tbackup.Start()
+            checkOk()
             Dim notification As New FormFadeNotify(Me)
             notification.Show()
             notification.BringToFront()
-
 
             pbBackground.ImageLocation = My.Settings.background
 
@@ -334,8 +330,13 @@ ouvidoria JOIN manifestacoes ON manifestacoes.id_ouvidoria = ouvidoria.id WHERE 
         FormAprovacao.ShowDialog()
     End Sub
     Private Sub OuvidoriasToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OuvidoriasToolStripMenuItem.Click
-        chechAprova()
-        chechOk()
+        checkAprova()
+        checkOk()
+    End Sub
+    Private Sub Tbackup_Tick(sender As Object, e As EventArgs) Handles Tbackup.Tick
+        Dim notification As New FormFadeNotify(Me)
+        notification.Show()
+        notification.BringToFront()
     End Sub
 
 End Class
