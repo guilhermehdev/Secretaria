@@ -65,6 +65,7 @@
                 sts = 0
             End If
             main.doQuery($"UPDATE manifestacoes SET ok={sts} WHERE id= {idManifest}")
+            FormAprovacao.getProtocols()
         Else
             CheckBoxOKResposta.Checked = False
         End If

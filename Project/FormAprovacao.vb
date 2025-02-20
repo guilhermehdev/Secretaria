@@ -1,6 +1,7 @@
 ﻿Public Class FormAprovacao
     Dim m As New Main
-    Private Sub FormAprovacao_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    Public Sub getProtocols()
         Dim data = FmainOuvidoria.chechAprova()
         Me.Icon = FmainOuvidoria.Icon
 
@@ -11,7 +12,9 @@
         Next
 
         ToolStripStatusLabel1.Text = lbAguardando.Items.Count & " Registros"
-
+    End Sub
+    Private Sub FormAprovacao_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        getProtocols()
     End Sub
 
     Private Sub lbAguardando_DoubleClick(sender As Object, e As EventArgs) Handles lbAguardando.DoubleClick
