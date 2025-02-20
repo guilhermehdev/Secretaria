@@ -478,6 +478,12 @@
     <Compile Include="FormAprovacao.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormFadeNotify.Designer.vb">
+      <DependentUpon>FormFadeNotify.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormFadeNotify.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormOuvidoriaAndamento.Designer.vb">
       <DependentUpon>FormOuvidoriaAndamento.vb</DependentUpon>
     </Compile>
@@ -596,6 +602,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormAprovacao.resx">
       <DependentUpon>FormAprovacao.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormFadeNotify.resx">
+      <DependentUpon>FormFadeNotify.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormOuvidoriaAndamento.resx">
       <DependentUpon>FormOuvidoriaAndamento.vb</DependentUpon>

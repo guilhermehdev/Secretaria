@@ -112,6 +112,11 @@ ouvidoria JOIN manifestacoes ON manifestacoes.id_ouvidoria = ouvidoria.id WHERE 
             chechOk()
             chechAprova()
 
+            Dim notification As New FormFadeNotify(Me)
+            notification.Show()
+            notification.BringToFront()
+
+
             pbBackground.ImageLocation = My.Settings.background
 
             col.DataPropertyName = "prazo"
