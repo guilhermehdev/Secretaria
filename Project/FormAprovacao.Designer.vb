@@ -22,9 +22,11 @@ Partial Class FormAprovacao
     'Não o modifique usando o editor de códigos.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.lbAguardando = New System.Windows.Forms.ListBox()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -38,6 +40,7 @@ Partial Class FormAprovacao
         Me.lbAguardando.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
         Me.lbAguardando.Size = New System.Drawing.Size(148, 334)
         Me.lbAguardando.TabIndex = 3
+        Me.ToolTip1.SetToolTip(Me.lbAguardando, "Clique duas vezes no Protocolo para abri-lo" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
         '
         'StatusStrip1
         '
@@ -75,4 +78,5 @@ Partial Class FormAprovacao
     Friend WithEvents lbAguardando As ListBox
     Friend WithEvents StatusStrip1 As StatusStrip
     Friend WithEvents ToolStripStatusLabel1 As ToolStripStatusLabel
+    Friend WithEvents ToolTip1 As ToolTip
 End Class

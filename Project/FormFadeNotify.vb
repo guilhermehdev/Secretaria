@@ -38,7 +38,7 @@ Public Class FormFadeNotify
             lbCount.ForeColor = Color.FromArgb(255, 198, 88)
 
             lbNotify.Text = " Ouvidorias aguardando aprovação."
-            lbNotify.ForeColor = Color.FromArgb(200, 214, 249)
+            lbNotify.ForeColor = Color.FromArgb(220, 220, 220)
         End If
 
     End Sub

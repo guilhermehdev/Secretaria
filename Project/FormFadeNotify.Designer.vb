@@ -34,9 +34,9 @@ Partial Class FormFadeNotify
         Me.btOK.FlatAppearance.BorderSize = 0
         Me.btOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btOK.ForeColor = System.Drawing.Color.White
-        Me.btOK.Location = New System.Drawing.Point(121, 64)
+        Me.btOK.Location = New System.Drawing.Point(307, 22)
         Me.btOK.Name = "btOK"
-        Me.btOK.Size = New System.Drawing.Size(82, 30)
+        Me.btOK.Size = New System.Drawing.Size(43, 30)
         Me.btOK.TabIndex = 1
         Me.btOK.Text = "OK"
         Me.btOK.UseVisualStyleBackColor = False
@@ -44,19 +44,19 @@ Partial Class FormFadeNotify
         'lbNotify
         '
         Me.lbNotify.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.lbNotify.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbNotify.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbNotify.ForeColor = System.Drawing.Color.MidnightBlue
-        Me.lbNotify.Location = New System.Drawing.Point(55, 9)
+        Me.lbNotify.Location = New System.Drawing.Point(50, 19)
         Me.lbNotify.Name = "lbNotify"
-        Me.lbNotify.Size = New System.Drawing.Size(258, 51)
+        Me.lbNotify.Size = New System.Drawing.Size(248, 36)
         Me.lbNotify.TabIndex = 2
         Me.lbNotify.Text = "Notificações"
-        Me.lbNotify.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lbNotify.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lbCount
         '
         Me.lbCount.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbCount.Location = New System.Drawing.Point(12, 9)
+        Me.lbCount.Location = New System.Drawing.Point(7, 12)
         Me.lbCount.Name = "lbCount"
         Me.lbCount.Size = New System.Drawing.Size(37, 51)
         Me.lbCount.TabIndex = 3
@@ -68,7 +68,7 @@ Partial Class FormFadeNotify
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.ButtonFace
-        Me.ClientSize = New System.Drawing.Size(325, 104)
+        Me.ClientSize = New System.Drawing.Size(362, 75)
         Me.Controls.Add(Me.lbCount)
         Me.Controls.Add(Me.lbNotify)
         Me.Controls.Add(Me.btOK)
