@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports System.Threading
 Imports ServiceStack.Redis
 
 Public Class FmainOuvidoria
@@ -61,15 +62,55 @@ Public Class FmainOuvidoria
 
     End Function
 
+    Public Sub chechOk()
+        Try
+            Dim data = m.getDataset("SELECT ouvidoria.protocolo AS protocolo ,manifestacoes.ok AS ok FROM
+ouvidoria JOIN manifestacoes ON manifestacoes.id_ouvidoria = ouvidoria.id WHERE manifestacoes.ok = 1 AND ouvidoria.status != 'Concluido'")
+
+            If data.Rows.Count > 0 Then
+                ProntasParaEnvioToolStripMenuItem.Text = "Prontas para envio"
+                ProntasParaEnvioToolStripMenuItem.Text = ProntasParaEnvioToolStripMenuItem.Text & " : " & data.Rows.Count
+            Else
+                ProntasParaEnvioToolStripMenuItem.Text = "Prontas para envio"
+            End If
+
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    Public Function chechAprova()
+        Dim listProtocol = New List(Of String)
+        Try
+            Dim data = m.getDataset("SELECT ouvidoria.protocolo AS protocolo FROM
+ouvidoria JOIN manifestacoes ON manifestacoes.id_ouvidoria = ouvidoria.id WHERE manifestacoes.resposta != '' AND ouvidoria.status = 'Em andamento' AND manifestacoes.ok = 0")
+
+            For Each protocol In data.Rows
+                listProtocol.Add(protocol("protocolo"))
+            Next
+
+            If listProtocol.Count > 0 Then
+                AguardandoAprovaçãoToolStripMenuItem.Text = "Aguardando aprovação"
+                AguardandoAprovaçãoToolStripMenuItem.Text = AguardandoAprovaçãoToolStripMenuItem.Text & " : " & listProtocol.Count
+            Else
+                AguardandoAprovaçãoToolStripMenuItem.Text = "Aguardando aprovação"
+            End If
+
+            Return listProtocol
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+    End Function
+
 
     Private Sub Fmain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dim redis As New RedisClient()
-
-        ' Inscrevendo-se no canal 'ouvidoria_ok' para ouvir as mensagens
-        redis.Subscribe("ouvidoria_ok")
-
-
         Try
+
+            chechOk()
+            chechAprova()
 
             pbBackground.ImageLocation = My.Settings.background
 
@@ -282,6 +323,14 @@ Public Class FmainOuvidoria
 
     Private Sub ProntasParaEnvioToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ProntasParaEnvioToolStripMenuItem.Click
         FormOuvidoriasOK.Show()
+    End Sub
+
+    Private Sub AguardandoAprovaçãoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AguardandoAprovaçãoToolStripMenuItem.Click
+        FormAprovacao.ShowDialog()
+    End Sub
+    Private Sub OuvidoriasToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OuvidoriasToolStripMenuItem.Click
+        chechAprova()
+        chechOk()
     End Sub
 
 End Class

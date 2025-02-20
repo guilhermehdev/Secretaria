@@ -34,6 +34,9 @@ Partial Class FmainOuvidoria
         Me.PrazosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.LogsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OuvidoriasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AguardandoAprovaçãoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ProntasParaEnvioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ImportarDoEOuveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OpçõesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.BancoDeDadosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.BackupToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -55,10 +58,8 @@ Partial Class FmainOuvidoria
         Me.Label1 = New System.Windows.Forms.Label()
         Me.tbBuscaProtocolo = New System.Windows.Forms.TextBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.pbBackground = New System.Windows.Forms.PictureBox()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
-        Me.ImportarDoEOuveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ProntasParaEnvioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.pbBackground = New System.Windows.Forms.PictureBox()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.dgListProtocolos, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.statusBar.SuspendLayout()
@@ -113,10 +114,28 @@ Partial Class FmainOuvidoria
         '
         'OuvidoriasToolStripMenuItem
         '
-        Me.OuvidoriasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ProntasParaEnvioToolStripMenuItem, Me.ImportarDoEOuveToolStripMenuItem})
+        Me.OuvidoriasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AguardandoAprovaçãoToolStripMenuItem, Me.ProntasParaEnvioToolStripMenuItem, Me.ImportarDoEOuveToolStripMenuItem})
         Me.OuvidoriasToolStripMenuItem.Name = "OuvidoriasToolStripMenuItem"
         Me.OuvidoriasToolStripMenuItem.Size = New System.Drawing.Size(76, 20)
         Me.OuvidoriasToolStripMenuItem.Text = "Ouvidorias"
+        '
+        'AguardandoAprovaçãoToolStripMenuItem
+        '
+        Me.AguardandoAprovaçãoToolStripMenuItem.Name = "AguardandoAprovaçãoToolStripMenuItem"
+        Me.AguardandoAprovaçãoToolStripMenuItem.Size = New System.Drawing.Size(198, 22)
+        Me.AguardandoAprovaçãoToolStripMenuItem.Text = "Aguardando aprovação"
+        '
+        'ProntasParaEnvioToolStripMenuItem
+        '
+        Me.ProntasParaEnvioToolStripMenuItem.Name = "ProntasParaEnvioToolStripMenuItem"
+        Me.ProntasParaEnvioToolStripMenuItem.Size = New System.Drawing.Size(198, 22)
+        Me.ProntasParaEnvioToolStripMenuItem.Text = "Prontas para envio"
+        '
+        'ImportarDoEOuveToolStripMenuItem
+        '
+        Me.ImportarDoEOuveToolStripMenuItem.Name = "ImportarDoEOuveToolStripMenuItem"
+        Me.ImportarDoEOuveToolStripMenuItem.Size = New System.Drawing.Size(198, 22)
+        Me.ImportarDoEOuveToolStripMenuItem.Text = "Importar do eOuve"
         '
         'OpçõesToolStripMenuItem
         '
@@ -129,19 +148,19 @@ Partial Class FmainOuvidoria
         '
         Me.BancoDeDadosToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BackupToolStripMenuItem})
         Me.BancoDeDadosToolStripMenuItem.Name = "BancoDeDadosToolStripMenuItem"
-        Me.BancoDeDadosToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.BancoDeDadosToolStripMenuItem.Size = New System.Drawing.Size(159, 22)
         Me.BancoDeDadosToolStripMenuItem.Text = "Banco de Dados"
         '
         'BackupToolStripMenuItem
         '
         Me.BackupToolStripMenuItem.Name = "BackupToolStripMenuItem"
-        Me.BackupToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.BackupToolStripMenuItem.Size = New System.Drawing.Size(113, 22)
         Me.BackupToolStripMenuItem.Text = "Backup"
         '
         'PlanoDeFundoToolStripMenuItem
         '
         Me.PlanoDeFundoToolStripMenuItem.Name = "PlanoDeFundoToolStripMenuItem"
-        Me.PlanoDeFundoToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.PlanoDeFundoToolStripMenuItem.Size = New System.Drawing.Size(159, 22)
         Me.PlanoDeFundoToolStripMenuItem.Text = "Plano de Fundo"
         '
         'SairToolStripMenuItem
@@ -344,18 +363,6 @@ Partial Class FmainOuvidoria
         Me.pbBackground.TabIndex = 4
         Me.pbBackground.TabStop = False
         '
-        'ImportarDoEOuveToolStripMenuItem
-        '
-        Me.ImportarDoEOuveToolStripMenuItem.Name = "ImportarDoEOuveToolStripMenuItem"
-        Me.ImportarDoEOuveToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.ImportarDoEOuveToolStripMenuItem.Text = "Importar do eOuve"
-        '
-        'ProntasParaEnvioToolStripMenuItem
-        '
-        Me.ProntasParaEnvioToolStripMenuItem.Name = "ProntasParaEnvioToolStripMenuItem"
-        Me.ProntasParaEnvioToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.ProntasParaEnvioToolStripMenuItem.Text = "Prontas para envio"
-        '
         'FmainOuvidoria
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -422,4 +429,5 @@ Partial Class FmainOuvidoria
     Friend WithEvents OuvidoriasToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ImportarDoEOuveToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ProntasParaEnvioToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents AguardandoAprovaçãoToolStripMenuItem As ToolStripMenuItem
 End Class

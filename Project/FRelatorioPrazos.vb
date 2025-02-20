@@ -102,22 +102,12 @@
 
     End Sub
 
-    Private Sub copyFromListBox(ByVal listbox As ListBox)
-        Dim copy_buffer As New System.Text.StringBuilder
-        For Each item As Object In listbox.SelectedItems
-            copy_buffer.AppendLine(item.ToString)
-        Next
-        If copy_buffer.Length > 0 Then
-            Clipboard.SetText(copy_buffer.ToString)
-        End If
-    End Sub
-
     Private Sub ContextMenuStrip1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ContextMenuStrip1.Click
-        copyFromListBox(lbEmAndamento)
+        m.copyFromListBox(lbEmAndamento)
     End Sub
 
     Private Sub ContextMenuStrip2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ContextMenuStrip2.Click
-        copyFromListBox(lbVencidos)
+        m.copyFromListBox(lbVencidos)
     End Sub
 
     Private Sub lbEmAndamento_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbEmAndamento.DoubleClick

@@ -140,6 +140,15 @@ Public Class Main
         Loop
         obj.Opacity = 1
     End Sub
+    Public Sub copyFromListBox(ByVal listbox As ListBox)
+        Dim copy_buffer As New System.Text.StringBuilder
+        For Each item As Object In listbox.SelectedItems
+            copy_buffer.AppendLine(item.ToString)
+        Next
+        If copy_buffer.Length > 0 Then
+            Clipboard.SetText(copy_buffer.ToString)
+        End If
+    End Sub
 
     Public Function searchDataTable(ByVal datatable As DataTable, ByVal searchedRefField As String, ByVal locationOfValueToBeSearched As String, ByVal fieldToBeReturned As String)
 

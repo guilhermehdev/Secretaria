@@ -32,6 +32,7 @@ Partial Class FRelatorioPrazos
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.CopiarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.cbPeriodoVencido = New System.Windows.Forms.ComboBox()
         Me.btOKVencidos = New System.Windows.Forms.Button()
         Me.lbVencidos = New System.Windows.Forms.ListBox()
         Me.ContextMenuStrip2 = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -41,7 +42,6 @@ Partial Class FRelatorioPrazos
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cbDestino = New System.Windows.Forms.ComboBox()
-        Me.cbPeriodoVencido = New System.Windows.Forms.ComboBox()
         CType(Me.NumericUpDownEmAndamento, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.ContextMenuStrip1.SuspendLayout()
@@ -126,6 +126,14 @@ Partial Class FRelatorioPrazos
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Vencidos"
         '
+        'cbPeriodoVencido
+        '
+        Me.cbPeriodoVencido.FormattingEnabled = True
+        Me.cbPeriodoVencido.Location = New System.Drawing.Point(136, 42)
+        Me.cbPeriodoVencido.Name = "cbPeriodoVencido"
+        Me.cbPeriodoVencido.Size = New System.Drawing.Size(115, 21)
+        Me.cbPeriodoVencido.TabIndex = 5
+        '
         'btOKVencidos
         '
         Me.btOKVencidos.Location = New System.Drawing.Point(257, 41)
@@ -151,12 +159,12 @@ Partial Class FRelatorioPrazos
         '
         Me.ContextMenuStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CopiarToolStripMenuItem1})
         Me.ContextMenuStrip2.Name = "ContextMenuStrip2"
-        Me.ContextMenuStrip2.Size = New System.Drawing.Size(110, 26)
+        Me.ContextMenuStrip2.Size = New System.Drawing.Size(181, 48)
         '
         'CopiarToolStripMenuItem1
         '
         Me.CopiarToolStripMenuItem1.Name = "CopiarToolStripMenuItem1"
-        Me.CopiarToolStripMenuItem1.Size = New System.Drawing.Size(109, 22)
+        Me.CopiarToolStripMenuItem1.Size = New System.Drawing.Size(180, 22)
         Me.CopiarToolStripMenuItem1.Text = "Copiar"
         '
         'Label2
@@ -200,14 +208,6 @@ Partial Class FRelatorioPrazos
         Me.cbDestino.Size = New System.Drawing.Size(298, 21)
         Me.cbDestino.TabIndex = 8
         Me.cbDestino.Tag = "Destinatário"
-        '
-        'cbPeriodoVencido
-        '
-        Me.cbPeriodoVencido.FormattingEnabled = True
-        Me.cbPeriodoVencido.Location = New System.Drawing.Point(136, 42)
-        Me.cbPeriodoVencido.Name = "cbPeriodoVencido"
-        Me.cbPeriodoVencido.Size = New System.Drawing.Size(115, 21)
-        Me.cbPeriodoVencido.TabIndex = 5
         '
         'FRelatorioPrazos
         '
