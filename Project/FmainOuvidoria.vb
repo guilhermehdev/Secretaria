@@ -62,7 +62,7 @@ Public Class FmainOuvidoria
 
     End Function
 
-    Public Sub checkOk()
+    Public Function checkOk()
         Try
             Dim data = m.getDataset("SELECT ouvidoria.protocolo AS protocolo ,manifestacoes.ok AS ok FROM
 ouvidoria JOIN manifestacoes ON manifestacoes.id_ouvidoria = ouvidoria.id WHERE manifestacoes.ok = 1 AND ouvidoria.status != 'Concluido'")
@@ -70,15 +70,17 @@ ouvidoria JOIN manifestacoes ON manifestacoes.id_ouvidoria = ouvidoria.id WHERE 
             If data.Rows.Count > 0 Then
                 ProntasParaEnvioToolStripMenuItem.Text = "Prontas para envio"
                 ProntasParaEnvioToolStripMenuItem.Text = ProntasParaEnvioToolStripMenuItem.Text & " : " & data.Rows.Count
+                Return True
             Else
                 ProntasParaEnvioToolStripMenuItem.Text = "Prontas para envio"
+                Return False
             End If
 
         Catch ex As Exception
-
+            Return False
         End Try
 
-    End Sub
+    End Function
 
     Public Function checkAprova()
         Dim listProtocol = New List(Of String)
@@ -108,10 +110,13 @@ AND manifestacoes.ok = 0 AND (ouvidoria.status = 'Em andamento' OR ouvidoria.sta
     Private Sub Fmain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             Tbackup.Start()
-            checkOk()
-            Dim notification As New FormFadeNotify(Me)
-            notification.Show()
-            notification.BringToFront()
+
+            Dim data = checkAprova()
+            If data.count > 0 Then
+                Dim notification As New FormFadeNotify(Me)
+                notification.Show()
+                notification.BringToFront()
+            End If
 
             pbBackground.ImageLocation = My.Settings.background
 
