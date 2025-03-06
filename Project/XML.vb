@@ -1,4 +1,5 @@
 ﻿Imports System.Xml
+Imports System.Xml.Linq
 
 Public Class XML
 
@@ -8,7 +9,7 @@ Public Class XML
     Dim XMLCBOfilePath As String = Application.StartupPath & "\XML\CBO.XML"
     Dim XMLCNESfilePath As String = Application.StartupPath & "\XML\CNES.XML"
     Dim XMLOrgaofilePath As String = Application.StartupPath & "\XML\CLASSE.XML"
-
+    Dim XMLEquipesPath As String = Application.StartupPath & "\XML\EQUIPES.XML"
     Public Function getCBOXML(ByVal codCBO As String) As String
         xmlDocCBO.Load(XMLCBOfilePath)
 
@@ -311,215 +312,24 @@ Public Class XML
         combobox.ValueMember = "Key"
     End Sub
 
-    'Public Function getEstabelecimentosPublicos() As List(Of String)
-    '    xmlDoc.Load(XMLfilePath)
-    '    Dim estabs As XmlNodeList = Nothing
-    '    Dim idList As New List(Of String)
+    Public Function equipesXML()
+        ' Caminho para o arquivo XML
+        Dim xmlFile As String = XMLEquipesPath
 
-    '    estabs = xmlDoc.DocumentElement.SelectNodes("/ESTABELECIMENTOS/DADOS_GERAIS_ESTABELECIMENTOS[@CNPJ='46578514000120']")
+        ' Carregar o documento XML
+        Dim xdoc As XDocument = XDocument.Load(xmlFile)
 
-    '    For Each e As XmlNode In estabs
-    '        idList.Add(e.Attributes("CNES").Value)
-    '    Next
+        ' Exemplo: Iterar sobre elementos XML
+        For Each element In xdoc.Descendants("DADOS_GERAIS_ESTABELECIMENTOS") ' Substitua "Elemento" pelo nome da tag que você está buscando
+            Dim atributo As String = element.Attribute("NM_FANTA")?.Value ' Extraímos o valor de um atributo específico
+            Dim conteudo As String = element.Value ' Conteúdo dentro da tag
 
-    '    Return idList
-
-    'End Function
-
-
-    'Public Function getEstabelecimentosPrivados() As List(Of String)
-    '    xmlDoc.Load(XMLfilePath)
-    '    Dim estabs As XmlNodeList = Nothing
-    '    Dim idList As New List(Of String)
-
-    '    estabs = xmlDoc.DocumentElement.SelectNodes("/ESTABELECIMENTOS/DADOS_GERAIS_ESTABELECIMENTOS[@CNPJ!='46578514000120']")
-
-    '    For Each e As XmlNode In estabs
-    '        idList.Add(e.Attributes("CNES").Value)
-    '    Next
-
-    '    Return idList
-
-    'End Function
-
-    'Public Function getProfessionalDataXML(Optional ByVal cpf As String = "", Optional ByVal nome As String = "", Optional ByVal IDunidade As String = "", Optional ByVal ine As String = "", Optional ByVal ind_vinc As String = "000000") As DataTable
-    '    xmlDoc.Load(XMLfilePath)
-    '    Dim tabela As New DataTable("profissionais")
-    '    Dim profs As XmlNodeList = Nothing
-    '    Dim unidade As String = Nothing
+            ' Exibindo os dados extraídos
+            Console.WriteLine($"Atributo: {atributo}")
+            Console.WriteLine($"Conteúdo: {conteudo}")
+        Next
 
 
-    '    tabela.Columns.Clear()
-    '    tabela.Columns.Add("CPF")
-    '    tabela.Columns.Add("Nome")
-    '    tabela.Columns.Add("SUS")
-    '    tabela.Columns.Add("CBO")
-    '    tabela.Columns.Add("Descrição")
-    '    tabela.Columns.Add("Conselho")
-    '    tabela.Columns.Add("Nº Registro")
-    '    tabela.Columns.Add("Vinculo")
-    '    tabela.Columns.Add("CH Outros")
-    '    tabela.Columns.Add("CH Amb")
-    '    tabela.Columns.Add("CH Hospitalar")
-
-    '    If IDunidade <> "" Then
-    '        profs = xmlDoc.DocumentElement.SelectNodes("/PROFISSIONAIS/DADOS_PROFISSIONAIS/DADOS_LOTACOES[@CNES='" & IDunidade & "']")
-
-    '    ElseIf cpf <> "" Then
-    '        profs = xmlDoc.DocumentElement.SelectNodes("/ROOT/ESTABELECIMENTOS/DADOS_GERAIS_ESTABELECIMENTOS/PROFISSIONAIS/DADOS_PROFISSIONAIS[@CPF_PROF='" & cpf & "']")
-    '        Dim unicol = tabela.Columns.Add("Unidade")
-    '        unicol.SetOrdinal(0)
-
-    '    ElseIf nome <> "" Then
-    '        profs = xmlDoc.DocumentElement.SelectNodes("/ROOT/ESTABELECIMENTOS/DADOS_GERAIS_ESTABELECIMENTOS/PROFISSIONAIS/DADOS_PROFISSIONAIS[contains(@NOME_PROF,'" & nome & "')]")
-    '        Dim unicol = tabela.Columns.Add("Unidade")
-    '        unicol.SetOrdinal(0)
-
-    '    ElseIf ine <> "" Then
-    '        profs = xmlDoc.DocumentElement.SelectNodes("/ROOT/ESTABELECIMENTOS/DADOS_GERAIS_ESTABELECIMENTOS/EQUIPES/DADOS_EQUIPES[@CO_EQUIPE='" & ine & "']/PROF_EQUIPE/DADOS_PROF_EQUIPE")
-
-    '        Dim idList As New List(Of String)
-    '        unidade = profs.Item(0).ParentNode.ParentNode.ParentNode.ParentNode.Attributes("NOME_FANTA").Value
-
-    '        For i = 0 To profs.Count - 1
-    '            idList.Add(profs.Item(i).Attributes("PROF_ID").Value)
-    '        Next
-
-    '        For i = 0 To idList.Count - 1
-    '            profs = xmlDoc.DocumentElement.SelectNodes("/ROOT/ESTABELECIMENTOS/DADOS_GERAIS_ESTABELECIMENTOS/PROFISSIONAIS/DADOS_PROFISSIONAIS[@PROF_ID='" & idList(i) & "']")
-
-    '            Dim pathDadosVinculo = profs.Item(0).FirstChild.FirstChild
-    '            Dim pathDadosProfissionais = profs.Item(0)
-
-    '            Dim cbo = pathDadosVinculo.Attributes("COD_CBO").Value
-    '            Dim sus = pathDadosProfissionais.Attributes("COD_CNS").Value
-    '            Dim conselho = pathDadosVinculo.Attributes("CONSELHOID").Value
-    '            Dim nregistro = pathDadosVinculo.Attributes("N_REGISTRO").Value
-    '            Dim vinculo = pathDadosVinculo.Attributes("IND_VINC").Value
-    '            Dim choutro = pathDadosVinculo.Attributes("CGHORAOUTR").Value
-    '            Dim chamb = pathDadosVinculo.Attributes("CG_HORAAMB").Value
-    '            Dim chhosp = pathDadosVinculo.Attributes("CGHORAHOSP").Value
-
-    '            tabela.Rows.Add(profs.Item(0).Attributes("CPF_PROF").Value, profs.Item(0).Attributes("NOME_PROF").Value, sus, cbo, getCBOXML(cbo), getOrgaodeClasse(conselho), nregistro, vinculo, choutro, chamb, chhosp)
-
-    '        Next
-
-    '        Return tabela
-    '        Exit Function
-
-    '    ElseIf ind_vinc <> "" Then
-    '        profs = xmlDoc.DocumentElement.SelectNodes("/ROOT/ESTABELECIMENTOS/DADOS_GERAIS_ESTABELECIMENTOS/PROFISSIONAIS/DADOS_PROFISSIONAIS/VINCULOS_PROF/DADOS_VINC_PROF[@IND_VINC='" & ind_vinc & "']")
-    '        Dim unicol = tabela.Columns.Add("Unidade")
-    '        unicol.SetOrdinal(0)
-
-    '        For Each p As XmlNode In profs
-
-    '            unidade = p.ParentNode.ParentNode.ParentNode.ParentNode.Attributes("NOME_FANTA").Value
-    '            Dim pathDadosProfissionais = p.ParentNode.ParentNode
-    '            Dim pathDadosVinculo = p
-
-    '            Dim cbo = pathDadosVinculo.Attributes("COD_CBO").Value
-    '            Dim sus = pathDadosProfissionais.Attributes("COD_CNS").Value
-    '            Dim conselho = pathDadosVinculo.Attributes("CONSELHOID").Value
-    '            Dim nregistro = pathDadosVinculo.Attributes("N_REGISTRO").Value
-    '            Dim vinculo = pathDadosVinculo.Attributes("IND_VINC").Value
-    '            Dim choutro = pathDadosVinculo.Attributes("CGHORAOUTR").Value
-    '            Dim chamb = pathDadosVinculo.Attributes("CG_HORAAMB").Value
-    '            Dim chhosp = pathDadosVinculo.Attributes("CGHORAHOSP").Value
-
-    '            tabela.Rows.Add(unidade, pathDadosProfissionais.Attributes("CPF_PROF").Value, pathDadosProfissionais.Attributes("NOME_PROF").Value, sus, cbo, getCBOXML(cbo), getOrgaodeClasse(conselho), nregistro, vinculo, choutro, chamb, chhosp)
-
-    '        Next
-
-    '        Return tabela
-    '        Exit Function
-
-    '    End If
-
-    '    For Each p As XmlNode In profs
-    '        unidade = p.ParentNode.ParentNode.Attributes("NOME_FANTA").Value
-    '        Dim pathDadosVinculo = p.ChildNodes(0).FirstChild
-    '        Dim pathDadosProfissionais = p.ParentNode.ParentNode
-
-    '        Dim cbo = pathDadosVinculo.Attributes("COD_CBO").Value
-    '        Dim conselho = pathDadosVinculo.Attributes("CONSELHOID").Value
-    '        Dim nregistro = pathDadosVinculo.Attributes("N_REGISTRO").Value
-    '        Dim vinculo = pathDadosVinculo.Attributes("IND_VINC").Value
-    '        Dim choutro = pathDadosVinculo.Attributes("CGHORAOUTR").Value
-    '        Dim chamb = pathDadosVinculo.Attributes("CG_HORAAMB").Value
-    '        Dim chhosp = pathDadosVinculo.Attributes("CGHORAHOSP").Value
-
-    '        If cpf <> "" Or nome <> "" Then
-    '            tabela.Rows.Add(unidade, p.Attributes("CPF_PROF").Value, p.Attributes("NOME_PROF").Value, p.Attributes("COD_CNS").Value, cbo, getCBOXML(cbo), getOrgaodeClasse(conselho), nregistro, vinculo, choutro, chamb, chhosp)
-    '        Else
-    '            tabela.Rows.Add(p.Attributes("CPF_PROF").Value, p.Attributes("NOME_PROF").Value, p.Attributes("COD_CNS").Value, cbo, getCBOXML(cbo), getOrgaodeClasse(conselho), nregistro, vinculo, choutro, chamb, chhosp)
-    '        End If
-
-    '    Next
-
-    '    Return tabela
-
-    'End Function
-
-    'Public Function getProfessionalDataXMLonCBO(ByVal ind_vinc As String, Optional ByVal cod_cbo As String = "000000", Optional ByVal gestao As String = "publica") As DataTable
-    '    xmlDoc.Load(XMLfilePath)
-    '    Dim tabela As New DataTable("profissionais")
-    '    Dim profs As XmlNodeList = Nothing
-    '    Dim unidade As String = Nothing
-
-    '    tabela.Columns.Clear()
-    '    tabela.Columns.Add("CPF")
-    '    tabela.Columns.Add("Nome")
-    '    tabela.Columns.Add("SUS")
-    '    tabela.Columns.Add("CBO")
-    '    tabela.Columns.Add("Descrição")
-    '    tabela.Columns.Add("Conselho")
-    '    tabela.Columns.Add("Nº Registro")
-    '    tabela.Columns.Add("Vinculo")
-    '    tabela.Columns.Add("CH Outros")
-    '    tabela.Columns.Add("CH Amb")
-    '    tabela.Columns.Add("CH Hospitalar")
-
-    '    Dim str_cod_cbo
-
-    '    If cod_cbo <> "000000" Then
-    '        str_cod_cbo = " and @COD_CBO='" & cod_cbo & "'"
-    '    Else
-    '        str_cod_cbo = ""
-    '    End If
-
-    '    Dim operador
-    '    If gestao = "publica" Then
-    '        operador = "="
-    '    Else
-    '        operador = "!="
-    '    End If
-
-    '    profs = xmlDoc.DocumentElement.SelectNodes("/ROOT/ESTABELECIMENTOS/DADOS_GERAIS_ESTABELECIMENTOS[@CNPJ_MANT" & operador & "'46578514000120']/PROFISSIONAIS/DADOS_PROFISSIONAIS/VINCULOS_PROF/DADOS_VINC_PROF[@IND_VINC='" & ind_vinc & "'" & str_cod_cbo & "]")
-
-    '    Dim unicol = tabela.Columns.Add("Unidade")
-    '    unicol.SetOrdinal(0)
-
-    '    For Each p As XmlNode In profs
-
-    '        unidade = p.ParentNode.ParentNode.ParentNode.ParentNode.Attributes("NOME_FANTA").Value
-    '        Dim pathDadosProfissionais = p.ParentNode.ParentNode
-    '        Dim pathDadosVinculo = p
-
-    '        Dim cbo = pathDadosVinculo.Attributes("COD_CBO").Value
-    '        Dim conselho = pathDadosVinculo.Attributes("CONSELHOID").Value
-    '        Dim nregistro = pathDadosVinculo.Attributes("N_REGISTRO").Value
-    '        Dim vinculo = pathDadosVinculo.Attributes("IND_VINC").Value
-    '        Dim choutro = pathDadosVinculo.Attributes("CGHORAOUTR").Value
-    '        Dim chamb = pathDadosVinculo.Attributes("CG_HORAAMB").Value
-    '        Dim chhosp = pathDadosVinculo.Attributes("CGHORAHOSP").Value
-
-    '        tabela.Rows.Add(unidade, pathDadosProfissionais.Attributes("CPF_PROF").Value, pathDadosProfissionais.Attributes("NOME_PROF").Value, pathDadosProfissionais.Attributes("COD_CNS").Value, cbo, getCBOXML(cbo), getOrgaodeClasse(conselho), nregistro, vinculo, choutro, chamb, chhosp)
-
-    '    Next
-
-    '    Return tabela
-
-    'End Function
+    End Function
 
 End Class

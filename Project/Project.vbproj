@@ -405,6 +405,12 @@
     <Compile Include="FcadPacientesEMTU.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FCNES.Designer.vb">
+      <DependentUpon>FCNES.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FCNES.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FeditarProtocolo.Designer.vb">
       <DependentUpon>FeditarProtocolo.vb</DependentUpon>
     </Compile>
@@ -560,6 +566,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FcadPacientesEMTU.resx">
       <DependentUpon>FcadPacientesEMTU.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FCNES.resx">
+      <DependentUpon>FCNES.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FeditarProtocolo.resx">
       <DependentUpon>FeditarProtocolo.vb</DependentUpon>

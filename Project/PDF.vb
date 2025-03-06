@@ -2,6 +2,7 @@
 Imports System.Text.RegularExpressions
 Imports iTextSharp.text.pdf
 Imports iTextSharp.text.pdf.parser
+Imports System.Data
 
 Public Class PDF
     Dim pdfPath As String = Application.StartupPath & "/PDF/cnes.pdf"
@@ -326,24 +327,6 @@ Public Class PDF
 
     End Function
 
-    Private Function ExtrairLinhasComCPF(ByVal texto As String) As List(Of String)
-        Dim linhasComCPF As New List(Of String)()
-
-        ' Tentar dividir por diferentes separadores de linha
-        Dim linhas As String() = texto.Split(New String() {vbLf, vbCrLf}, StringSplitOptions.RemoveEmptyEntries)
-
-        ' Expressão regular para capturar CPF
-        Dim regexCPF As New Regex("^\d{11}\b")
-
-        For Each linha As String In linhas
-            If regexCPF.IsMatch(linha) Then
-                linhasComCPF.Add(linha)
-            End If
-        Next
-
-        Return linhasComCPF
-    End Function
-
     Private Function ProcessarDados(ByVal texto As String) As Dictionary(Of String, List(Of String))
         Dim resultado As New Dictionary(Of String, List(Of String))()
 
@@ -379,5 +362,8 @@ Public Class PDF
         Return resultado
 
     End Function
+    '--------------------------------------------------------------------------------------------------
+
+
 
 End Class

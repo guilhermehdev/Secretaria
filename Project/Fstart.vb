@@ -20,7 +20,7 @@
     End Sub
 
     Private Sub btCNES_Click_1(sender As Object, e As EventArgs) Handles btCNES.Click
-        FplanejCNES.Show()
+        FCNES.Show()
         Me.Visible = False
     End Sub
 
