@@ -43,7 +43,7 @@ Partial Class FCNES
         Me.TabControl1.Location = New System.Drawing.Point(12, 30)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(931, 554)
+        Me.TabControl1.Size = New System.Drawing.Size(1160, 554)
         Me.TabControl1.TabIndex = 0
         '
         'TabPage1
@@ -52,7 +52,7 @@ Partial Class FCNES
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(923, 528)
+        Me.TabPage1.Size = New System.Drawing.Size(1152, 528)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Equipes"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -88,17 +88,21 @@ Partial Class FCNES
         '
         'PanelContainer
         '
+        Me.PanelContainer.AutoScroll = True
+        Me.PanelContainer.AutoSize = True
+        Me.PanelContainer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.PanelContainer.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PanelContainer.Location = New System.Drawing.Point(3, 3)
         Me.PanelContainer.Name = "PanelContainer"
-        Me.PanelContainer.Size = New System.Drawing.Size(917, 522)
+        Me.PanelContainer.Padding = New System.Windows.Forms.Padding(3)
+        Me.PanelContainer.Size = New System.Drawing.Size(1146, 522)
         Me.PanelContainer.TabIndex = 0
         '
         'FCNES
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(955, 596)
+        Me.ClientSize = New System.Drawing.Size(1184, 596)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.MenuStrip1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
@@ -108,6 +112,7 @@ Partial Class FCNES
         Me.Text = "CNES"
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
+        Me.TabPage1.PerformLayout()
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
         Me.ResumeLayout(False)

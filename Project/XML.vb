@@ -341,6 +341,7 @@ Public Class XML
                                 .CPF = prof.Attribute("CPF_PROF")?.Value,
                                 .CNS = prof.Attribute("CO_CNS")?.Value,
                                 .CNESLOTACAO = prof.Element("LOTACOES")?.Element("DADOS_LOTACOES")?.Attribute("CNES")?.Value,
+                                .CBOLOTACAO = prof.Element("LOTACOES")?.Element("DADOS_LOTACOES")?.Attribute("CO_CBO")?.Value,
                                 .INELOTACAO = prof.Element("LOTACOES")?.Element("DADOS_LOTACOES")?.Attribute("CO_INE")?.Value
                             }
 
@@ -378,5 +379,6 @@ Public Class Profissional
     Public Property CNS As String
     Public Property CNESLOTACAO As String
     Public Property INELOTACAO As String
+    Public Property CBOLOTACAO As String
 End Class
 
