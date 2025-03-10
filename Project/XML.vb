@@ -312,24 +312,71 @@ Public Class XML
         combobox.ValueMember = "Key"
     End Sub
 
-    Public Function equipesXML()
-        ' Caminho para o arquivo XML
-        Dim xmlFile As String = XMLEquipesPath
+    Function equipesXML() As List(Of Estabelecimento)
+        Dim doc As XDocument = XDocument.Load(XMLEquipesPath)
+        Dim estabelecimentos As New List(Of Estabelecimento)()
 
-        ' Carregar o documento XML
-        Dim xdoc As XDocument = XDocument.Load(xmlFile)
+        ' Consulta os Estabelecimentos
+        Dim estQuery = From est In doc.Descendants("DADOS_GERAIS_ESTABELECIMENTOS")
+                       Select New Estabelecimento With {
+                           .NOME = est.Attribute("NM_FANTA")?.Value,
+                           .TIPOUNIDADE = est.Attribute("DS_TP_UNID")?.Value,
+                           .CNES = est.Attribute("CNES")?.Value,
+                           .Endereco = $"{est.Element("ENDERECO")?.Element("DADOS_ENDERECO")?.Attribute("LOGRADOURO")?.Value}, {est.Element("ENDERECO")?.Element("DADOS_ENDERECO")?.Attribute("NUMERO")?.Value}",
+                           .Equipes = (From equipe In est.Element("EQUIPES")?.Elements("DADOS_EQUIPES")
+                                       Select New Equipe With {
+                                           .NomeReferencia = equipe.Attribute("NM_REFERENCIA")?.Value,
+                                           .INE = equipe.Attribute("CO_INE")?.Value,
+                                           .TIPO = equipe.Attribute("DS_EQUIPE")?.Value,
+                                           .Profissionais = New List(Of Profissional)()
+                                       }).ToList()
+                       }
 
-        ' Exemplo: Iterar sobre elementos XML
-        For Each element In xdoc.Descendants("DADOS_GERAIS_ESTABELECIMENTOS") ' Substitua "Elemento" pelo nome da tag que você está buscando
-            Dim atributo As String = element.Attribute("NM_FANTA")?.Value ' Extraímos o valor de um atributo específico
-            Dim conteudo As String = element.Value ' Conteúdo dentro da tag
+        estabelecimentos = estQuery.ToList()
 
-            ' Exibindo os dados extraídos
-            Console.WriteLine($"Atributo: {atributo}")
-            Console.WriteLine($"Conteúdo: {conteudo}")
+        ' Consulta os Profissionais e os associa às equipes correspondentes
+        Dim profissionais = From prof In doc.Descendants("DADOS_PROFISSIONAIS")
+                            Select New Profissional With {
+                                .Nome = prof.Attribute("NM_PROF")?.Value,
+                                .CPF = prof.Attribute("CPF_PROF")?.Value,
+                                .CNS = prof.Attribute("CO_CNS")?.Value,
+                                .CNESLOTACAO = prof.Element("LOTACOES")?.Element("DADOS_LOTACOES")?.Attribute("CNES")?.Value,
+                                .INELOTACAO = prof.Element("LOTACOES")?.Element("DADOS_LOTACOES")?.Attribute("CO_INE")?.Value
+                            }
+
+        ' Associa profissionais às equipes correspondentes
+        For Each est In estabelecimentos
+            For Each eq In est.Equipes
+                eq.Profissionais = profissionais.Where(Function(p) p.CNESLOTACAO = est.CNES AndAlso p.INELOTACAO = eq.INE).ToList()
+            Next
         Next
 
+        Return estabelecimentos
 
     End Function
 
 End Class
+
+Public Class Estabelecimento
+    Public Property NOME As String
+    Public Property TIPOUNIDADE As String
+    Public Property CNES As String
+    Public Property Endereco As String
+    Public Property Equipes As List(Of Equipe)
+End Class
+
+Public Class Equipe
+    Public Property NomeReferencia As String
+    Public Property TIPO As String
+    Public Property INE As String
+    Public Property Profissionais As List(Of Profissional)
+End Class
+
+Public Class Profissional
+    Public Property Nome As String
+    Public Property CPF As String
+    Public Property CNS As String
+    Public Property CNESLOTACAO As String
+    Public Property INELOTACAO As String
+End Class
+
