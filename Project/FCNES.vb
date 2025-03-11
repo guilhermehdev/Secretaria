@@ -1,141 +1,150 @@
-﻿Imports System.Drawing.Printing
-Imports System.Runtime.InteropServices
-Imports iTextSharp.text.pdf
-
-Public Class FCNES
-    Dim pdfPath As String = Application.StartupPath & "/PDF/equipes.pdf"
+﻿Public Class FCNES
     Dim xml As New XML
-    Private draggedImage As Bitmap ' Armazena a imagem do controle sendo arrastado
-    Private dragOffset As Point ' Armazena o offset do cursor em relação ao controle
-    Private isDragging As Boolean ' Indica se um arrasto está em progresso
+    Dim toolTip As New ToolTip() ' Instância global do ToolTip
+    Dim sourceContainer As FlowLayoutPanel = Nothing ' Container de origem do Label
+    Private toolTipTimer As New Timer()
+    Private scrollTimer As New Timer()
+    Private scrollDirection As Integer = 0 ' 1 para baixo, -1 para cima
 
-    Private Sub PlanejamentoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PlanejamentoToolStripMenuItem.Click
-        FplanejCNES.Show()
-    End Sub
 
     Private Sub Container_DragEnter(sender As Object, e As DragEventArgs)
         If e.Data.GetDataPresent(GetType(Label)) Then
-            e.Effect = DragDropEffects.Move
+            Dim destinationContainer = DirectCast(sender, FlowLayoutPanel)
+
+            e.Effect = DragDropEffects.Move ' Permite o drop
         Else
-            e.Effect = DragDropEffects.None
+            e.Effect = DragDropEffects.None ' Não permite o drop
         End If
     End Sub
 
-
     Private Sub Container_DragDrop(sender As Object, e As DragEventArgs)
-        Dim container As FlowLayoutPanel = DirectCast(sender, FlowLayoutPanel)
-        Dim control As Control = DirectCast(e.Data.GetData(GetType(Label)), Control)
+        Dim destinationContainer As FlowLayoutPanel = DirectCast(sender, FlowLayoutPanel)
+        Dim control As Label = DirectCast(e.Data.GetData(GetType(Label)), Label)
+        Dim labelText As String = control.Text
 
         ' Adiciona o controle ao container de destino
-        container.Controls.Add(control)
+        destinationContainer.Controls.Add(control)
+        destinationContainer.Controls.SetChildIndex(control, 1)
+        ' Oculta o ToolTip após alguns segundos
+        toolTip.Hide(destinationContainer)
 
-        ' Limpa os dados do arrasto
-        draggedImage = Nothing
-        isDragging = False
-        container.Refresh()
+        toolTip.Show($"{labelText}{vbCrLf}Movido para Equipe: {destinationContainer.Name}", destinationContainer, 10, 10, 6000)
+        toolTipTimer.Tag = destinationContainer ' Armazena o container para ocultar depois
+        toolTipTimer.Start()
+        sourceContainer = Nothing
+
+        scrollTimer.Stop() ' Para a rolagem ao soltar o label
     End Sub
 
-    Private Sub Container_DragLeave(sender As Object, e As EventArgs)
-        Dim container As Control = DirectCast(sender, Control)
-        container.Refresh() ' Limpa qualquer imagem residual
+    Private Sub Container_DragOver(sender As Object, e As DragEventArgs) Handles PanelContainer.DragOver
+        e.Effect = DragDropEffects.Move
+        Dim container As FlowLayoutPanel = DirectCast(sender, FlowLayoutPanel)
+        Dim mousePosition As Point = PanelContainer.PointToClient(Cursor.Position)
+        Dim scrollThreshold As Integer = 30 ' Ajuste a distância da borda conforme necessário
+
+        If mousePosition.Y < scrollThreshold Then
+            ' Rolar para cima
+            scrollDirection = -1
+            If Not scrollTimer.Enabled Then scrollTimer.Start()
+        ElseIf mousePosition.Y > PanelContainer.ClientSize.Height - scrollThreshold Then
+            ' Rolar para baixo
+            scrollDirection = 1
+            If Not scrollTimer.Enabled Then scrollTimer.Start()
+        Else
+            ' Parar a rolagem
+            scrollTimer.Stop()
+        End If
+    End Sub
+
+    Private Sub scrollTimer_Tick(sender As Object, e As EventArgs)
+        ' Debug.WriteLine("scrollTimer_Tick disparado!")
+        Try
+            Dim scrollAmount As Integer = 50 ' Ajuste a velocidade da rolagem conforme necessário
+            PanelContainer.VerticalScroll.Value += scrollDirection * scrollAmount
+
+            ' Garante que o valor do scroll esteja dentro dos limites
+            PanelContainer.VerticalScroll.Value = Math.Max(PanelContainer.VerticalScroll.Minimum, Math.Min(PanelContainer.VerticalScroll.Maximum, PanelContainer.VerticalScroll.Value))
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
     Private Sub Control_MouseDown(sender As Object, e As MouseEventArgs)
         If e.Button = MouseButtons.Left Then
-            Dim control As Control = DirectCast(sender, Control)
+            Dim control As Label = DirectCast(sender, Label)
+            Dim labelText As String = control.Text ' Captura o texto do label
 
-            ' Captura a imagem do controle
-            draggedImage = New Bitmap(control.Width, control.Height)
-            control.DrawToBitmap(draggedImage, New Rectangle(0, 0, draggedImage.Width, draggedImage.Height))
+            ' Identifica o container de origem
+            sourceContainer = DirectCast(control.Parent, FlowLayoutPanel)
 
-            ' Calcula o offset do cursor em relação ao controle
-            dragOffset = e.Location
-
-            ' Indica que o arrasto começou
-            isDragging = True
+            ' Mostra o ToolTip indicando a origem
+            toolTip.Show($"{labelText}{vbCrLf}Saindo de Equipe: {sourceContainer.Name}", sourceContainer, 10, 10, 6000)
 
             ' Inicia o arrasto
             control.DoDragDrop(control, DragDropEffects.Move)
         End If
     End Sub
 
-
-    Private Sub Container_DragOver(sender As Object, e As DragEventArgs)
-        If isDragging AndAlso draggedImage IsNot Nothing Then
-            Dim container As Control = DirectCast(sender, Control)
-            Dim graphics As Graphics = container.CreateGraphics()
-
-            ' Limpa o fundo antes de desenhar a nova posição
-            container.Refresh()
-
-            ' Calcula a posição para desenhar a imagem
-            Dim cursorPosition As Point = container.PointToClient(New Point(e.X, e.Y))
-            Dim drawPosition As New Point(cursorPosition.X - dragOffset.X, cursorPosition.Y - dragOffset.Y)
-
-            ' Desenha a imagem
-            graphics.DrawImage(draggedImage, drawPosition)
-        End If
-
-        e.Effect = DragDropEffects.Move
-    End Sub
-
+    ' Evento Load para configurar os containers e labels
     Private Sub FCNES_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim estabelecimentos = xml.equipesXML()
 
+        AddHandler PanelContainer.DragOver, AddressOf Container_DragOver
+
         For Each est In estabelecimentos
-
             If est.Equipes IsNot Nothing Then
-
                 For Each eq In est.Equipes
-                    ' Console.WriteLine($"  Equipe: {eq.NomeReferencia}")
                     Dim unidade As New FlowLayoutPanel()
-                    Dim labelNome As New Label()
-                    Dim panelNome As New Panel()
-
-                    unidade.Name = est.NOME
+                    unidade.Name = eq.NomeReferencia
                     unidade.AllowDrop = True
-                    unidade.Width = 320
+                    unidade.Width = 300
                     unidade.Height = 400
-                    unidade.Margin = New Padding(20)
+                    unidade.Margin = New Padding(10)
                     unidade.Padding = New Padding(0)
                     unidade.AutoScroll = True
                     unidade.FlowDirection = FlowDirection.TopDown
                     unidade.BorderStyle = BorderStyle.FixedSingle
                     unidade.WrapContents = False
                     unidade.HorizontalScroll.Visible = False
+
+                    ' Adiciona os eventos de drag-and-drop
                     AddHandler unidade.DragEnter, AddressOf Container_DragEnter
                     AddHandler unidade.DragDrop, AddressOf Container_DragDrop
-                    AddHandler unidade.DragOver, AddressOf Container_DragOver
-                    AddHandler unidade.DragLeave, AddressOf Container_DragLeave
 
-                    labelNome.AutoSize = False
-                    labelNome.Width = 300
-                    labelNome.BackColor = Color.White
-                    labelNome.ForeColor = Color.Black
-                    labelNome.Font = New Font("Calibri", 12, FontStyle.Bold)
-                    labelNome.Text = eq.NomeReferencia
-                    labelNome.TextAlign = ContentAlignment.MiddleCenter
-                    labelNome.Anchor = AnchorStyles.Top
-                    labelNome.Margin = New Padding(0, 0, 0, 10)
+                    Dim labelNome As New Label() With {
+                        .AutoSize = False,
+                        .Width = 280,
+                        .BackColor = Color.White,
+                        .ForeColor = Color.Black,
+                        .Font = New Font("Calibri", 10, FontStyle.Bold),
+                        .Text = eq.NomeReferencia & " - " & eq.INE,
+                        .TextAlign = ContentAlignment.MiddleCenter,
+                        .Margin = New Padding(0, 0, 0, 10)
+                    }
 
                     PanelContainer.Controls.Add(unidade)
                     unidade.Controls.Add(labelNome)
 
                     If eq.Profissionais IsNot Nothing Then
-
                         For Each prof In eq.Profissionais
                             Dim labelProf As New Label()
-
+                            Dim labelCBO As New Label()
                             labelProf.AutoSize = False
-                            labelProf.Width = 280
-                            labelProf.Height = 40
+                            labelProf.Width = 260
+                            labelProf.Height = 45
                             labelProf.Font = New Font("Calibri", 10, FontStyle.Regular)
-                            labelProf.Text = prof.Nome & vbCrLf & xml.getCBOXML(prof.CBOLOTACAO)
+                            labelCBO.Font = New Font("Calibri", 10, FontStyle.Italic)
+                            labelCBO.Text = xml.getCBOXML(prof.CBOLOTACAO)
+
+                            labelProf.Text = prof.Nome & vbCrLf & labelCBO.Text
                             labelProf.Margin = New Padding(10, 5, 5, 10)
                             labelProf.Padding = New Padding(2, 2, 2, 2)
                             labelProf.BorderStyle = BorderStyle.None
+                            labelProf.BackColor = Color.SteelBlue
                             labelProf.ForeColor = Color.White
 
+                            ' Adiciona o evento de MouseDown para arrastar
                             AddHandler labelProf.MouseDown, AddressOf Control_MouseDown
 
                             Select Case prof.CBOLOTACAO
@@ -151,24 +160,39 @@ Public Class FCNES
                                     labelProf.BackColor = Color.DarkSlateGray
                             End Select
 
-
                             unidade.Controls.Add(labelProf)
                         Next
                     End If
                 Next
             End If
-
-            ' Console.WriteLine(New String("-"c, 50))
         Next
-
     End Sub
 
     Private Sub FCNES_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
         PanelContainer.Height = Me.Height
     End Sub
 
+    Public Sub New()
+        InitializeComponent()
+        toolTipTimer.Interval = 2000 ' 2 segundos
+        AddHandler toolTipTimer.Tick, AddressOf toolTipTimer_Tick
+
+        scrollTimer.Interval = 10 ' Ajuste o intervalo conforme necessário
+        AddHandler scrollTimer.Tick, AddressOf scrollTimer_Tick
+    End Sub
+
+    Private Sub toolTipTimer_Tick(sender As Object, e As EventArgs)
+        toolTipTimer.Stop()
+        toolTip.Hide(DirectCast(toolTipTimer.Tag, FlowLayoutPanel))
+    End Sub
+
     Private Sub FCNES_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         Application.Exit()
+        toolTip.Active = False
+    End Sub
+
+    Private Sub PanelContainer_MouseUp(sender As Object, e As MouseEventArgs) Handles PanelContainer.MouseUp
+        scrollTimer.Stop()
     End Sub
 
 End Class

@@ -24,10 +24,11 @@ Partial Class FCNES
     Private Sub InitializeComponent()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.PanelContainer = New System.Windows.Forms.FlowLayoutPanel()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.PlanejamentoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.PanelContainer = New System.Windows.Forms.FlowLayoutPanel()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
@@ -40,10 +41,10 @@ Partial Class FCNES
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Location = New System.Drawing.Point(12, 30)
+        Me.TabControl1.Location = New System.Drawing.Point(244, 37)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(1160, 554)
+        Me.TabControl1.Size = New System.Drawing.Size(998, 547)
         Me.TabControl1.TabIndex = 0
         '
         'TabPage1
@@ -52,17 +53,30 @@ Partial Class FCNES
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(1152, 528)
+        Me.TabPage1.Size = New System.Drawing.Size(990, 521)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Equipes"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'PanelContainer
+        '
+        Me.PanelContainer.AllowDrop = True
+        Me.PanelContainer.AutoScroll = True
+        Me.PanelContainer.AutoSize = True
+        Me.PanelContainer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.PanelContainer.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.PanelContainer.Location = New System.Drawing.Point(3, 3)
+        Me.PanelContainer.Name = "PanelContainer"
+        Me.PanelContainer.Padding = New System.Windows.Forms.Padding(3)
+        Me.PanelContainer.Size = New System.Drawing.Size(984, 515)
+        Me.PanelContainer.TabIndex = 0
         '
         'TabPage2
         '
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(947, 546)
+        Me.TabPage2.Size = New System.Drawing.Size(1152, 528)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "TabPage2"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -86,26 +100,25 @@ Partial Class FCNES
         Me.PlanejamentoToolStripMenuItem.Size = New System.Drawing.Size(92, 20)
         Me.PlanejamentoToolStripMenuItem.Text = "Planejamento"
         '
-        'PanelContainer
+        'GroupBox1
         '
-        Me.PanelContainer.AutoScroll = True
-        Me.PanelContainer.AutoSize = True
-        Me.PanelContainer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.PanelContainer.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.PanelContainer.Location = New System.Drawing.Point(3, 3)
-        Me.PanelContainer.Name = "PanelContainer"
-        Me.PanelContainer.Padding = New System.Windows.Forms.Padding(3)
-        Me.PanelContainer.Size = New System.Drawing.Size(1146, 522)
-        Me.PanelContainer.TabIndex = 0
+        Me.GroupBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox1.Location = New System.Drawing.Point(12, 37)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(226, 547)
+        Me.GroupBox1.TabIndex = 2
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Histórico"
         '
         'FCNES
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1184, 596)
+        Me.ClientSize = New System.Drawing.Size(1254, 596)
+        Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.MenuStrip1)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.MainMenuStrip = Me.MenuStrip1
         Me.Name = "FCNES"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
@@ -126,4 +139,5 @@ Partial Class FCNES
     Friend WithEvents MenuStrip1 As MenuStrip
     Friend WithEvents PlanejamentoToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents PanelContainer As FlowLayoutPanel
+    Friend WithEvents GroupBox1 As GroupBox
 End Class
