@@ -1,6 +1,10 @@
-﻿Public Class FCNES
+﻿Imports System.IO
+Imports System.Net
+Imports ServiceStack
+
+Public Class FCNES
     Dim xml As New XML
-    Dim toolTip As New ToolTip() ' Instância global do ToolTip
+    ' Dim toolTip As New ToolTip() ' Instância global do ToolTip
     Dim sourceContainer As FlowLayoutPanel = Nothing ' Container de origem do Label
     Private toolTipTimer As New Timer()
     Private scrollTimer As New Timer()
@@ -17,6 +21,21 @@
         End If
     End Sub
 
+    Private Sub Control_MouseDown(sender As Object, e As MouseEventArgs)
+        If e.Button = MouseButtons.Left Then
+            Dim control As Label = DirectCast(sender, Label)
+            Dim labelText As String = control.Text ' Captura o texto do label
+            ' Identifica o container de origem
+            sourceContainer = DirectCast(control.Parent, FlowLayoutPanel)
+            ' Mostra o ToolTip indicando a origem
+            ToolTip1.Show($"{labelText}{vbCrLf}Saindo de Equipe: {sourceContainer.Name}", sourceContainer, 10, 10, 6000)
+            ' Inicia o arrasto
+            control.DoDragDrop(control, DragDropEffects.Move)
+
+
+        End If
+    End Sub
+
     Private Sub Container_DragDrop(sender As Object, e As DragEventArgs)
         Dim destinationContainer As FlowLayoutPanel = DirectCast(sender, FlowLayoutPanel)
         Dim control As Label = DirectCast(e.Data.GetData(GetType(Label)), Label)
@@ -26,9 +45,9 @@
         destinationContainer.Controls.Add(control)
         destinationContainer.Controls.SetChildIndex(control, 1)
         ' Oculta o ToolTip após alguns segundos
-        toolTip.Hide(destinationContainer)
+        ToolTip1.Hide(destinationContainer)
 
-        toolTip.Show($"{labelText}{vbCrLf}Movido para Equipe: {destinationContainer.Name}", destinationContainer, 10, 10, 6000)
+        ToolTip1.Show($"{labelText}{vbCrLf}Movido para Equipe: {destinationContainer.Name}", destinationContainer, 10, 10, 6000)
         toolTipTimer.Tag = destinationContainer ' Armazena o container para ocultar depois
         toolTipTimer.Start()
         sourceContainer = Nothing
@@ -70,102 +89,100 @@
 
     End Sub
 
-    Private Sub Control_MouseDown(sender As Object, e As MouseEventArgs)
-        If e.Button = MouseButtons.Left Then
-            Dim control As Label = DirectCast(sender, Label)
-            Dim labelText As String = control.Text ' Captura o texto do label
-
-            ' Identifica o container de origem
-            sourceContainer = DirectCast(control.Parent, FlowLayoutPanel)
-
-            ' Mostra o ToolTip indicando a origem
-            toolTip.Show($"{labelText}{vbCrLf}Saindo de Equipe: {sourceContainer.Name}", sourceContainer, 10, 10, 6000)
-
-            ' Inicia o arrasto
-            control.DoDragDrop(control, DragDropEffects.Move)
-        End If
-    End Sub
-
     ' Evento Load para configurar os containers e labels
     Private Sub FCNES_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Dim estabelecimentos = xml.equipesXML()
+        Dim estabelecimentos As List(Of Estabelecimento) = xml.equipesXML().ToList()
+
+        Do While estabelecimentos.Count = 0 ' Verifica se a lista está vazia
+            xml.copyXMLFileFromServer()
+            estabelecimentos = xml.equipesXML().ToList() ' Supondo que xml.equipesXML() retorne um array
+        Loop
 
         AddHandler PanelContainer.DragOver, AddressOf Container_DragOver
 
-        For Each est In estabelecimentos
-            If est.Equipes IsNot Nothing Then
-                For Each eq In est.Equipes
-                    Dim unidade As New FlowLayoutPanel()
-                    unidade.Name = eq.NomeReferencia
-                    unidade.AllowDrop = True
-                    unidade.Width = 300
-                    unidade.Height = 400
-                    unidade.Margin = New Padding(10)
-                    unidade.Padding = New Padding(0)
-                    unidade.AutoScroll = True
-                    unidade.FlowDirection = FlowDirection.TopDown
-                    unidade.BorderStyle = BorderStyle.FixedSingle
-                    unidade.WrapContents = False
-                    unidade.HorizontalScroll.Visible = False
+        If estabelecimentos.Count > 0 Then
 
-                    ' Adiciona os eventos de drag-and-drop
-                    AddHandler unidade.DragEnter, AddressOf Container_DragEnter
-                    AddHandler unidade.DragDrop, AddressOf Container_DragDrop
+            For Each est In estabelecimentos
+                If est.Equipes IsNot Nothing Then
+                    For Each eq In est.Equipes
+                        Dim unidade As New FlowLayoutPanel()
+                        unidade.Name = eq.NomeReferencia
+                        unidade.Tag = est.NOME
+                        unidade.AllowDrop = True
+                        unidade.Width = 300
+                        unidade.Height = 400
+                        unidade.Margin = New Padding(10)
+                        unidade.Padding = New Padding(0)
+                        unidade.AutoScroll = True
+                        unidade.FlowDirection = FlowDirection.TopDown
+                        unidade.BorderStyle = BorderStyle.FixedSingle
+                        unidade.WrapContents = False
+                        unidade.HorizontalScroll.Visible = False
 
-                    Dim labelNome As New Label() With {
-                        .AutoSize = False,
-                        .Width = 280,
-                        .BackColor = Color.White,
-                        .ForeColor = Color.Black,
-                        .Font = New Font("Calibri", 10, FontStyle.Bold),
-                        .Text = eq.NomeReferencia & " - " & eq.INE,
-                        .TextAlign = ContentAlignment.MiddleCenter,
-                        .Margin = New Padding(0, 0, 0, 10)
-                    }
+                        ' Adiciona os eventos de drag-and-drop
+                        AddHandler unidade.DragEnter, AddressOf Container_DragEnter
+                        AddHandler unidade.DragDrop, AddressOf Container_DragDrop
 
-                    PanelContainer.Controls.Add(unidade)
-                    unidade.Controls.Add(labelNome)
+                        Dim labelNome As New Label() With {
+                            .AutoSize = False,
+                            .Width = 280,
+                            .BackColor = Color.White,
+                            .ForeColor = Color.Black,
+                            .Font = New Font("Calibri", 10, FontStyle.Bold),
+                            .Text = eq.NomeReferencia & " - " & eq.INE,
+                            .TextAlign = ContentAlignment.MiddleCenter,
+                            .Margin = New Padding(0, 0, 0, 10)
+                        }
 
-                    If eq.Profissionais IsNot Nothing Then
-                        For Each prof In eq.Profissionais
-                            Dim labelProf As New Label()
-                            Dim labelCBO As New Label()
-                            labelProf.AutoSize = False
-                            labelProf.Width = 260
-                            labelProf.Height = 45
-                            labelProf.Font = New Font("Calibri", 10, FontStyle.Regular)
-                            labelCBO.Font = New Font("Calibri", 10, FontStyle.Italic)
-                            labelCBO.Text = xml.getCBOXML(prof.CBOLOTACAO)
+                        PanelContainer.Controls.Add(unidade)
+                        unidade.Controls.Add(labelNome)
 
-                            labelProf.Text = prof.Nome & vbCrLf & labelCBO.Text
-                            labelProf.Margin = New Padding(10, 5, 5, 10)
-                            labelProf.Padding = New Padding(2, 2, 2, 2)
-                            labelProf.BorderStyle = BorderStyle.None
-                            labelProf.BackColor = Color.SteelBlue
-                            labelProf.ForeColor = Color.White
+                        If eq.Profissionais IsNot Nothing Then
+                            For Each prof In eq.Profissionais
+                                Dim labelProf As New Label()
+                                Dim labelCBO As New Label()
+                                labelProf.AutoSize = False
+                                labelProf.Width = 260
+                                labelProf.Height = 45
+                                labelProf.Font = New Font("Calibri", 10, FontStyle.Regular)
+                                labelCBO.Font = New Font("Calibri", 10, FontStyle.Italic)
+                                labelCBO.Text = xml.getCBOXML(prof.CBOLOTACAO)
 
-                            ' Adiciona o evento de MouseDown para arrastar
-                            AddHandler labelProf.MouseDown, AddressOf Control_MouseDown
+                                labelProf.Text = prof.Nome & vbCrLf & labelCBO.Text
+                                labelProf.Margin = New Padding(10, 5, 5, 10)
+                                labelProf.Padding = New Padding(2, 2, 2, 2)
+                                labelProf.BorderStyle = BorderStyle.None
+                                labelProf.BackColor = Color.SteelBlue
+                                labelProf.ForeColor = Color.White
 
-                            Select Case prof.CBOLOTACAO
-                                Case "225142"
-                                    labelProf.BackColor = Color.ForestGreen
-                                Case "223565"
-                                    labelProf.BackColor = Color.IndianRed
-                                Case "322245"
-                                    labelProf.BackColor = Color.Orange
-                                Case "515105"
-                                    labelProf.BackColor = Color.SteelBlue
-                                Case Else
-                                    labelProf.BackColor = Color.DarkSlateGray
-                            End Select
+                                ' Adiciona o evento de MouseDown para arrastar
+                                AddHandler labelProf.MouseDown, AddressOf Control_MouseDown
 
-                            unidade.Controls.Add(labelProf)
-                        Next
-                    End If
-                Next
-            End If
-        Next
+                                Select Case prof.CBOLOTACAO
+                                    Case "225142"
+                                        labelProf.BackColor = Color.ForestGreen
+                                    Case "223565"
+                                        labelProf.BackColor = Color.IndianRed
+                                    Case "322245"
+                                        labelProf.BackColor = Color.Orange
+                                    Case "515105"
+                                        labelProf.BackColor = Color.SteelBlue
+                                    Case Else
+                                        labelProf.BackColor = Color.DarkSlateGray
+                                End Select
+
+                                unidade.Controls.Add(labelProf)
+                            Next
+                        End If
+                    Next
+                End If
+            Next
+
+        Else
+
+
+        End If
+
     End Sub
 
     Private Sub FCNES_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
@@ -179,20 +196,29 @@
 
         scrollTimer.Interval = 10 ' Ajuste o intervalo conforme necessário
         AddHandler scrollTimer.Tick, AddressOf scrollTimer_Tick
+
     End Sub
 
     Private Sub toolTipTimer_Tick(sender As Object, e As EventArgs)
         toolTipTimer.Stop()
-        toolTip.Hide(DirectCast(toolTipTimer.Tag, FlowLayoutPanel))
+        ToolTip1.Hide(DirectCast(toolTipTimer.Tag, FlowLayoutPanel))
     End Sub
 
     Private Sub FCNES_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         Application.Exit()
-        toolTip.Active = False
+        ToolTip1.Active = False
     End Sub
 
     Private Sub PanelContainer_MouseUp(sender As Object, e As MouseEventArgs) Handles PanelContainer.MouseUp
         scrollTimer.Stop()
+    End Sub
+
+    Private Sub UploadXMLEsusToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UploadXMLEsusToolStripMenuItem.Click
+        xml.copyXMLFileToServer()
+    End Sub
+
+    Private Sub FecharToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FecharToolStripMenuItem.Click
+        Application.Exit()
     End Sub
 
 End Class

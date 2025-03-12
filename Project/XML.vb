@@ -1,5 +1,10 @@
-﻿Imports System.Xml
+﻿Imports System.IO
+Imports System.Net
+Imports System.Threading.Tasks
+Imports System.Xml
 Imports System.Xml.Linq
+Imports ServiceStack
+Imports System.Linq
 
 Public Class XML
 
@@ -311,48 +316,100 @@ Public Class XML
         combobox.DisplayMember = "Value"
         combobox.ValueMember = "Key"
     End Sub
+    Public Sub copyXMLFileFromServer()
+
+        Try
+            Dim origem As String = $"http://{My.Settings.server}/Secretaria/CNES/EQUIPES.xml" ' URL do arquivo no servidor web
+            Dim destino As String = Application.StartupPath & "\XML\EQUIPES.xml" ' Caminho de destino no cliente
+            Dim clienteWeb As New WebClient()
+            clienteWeb.DownloadFile(origem, destino)
+
+            ' MessageBox.Show("Arquivo copiado com sucesso!")
+        Catch ex As Exception
+            MessageBox.Show("Erro ao copiar arquivo: " & ex.Message)
+        End Try
+    End Sub
+
+    Public Sub copyXMLFileToServer()
+        FCNES.OpenFileDialog1.ShowDialog()
+
+        Try
+            Dim arquivoLocal As String = FCNES.OpenFileDialog1.FileName ' Caminho do arquivo XML local
+            Dim caminhoServidor As String = $"\\{My.Settings.server}\htdocs\Secretaria\CNES\EQUIPES.xml" ' Caminho da pasta no servidor
+
+            File.Copy(arquivoLocal, caminhoServidor, True) ' O terceiro parâmetro 'True' permite sobrescrever o arquivo de destino
+
+            MessageBox.Show("Arquivo copiado com sucesso!")
+        Catch ex As Exception
+            MessageBox.Show($"Erro ao copiar arquivo: {ex.Message}{vbCrLf}{ex.StackTrace}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
+        'Try
+        '    Dim destino As String = $"http://{My.Settings.server}/Secretaria/CNES" ' URL do arquivo no servidor web
+        '    Dim file As String = FCNES.OpenFileDialog1.FileName  ' Caminho de destino no cliente
+        '    Dim clienteWeb As New WebClient()
+        '    clienteWeb.UploadFile(destino, file)
+
+        '    ' MessageBox.Show("Arquivo copiado com sucesso!")
+        'Catch ex As Exception
+        '    MessageBox.Show("Erro ao copiar arquivo: " & ex.Message)
+        'End Try
+    End Sub
 
     Function equipesXML() As List(Of Estabelecimento)
-        Dim doc As XDocument = XDocument.Load(XMLEquipesPath)
         Dim estabelecimentos As New List(Of Estabelecimento)()
+        Dim doc As XDocument
 
-        ' Consulta os Estabelecimentos
-        Dim estQuery = From est In doc.Descendants("DADOS_GERAIS_ESTABELECIMENTOS")
-                       Select New Estabelecimento With {
-                           .NOME = est.Attribute("NM_FANTA")?.Value,
-                           .TIPOUNIDADE = est.Attribute("DS_TP_UNID")?.Value,
-                           .CNES = est.Attribute("CNES")?.Value,
-                           .Endereco = $"{est.Element("ENDERECO")?.Element("DADOS_ENDERECO")?.Attribute("LOGRADOURO")?.Value}, {est.Element("ENDERECO")?.Element("DADOS_ENDERECO")?.Attribute("NUMERO")?.Value}",
-                           .Equipes = (From equipe In est.Element("EQUIPES")?.Elements("DADOS_EQUIPES")
-                                       Select New Equipe With {
-                                           .NomeReferencia = equipe.Attribute("NM_REFERENCIA")?.Value,
-                                           .INE = equipe.Attribute("CO_INE")?.Value,
-                                           .TIPO = equipe.Attribute("DS_EQUIPE")?.Value,
-                                           .Profissionais = New List(Of Profissional)()
-                                       }).ToList()
-                       }
+        Try
 
-        estabelecimentos = estQuery.ToList()
+            If File.Exists(Application.StartupPath & "\XML\EQUIPES.xml") Then
+                doc = XDocument.Load(XMLEquipesPath)
+            Else
+                copyXMLFileFromServer()
 
-        ' Consulta os Profissionais e os associa às equipes correspondentes
-        Dim profissionais = From prof In doc.Descendants("DADOS_PROFISSIONAIS")
-                            Select New Profissional With {
-                                .Nome = prof.Attribute("NM_PROF")?.Value,
-                                .CPF = prof.Attribute("CPF_PROF")?.Value,
-                                .CNS = prof.Attribute("CO_CNS")?.Value,
-                                .CNESLOTACAO = prof.Element("LOTACOES")?.Element("DADOS_LOTACOES")?.Attribute("CNES")?.Value,
-                                .CBOLOTACAO = prof.Element("LOTACOES")?.Element("DADOS_LOTACOES")?.Attribute("CO_CBO")?.Value,
-                                .INELOTACAO = prof.Element("LOTACOES")?.Element("DADOS_LOTACOES")?.Attribute("CO_INE")?.Value
-                            }
+            End If
 
-        ' Associa profissionais às equipes correspondentes
-        For Each est In estabelecimentos
-            For Each eq In est.Equipes
-                eq.Profissionais = profissionais.Where(Function(p) p.CNESLOTACAO = est.CNES AndAlso p.INELOTACAO = eq.INE).ToList()
+            ' Consulta os Estabelecimentos
+            Dim estQuery = From est In doc.Descendants("DADOS_GERAIS_ESTABELECIMENTOS")
+                           Select New Estabelecimento With {
+                               .NOME = est.Attribute("NM_FANTA")?.Value,
+                               .TIPOUNIDADE = est.Attribute("DS_TP_UNID")?.Value,
+                               .CNES = est.Attribute("CNES")?.Value,
+                               .Endereco = $"{est.Element("ENDERECO")?.Element("DADOS_ENDERECO")?.Attribute("LOGRADOURO")?.Value}, {est.Element("ENDERECO")?.Element("DADOS_ENDERECO")?.Attribute("NUMERO")?.Value}",
+                               .Equipes = (From equipe In est.Element("EQUIPES")?.Elements("DADOS_EQUIPES")
+                                           Select New Equipe With {
+                                               .NomeReferencia = equipe.Attribute("NM_REFERENCIA")?.Value,
+                                               .INE = equipe.Attribute("CO_INE")?.Value,
+                                               .TIPO = equipe.Attribute("DS_EQUIPE")?.Value,
+                                               .Profissionais = New List(Of Profissional)()
+                                           }).ToList()
+                           }
+
+            estabelecimentos = estQuery.ToList()
+
+            ' Consulta os Profissionais e os associa às equipes correspondentes
+            Dim profissionais = From prof In doc.Descendants("DADOS_PROFISSIONAIS")
+                                Select New Profissional With {
+                                    .Nome = prof.Attribute("NM_PROF")?.Value,
+                                    .CPF = prof.Attribute("CPF_PROF")?.Value,
+                                    .CNS = prof.Attribute("CO_CNS")?.Value,
+                                    .CNESLOTACAO = prof.Element("LOTACOES")?.Element("DADOS_LOTACOES")?.Attribute("CNES")?.Value,
+                                    .CBOLOTACAO = prof.Element("LOTACOES")?.Element("DADOS_LOTACOES")?.Attribute("CO_CBO")?.Value,
+                                    .INELOTACAO = prof.Element("LOTACOES")?.Element("DADOS_LOTACOES")?.Attribute("CO_INE")?.Value
+                                }
+
+            ' Associa profissionais às equipes correspondentes
+            For Each est In estabelecimentos
+                For Each eq In est.Equipes
+                    eq.Profissionais = profissionais.Where(Function(p) p.CNESLOTACAO = est.CNES AndAlso p.INELOTACAO = eq.INE).ToList()
+                Next
             Next
-        Next
 
-        Return estabelecimentos
+            Return estabelecimentos
+
+        Catch ex As Exception
+            Return Enumerable.Empty(Of Estabelecimento)().ToList
+        End Try
 
     End Function
 

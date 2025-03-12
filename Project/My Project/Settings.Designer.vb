@@ -15,7 +15,7 @@ Option Explicit On
 Namespace My
     
     <Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.12.0.0"),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.13.0.0"),  _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
     Partial Friend NotInheritable Class MySettings
         Inherits Global.System.Configuration.ApplicationSettingsBase
@@ -198,17 +198,6 @@ Namespace My
             End Set
         End Property
         
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("server=localhost;User Id=root;password=123;Persist Security Info=True;database=ma"& _ 
-            "rciavictory")>  _
-        Public ReadOnly Property marciavictoryConnectionString() As String
-            Get
-                Return CType(Me("marciavictoryConnectionString"),String)
-            End Get
-        End Property
-        
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("")>  _
@@ -221,17 +210,6 @@ Namespace My
             End Set
         End Property
         
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("server=192.168.151.55;User Id=trevo;password=systrevo;Persist Security Info=True;"& _ 
-            "database=marciavictory")>  _
-        Public ReadOnly Property marciavictoryConnectionString1() As String
-            Get
-                Return CType(Me("marciavictoryConnectionString1"),String)
-            End Get
-        End Property
-        
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("")>  _
@@ -242,17 +220,6 @@ Namespace My
             Set
                 Me("mysql") = value
             End Set
-        End Property
-        
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("server=server;User Id=trevo;password=systrevo;Persist Security Info=True;database"& _ 
-            "=sisvendas")>  _
-        Public ReadOnly Property sisvendasConnectionString() As String
-            Get
-                Return CType(Me("sisvendasConnectionString"),String)
-            End Get
         End Property
     End Class
 End Namespace

@@ -22,6 +22,7 @@ Partial Class FCNES
     'Não o modifique usando o editor de códigos.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.PanelContainer = New System.Windows.Forms.FlowLayoutPanel()
@@ -29,6 +30,11 @@ Partial Class FCNES
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.PlanejamentoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.ConfigToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.UploadXMLEsusToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.FecharToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
@@ -76,26 +82,24 @@ Partial Class FCNES
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(1152, 528)
+        Me.TabPage2.Size = New System.Drawing.Size(990, 521)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "TabPage2"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
         'MenuStrip1
         '
-        Me.MenuStrip1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.MenuStrip1.Dock = System.Windows.Forms.DockStyle.None
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PlanejamentoToolStripMenuItem})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PlanejamentoToolStripMenuItem, Me.ConfigToolStripMenuItem, Me.FecharToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(100, 24)
+        Me.MenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
+        Me.MenuStrip1.Size = New System.Drawing.Size(1254, 24)
         Me.MenuStrip1.TabIndex = 1
         Me.MenuStrip1.Text = "MenuStrip1"
         '
         'PlanejamentoToolStripMenuItem
         '
+        Me.PlanejamentoToolStripMenuItem.AutoSize = False
         Me.PlanejamentoToolStripMenuItem.Name = "PlanejamentoToolStripMenuItem"
         Me.PlanejamentoToolStripMenuItem.Size = New System.Drawing.Size(92, 20)
         Me.PlanejamentoToolStripMenuItem.Text = "Planejamento"
@@ -109,7 +113,44 @@ Partial Class FCNES
         Me.GroupBox1.Size = New System.Drawing.Size(226, 547)
         Me.GroupBox1.TabIndex = 2
         Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Histórico"
+        Me.GroupBox1.Text = "Alterações pendentes"
+        '
+        'ToolTip1
+        '
+        Me.ToolTip1.AutoPopDelay = 8000
+        Me.ToolTip1.BackColor = System.Drawing.Color.IndianRed
+        Me.ToolTip1.ForeColor = System.Drawing.Color.White
+        Me.ToolTip1.InitialDelay = 500
+        Me.ToolTip1.IsBalloon = True
+        Me.ToolTip1.OwnerDraw = True
+        Me.ToolTip1.ReshowDelay = 100
+        Me.ToolTip1.ShowAlways = True
+        Me.ToolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info
+        '
+        'ConfigToolStripMenuItem
+        '
+        Me.ConfigToolStripMenuItem.AutoSize = False
+        Me.ConfigToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.UploadXMLEsusToolStripMenuItem})
+        Me.ConfigToolStripMenuItem.Name = "ConfigToolStripMenuItem"
+        Me.ConfigToolStripMenuItem.Size = New System.Drawing.Size(96, 19)
+        Me.ConfigToolStripMenuItem.Text = "Configurações"
+        '
+        'UploadXMLEsusToolStripMenuItem
+        '
+        Me.UploadXMLEsusToolStripMenuItem.Name = "UploadXMLEsusToolStripMenuItem"
+        Me.UploadXMLEsusToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.UploadXMLEsusToolStripMenuItem.Text = "Upload XML Esus"
+        '
+        'OpenFileDialog1
+        '
+        Me.OpenFileDialog1.DefaultExt = "xml"
+        Me.OpenFileDialog1.FileName = "EQUIPES.xml"
+        '
+        'FecharToolStripMenuItem
+        '
+        Me.FecharToolStripMenuItem.Name = "FecharToolStripMenuItem"
+        Me.FecharToolStripMenuItem.Size = New System.Drawing.Size(54, 20)
+        Me.FecharToolStripMenuItem.Text = "Fechar"
         '
         'FCNES
         '
@@ -140,4 +181,9 @@ Partial Class FCNES
     Friend WithEvents PlanejamentoToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents PanelContainer As FlowLayoutPanel
     Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents ToolTip1 As ToolTip
+    Friend WithEvents ConfigToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents UploadXMLEsusToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents OpenFileDialog1 As OpenFileDialog
+    Friend WithEvents FecharToolStripMenuItem As ToolStripMenuItem
 End Class
