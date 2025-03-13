@@ -5,9 +5,11 @@ Imports System.Xml
 Imports System.Xml.Linq
 Imports ServiceStack
 Imports System.Linq
+Imports System.Security.Cryptography
+
 
 Public Class XML
-
+    Private ultimoHash As String = ""
     Public xmlDoc As New XmlDocument()
     Public xmlDocCBO As New XmlDocument()
     Public xmlDocOrgao As New XmlDocument()
@@ -344,16 +346,6 @@ Public Class XML
             MessageBox.Show($"Erro ao copiar arquivo: {ex.Message}{vbCrLf}{ex.StackTrace}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
-        'Try
-        '    Dim destino As String = $"http://{My.Settings.server}/Secretaria/CNES" ' URL do arquivo no servidor web
-        '    Dim file As String = FCNES.OpenFileDialog1.FileName  ' Caminho de destino no cliente
-        '    Dim clienteWeb As New WebClient()
-        '    clienteWeb.UploadFile(destino, file)
-
-        '    ' MessageBox.Show("Arquivo copiado com sucesso!")
-        'Catch ex As Exception
-        '    MessageBox.Show("Erro ao copiar arquivo: " & ex.Message)
-        'End Try
     End Sub
 
     Function equipesXML() As List(Of Estabelecimento)
@@ -411,6 +403,35 @@ Public Class XML
             Return Enumerable.Empty(Of Estabelecimento)().ToList
         End Try
 
+    End Function
+
+    Public Sub verificarAlteracao()
+        Try
+            Dim caminhoArquivoServidor As String = $"\\{My.Settings.server}\htdocs\Secretaria\CNES\EQUIPES.xml"
+            Dim hashAtual As String = CalcularHashArquivo(caminhoArquivoServidor)
+
+            If File.Exists(Application.StartupPath & "\XML\EQUIPES.xml") Then
+                If hashAtual <> My.Settings.ultimoHash Then
+                    copyXMLFileFromServer()
+                    My.Settings.ultimoHash = hashAtual
+                Else
+                    'MessageBox.Show("O arquivo não foi alterado.")
+                End If
+
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show($"Erro: {ex.Message}")
+        End Try
+    End Sub
+
+    Private Function CalcularHashArquivo(caminhoArquivo As String) As String
+        Using arquivo As New FileStream(caminhoArquivo, FileMode.Open, FileAccess.Read)
+            Using sha256 As SHA256 = sha256.Create()
+                Dim hashBytes As Byte() = sha256.ComputeHash(arquivo)
+                Return BitConverter.ToString(hashBytes).Replace("-", "").ToLower()
+            End Using
+        End Using
     End Function
 
 End Class

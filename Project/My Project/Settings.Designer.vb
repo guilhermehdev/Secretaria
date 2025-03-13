@@ -221,6 +221,18 @@ Namespace My
                 Me("mysql") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property ultimoHash() As String
+            Get
+                Return CType(Me("ultimoHash"),String)
+            End Get
+            Set
+                Me("ultimoHash") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

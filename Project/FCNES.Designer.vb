@@ -35,9 +35,11 @@ Partial Class FCNES
         Me.UploadXMLEsusToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.FecharToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.FlowLayoutPanelAleracoes = New System.Windows.Forms.FlowLayoutPanel()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'TabControl1
@@ -84,7 +86,7 @@ Partial Class FCNES
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage2.Size = New System.Drawing.Size(990, 521)
         Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "TabPage2"
+        Me.TabPage2.Text = "Unidades"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
         'MenuStrip1
@@ -99,7 +101,6 @@ Partial Class FCNES
         '
         'PlanejamentoToolStripMenuItem
         '
-        Me.PlanejamentoToolStripMenuItem.AutoSize = False
         Me.PlanejamentoToolStripMenuItem.Name = "PlanejamentoToolStripMenuItem"
         Me.PlanejamentoToolStripMenuItem.Size = New System.Drawing.Size(92, 20)
         Me.PlanejamentoToolStripMenuItem.Text = "Planejamento"
@@ -108,6 +109,7 @@ Partial Class FCNES
         '
         Me.GroupBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox1.Controls.Add(Me.FlowLayoutPanelAleracoes)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 37)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(226, 547)
@@ -129,10 +131,9 @@ Partial Class FCNES
         '
         'ConfigToolStripMenuItem
         '
-        Me.ConfigToolStripMenuItem.AutoSize = False
         Me.ConfigToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.UploadXMLEsusToolStripMenuItem})
         Me.ConfigToolStripMenuItem.Name = "ConfigToolStripMenuItem"
-        Me.ConfigToolStripMenuItem.Size = New System.Drawing.Size(96, 19)
+        Me.ConfigToolStripMenuItem.Size = New System.Drawing.Size(96, 20)
         Me.ConfigToolStripMenuItem.Text = "Configurações"
         '
         'UploadXMLEsusToolStripMenuItem
@@ -152,6 +153,14 @@ Partial Class FCNES
         Me.FecharToolStripMenuItem.Size = New System.Drawing.Size(54, 20)
         Me.FecharToolStripMenuItem.Text = "Fechar"
         '
+        'FlowLayoutPanelAleracoes
+        '
+        Me.FlowLayoutPanelAleracoes.FlowDirection = System.Windows.Forms.FlowDirection.TopDown
+        Me.FlowLayoutPanelAleracoes.Location = New System.Drawing.Point(6, 19)
+        Me.FlowLayoutPanelAleracoes.Name = "FlowLayoutPanelAleracoes"
+        Me.FlowLayoutPanelAleracoes.Size = New System.Drawing.Size(214, 521)
+        Me.FlowLayoutPanelAleracoes.TabIndex = 0
+        '
         'FCNES
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -169,6 +178,7 @@ Partial Class FCNES
         Me.TabPage1.PerformLayout()
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
+        Me.GroupBox1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -186,4 +196,5 @@ Partial Class FCNES
     Friend WithEvents UploadXMLEsusToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
     Friend WithEvents FecharToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents FlowLayoutPanelAleracoes As FlowLayoutPanel
 End Class

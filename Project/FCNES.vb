@@ -4,11 +4,12 @@ Imports ServiceStack
 
 Public Class FCNES
     Dim xml As New XML
-    ' Dim toolTip As New ToolTip() ' Instância global do ToolTip
+    Dim m As New Main
     Dim sourceContainer As FlowLayoutPanel = Nothing ' Container de origem do Label
     Private toolTipTimer As New Timer()
     Private scrollTimer As New Timer()
-    Private scrollDirection As Integer = 0 ' 1 para baixo, -1 para cima
+    Private scrollDirection As Integer = 0 ' 1 para baixo, -1 para cima.
+    Private idProf As Integer
 
 
     Private Sub Container_DragEnter(sender As Object, e As DragEventArgs)
@@ -23,15 +24,23 @@ Public Class FCNES
 
     Private Sub Control_MouseDown(sender As Object, e As MouseEventArgs)
         If e.Button = MouseButtons.Left Then
-            Dim control As Label = DirectCast(sender, Label)
-            Dim labelText As String = control.Text ' Captura o texto do label
+            Dim label As Label = DirectCast(sender, Label)
+            'Dim labelText As Label ' Captura o texto do label
             ' Identifica o container de origem
-            sourceContainer = DirectCast(control.Parent, FlowLayoutPanel)
+            Dim labelItens() As String = label.Tag.Split("/"c)
+            sourceContainer = DirectCast(label.Parent, FlowLayoutPanel)
             ' Mostra o ToolTip indicando a origem
-            ToolTip1.Show($"{labelText}{vbCrLf}Saindo de Equipe: {sourceContainer.Name}", sourceContainer, 10, 10, 6000)
-            ' Inicia o arrasto
-            control.DoDragDrop(control, DragDropEffects.Move)
 
+            Dim nome As String = labelItens(0)
+            Dim cbo As String = labelItens(1)
+
+
+            m.SQLinsert("movimento", "unidade_out, equipe_out, profissional, cbo", "'" & sourceContainer.Tag & "','" & sourceContainer.Name & "','" & nome & "','" & cbo & "'")
+
+
+            ToolTip1.Show($"{nome}{vbCrLf}{cbo}{vbCrLf}Saindo de Equipe: {sourceContainer.Name}", sourceContainer, 10, 10, 6000)
+            ' Inicia o arrasto
+            label.DoDragDrop(label, DragDropEffects.Move)
 
         End If
     End Sub
@@ -46,6 +55,11 @@ Public Class FCNES
         destinationContainer.Controls.SetChildIndex(control, 1)
         ' Oculta o ToolTip após alguns segundos
         ToolTip1.Hide(destinationContainer)
+
+        idProf = m.getDataset("SELECT MAX(id) FROM movimento").Rows(0).Item(0)
+        MsgBox(idProf)
+
+        m.SQLGeneric($"UPDATE movimento SET unidade_in='{destinationContainer.Tag}',equipe_in='{destinationContainer.Name}' WHERE id={idProf}")
 
         ToolTip1.Show($"{labelText}{vbCrLf}Movido para Equipe: {destinationContainer.Name}", destinationContainer, 10, 10, 6000)
         toolTipTimer.Tag = destinationContainer ' Armazena o container para ocultar depois
@@ -92,6 +106,8 @@ Public Class FCNES
     ' Evento Load para configurar os containers e labels
     Private Sub FCNES_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim estabelecimentos As List(Of Estabelecimento) = xml.equipesXML().ToList()
+
+        xml.verificarAlteracao()
 
         Do While estabelecimentos.Count = 0 ' Verifica se a lista está vazia
             xml.copyXMLFileFromServer()
@@ -140,15 +156,13 @@ Public Class FCNES
                         If eq.Profissionais IsNot Nothing Then
                             For Each prof In eq.Profissionais
                                 Dim labelProf As New Label()
-                                Dim labelCBO As New Label()
+
                                 labelProf.AutoSize = False
                                 labelProf.Width = 260
                                 labelProf.Height = 45
                                 labelProf.Font = New Font("Calibri", 10, FontStyle.Regular)
-                                labelCBO.Font = New Font("Calibri", 10, FontStyle.Italic)
-                                labelCBO.Text = xml.getCBOXML(prof.CBOLOTACAO)
-
-                                labelProf.Text = prof.Nome & vbCrLf & labelCBO.Text
+                                labelProf.Tag = prof.Nome & "/" & xml.getCBOXML(prof.CBOLOTACAO)
+                                labelProf.Text = prof.Nome & vbCrLf & xml.getCBOXML(prof.CBOLOTACAO)
                                 labelProf.Margin = New Padding(10, 5, 5, 10)
                                 labelProf.Padding = New Padding(2, 2, 2, 2)
                                 labelProf.BorderStyle = BorderStyle.None
