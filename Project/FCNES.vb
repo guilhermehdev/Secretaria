@@ -227,6 +227,7 @@ Public Class FCNES
 
     ' Evento Load para configurar os containers e labels
     Private Sub FCNES_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.Icon = FplanejCNES.Icon
         Dim estabelecimentos As List(Of Estabelecimento) = xml.equipesXML().ToList()
 
         xml.verificarAlteracao()
@@ -258,6 +259,7 @@ Public Class FCNES
                         unidade.BorderStyle = BorderStyle.FixedSingle
                         unidade.WrapContents = False
                         unidade.HorizontalScroll.Visible = False
+                        unidade.BackColor = Color.DarkSlateGray
 
                         ' Adiciona os eventos de drag-and-drop
                         AddHandler unidade.DragEnter, AddressOf Container_DragEnter
@@ -266,9 +268,9 @@ Public Class FCNES
                         Dim labelNome As New Label() With {
                             .AutoSize = False,
                             .Width = 280,
-                            .BackColor = Color.White,
-                            .ForeColor = Color.Black,
-                            .Font = New Font("Calibri", 10, FontStyle.Bold),
+                            .BackColor = Color.DarkSlateGray,
+                            .ForeColor = Color.Cyan,
+                            .Font = New Font("Calibri", 12, FontStyle.Bold),
                             .Text = eq.NomeReferencia & " - " & eq.INE,
                             .TextAlign = ContentAlignment.MiddleCenter,
                             .Margin = New Padding(0, 0, 0, 10)
