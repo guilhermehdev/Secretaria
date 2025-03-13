@@ -42,6 +42,8 @@ Public Class FCNES
             ' Inicia o arrasto
             label.DoDragDrop(label, DragDropEffects.Move)
 
+            addPanelAlteracoes()
+
         End If
     End Sub
 
@@ -57,7 +59,6 @@ Public Class FCNES
         ToolTip1.Hide(destinationContainer)
 
         idProf = m.getDataset("SELECT MAX(id) FROM movimento").Rows(0).Item(0)
-        MsgBox(idProf)
 
         m.SQLGeneric($"UPDATE movimento SET unidade_in='{destinationContainer.Tag}',equipe_in='{destinationContainer.Name}' WHERE id={idProf}")
 
@@ -103,6 +104,127 @@ Public Class FCNES
 
     End Sub
 
+    Private Sub addPanelAlteracoes()
+        Dim alteraData = m.getDataset("SELECT * FROM movimento WHERE `status` = 0")
+
+        FlowLayoutPanelAleracoes.Controls.Clear()
+
+        For Each row In alteraData.Rows
+            Dim id = row(0).ToString
+            Dim unidade_out = row(1).ToString
+            Dim equipe_out = row(2).ToString
+            Dim unidade_in = row(3).ToString
+            Dim equipe_in = row(4).ToString
+            Dim profissional = row(5).ToString
+            Dim cbo = row(6).ToString
+
+            ' Cria um novo Panel
+            Dim novoPanel As New Panel With {
+            .Size = New Size(190, 120),  ' Tamanho do painel
+            .BackColor = Color.White,
+            .BorderStyle = BorderStyle.FixedSingle
+            }
+
+            ' Cria uma Label para o nome e cargo
+            Dim lblProfissional As New Label With {
+                .Text = $"{profissional}",
+                .Location = New Point(5, 5),
+                .AutoSize = False,
+                .Width = 180,
+                .Height = 15,
+                .Font = New Font("Calibri", 10, FontStyle.Bold)
+            }
+
+            Dim lblCBO As New Label With {
+                .Text = $"{cbo}",
+                .Location = New Point(5, 20),
+                .AutoSize = False,
+                .Width = 180,
+                .Height = 30,
+                .Font = New Font("Calibri", 9, FontStyle.Italic),
+                .ForeColor = Color.DarkSlateGray
+            }
+
+            Dim imgSetaVermelha As New PictureBox With {
+                .Size = New Size(20, 20),
+                .Location = New Point(5, 57),
+                .Image = My.Resources.arrowdown,
+                .SizeMode = PictureBoxSizeMode.StretchImage
+            }
+            imgSetaVermelha.Image.RotateFlip(RotateFlipType.RotateNoneFlipY)
+
+            Dim lblUnidadeOut As New Label With {
+                .Text = unidade_out & vbCrLf & "Equipe:" & equipe_out,
+                .Location = New Point(30, 55),
+                .AutoSize = True,
+                .Width = 180,
+                .Font = New Font("Calibri", 8, FontStyle.Italic)
+            }
+
+            Dim lblLinhaHorizontal As New Label With {
+                .Text = "------------------------------------------------------",
+                .Location = New Point(5, 75),
+                .AutoSize = True,
+                .Font = New Font("Calibri", 8, FontStyle.Bold)
+            }
+
+            Dim imgSetaVerde As New PictureBox With {
+                .Size = New Size(20, 20),
+                .Location = New Point(5, 87),
+                .Image = My.Resources.uparrow,
+                .SizeMode = PictureBoxSizeMode.StretchImage
+            }
+            imgSetaVerde.Image.RotateFlip(RotateFlipType.RotateNoneFlipY)
+
+            Dim lblUnidadeIn As New Label With {
+                .Text = unidade_in & vbCrLf & "Equipe:" & equipe_in,
+                .Location = New Point(30, 85),
+                .AutoSize = True,
+                .Width = 180,
+                .Font = New Font("Calibri", 8, FontStyle.Italic)
+            }
+
+            Dim btnDelete As New Button With {
+                .Text = "X",
+                .Name = "btnDelAlt",
+                .Tag = id,
+                .Location = New Point(160, 90),
+                .Width = 25,
+                .Height = 25,
+                .BackColor = Color.IndianRed,
+                .ForeColor = Color.White,
+                .FlatStyle = FlatStyle.Flat,
+                .Cursor = Cursors.Hand
+            }
+
+            AddHandler btnDelete.Click, AddressOf deleteAlteracao
+
+            ' Adiciona os controles ao painel
+            novoPanel.Controls.Add(lblProfissional)
+            novoPanel.Controls.Add(lblCBO)
+            novoPanel.Controls.Add(imgSetaVermelha)
+            novoPanel.Controls.Add(lblUnidadeOut)
+            novoPanel.Controls.Add(lblLinhaHorizontal)
+            novoPanel.Controls.Add(imgSetaVerde)
+            novoPanel.Controls.Add(lblUnidadeIn)
+            novoPanel.Controls.Add(btnDelete)
+            ' Adiciona o painel ao FlowLayoutPanel
+            FlowLayoutPanelAleracoes.Controls.Add(novoPanel)
+
+        Next
+
+    End Sub
+    Private Sub deleteAlteracao(sender As Object, e As EventArgs)
+        Dim botao As Button = DirectCast(sender, Button)
+
+        If m.msgQuestion("Excluir esta alteração?", "Atenção") Then
+            If m.doQuery($"DELETE FROM movimento WHERE id ={botao.Tag}") Then
+                addPanelAlteracoes()
+            End If
+        End If
+
+    End Sub
+
     ' Evento Load para configurar os containers e labels
     Private Sub FCNES_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim estabelecimentos As List(Of Estabelecimento) = xml.equipesXML().ToList()
@@ -117,6 +239,8 @@ Public Class FCNES
         AddHandler PanelContainer.DragOver, AddressOf Container_DragOver
 
         If estabelecimentos.Count > 0 Then
+
+            addPanelAlteracoes()
 
             For Each est In estabelecimentos
                 If est.Equipes IsNot Nothing Then
@@ -233,6 +357,10 @@ Public Class FCNES
 
     Private Sub FecharToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FecharToolStripMenuItem.Click
         Application.Exit()
+    End Sub
+
+    Private Sub PlanejamentoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PlanejamentoToolStripMenuItem.Click
+        FplanejCNES.Show()
     End Sub
 
 End Class

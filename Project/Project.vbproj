@@ -722,6 +722,8 @@
   <ItemGroup>
     <Content Include="icon.ico" />
     <Content Include="icone_e-ouv.ico" />
+    <None Include="Resources\arrowdown.png" />
+    <None Include="Resources\uparrow.png" />
     <Content Include="sec-icon.ico" />
     <None Include="Resources\icone_e-ouv.png" />
     <None Include="Resources\sendmail.png" />

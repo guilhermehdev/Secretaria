@@ -155,11 +155,16 @@ Partial Class FCNES
         '
         'FlowLayoutPanelAleracoes
         '
+        Me.FlowLayoutPanelAleracoes.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.FlowLayoutPanelAleracoes.AutoScroll = True
+        Me.FlowLayoutPanelAleracoes.BackColor = System.Drawing.SystemColors.Info
         Me.FlowLayoutPanelAleracoes.FlowDirection = System.Windows.Forms.FlowDirection.TopDown
         Me.FlowLayoutPanelAleracoes.Location = New System.Drawing.Point(6, 19)
         Me.FlowLayoutPanelAleracoes.Name = "FlowLayoutPanelAleracoes"
         Me.FlowLayoutPanelAleracoes.Size = New System.Drawing.Size(214, 521)
         Me.FlowLayoutPanelAleracoes.TabIndex = 0
+        Me.FlowLayoutPanelAleracoes.WrapContents = False
         '
         'FCNES
         '

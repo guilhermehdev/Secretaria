@@ -190,10 +190,6 @@ Public Class FplanejCNES
 
     End Sub
 
-    Private Sub FplanejCNES_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        Application.Exit()
-    End Sub
-
     Private Sub TextBoxCPF_TextChanged(sender As Object, e As EventArgs) Handles TextBoxCPF.TextChanged
         If TextBoxCPF.Text.Length >= 11 Then
             dgPlanejamento.DataSource = pdf.getProfByNameORCPF(TextBoxCPF.Text)
