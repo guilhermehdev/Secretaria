@@ -49,10 +49,10 @@ Partial Class FCNES
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Location = New System.Drawing.Point(244, 37)
+        Me.TabControl1.Location = New System.Drawing.Point(332, 37)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(998, 547)
+        Me.TabControl1.Size = New System.Drawing.Size(922, 547)
         Me.TabControl1.TabIndex = 0
         '
         'TabPage1
@@ -61,7 +61,7 @@ Partial Class FCNES
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(990, 521)
+        Me.TabPage1.Size = New System.Drawing.Size(914, 521)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Equipes"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -77,7 +77,7 @@ Partial Class FCNES
         Me.PanelContainer.Location = New System.Drawing.Point(3, 3)
         Me.PanelContainer.Name = "PanelContainer"
         Me.PanelContainer.Padding = New System.Windows.Forms.Padding(3)
-        Me.PanelContainer.Size = New System.Drawing.Size(984, 515)
+        Me.PanelContainer.Size = New System.Drawing.Size(908, 515)
         Me.PanelContainer.TabIndex = 0
         '
         'TabPage2
@@ -113,7 +113,7 @@ Partial Class FCNES
         Me.GroupBox1.Controls.Add(Me.FlowLayoutPanelAleracoes)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 37)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(226, 547)
+        Me.GroupBox1.Size = New System.Drawing.Size(318, 547)
         Me.GroupBox1.TabIndex = 2
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Alterações pendentes"
@@ -159,11 +159,12 @@ Partial Class FCNES
         Me.FlowLayoutPanelAleracoes.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.FlowLayoutPanelAleracoes.AutoScroll = True
-        Me.FlowLayoutPanelAleracoes.BackColor = System.Drawing.SystemColors.Info
+        Me.FlowLayoutPanelAleracoes.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.FlowLayoutPanelAleracoes.FlowDirection = System.Windows.Forms.FlowDirection.TopDown
         Me.FlowLayoutPanelAleracoes.Location = New System.Drawing.Point(6, 19)
         Me.FlowLayoutPanelAleracoes.Name = "FlowLayoutPanelAleracoes"
-        Me.FlowLayoutPanelAleracoes.Size = New System.Drawing.Size(214, 521)
+        Me.FlowLayoutPanelAleracoes.Padding = New System.Windows.Forms.Padding(2, 4, 0, 0)
+        Me.FlowLayoutPanelAleracoes.Size = New System.Drawing.Size(306, 521)
         Me.FlowLayoutPanelAleracoes.TabIndex = 0
         Me.FlowLayoutPanelAleracoes.WrapContents = False
         '

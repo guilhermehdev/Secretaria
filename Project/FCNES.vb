@@ -10,6 +10,7 @@ Public Class FCNES
     Private scrollTimer As New Timer()
     Private scrollDirection As Integer = 0 ' 1 para baixo, -1 para cima.
     Private idProf As Integer
+    Private ScrollBarVisivelAnterior As Boolean = False
 
 
     Private Sub Container_DragEnter(sender As Object, e As DragEventArgs)
@@ -38,7 +39,7 @@ Public Class FCNES
             m.SQLinsert("movimento", "unidade_out, equipe_out, profissional, cbo", "'" & sourceContainer.Tag & "','" & sourceContainer.Name & "','" & nome & "','" & cbo & "'")
 
 
-            ToolTip1.Show($"{nome}{vbCrLf}{cbo}{vbCrLf}Saindo de Equipe: {sourceContainer.Name}", sourceContainer, 10, 10, 6000)
+            ' ToolTip1.Show($"{nome}{vbCrLf}{cbo}{vbCrLf}Saindo de Equipe: {sourceContainer.Name}", sourceContainer, 10, 10, 6000)
             ' Inicia o arrasto
             label.DoDragDrop(label, DragDropEffects.Move)
 
@@ -62,7 +63,7 @@ Public Class FCNES
 
         m.SQLGeneric($"UPDATE movimento SET unidade_in='{destinationContainer.Tag}',equipe_in='{destinationContainer.Name}' WHERE id={idProf}")
 
-        ToolTip1.Show($"{labelText}{vbCrLf}Movido para Equipe: {destinationContainer.Name}", destinationContainer, 10, 10, 6000)
+        'ToolTip1.Show($"{labelText}{vbCrLf}Movido para Equipe: {destinationContainer.Name}", destinationContainer, 10, 10, 6000)
         toolTipTimer.Tag = destinationContainer ' Armazena o container para ocultar depois
         toolTipTimer.Start()
         sourceContainer = Nothing
@@ -119,35 +120,53 @@ Public Class FCNES
             Dim cbo = row(6).ToString
 
             ' Cria um novo Panel
-            Dim novoPanel As New Panel With {
-            .Size = New Size(190, 120),  ' Tamanho do painel
+            Dim containerPanel As New Panel With {
+            .Size = New Size(280, 150),  ' Tamanho do painel
             .BackColor = Color.White,
             .BorderStyle = BorderStyle.FixedSingle
             }
+
+            ' Criar uma forma de região com cantos arredondados
+            Dim radius As Integer = 20  ' Raio dos cantos arredondados
+            Dim rect As New Rectangle(0, 0, containerPanel.Width, containerPanel.Height)
+            Dim path As New Drawing2D.GraphicsPath()
+
+            ' Adicionar cantos arredondados em todos os cantos do Panel
+            path.AddArc(rect.X, rect.Y, radius, radius, 180, 100) ' Canto superior esquerdo
+            path.AddArc(rect.Width - radius, rect.Y, radius, radius, 270, 100) ' Canto superior direito
+            path.AddArc(rect.Width - radius, rect.Height - radius, radius, radius, 0, 100) ' Canto inferior direito
+            path.AddArc(rect.X, rect.Height - radius, radius, radius, 90, 100) ' Canto inferior esquerdo
+
+            ' Fechar o caminho
+            path.CloseFigure()
+
+            ' Atribuir a região arredondada ao Panel
+            containerPanel.Region = New Region(path)
 
             ' Cria uma Label para o nome e cargo
             Dim lblProfissional As New Label With {
                 .Text = $"{profissional}",
                 .Location = New Point(5, 5),
                 .AutoSize = False,
-                .Width = 180,
-                .Height = 15,
-                .Font = New Font("Calibri", 10, FontStyle.Bold)
+                .Width = 246,
+                .Height = 16,
+                .Font = New Font("Calibri", 10, FontStyle.Bold),
+                .ForeColor = Color.SteelBlue
             }
 
             Dim lblCBO As New Label With {
                 .Text = $"{cbo}",
-                .Location = New Point(5, 20),
+                .Location = New Point(5, 21),
                 .AutoSize = False,
-                .Width = 180,
+                .Width = 246,
                 .Height = 30,
                 .Font = New Font("Calibri", 9, FontStyle.Italic),
                 .ForeColor = Color.DarkSlateGray
             }
 
             Dim imgSetaVermelha As New PictureBox With {
-                .Size = New Size(20, 20),
-                .Location = New Point(5, 57),
+                .Size = New Size(22, 37),
+                .Location = New Point(5, 55),
                 .Image = My.Resources.arrowdown,
                 .SizeMode = PictureBoxSizeMode.StretchImage
             }
@@ -155,22 +174,24 @@ Public Class FCNES
 
             Dim lblUnidadeOut As New Label With {
                 .Text = unidade_out & vbCrLf & "Equipe:" & equipe_out,
-                .Location = New Point(30, 55),
-                .AutoSize = True,
-                .Width = 180,
-                .Font = New Font("Calibri", 8, FontStyle.Italic)
+                .Location = New Point(25, 55),
+                .AutoSize = False,
+                .Width = 262,
+                .Height = 40,
+                .Font = New Font("Calibri", 8, FontStyle.Regular)
             }
 
             Dim lblLinhaHorizontal As New Label With {
-                .Text = "------------------------------------------------------",
-                .Location = New Point(5, 75),
+                .Text = "----------------------------------------------------------------------------------",
+                .Location = New Point(5, 90),
                 .AutoSize = True,
-                .Font = New Font("Calibri", 8, FontStyle.Bold)
+                .Font = New Font("Calibri", 8, FontStyle.Bold),
+                .BackColor = Color.Transparent
             }
 
             Dim imgSetaVerde As New PictureBox With {
-                .Size = New Size(20, 20),
-                .Location = New Point(5, 87),
+                .Size = New Size(22, 37),
+                .Location = New Point(5, 101),
                 .Image = My.Resources.uparrow,
                 .SizeMode = PictureBoxSizeMode.StretchImage
             }
@@ -178,17 +199,18 @@ Public Class FCNES
 
             Dim lblUnidadeIn As New Label With {
                 .Text = unidade_in & vbCrLf & "Equipe:" & equipe_in,
-                .Location = New Point(30, 85),
-                .AutoSize = True,
-                .Width = 180,
-                .Font = New Font("Calibri", 8, FontStyle.Italic)
+                .Location = New Point(25, 101),
+                .AutoSize = False,
+                .Width = 262,
+                .Height = 40,
+                .Font = New Font("Calibri", 8, FontStyle.Regular)
             }
 
             Dim btnDelete As New Button With {
                 .Text = "X",
                 .Name = "btnDelAlt",
                 .Tag = id,
-                .Location = New Point(160, 90),
+                .Location = New Point(250, 5),
                 .Width = 25,
                 .Height = 25,
                 .BackColor = Color.IndianRed,
@@ -200,16 +222,16 @@ Public Class FCNES
             AddHandler btnDelete.Click, AddressOf deleteAlteracao
 
             ' Adiciona os controles ao painel
-            novoPanel.Controls.Add(lblProfissional)
-            novoPanel.Controls.Add(lblCBO)
-            novoPanel.Controls.Add(imgSetaVermelha)
-            novoPanel.Controls.Add(lblUnidadeOut)
-            novoPanel.Controls.Add(lblLinhaHorizontal)
-            novoPanel.Controls.Add(imgSetaVerde)
-            novoPanel.Controls.Add(lblUnidadeIn)
-            novoPanel.Controls.Add(btnDelete)
+            containerPanel.Controls.Add(lblProfissional)
+            containerPanel.Controls.Add(lblCBO)
+            containerPanel.Controls.Add(imgSetaVermelha)
+            containerPanel.Controls.Add(lblUnidadeOut)
+            containerPanel.Controls.Add(lblLinhaHorizontal)
+            containerPanel.Controls.Add(imgSetaVerde)
+            containerPanel.Controls.Add(lblUnidadeIn)
+            containerPanel.Controls.Add(btnDelete)
             ' Adiciona o painel ao FlowLayoutPanel
-            FlowLayoutPanelAleracoes.Controls.Add(novoPanel)
+            FlowLayoutPanelAleracoes.Controls.Add(containerPanel)
 
         Next
 
@@ -225,7 +247,6 @@ Public Class FCNES
 
     End Sub
 
-    ' Evento Load para configurar os containers e labels
     Private Sub FCNES_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Icon = FplanejCNES.Icon
         Dim estabelecimentos As List(Of Estabelecimento) = xml.equipesXML().ToList()
@@ -250,16 +271,41 @@ Public Class FCNES
                         unidade.Name = eq.NomeReferencia
                         unidade.Tag = est.NOME
                         unidade.AllowDrop = True
-                        unidade.Width = 300
+                        unidade.Width = 280
                         unidade.Height = 400
-                        unidade.Margin = New Padding(10)
+                        unidade.Margin = New Padding(5)
                         unidade.Padding = New Padding(0)
                         unidade.AutoScroll = True
                         unidade.FlowDirection = FlowDirection.TopDown
                         unidade.BorderStyle = BorderStyle.FixedSingle
                         unidade.WrapContents = False
-                        unidade.HorizontalScroll.Visible = False
                         unidade.BackColor = Color.DarkSlateGray
+                        unidade.VerticalScroll.Visible = False
+
+                        Dim radiusUnidade As Integer = 20  ' Raio dos cantos arredondados
+                        Dim rectUnidade As New Rectangle(0, 0, unidade.Width, unidade.Height)
+                        Dim pathUnidade As New Drawing2D.GraphicsPath()
+
+                        ' Adicionar canto superior esquerdo arredondado
+                        pathUnidade.AddArc(rectUnidade.X, rectUnidade.Y, radiusUnidade, radiusUnidade, 180, 90) ' Canto superior esquerdo
+
+                        ' Adicionar linha reta para o lado superior direito
+                        pathUnidade.AddLine(rectUnidade.X + radiusUnidade, rectUnidade.Y, rectUnidade.Width, rectUnidade.Y)
+
+                        ' Adicionar linha reta para o lado direito
+                        pathUnidade.AddLine(rectUnidade.Width, rectUnidade.Y + radiusUnidade, rectUnidade.Width, rectUnidade.Height - radiusUnidade)
+
+                        ' Adicionar canto inferior direito (quadrado, sem arredondamento)
+                        pathUnidade.AddLine(rectUnidade.Width, rectUnidade.Height, rectUnidade.Width - radiusUnidade, rectUnidade.Height)
+
+                        ' Adicionar canto inferior esquerdo arredondado
+                        pathUnidade.AddArc(rectUnidade.X, rectUnidade.Height - radiusUnidade, radiusUnidade, radiusUnidade, 90, 90) ' Canto inferior esquerdo
+
+                        ' Fechar o caminho
+                        pathUnidade.CloseFigure()
+
+                        ' Atribuir a região arredondada ao FlowLayoutPanel
+                        unidade.Region = New Region(pathUnidade)
 
                         ' Adiciona os eventos de drag-and-drop
                         AddHandler unidade.DragEnter, AddressOf Container_DragEnter
@@ -267,7 +313,8 @@ Public Class FCNES
 
                         Dim labelNome As New Label() With {
                             .AutoSize = False,
-                            .Width = 280,
+                            .Width = 255,
+                            .Height = 50,
                             .BackColor = Color.DarkSlateGray,
                             .ForeColor = Color.Cyan,
                             .Font = New Font("Calibri", 12, FontStyle.Bold),
@@ -276,7 +323,6 @@ Public Class FCNES
                             .Margin = New Padding(0, 0, 0, 10)
                         }
 
-                        PanelContainer.Controls.Add(unidade)
                         unidade.Controls.Add(labelNome)
 
                         If eq.Profissionais IsNot Nothing Then
@@ -284,15 +330,13 @@ Public Class FCNES
                                 Dim labelProf As New Label()
 
                                 labelProf.AutoSize = False
-                                labelProf.Width = 260
-                                labelProf.Height = 45
+                                labelProf.MinimumSize = New Size(245, 60)
                                 labelProf.Font = New Font("Calibri", 10, FontStyle.Regular)
                                 labelProf.Tag = prof.Nome & "/" & xml.getCBOXML(prof.CBOLOTACAO)
                                 labelProf.Text = prof.Nome & vbCrLf & xml.getCBOXML(prof.CBOLOTACAO)
-                                labelProf.Margin = New Padding(10, 5, 5, 10)
-                                labelProf.Padding = New Padding(2, 2, 2, 2)
+                                labelProf.Margin = New Padding(7, 5, 5, 6)
+                                labelProf.Padding = New Padding(3, 3, 2, 2)
                                 labelProf.BorderStyle = BorderStyle.None
-                                labelProf.BackColor = Color.SteelBlue
                                 labelProf.ForeColor = Color.White
 
                                 ' Adiciona o evento de MouseDown para arrastar
@@ -308,18 +352,36 @@ Public Class FCNES
                                     Case "515105"
                                         labelProf.BackColor = Color.SteelBlue
                                     Case Else
-                                        labelProf.BackColor = Color.DarkSlateGray
+                                        labelProf.BackColor = Color.DimGray
                                 End Select
 
+                                Dim radius As Integer = 5  ' Ajuste o valor para deixar mais ou menos arredondado
+
+                                ' Criar uma forma de região com cantos arredondados
+                                Dim rect As New Rectangle(0, 0, labelProf.Width, labelProf.Height)
+                                Dim path As New Drawing2D.GraphicsPath()
+
+                                ' Adicionar cantos arredondados em todos os cantos do Label
+                                path.AddArc(rect.X, rect.Y, radius, radius, 180, 90) ' Canto superior esquerdo
+                                path.AddArc(rect.Width - radius, rect.Y, radius, radius, 270, 90) ' Canto superior direito
+                                path.AddArc(rect.Width - radius, rect.Height - radius, radius, radius, 0, 90) ' Canto inferior direito
+                                path.AddArc(rect.X, rect.Height - radius, radius, radius, 90, 90) ' Canto inferior esquerdo
+
+                                ' Fechar o caminho
+                                path.CloseFigure()
+
+                                ' Atribuir a região arredondada ao Label
+                                labelProf.Region = New Region(path)
+
                                 unidade.Controls.Add(labelProf)
+                                PanelContainer.Controls.Add(unidade)
                             Next
+
                         End If
                     Next
+
                 End If
             Next
-
-        Else
-
 
         End If
 
@@ -345,7 +407,7 @@ Public Class FCNES
     End Sub
 
     Private Sub FCNES_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        Application.Exit()
+        Fstart.Visible = True
         ToolTip1.Active = False
     End Sub
 
@@ -358,7 +420,7 @@ Public Class FCNES
     End Sub
 
     Private Sub FecharToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FecharToolStripMenuItem.Click
-        Application.Exit()
+        Me.Close()
     End Sub
 
     Private Sub PlanejamentoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PlanejamentoToolStripMenuItem.Click
