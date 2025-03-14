@@ -94,7 +94,7 @@ Public Class FCNES
     Private Sub scrollTimer_Tick(sender As Object, e As EventArgs)
         ' Debug.WriteLine("scrollTimer_Tick disparado!")
         Try
-            Dim scrollAmount As Integer = 50 ' Ajuste a velocidade da rolagem conforme necessário
+            Dim scrollAmount As Integer = 10 ' Ajuste a velocidade da rolagem conforme necessário
             PanelContainer.VerticalScroll.Value += scrollDirection * scrollAmount
 
             ' Garante que o valor do scroll esteja dentro dos limites
@@ -174,7 +174,7 @@ Public Class FCNES
 
             Dim lblUnidadeOut As New Label With {
                 .Text = unidade_out & vbCrLf & "Equipe:" & equipe_out,
-                .Location = New Point(25, 55),
+                .Location = New Point(27, 55),
                 .AutoSize = False,
                 .Width = 262,
                 .Height = 40,
@@ -199,7 +199,7 @@ Public Class FCNES
 
             Dim lblUnidadeIn As New Label With {
                 .Text = unidade_in & vbCrLf & "Equipe:" & equipe_in,
-                .Location = New Point(25, 101),
+                .Location = New Point(27, 101),
                 .AutoSize = False,
                 .Width = 262,
                 .Height = 40,
