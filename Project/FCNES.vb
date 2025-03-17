@@ -1,5 +1,6 @@
 ﻿Imports System.IO
 Imports System.Net
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Window
 Imports Org.BouncyCastle.Cms
 Imports ServiceStack
 
@@ -127,12 +128,15 @@ Public Class FCNES
             Dim equipe_in = row(4).ToString
             Dim profissional = row(5).ToString
             Dim cbo = row(6).ToString
+            Dim cpf = row(7).ToString
 
             ' Cria um novo Panel
             Dim containerPanel As New Panel With {
             .Size = New Size(280, 150),  ' Tamanho do painel
             .BackColor = Color.White,
-            .BorderStyle = BorderStyle.FixedSingle
+            .BorderStyle = BorderStyle.FixedSingle,
+            .Tag = profissional,
+            .Name = id
             }
 
             ' Criar uma forma de região com cantos arredondados
@@ -187,7 +191,9 @@ Public Class FCNES
                 .AutoSize = False,
                 .Width = 262,
                 .Height = 40,
-                .Font = New Font("Calibri", 8, FontStyle.Regular)
+                .Font = New Font("Calibri", 8, FontStyle.Regular),
+                .Name = "out-" & id,
+                .Tag = equipe_out
             }
 
             Dim lblLinhaHorizontal As New Label With {
@@ -212,12 +218,14 @@ Public Class FCNES
                 .AutoSize = False,
                 .Width = 262,
                 .Height = 40,
-                .Font = New Font("Calibri", 8, FontStyle.Regular)
+                .Font = New Font("Calibri", 8, FontStyle.Regular),
+                .Name = "in-" & id,
+                .Tag = equipe_in
             }
 
             Dim btnDelete As New Button With {
                 .Text = "X",
-                .Name = "btnDelAlt",
+                .Name = cpf,
                 .Tag = id,
                 .Location = New Point(250, 5),
                 .Width = 25,
@@ -251,6 +259,7 @@ Public Class FCNES
         If selectedLabel IsNot Nothing Then
             Dim menuItem = DirectCast(sender, ToolStripMenuItem)
             Dim destinationContainer = PanelContainer.Controls.Find(menuItem.Text, True).FirstOrDefault()
+            AddHandler selectedLabel.Paint, AddressOf CustomLabel_Paint
 
             If TypeOf destinationContainer Is FlowLayoutPanel Then
                 Dim container = DirectCast(destinationContainer, FlowLayoutPanel)
@@ -267,22 +276,41 @@ Public Class FCNES
         End If
     End Sub
     Private Sub deleteAlteracao(sender As Object, e As EventArgs)
-        Dim botao As Button = DirectCast(sender, Button)
+        Dim delButton As Button = DirectCast(sender, Button)
+        Dim panelAlt = FlowLayoutPanelAleracoes.Controls.Find(delButton.Tag, True).FirstOrDefault()
+        Dim eqOrigin = panelAlt.Controls.Find("in-" & delButton.Tag, True).FirstOrDefault()
+        Dim eqSendTo = panelAlt.Controls.Find("out-" & delButton.Tag, True).FirstOrDefault()
 
         If m.msgQuestion("Excluir esta alteração?", "Atenção") Then
-            Dim altData = m.getDataset($"SELECT * FROM movimento WHERE id ={botao.Tag}")
-            If m.doQuery($"DELETE FROM movimento WHERE id ={botao.Tag}") Then
+
+            If m.doQuery($"DELETE FROM movimento WHERE id ={delButton.Tag}") Then
                 addPanelAlteracoes()
-                Dim panelSendTo = PanelContainer.Controls.Find(altData.Rows(0).Item(2).ToString, True).FirstOrDefault()
-                Dim panelOrigin = PanelContainer.Controls.Find(altData.Rows(0).Item(4).ToString, True).FirstOrDefault()
-
-                Dim label As Label = DirectCast(panelOrigin.Controls.Find(altData.Rows(0).Item(7).ToString, True).FirstOrDefault(), Label)
-
-                panelOrigin.Controls.Remove(label)
-                panelSendTo.Controls.Add(label)
-
+                moveLabelsFast(eqSendTo, eqOrigin, delButton)
             End If
         End If
+
+    End Sub
+
+    Private Sub CustomLabel_Paint(sender As Object, e As PaintEventArgs)
+        Dim label As Label = DirectCast(sender, Label)
+        Dim borderColor As Color = Color.Red ' Cor da borda
+        Dim borderWidth As Integer = 3       ' Largura da borda
+
+        ' Desenhar a borda ao redor do Label
+        Using pen As New Pen(borderColor, borderWidth)
+            e.Graphics.DrawRectangle(pen, 0, 0, label.Width - borderWidth, label.Height - borderWidth)
+        End Using
+
+    End Sub
+
+    Private Sub moveLabelsFast(equipeDestino As Label, equipeOrigem As Label, cpfProfissional As Button)
+        Dim panelSendTo = PanelContainer.Controls.Find(equipeDestino.Tag, True).FirstOrDefault()
+        Dim panelOrigin = PanelContainer.Controls.Find(equipeOrigem.Tag, True).FirstOrDefault()
+
+        Dim label As Label = DirectCast(panelOrigin.Controls.Find(cpfProfissional.Name, True).FirstOrDefault(), Label)
+
+        panelOrigin.Controls.Remove(label)
+        panelSendTo.Controls.Add(label)
 
     End Sub
 
