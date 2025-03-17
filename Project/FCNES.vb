@@ -205,7 +205,7 @@ Public Class FCNES
             imgSetaVerde.Image.RotateFlip(RotateFlipType.RotateNoneFlipY)
 
             Dim lblUnidadeIn As New Label With {
-                .Text = unidade_in & vbCrLf & "Equipe:" & equipe_in,
+                .Text = unidade_in & vbCrLf & "Equipe: " & equipe_in,
                 .Location = New Point(27, 101),
                 .AutoSize = False,
                 .Width = 262,
@@ -467,8 +467,11 @@ Public Class FCNES
                 Dim container = DirectCast(destinationContainer, FlowLayoutPanel)
 
                 ' Move o Label para o container selecionado
+                insertAlteracao(selectedLabel)
                 selectedLabel.Parent.Controls.Remove(selectedLabel)
+                updateAlteracao(destinationContainer)
                 container.Controls.Add(selectedLabel)
+                addPanelAlteracoes()
             End If
 
             selectedLabel = Nothing ' Reseta a seleção
