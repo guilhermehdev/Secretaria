@@ -11,6 +11,8 @@ Public Class FCNES
     Private scrollDirection As Integer = 0 ' 1 para baixo, -1 para cima.
     Private idProf As Integer
     Private ScrollBarVisivelAnterior As Boolean = False
+    Dim contextMenuLabel As New ContextMenuStrip() ' Instância global do ContextMenuStrip
+    Dim selectedLabel As Label = Nothing ' Label selecionado para movimentação
 
 
     Private Sub Container_DragEnter(sender As Object, e As DragEventArgs)
@@ -28,17 +30,8 @@ Public Class FCNES
             Dim label As Label = DirectCast(sender, Label)
             'Dim labelText As Label ' Captura o texto do label
             ' Identifica o container de origem
-            Dim labelItens() As String = label.Tag.Split("/"c)
-            sourceContainer = DirectCast(label.Parent, FlowLayoutPanel)
-            ' Mostra o ToolTip indicando a origem
 
-            Dim nome As String = labelItens(0)
-            Dim cbo As String = labelItens(1)
-
-
-            m.SQLinsert("movimento", "unidade_out, equipe_out, profissional, cbo", "'" & sourceContainer.Tag & "','" & sourceContainer.Name & "','" & nome & "','" & cbo & "'")
-
-
+            insertAlteracao(label)
             ' ToolTip1.Show($"{nome}{vbCrLf}{cbo}{vbCrLf}Saindo de Equipe: {sourceContainer.Name}", sourceContainer, 10, 10, 6000)
             ' Inicia o arrasto
             label.DoDragDrop(label, DragDropEffects.Move)
@@ -46,6 +39,22 @@ Public Class FCNES
             addPanelAlteracoes()
 
         End If
+    End Sub
+
+    Private Sub insertAlteracao(label As Label)
+        Dim labelItens() As String = label.Tag.Split("/"c)
+        sourceContainer = DirectCast(label.Parent, FlowLayoutPanel)
+        ' Mostra o ToolTip indicando a origem
+
+        Dim nome As String = labelItens(0)
+        Dim cbo As String = labelItens(1)
+
+        m.SQLinsert("movimento", "unidade_out, equipe_out, profissional, cbo", "'" & sourceContainer.Tag & "','" & sourceContainer.Name & "','" & nome & "','" & cbo & "'")
+    End Sub
+
+    Private Sub updateAlteracao(destinationContainer As FlowLayoutPanel)
+        idProf = m.getDataset("SELECT MAX(id) FROM movimento").Rows(0).Item(0)
+        m.SQLGeneric($"UPDATE movimento SET unidade_in='{destinationContainer.Tag}',equipe_in='{destinationContainer.Name}' WHERE id={idProf}")
     End Sub
 
     Private Sub Container_DragDrop(sender As Object, e As DragEventArgs)
@@ -59,9 +68,7 @@ Public Class FCNES
         ' Oculta o ToolTip após alguns segundos
         ToolTip1.Hide(destinationContainer)
 
-        idProf = m.getDataset("SELECT MAX(id) FROM movimento").Rows(0).Item(0)
-
-        m.SQLGeneric($"UPDATE movimento SET unidade_in='{destinationContainer.Tag}',equipe_in='{destinationContainer.Name}' WHERE id={idProf}")
+        updateAlteracao(destinationContainer)
 
         'ToolTip1.Show($"{labelText}{vbCrLf}Movido para Equipe: {destinationContainer.Name}", destinationContainer, 10, 10, 6000)
         toolTipTimer.Tag = destinationContainer ' Armazena o container para ocultar depois
@@ -247,10 +254,19 @@ Public Class FCNES
 
     End Sub
 
+    Private Sub Label_MouseUp(sender As Object, e As MouseEventArgs)
+        If e.Button = MouseButtons.Right Then
+            Dim label = DirectCast(sender, Label)
+            contextMenuLabel.Show(label, e.Location)
+        End If
+    End Sub
+
     Private Sub FCNES_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Icon = FplanejCNES.Icon
         Dim estabelecimentos As List(Of Estabelecimento) = xml.equipesXML().ToList()
+        AddHandler contextMenuLabel.Opening, AddressOf contextMenuLabel_Opening
 
+        contextMenuLabel.Items.Clear()
         xml.verificarAlteracao()
 
         Do While estabelecimentos.Count = 0 ' Verifica se a lista está vazia
@@ -338,9 +354,11 @@ Public Class FCNES
                                 labelProf.Padding = New Padding(3, 3, 2, 2)
                                 labelProf.BorderStyle = BorderStyle.None
                                 labelProf.ForeColor = Color.White
+                                labelProf.ContextMenuStrip = contextMenuLabel
 
                                 ' Adiciona o evento de MouseDown para arrastar
                                 AddHandler labelProf.MouseDown, AddressOf Control_MouseDown
+                                AddHandler labelProf.MouseUp, AddressOf Label_MouseUp
 
                                 Select Case prof.CBOLOTACAO
                                     Case "225142"
@@ -387,6 +405,76 @@ Public Class FCNES
 
     End Sub
 
+    'Private Sub contextMenuLabel_Opening(sender As Object, e As System.ComponentModel.CancelEventArgs)
+    '    Dim menu = DirectCast(sender, ContextMenuStrip)
+    '    menu.Items.Clear()
+
+    '    ' Adiciona as opções dinamicamente com base nos containers disponíveis
+    '    For Each container As FlowLayoutPanel In PanelContainer.Controls
+    '        Dim item As New ToolStripMenuItem(container.Name)
+    '        AddHandler item.Click, AddressOf MoveLabelToContainer
+    '        menu.Items.Add(item)
+    '    Next
+
+    '    ' Obtém o Label associado ao menu
+    '    Dim sourceControl = contextMenuLabel.SourceControl
+    '    If TypeOf sourceControl Is Label Then
+    '        selectedLabel = DirectCast(sourceControl, Label)
+    '    End If
+    'End Sub
+
+    Private Sub contextMenuLabel_Opening(sender As Object, e As System.ComponentModel.CancelEventArgs)
+        Dim menu = DirectCast(sender, ContextMenuStrip)
+        menu.Items.Clear()
+
+        ' Adiciona o cabeçalho como um item não clicável
+        Dim headerItem As New ToolStripMenuItem("Enviar para Equipe...") With {
+        .Font = New Font("Segoe UI", 10, FontStyle.Bold),
+        .ForeColor = Color.DarkBlue,
+        .Enabled = False ' Impede que o cabeçalho seja clicado
+    }
+        menu.Items.Add(headerItem)
+
+        ' Adiciona um separador após o cabeçalho
+        menu.Items.Add(New ToolStripSeparator())
+
+        ' Adiciona as opções dinamicamente com base nos containers disponíveis
+        For Each container As FlowLayoutPanel In PanelContainer.Controls
+            Dim item As New ToolStripMenuItem(container.Name)
+            AddHandler item.Click, AddressOf MoveLabelToContainer
+            menu.Items.Add(item)
+        Next
+
+        ' Obtém o Label associado ao menu
+        Dim sourceControl = contextMenuLabel.SourceControl
+        If TypeOf sourceControl Is Label Then
+            selectedLabel = DirectCast(sourceControl, Label)
+        Else
+            ' Cancela a abertura se não houver Label selecionado
+            e.Cancel = True
+        End If
+
+    End Sub
+
+
+    ' Evento para mover o Label para o container selecionado
+    Private Sub MoveLabelToContainer(sender As Object, e As EventArgs)
+        If selectedLabel IsNot Nothing Then
+            Dim menuItem = DirectCast(sender, ToolStripMenuItem)
+            Dim destinationContainer = PanelContainer.Controls.Find(menuItem.Text, True).FirstOrDefault()
+
+            If TypeOf destinationContainer Is FlowLayoutPanel Then
+                Dim container = DirectCast(destinationContainer, FlowLayoutPanel)
+
+                ' Move o Label para o container selecionado
+                selectedLabel.Parent.Controls.Remove(selectedLabel)
+                container.Controls.Add(selectedLabel)
+            End If
+
+            selectedLabel = Nothing ' Reseta a seleção
+        End If
+    End Sub
+
     Private Sub FCNES_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
         PanelContainer.Height = Me.Height
     End Sub
@@ -395,10 +483,9 @@ Public Class FCNES
         InitializeComponent()
         toolTipTimer.Interval = 2000 ' 2 segundos
         AddHandler toolTipTimer.Tick, AddressOf toolTipTimer_Tick
-
         scrollTimer.Interval = 10 ' Ajuste o intervalo conforme necessário
         AddHandler scrollTimer.Tick, AddressOf scrollTimer_Tick
-
+        FlowLayoutPanelAleracoes.Focus()
     End Sub
 
     Private Sub toolTipTimer_Tick(sender As Object, e As EventArgs)
