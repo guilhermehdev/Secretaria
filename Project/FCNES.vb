@@ -255,11 +255,11 @@ Public Class FCNES
     End Sub
 
     ' Evento para mover o Label para o container selecionado
-    Private Sub MoveLabelToContainer(sender As Object, e As EventArgs)
+    Private Sub InsertLabelToContainer(sender As Object, e As EventArgs)
         If selectedLabel IsNot Nothing Then
             Dim menuItem = DirectCast(sender, ToolStripMenuItem)
             Dim destinationContainer = PanelContainer.Controls.Find(menuItem.Text, True).FirstOrDefault()
-            AddHandler selectedLabel.Paint, AddressOf CustomLabel_Paint
+            CustomLabel_Paint(selectedLabel, sender, e)
 
             If TypeOf destinationContainer Is FlowLayoutPanel Then
                 Dim container = DirectCast(destinationContainer, FlowLayoutPanel)
@@ -288,18 +288,6 @@ Public Class FCNES
                 moveLabelsFast(eqSendTo, eqOrigin, delButton)
             End If
         End If
-
-    End Sub
-
-    Private Sub CustomLabel_Paint(sender As Object, e As PaintEventArgs)
-        Dim label As Label = DirectCast(sender, Label)
-        Dim borderColor As Color = Color.Red ' Cor da borda
-        Dim borderWidth As Integer = 3       ' Largura da borda
-
-        ' Desenhar a borda ao redor do Label
-        Using pen As New Pen(borderColor, borderWidth)
-            e.Graphics.DrawRectangle(pen, 0, 0, label.Width - borderWidth, label.Height - borderWidth)
-        End Using
 
     End Sub
 
@@ -410,6 +398,7 @@ Public Class FCNES
                                 labelProf.ForeColor = Color.White
                                 labelProf.Cursor = Cursors.Hand
                                 labelProf.ContextMenuStrip = contextMenuLabel
+                                labelProf.BorderStyle = BorderStyle.FixedSingle
 
                                 ' Adiciona o evento de MouseDown para arrastar
                                 AddHandler labelProf.MouseDown, AddressOf Control_MouseDown
@@ -478,7 +467,7 @@ Public Class FCNES
         ' Adiciona as opções dinamicamente com base nos containers disponíveis
         For Each container As FlowLayoutPanel In PanelContainer.Controls
             Dim item As New ToolStripMenuItem(container.Name)
-            AddHandler item.Click, AddressOf MoveLabelToContainer
+            AddHandler item.Click, AddressOf InsertLabelToContainer
             menu.Items.Add(item)
         Next
 
