@@ -1,5 +1,6 @@
 ﻿Imports System.IO
 Imports System.Net
+Imports Org.BouncyCastle.Cms
 Imports ServiceStack
 
 Public Class FCNES
@@ -48,8 +49,9 @@ Public Class FCNES
 
         Dim nome As String = labelItens(0)
         Dim cbo As String = labelItens(1)
+        Dim cpf As String = labelItens(2)
 
-        m.SQLinsert("movimento", "unidade_out, equipe_out, profissional, cbo", "'" & sourceContainer.Tag & "','" & sourceContainer.Name & "','" & nome & "','" & cbo & "'")
+        m.SQLinsert("movimento", "unidade_out, equipe_out, profissional, cbo, cpf", "'" & sourceContainer.Tag & "','" & sourceContainer.Name & "','" & nome & "','" & cbo & "','" & cpf & "'")
     End Sub
 
     Private Sub updateAlteracao(destinationContainer As FlowLayoutPanel)
@@ -243,22 +245,45 @@ Public Class FCNES
         Next
 
     End Sub
+
+    ' Evento para mover o Label para o container selecionado
+    Private Sub MoveLabelToContainer(sender As Object, e As EventArgs)
+        If selectedLabel IsNot Nothing Then
+            Dim menuItem = DirectCast(sender, ToolStripMenuItem)
+            Dim destinationContainer = PanelContainer.Controls.Find(menuItem.Text, True).FirstOrDefault()
+
+            If TypeOf destinationContainer Is FlowLayoutPanel Then
+                Dim container = DirectCast(destinationContainer, FlowLayoutPanel)
+
+                ' Move o Label para o container selecionado
+                insertAlteracao(selectedLabel)
+                selectedLabel.Parent.Controls.Remove(selectedLabel)
+                updateAlteracao(destinationContainer)
+                container.Controls.Add(selectedLabel)
+                addPanelAlteracoes()
+            End If
+
+            selectedLabel = Nothing ' Reseta a seleção
+        End If
+    End Sub
     Private Sub deleteAlteracao(sender As Object, e As EventArgs)
         Dim botao As Button = DirectCast(sender, Button)
 
         If m.msgQuestion("Excluir esta alteração?", "Atenção") Then
+            Dim altData = m.getDataset($"SELECT * FROM movimento WHERE id ={botao.Tag}")
             If m.doQuery($"DELETE FROM movimento WHERE id ={botao.Tag}") Then
                 addPanelAlteracoes()
+                Dim panelSendTo = PanelContainer.Controls.Find(altData.Rows(0).Item(2).ToString, True).FirstOrDefault()
+                Dim panelOrigin = PanelContainer.Controls.Find(altData.Rows(0).Item(4).ToString, True).FirstOrDefault()
+
+                Dim label As Label = DirectCast(panelOrigin.Controls.Find(altData.Rows(0).Item(7).ToString, True).FirstOrDefault(), Label)
+
+                panelOrigin.Controls.Remove(label)
+                panelSendTo.Controls.Add(label)
+
             End If
         End If
 
-    End Sub
-
-    Private Sub Label_MouseUp(sender As Object, e As MouseEventArgs)
-        If e.Button = MouseButtons.Right Then
-            Dim label = DirectCast(sender, Label)
-            contextMenuLabel.Show(label, e.Location)
-        End If
     End Sub
 
     Private Sub FCNES_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -345,15 +370,17 @@ Public Class FCNES
                             For Each prof In eq.Profissionais
                                 Dim labelProf As New Label()
 
+                                labelProf.Name = prof.CPF
                                 labelProf.AutoSize = False
                                 labelProf.MinimumSize = New Size(245, 60)
                                 labelProf.Font = New Font("Calibri", 10, FontStyle.Regular)
-                                labelProf.Tag = prof.Nome & "/" & xml.getCBOXML(prof.CBOLOTACAO)
+                                labelProf.Tag = prof.Nome & "/" & xml.getCBOXML(prof.CBOLOTACAO) & "/" & prof.CPF
                                 labelProf.Text = prof.Nome & vbCrLf & xml.getCBOXML(prof.CBOLOTACAO)
                                 labelProf.Margin = New Padding(7, 5, 5, 6)
                                 labelProf.Padding = New Padding(3, 3, 2, 2)
                                 labelProf.BorderStyle = BorderStyle.None
                                 labelProf.ForeColor = Color.White
+                                labelProf.Cursor = Cursors.Hand
                                 labelProf.ContextMenuStrip = contextMenuLabel
 
                                 ' Adiciona o evento de MouseDown para arrastar
@@ -405,24 +432,6 @@ Public Class FCNES
 
     End Sub
 
-    'Private Sub contextMenuLabel_Opening(sender As Object, e As System.ComponentModel.CancelEventArgs)
-    '    Dim menu = DirectCast(sender, ContextMenuStrip)
-    '    menu.Items.Clear()
-
-    '    ' Adiciona as opções dinamicamente com base nos containers disponíveis
-    '    For Each container As FlowLayoutPanel In PanelContainer.Controls
-    '        Dim item As New ToolStripMenuItem(container.Name)
-    '        AddHandler item.Click, AddressOf MoveLabelToContainer
-    '        menu.Items.Add(item)
-    '    Next
-
-    '    ' Obtém o Label associado ao menu
-    '    Dim sourceControl = contextMenuLabel.SourceControl
-    '    If TypeOf sourceControl Is Label Then
-    '        selectedLabel = DirectCast(sourceControl, Label)
-    '    End If
-    'End Sub
-
     Private Sub contextMenuLabel_Opening(sender As Object, e As System.ComponentModel.CancelEventArgs)
         Dim menu = DirectCast(sender, ContextMenuStrip)
         menu.Items.Clear()
@@ -454,28 +463,6 @@ Public Class FCNES
             e.Cancel = True
         End If
 
-    End Sub
-
-
-    ' Evento para mover o Label para o container selecionado
-    Private Sub MoveLabelToContainer(sender As Object, e As EventArgs)
-        If selectedLabel IsNot Nothing Then
-            Dim menuItem = DirectCast(sender, ToolStripMenuItem)
-            Dim destinationContainer = PanelContainer.Controls.Find(menuItem.Text, True).FirstOrDefault()
-
-            If TypeOf destinationContainer Is FlowLayoutPanel Then
-                Dim container = DirectCast(destinationContainer, FlowLayoutPanel)
-
-                ' Move o Label para o container selecionado
-                insertAlteracao(selectedLabel)
-                selectedLabel.Parent.Controls.Remove(selectedLabel)
-                updateAlteracao(destinationContainer)
-                container.Controls.Add(selectedLabel)
-                addPanelAlteracoes()
-            End If
-
-            selectedLabel = Nothing ' Reseta a seleção
-        End If
     End Sub
 
     Private Sub FCNES_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
@@ -515,6 +502,12 @@ Public Class FCNES
 
     Private Sub PlanejamentoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PlanejamentoToolStripMenuItem.Click
         FplanejCNES.Show()
+    End Sub
+    Private Sub Label_MouseUp(sender As Object, e As MouseEventArgs)
+        If e.Button = MouseButtons.Right Then
+            Dim label = DirectCast(sender, Label)
+            contextMenuLabel.Show(label, e.Location)
+        End If
     End Sub
 
 End Class
