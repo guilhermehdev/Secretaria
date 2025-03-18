@@ -259,7 +259,6 @@ Public Class FCNES
         If selectedLabel IsNot Nothing Then
             Dim menuItem = DirectCast(sender, ToolStripMenuItem)
             Dim destinationContainer = PanelContainer.Controls.Find(menuItem.Text, True).FirstOrDefault()
-            CustomLabel_Paint(selectedLabel, sender, e)
 
             If TypeOf destinationContainer Is FlowLayoutPanel Then
                 Dim container = DirectCast(destinationContainer, FlowLayoutPanel)
@@ -271,6 +270,8 @@ Public Class FCNES
                 container.Controls.Add(selectedLabel)
                 addPanelAlteracoes()
             End If
+
+            selectedLabel.ForeColor = Color.Red
 
             selectedLabel = Nothing ' Reseta a seleção
         End If
@@ -299,6 +300,8 @@ Public Class FCNES
 
         panelOrigin.Controls.Remove(label)
         panelSendTo.Controls.Add(label)
+
+        panelSendTo.Controls.SetChildIndex(label, 1)
 
     End Sub
 
