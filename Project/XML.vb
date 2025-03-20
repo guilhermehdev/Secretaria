@@ -321,6 +321,11 @@ Public Class XML
     Public Sub copyXMLFileFromServer()
 
         Try
+            If My.Settings.server = "" Then
+                FConnSettings.ShowDialog()
+                Exit Sub
+            End If
+
             Dim origem As String = $"http://{My.Settings.server}/Secretaria/CNES/EQUIPES.xml" ' URL do arquivo no servidor web
             Dim destino As String = Application.StartupPath & "\XML\EQUIPES.xml" ' Caminho de destino no cliente
             Dim clienteWeb As New WebClient()
