@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports System.Net
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Window
+Imports iTextSharp.text.html.simpleparser
 Imports Org.BouncyCastle.Cms
 Imports ServiceStack
 
@@ -271,8 +272,6 @@ Public Class FCNES
                 addPanelAlteracoes()
             End If
 
-            selectedLabel.ForeColor = Color.Red
-
             selectedLabel = Nothing ' Reseta a seleção
         End If
     End Sub
@@ -331,8 +330,8 @@ Public Class FCNES
                         unidade.Name = eq.NomeReferencia
                         unidade.Tag = est.NOME
                         unidade.AllowDrop = True
-                        unidade.Width = 280
-                        unidade.Height = 400
+                        unidade.Width = 210
+                        unidade.Height = 300
                         unidade.Margin = New Padding(5)
                         unidade.Padding = New Padding(0)
                         unidade.AutoScroll = True
@@ -371,19 +370,27 @@ Public Class FCNES
                         AddHandler unidade.DragEnter, AddressOf Container_DragEnter
                         AddHandler unidade.DragDrop, AddressOf Container_DragDrop
 
-                        Dim labelNome As New Label() With {
+                        Dim labelNomeEquipe As New Label() With {
                             .AutoSize = False,
-                            .Width = 255,
+                            .Width = 190,
                             .Height = 50,
                             .BackColor = Color.DarkSlateGray,
                             .ForeColor = Color.Cyan,
-                            .Font = New Font("Calibri", 12, FontStyle.Bold),
+                            .Font = New Font("Calibri", 10, FontStyle.Bold),
                             .Text = eq.NomeReferencia & " - " & eq.INE,
                             .TextAlign = ContentAlignment.MiddleCenter,
-                            .Margin = New Padding(0, 0, 0, 10)
+                            .Margin = New Padding(0, 0, 0, 10),
+                            .Padding = New Padding(5, 0, 0, 0)
                         }
 
-                        unidade.Controls.Add(labelNome)
+                        unidade.Controls.Add(labelNomeEquipe)
+
+                        Dim labelProfSize As Size
+                        If eq.Profissionais.Count > 4 Then
+                            labelProfSize = New Size(175, 45)
+                        Else
+                            labelProfSize = New Size(193, 45)
+                        End If
 
                         If eq.Profissionais IsNot Nothing Then
                             For Each prof In eq.Profissionais
@@ -391,17 +398,16 @@ Public Class FCNES
 
                                 labelProf.Name = prof.CPF
                                 labelProf.AutoSize = False
-                                labelProf.MinimumSize = New Size(245, 60)
-                                labelProf.Font = New Font("Calibri", 10, FontStyle.Regular)
+                                labelProf.MinimumSize = labelProfSize
+                                labelProf.Font = New Font("Calibri", 8, FontStyle.Regular)
                                 labelProf.Tag = prof.Nome & "/" & xml.getCBOXML(prof.CBOLOTACAO) & "/" & prof.CPF
                                 labelProf.Text = prof.Nome & vbCrLf & xml.getCBOXML(prof.CBOLOTACAO)
                                 labelProf.Margin = New Padding(7, 5, 5, 6)
-                                labelProf.Padding = New Padding(3, 3, 2, 2)
+                                labelProf.Padding = New Padding(3, 3, 2, 0)
                                 labelProf.BorderStyle = BorderStyle.None
                                 labelProf.ForeColor = Color.White
                                 labelProf.Cursor = Cursors.Hand
                                 labelProf.ContextMenuStrip = contextMenuLabel
-                                labelProf.BorderStyle = BorderStyle.FixedSingle
 
                                 ' Adiciona o evento de MouseDown para arrastar
                                 AddHandler labelProf.MouseDown, AddressOf Control_MouseDown
@@ -413,14 +419,14 @@ Public Class FCNES
                                     Case "223565"
                                         labelProf.BackColor = Color.IndianRed
                                     Case "322245"
-                                        labelProf.BackColor = Color.Orange
+                                        labelProf.BackColor = Color.DarkOrange
                                     Case "515105"
                                         labelProf.BackColor = Color.SteelBlue
                                     Case Else
                                         labelProf.BackColor = Color.DimGray
                                 End Select
 
-                                Dim radius As Integer = 5  ' Ajuste o valor para deixar mais ou menos arredondado
+                                Dim radius As Integer = 8  ' Ajuste o valor para deixar mais ou menos arredondado
 
                                 ' Criar uma forma de região com cantos arredondados
                                 Dim rect As New Rectangle(0, 0, labelProf.Width, labelProf.Height)
