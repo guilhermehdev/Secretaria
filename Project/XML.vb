@@ -319,8 +319,15 @@ Public Class XML
         combobox.ValueMember = "Key"
     End Sub
     Public Sub copyXMLFileFromServer()
-
         Try
+            If Directory.Exists(Application.StartupPath & "\XML") = False Then
+                Directory.CreateDirectory(Application.StartupPath & "\XML")
+            End If
+
+            If Directory.Exists(Application.StartupPath & "\PDF") = False Then
+                Directory.CreateDirectory(Application.StartupPath & "\PDF")
+            End If
+
             If My.Settings.server = "" Then
                 FConnSettings.ShowDialog()
                 Exit Sub
