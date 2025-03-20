@@ -63,12 +63,12 @@ Public Class FCNES
 
     Private Sub Container_DragDrop(sender As Object, e As DragEventArgs)
         Dim destinationContainer As FlowLayoutPanel = DirectCast(sender, FlowLayoutPanel)
-        Dim control As Label = DirectCast(e.Data.GetData(GetType(Label)), Label)
-        Dim labelText As String = control.Text
+        Dim labelProf As Label = DirectCast(e.Data.GetData(GetType(Label)), Label)
+        Dim labelText As String = labelProf.Text
 
         ' Adiciona o controle ao container de destino
-        destinationContainer.Controls.Add(control)
-        destinationContainer.Controls.SetChildIndex(control, 1)
+        destinationContainer.Controls.Add(labelProf)
+        destinationContainer.Controls.SetChildIndex(labelProf, 1)
         ' Oculta o ToolTip após alguns segundos
         ToolTip1.Hide(destinationContainer)
 
@@ -80,6 +80,9 @@ Public Class FCNES
         sourceContainer = Nothing
 
         scrollTimer.Stop() ' Para a rolagem ao soltar o label
+
+        labelProf.Invalidate() ' Força o redesenho para aplicar a borda
+        AddHandler labelProf.Paint, AddressOf Label_Paint
     End Sub
 
     Private Sub Container_DragOver(sender As Object, e As DragEventArgs) Handles PanelContainer.DragOver
@@ -294,13 +297,15 @@ Public Class FCNES
     Private Sub moveLabelsFast(equipeDestino As Label, equipeOrigem As Label, cpfProfissional As Button)
         Dim panelSendTo = PanelContainer.Controls.Find(equipeDestino.Tag, True).FirstOrDefault()
         Dim panelOrigin = PanelContainer.Controls.Find(equipeOrigem.Tag, True).FirstOrDefault()
-
         Dim label As Label = DirectCast(panelOrigin.Controls.Find(cpfProfissional.Name, True).FirstOrDefault(), Label)
 
-        panelOrigin.Controls.Remove(label)
-        panelSendTo.Controls.Add(label)
+        Try
+            panelOrigin.Controls.Remove(label)
+            panelSendTo.Controls.Add(label)
+            panelSendTo.Controls.SetChildIndex(label, 1)
+        Catch ex As Exception
 
-        panelSendTo.Controls.SetChildIndex(label, 1)
+        End Try
 
     End Sub
 
@@ -455,6 +460,19 @@ Public Class FCNES
             Next
 
         End If
+
+    End Sub
+
+    Private Sub Label_Paint(sender As Object, e As PaintEventArgs)
+        Dim label As Label = DirectCast(sender, Label)
+        Dim borderColor As Color = Color.Transparent
+        Dim borderWidth As Integer = 3
+
+        borderColor = Color.Red ' Define a cor da borda como vermelha
+
+        Using pen As New Pen(borderColor, borderWidth)
+            e.Graphics.DrawRectangle(pen, 1, 1, label.Width - borderWidth, label.Height - borderWidth)
+        End Using
 
     End Sub
 
