@@ -65,6 +65,11 @@ Public Class FCNES
         Dim destinationContainer As FlowLayoutPanel = DirectCast(sender, FlowLayoutPanel)
         Dim labelProf As Label = DirectCast(e.Data.GetData(GetType(Label)), Label)
         Dim labelText As String = labelProf.Text
+        Dim labelItens() As String = labelProf.Tag.Split("/"c)
+        Dim nome As String = labelItens(0)
+        Dim cbo As String = labelItens(1)
+        Dim cpf As String = labelItens(2)
+        Dim border As String = "Bordered"
 
         ' Adiciona o controle ao container de destino
         destinationContainer.Controls.Add(labelProf)
@@ -83,6 +88,8 @@ Public Class FCNES
 
         labelProf.Invalidate() ' Força o redesenho para aplicar a borda
         AddHandler labelProf.Paint, AddressOf Label_Paint
+
+        labelProf.Tag = nome & "/" & cbo & "/" & cpf & "/" & border
     End Sub
 
     Private Sub Container_DragOver(sender As Object, e As DragEventArgs) Handles PanelContainer.DragOver
@@ -168,7 +175,8 @@ Public Class FCNES
                 .Width = 246,
                 .Height = 16,
                 .Font = New Font("Calibri", 10, FontStyle.Bold),
-                .ForeColor = Color.SteelBlue
+                .ForeColor = Color.SteelBlue,
+                .Tag = cpf
             }
 
             Dim lblCBO As New Label With {
@@ -283,15 +291,48 @@ Public Class FCNES
         Dim panelAlt = FlowLayoutPanelAleracoes.Controls.Find(delButton.Tag, True).FirstOrDefault()
         Dim eqOrigin = panelAlt.Controls.Find("in-" & delButton.Tag, True).FirstOrDefault()
         Dim eqSendTo = panelAlt.Controls.Find("out-" & delButton.Tag, True).FirstOrDefault()
+        Dim labelProf As Label = DirectCast(PanelContainer.Controls.Find(delButton.Name, True).FirstOrDefault(), Label)
 
         If m.msgQuestion("Excluir esta alteração?", "Atenção") Then
 
             If m.doQuery($"DELETE FROM movimento WHERE id ={delButton.Tag}") Then
                 addPanelAlteracoes()
                 moveLabelsFast(eqSendTo, eqOrigin, delButton)
+                ClearLabelBorders(labelProf)
             End If
         End If
 
+    End Sub
+
+    Private Sub ClearLabelBorders(labelProf As Label)
+        ' Garante que o PanelContainer e seus controles existem
+        If PanelContainer IsNot Nothing AndAlso PanelContainer.Controls.Count > 0 Then
+            ' Itera sobre todos os FlowLayoutPanels no PanelContainer
+            For Each container As Control In PanelContainer.Controls
+                If TypeOf container Is FlowLayoutPanel Then
+                    ' Itera sobre os Labels dentro de cada FlowLayoutPanel
+                    For Each ctrl As Control In container.Controls
+                        If TypeOf ctrl Is Label Then
+                            Dim labelItens() As String = labelProf.Tag.Split("/"c)
+                            If labelItens.Length >= 3 Then
+                                Dim nome As String = labelItens(0)
+                                Dim cbo As String = labelItens(1)
+                                Dim cpf As String = labelItens(2)
+
+                                ' MsgBox(labelItens(3))
+
+                                ' Redefine o estado do Label
+                                If labelItens.Length > 3 AndAlso labelItens(3) = "Bordered" Then
+                                    labelProf.Invalidate() ' Força o redesenho para remover a borda
+                                    labelProf.Tag = $"{nome}/{cbo}/{cpf}/Borderless" ' Remove a marcação
+                                End If
+                            End If
+
+                        End If
+                    Next
+                End If
+            Next
+        End If
     End Sub
 
     Private Sub moveLabelsFast(equipeDestino As Label, equipeOrigem As Label, cpfProfissional As Button)
@@ -405,7 +446,7 @@ Public Class FCNES
                                 labelProf.AutoSize = False
                                 labelProf.MinimumSize = labelProfSize
                                 labelProf.Font = New Font("Calibri", 8, FontStyle.Regular)
-                                labelProf.Tag = prof.Nome & "/" & xml.getCBOXML(prof.CBOLOTACAO) & "/" & prof.CPF
+                                labelProf.Tag = prof.Nome & "/" & xml.getCBOXML(prof.CBOLOTACAO) & "/" & prof.CPF & "/" & "Borderless"
                                 labelProf.Text = prof.Nome & vbCrLf & xml.getCBOXML(prof.CBOLOTACAO)
                                 labelProf.Margin = New Padding(7, 5, 5, 6)
                                 labelProf.Padding = New Padding(3, 3, 2, 0)
@@ -465,15 +506,23 @@ Public Class FCNES
 
     Private Sub Label_Paint(sender As Object, e As PaintEventArgs)
         Dim label As Label = DirectCast(sender, Label)
-        Dim borderColor As Color = Color.Transparent
-        Dim borderWidth As Integer = 3
+        Dim borderColor As Color = Color.Transparent ' Sem borda por padrão
+        Dim borderWidth As Integer = 2
 
-        borderColor = Color.Red ' Define a cor da borda como vermelha
+        ' Verifica se o Label está marcado para ter uma borda
+        If label.Tag IsNot Nothing Then
+            Dim labelItens() As String = label.Tag.ToString().Split("/"c)
+            If labelItens.Length >= 4 AndAlso labelItens(3) = "Bordered" Then
+                borderColor = Color.Red ' Define a cor da borda
+            End If
+        End If
 
-        Using pen As New Pen(borderColor, borderWidth)
-            e.Graphics.DrawRectangle(pen, 1, 1, label.Width - borderWidth, label.Height - borderWidth)
-        End Using
-
+        ' Desenha a borda somente se a cor não for transparente
+        If borderColor <> Color.Transparent Then
+            Using pen As New Pen(borderColor, borderWidth)
+                e.Graphics.DrawRectangle(pen, 0, 0, label.Width - borderWidth, label.Height - borderWidth)
+            End Using
+        End If
     End Sub
 
     Private Sub contextMenuLabel_Opening(sender As Object, e As System.ComponentModel.CancelEventArgs)
