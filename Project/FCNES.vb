@@ -61,15 +61,41 @@ Public Class FCNES
         m.SQLGeneric($"UPDATE movimento SET unidade_in='{destinationContainer.Tag}',equipe_in='{destinationContainer.Name}' WHERE id={idProf}")
     End Sub
 
+    Private Function getlabelTAG(label As Label)
+        Dim labelItens() As String = label.Tag.Split("/"c)
+        Dim nome As String = labelItens(0)
+        Dim cbo As String = labelItens(1)
+        Dim cpf As String = labelItens(2)
+        Dim border As String = labelItens(3)
+
+        Return labelItens
+
+    End Function
+
+
     Private Sub Container_DragDrop(sender As Object, e As DragEventArgs)
         Dim destinationContainer As FlowLayoutPanel = DirectCast(sender, FlowLayoutPanel)
         Dim labelProf As Label = DirectCast(e.Data.GetData(GetType(Label)), Label)
         Dim labelText As String = labelProf.Text
-        Dim labelItens() As String = labelProf.Tag.Split("/"c)
+        Dim containerAlteracoes = FlowLayoutPanelAleracoes
+        Dim labelitens = getlabelTAG(labelProf)
         Dim nome As String = labelItens(0)
         Dim cbo As String = labelItens(1)
         Dim cpf As String = labelItens(2)
         Dim border As String = "Bordered"
+
+        For Each control As Panel In containerAlteracoes.Controls
+
+            Try
+                Dim btn = control.Controls.Find(cpf, True).FirstOrDefault()
+                m.msgAlert("Profissional já possui uma alteração em andamento!")
+                Exit Sub
+
+            Catch ex As Exception
+
+            End Try
+
+        Next
 
         ' Adiciona o controle ao container de destino
         destinationContainer.Controls.Add(labelProf)
@@ -91,6 +117,59 @@ Public Class FCNES
 
         labelProf.Tag = nome & "/" & cbo & "/" & cpf & "/" & border
     End Sub
+    Private Sub InsertLabelContextMenu(sender As Object, e As EventArgs)
+        If selectedLabel IsNot Nothing Then
+            Dim menuItem = DirectCast(sender, ToolStripMenuItem)
+            Dim destinationContainer = PanelContainer.Controls.Find(menuItem.Text, True).FirstOrDefault()
+            Dim labelTag = getlabelTAG(selectedLabel)
+            Dim border As String = "Borderless"
+            Dim containerOrigin = selectedLabel.Parent
+            Dim containerAlteracoes = FlowLayoutPanelAleracoes
+
+            For Each control As Panel In containerAlteracoes.Controls
+
+                Try
+                    Dim btn = control.Controls.Find(labelTag(2), True).FirstOrDefault()
+                    m.msgAlert("Profissional já possui uma alteração em andamento!")
+                    Exit Sub
+
+                Catch ex As Exception
+
+                End Try
+
+            Next
+
+            If containerOrigin.Name <> destinationContainer.Name Then
+
+                If TypeOf destinationContainer Is FlowLayoutPanel Then
+                    Dim container = DirectCast(destinationContainer, FlowLayoutPanel)
+
+                    insertAlteracao(selectedLabel)
+                    containerOrigin.Controls.Remove(selectedLabel)
+
+                    updateAlteracao(destinationContainer)
+                    container.Controls.Add(selectedLabel)
+                    container.Controls.SetChildIndex(selectedLabel, 1)
+                    container.PerformLayout()
+
+                    addPanelAlteracoes()
+
+                    border = "Bordered"
+                End If
+
+            Else
+                border = "Borderless"
+
+            End If
+
+            selectedLabel.Tag = labelTag(0) & "/" & labelTag(1) & "/" & labelTag(2) & "/" & border
+            AddHandler selectedLabel.Paint, AddressOf Label_Paint
+            selectedLabel = Nothing
+
+        End If
+
+    End Sub
+
 
     Private Sub Container_DragOver(sender As Object, e As DragEventArgs) Handles PanelContainer.DragOver
         e.Effect = DragDropEffects.Move
@@ -110,20 +189,6 @@ Public Class FCNES
             ' Parar a rolagem
             scrollTimer.Stop()
         End If
-    End Sub
-
-    Private Sub scrollTimer_Tick(sender As Object, e As EventArgs)
-        ' Debug.WriteLine("scrollTimer_Tick disparado!")
-        Try
-            Dim scrollAmount As Integer = 10 ' Ajuste a velocidade da rolagem conforme necessário
-            PanelContainer.VerticalScroll.Value += scrollDirection * scrollAmount
-
-            ' Garante que o valor do scroll esteja dentro dos limites
-            PanelContainer.VerticalScroll.Value = Math.Max(PanelContainer.VerticalScroll.Minimum, Math.Min(PanelContainer.VerticalScroll.Maximum, PanelContainer.VerticalScroll.Value))
-        Catch ex As Exception
-
-        End Try
-
     End Sub
 
     Private Sub addPanelAlteracoes()
@@ -146,7 +211,7 @@ Public Class FCNES
             .Size = New Size(280, 150),  ' Tamanho do painel
             .BackColor = Color.White,
             .BorderStyle = BorderStyle.FixedSingle,
-            .Tag = profissional,
+            .Tag = cpf,
             .Name = id
             }
 
@@ -267,25 +332,7 @@ Public Class FCNES
     End Sub
 
     ' Evento para mover o Label para o container selecionado
-    Private Sub InsertLabelToContainer(sender As Object, e As EventArgs)
-        If selectedLabel IsNot Nothing Then
-            Dim menuItem = DirectCast(sender, ToolStripMenuItem)
-            Dim destinationContainer = PanelContainer.Controls.Find(menuItem.Text, True).FirstOrDefault()
 
-            If TypeOf destinationContainer Is FlowLayoutPanel Then
-                Dim container = DirectCast(destinationContainer, FlowLayoutPanel)
-
-                ' Move o Label para o container selecionado
-                insertAlteracao(selectedLabel)
-                selectedLabel.Parent.Controls.Remove(selectedLabel)
-                updateAlteracao(destinationContainer)
-                container.Controls.Add(selectedLabel)
-                addPanelAlteracoes()
-            End If
-
-            selectedLabel = Nothing ' Reseta a seleção
-        End If
-    End Sub
     Private Sub deleteAlteracao(sender As Object, e As EventArgs)
         Dim delButton As Button = DirectCast(sender, Button)
         Dim panelAlt = FlowLayoutPanelAleracoes.Controls.Find(delButton.Tag, True).FirstOrDefault()
@@ -444,7 +491,7 @@ Public Class FCNES
 
                                 labelProf.Name = prof.CPF
                                 labelProf.AutoSize = False
-                                labelProf.MinimumSize = labelProfSize
+                                labelProf.MinimumSize = New Size(175, 45)
                                 labelProf.Font = New Font("Calibri", 8, FontStyle.Regular)
                                 labelProf.Tag = prof.Nome & "/" & xml.getCBOXML(prof.CBOLOTACAO) & "/" & prof.CPF & "/" & "Borderless"
                                 labelProf.Text = prof.Nome & vbCrLf & xml.getCBOXML(prof.CBOLOTACAO)
@@ -507,7 +554,7 @@ Public Class FCNES
     Private Sub Label_Paint(sender As Object, e As PaintEventArgs)
         Dim label As Label = DirectCast(sender, Label)
         Dim borderColor As Color = Color.Transparent ' Sem borda por padrão
-        Dim borderWidth As Integer = 2
+        Dim borderWidth As Integer = 3
 
         ' Verifica se o Label está marcado para ter uma borda
         If label.Tag IsNot Nothing Then
@@ -520,7 +567,7 @@ Public Class FCNES
         ' Desenha a borda somente se a cor não for transparente
         If borderColor <> Color.Transparent Then
             Using pen As New Pen(borderColor, borderWidth)
-                e.Graphics.DrawRectangle(pen, 0, 0, label.Width - borderWidth, label.Height - borderWidth)
+                e.Graphics.DrawRectangle(pen, 1, 1, label.Width - borderWidth, label.Height - borderWidth)
             End Using
         End If
     End Sub
@@ -543,7 +590,7 @@ Public Class FCNES
         ' Adiciona as opções dinamicamente com base nos containers disponíveis
         For Each container As FlowLayoutPanel In PanelContainer.Controls
             Dim item As New ToolStripMenuItem(container.Name)
-            AddHandler item.Click, AddressOf InsertLabelToContainer
+            AddHandler item.Click, AddressOf InsertLabelContextMenu
             menu.Items.Add(item)
         Next
 
@@ -569,6 +616,19 @@ Public Class FCNES
         scrollTimer.Interval = 10 ' Ajuste o intervalo conforme necessário
         AddHandler scrollTimer.Tick, AddressOf scrollTimer_Tick
         FlowLayoutPanelAleracoes.Focus()
+    End Sub
+    Private Sub scrollTimer_Tick(sender As Object, e As EventArgs)
+        ' Debug.WriteLine("scrollTimer_Tick disparado!")
+        Try
+            Dim scrollAmount As Integer = 10 ' Ajuste a velocidade da rolagem conforme necessário
+            PanelContainer.VerticalScroll.Value += scrollDirection * scrollAmount
+
+            ' Garante que o valor do scroll esteja dentro dos limites
+            PanelContainer.VerticalScroll.Value = Math.Max(PanelContainer.VerticalScroll.Minimum, Math.Min(PanelContainer.VerticalScroll.Maximum, PanelContainer.VerticalScroll.Value))
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
     Private Sub toolTipTimer_Tick(sender As Object, e As EventArgs)
