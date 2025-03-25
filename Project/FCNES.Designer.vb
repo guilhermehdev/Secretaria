@@ -36,6 +36,7 @@ Partial Class FCNES
         Me.FlowLayoutPanelAleracoes = New System.Windows.Forms.FlowLayoutPanel()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.TimerBordas = New System.Windows.Forms.Timer(Me.components)
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
@@ -168,6 +169,10 @@ Partial Class FCNES
         Me.OpenFileDialog1.DefaultExt = "xml"
         Me.OpenFileDialog1.FileName = "EQUIPES.xml"
         '
+        'TimerBordas
+        '
+        Me.TimerBordas.Enabled = True
+        '
         'FCNES
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -204,4 +209,5 @@ Partial Class FCNES
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
     Friend WithEvents FecharToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents FlowLayoutPanelAleracoes As FlowLayoutPanel
+    Friend WithEvents TimerBordas As Timer
 End Class
