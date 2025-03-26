@@ -73,7 +73,7 @@ Partial Class FCNES
         Me.PanelContainer.AutoScroll = True
         Me.PanelContainer.AutoSize = True
         Me.PanelContainer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.PanelContainer.BackColor = System.Drawing.Color.Gainsboro
+        Me.PanelContainer.BackColor = System.Drawing.Color.Beige
         Me.PanelContainer.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PanelContainer.Location = New System.Drawing.Point(3, 3)
         Me.PanelContainer.Name = "PanelContainer"
@@ -172,6 +172,7 @@ Partial Class FCNES
         'TimerBordas
         '
         Me.TimerBordas.Enabled = True
+        Me.TimerBordas.Interval = 200
         '
         'FCNES
         '

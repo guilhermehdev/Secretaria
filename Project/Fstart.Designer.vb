@@ -32,6 +32,7 @@ Partial Class Fstart
         '
         'btOuvidoria
         '
+        Me.btOuvidoria.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btOuvidoria.Location = New System.Drawing.Point(12, 12)
         Me.btOuvidoria.Name = "btOuvidoria"
         Me.btOuvidoria.Size = New System.Drawing.Size(81, 47)
@@ -41,6 +42,7 @@ Partial Class Fstart
         '
         'btEmendas
         '
+        Me.btEmendas.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btEmendas.Location = New System.Drawing.Point(186, 12)
         Me.btEmendas.Name = "btEmendas"
         Me.btEmendas.Size = New System.Drawing.Size(81, 47)
@@ -50,6 +52,7 @@ Partial Class Fstart
         '
         'btRecepcao
         '
+        Me.btRecepcao.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btRecepcao.Location = New System.Drawing.Point(99, 12)
         Me.btRecepcao.Name = "btRecepcao"
         Me.btRecepcao.Size = New System.Drawing.Size(81, 47)
@@ -59,6 +62,7 @@ Partial Class Fstart
         '
         'btSair
         '
+        Me.btSair.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btSair.Location = New System.Drawing.Point(192, 94)
         Me.btSair.Name = "btSair"
         Me.btSair.Size = New System.Drawing.Size(75, 23)
@@ -68,6 +72,7 @@ Partial Class Fstart
         '
         'btCNES
         '
+        Me.btCNES.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btCNES.Location = New System.Drawing.Point(12, 65)
         Me.btCNES.Name = "btCNES"
         Me.btCNES.Size = New System.Drawing.Size(81, 47)

@@ -11,15 +11,19 @@ Public Class FCNES
     Private scrollDirection As Integer = 0 ' 1 para baixo, -1 para cima.
     Private idProf As Integer
     Private ScrollBarVisivelAnterior As Boolean = False
+    Private sourceContainer As FlowLayoutPanel
+
     Private borderColorIndex As Integer = 0
     Private gradientColors As Color() = {Color.Cyan, Color.Magenta, Color.Yellow, Color.Lime}
+    Private gradientOffset As Single = 0.0F
+
 
     Dim xml As New XML
     Dim m As New Main
-    Dim sourceContainer As FlowLayoutPanel = Nothing ' Container de origem do Label
     Dim contextMenuLabel As New ContextMenuStrip() ' Instância global do ContextMenuStrip
     Dim selectedLabel As Label = Nothing ' Label selecionado para movimentação
     Dim equipesCpfList As New List(Of (equipe_in As String, equipe_out As String, cpf As String))()
+    Dim movingLabel As Label = Nothing
 
 
     Private Sub Container_DragEnter(sender As Object, e As DragEventArgs)
@@ -34,17 +38,10 @@ Public Class FCNES
 
     Private Sub Control_MouseDown(sender As Object, e As MouseEventArgs)
         If e.Button = MouseButtons.Left Then
-            Dim label As Label = DirectCast(sender, Label)
-            'Dim labelText As Label ' Captura o texto do label
-            ' Identifica o container de origem
+            movingLabel = DirectCast(sender, Label)
 
-            insertAlteracao(label)
-            ' ToolTip1.Show($"{nome}{vbCrLf}{cbo}{vbCrLf}Saindo de Equipe: {sourceContainer.Name}", sourceContainer, 10, 10, 6000)
-            ' Inicia o arrasto
-            label.DoDragDrop(label, DragDropEffects.Move)
-
-            addPanelAlteracoes()
-
+            'sourceContainer = DirectCast(label.Parent, FlowLayoutPanel)
+            movingLabel.DoDragDrop(movingLabel, DragDropEffects.Move)
         End If
     End Sub
 
@@ -78,8 +75,9 @@ Public Class FCNES
 
 
     Private Sub Container_DragDrop(sender As Object, e As DragEventArgs)
-        Dim destinationContainer As FlowLayoutPanel = DirectCast(sender, FlowLayoutPanel)
         Dim labelProf As Label = DirectCast(e.Data.GetData(GetType(Label)), Label)
+        Dim destinationContainer As FlowLayoutPanel = DirectCast(sender, FlowLayoutPanel)
+        Dim originContainer = DirectCast(labelProf.Parent, FlowLayoutPanel)
         Dim labelText As String = labelProf.Text
         Dim containerAlteracoes = FlowLayoutPanelAleracoes
         Dim labelitens = getlabelTAG(labelProf)
@@ -105,25 +103,33 @@ Public Class FCNES
 
         Next
 
-        ' Adiciona o controle ao container de destino
-        destinationContainer.Controls.Add(labelProf)
-        destinationContainer.Controls.SetChildIndex(labelProf, 1)
-        ' Oculta o ToolTip após alguns segundos
-        ToolTip1.Hide(destinationContainer)
+        ' MsgBox(originContainer.Name & " - " & destinationContainer.Name)
 
-        updateAlteracao(destinationContainer)
+        If originContainer.Name <> destinationContainer.Name Then
 
-        'ToolTip1.Show($"{labelText}{vbCrLf}Movido para Equipe: {destinationContainer.Name}", destinationContainer, 10, 10, 6000)
-        toolTipTimer.Tag = destinationContainer ' Armazena o container para ocultar depois
-        toolTipTimer.Start()
-        sourceContainer = Nothing
+            insertAlteracao(movingLabel)
+            ' Adiciona o controle ao container de destino
+            destinationContainer.Controls.Add(labelProf)
 
-        scrollTimer.Stop() ' Para a rolagem ao soltar o label
+            destinationContainer.Controls.SetChildIndex(labelProf, 1)
+            ' Oculta o ToolTip após alguns segundos
+            ToolTip1.Hide(destinationContainer)
 
-        labelProf.Invalidate() ' Força o redesenho para aplicar a borda
-        AddHandler labelProf.Paint, AddressOf Label_Paint
+            updateAlteracao(destinationContainer)
 
-        labelProf.Tag = nome & "/" & cbo & "/" & cpf & "/" & border
+            sourceContainer = Nothing
+
+            scrollTimer.Stop() ' Para a rolagem ao soltar o label
+
+            labelProf.Invalidate() ' Força o redesenho para aplicar a borda
+            AddHandler labelProf.Paint, AddressOf Label_Paint
+
+            labelProf.Tag = nome & "/" & cbo & "/" & cpf & "/" & border
+
+            addPanelAlteracoes()
+
+        End If
+
     End Sub
     Private Sub InsertLabelContextMenu(sender As Object, e As EventArgs)
         If selectedLabel IsNot Nothing Then
@@ -163,18 +169,14 @@ Public Class FCNES
                     container.PerformLayout()
 
                     addPanelAlteracoes()
-
                     border = "Bordered"
+
+                    selectedLabel.Tag = labelTag(0) & "/" & labelTag(1) & "/" & labelTag(2) & "/" & border
+                    AddHandler selectedLabel.Paint, AddressOf Label_Paint
+                    selectedLabel = Nothing
                 End If
 
-            Else
-                border = "Borderless"
-
             End If
-
-            selectedLabel.Tag = labelTag(0) & "/" & labelTag(1) & "/" & labelTag(2) & "/" & border
-            AddHandler selectedLabel.Paint, AddressOf Label_Paint
-            selectedLabel = Nothing
 
         End If
 
@@ -202,7 +204,7 @@ Public Class FCNES
     End Sub
 
     Private Sub addPanelAlteracoes()
-        Dim alteraData = m.getDataset("SELECT * FROM movimento WHERE `status` = 0")
+        Dim alteraData = m.getDataset("SELECT * FROM movimento WHERE `status` = 0 ORDER BY id DESC")
 
         FlowLayoutPanelAleracoes.Controls.Clear()
 
@@ -275,7 +277,7 @@ Public Class FCNES
             imgSetaVermelha.Image.RotateFlip(RotateFlipType.RotateNoneFlipY)
 
             Dim lblUnidadeOut As New Label With {
-                .Text = unidade_out & vbCrLf & "Equipe:" & equipe_out,
+                .Text = "Unidade: " & unidade_out & vbCrLf & "Equipe: " & equipe_out,
                 .Location = New Point(27, 55),
                 .AutoSize = False,
                 .Width = 262,
@@ -302,7 +304,7 @@ Public Class FCNES
             imgSetaVerde.Image.RotateFlip(RotateFlipType.RotateNoneFlipY)
 
             Dim lblUnidadeIn As New Label With {
-                .Text = unidade_in & vbCrLf & "Equipe: " & equipe_in,
+                .Text = "Unidade: " & unidade_in & vbCrLf & "Equipe: " & equipe_in,
                 .Location = New Point(27, 101),
                 .AutoSize = False,
                 .Width = 262,
@@ -336,26 +338,39 @@ Public Class FCNES
             containerPanel.Controls.Add(lblUnidadeIn)
             containerPanel.Controls.Add(btnDelete)
 
-            FlowLayoutPanelAleracoes.Controls.Add(containerPanel)
+            If equipe_in <> equipe_out Then
 
-            moveLabelsFast(lblUnidadeIn, lblUnidadeOut, btnDelete)
-            Dim flowPanelDestino As FlowLayoutPanel = PanelContainer.Controls.Find(equipe_in, True).FirstOrDefault()
-            Dim label As Label = flowPanelDestino.Controls.Find(cpf, True).FirstOrDefault()
+                Try
 
-            label.Invalidate()
-            Dim labelItens = getlabelTAG(label)
-            label.Tag = labelItens(0) & "/" & labelItens(1) & "/" & labelItens(2) & "/" & "Bordered"
-            AddHandler label.Paint, AddressOf Label_Paint
+                    FlowLayoutPanelAleracoes.Controls.Add(containerPanel)
+
+                    moveLabelsFast(lblUnidadeIn, lblUnidadeOut, btnDelete)
+                    Dim flowPanelDestino As FlowLayoutPanel = PanelContainer.Controls.Find(equipe_in, True).FirstOrDefault()
+                    Dim label As Label = flowPanelDestino.Controls.Find(cpf, True).FirstOrDefault()
+
+                    label.Invalidate()
+                    Dim labelItens = getlabelTAG(label)
+                    label.Tag = labelItens(0) & "/" & labelItens(1) & "/" & labelItens(2) & "/" & "Bordered"
+                    AddHandler label.Paint, AddressOf Label_Paint
+
+                Catch ex As Exception
+
+                End Try
+
+
+            End If
         Next
 
     End Sub
     Private Sub moveLabelsFast(equipeDestino As Label, equipeOrigem As Label, cpfProfissional As Button)
-        Dim panelSendTo = PanelContainer.Controls.Find(equipeDestino.Tag, True).FirstOrDefault()
-        Dim panelOrigin = PanelContainer.Controls.Find(equipeOrigem.Tag, True).FirstOrDefault()
-
-        Dim label As Label = DirectCast(panelOrigin.Controls.Find(cpfProfissional.Name, True).FirstOrDefault(), Label)
-
         Try
+
+            Dim panelSendTo = PanelContainer.Controls.Find(equipeDestino.Tag, True).FirstOrDefault()
+            Dim panelOrigin = PanelContainer.Controls.Find(equipeOrigem.Tag, True).FirstOrDefault()
+
+            Dim label As Label = DirectCast(panelOrigin.Controls.Find(cpfProfissional.Name, True).FirstOrDefault(), Label)
+
+
             panelOrigin.Controls.Remove(label)
             panelSendTo.Controls.Add(label)
             panelSendTo.Controls.SetChildIndex(label, 1)
@@ -415,26 +430,9 @@ Public Class FCNES
         End If
     End Sub
 
-    Private Sub setAlteracoes()
-        Try
-
-            For Each item In equipesCpfList
-                ' MsgBox($"Equipe In: {item.equipe_in}, Equipe Out: {item.equipe_out}, CPF: {item.cpf}")
-
-                Dim containerOrigem As FlowLayoutPanel = DirectCast(PanelContainer.Controls.Find(item.equipe_out, True).FirstOrDefault(), FlowLayoutPanel)
-
-
-
-                Dim containerDestino As FlowLayoutPanel = DirectCast(PanelContainer.Controls.Find(item.equipe_in, True).FirstOrDefault(), FlowLayoutPanel)
-                Dim label As Label = DirectCast(containerOrigem.Controls.Find(item.cpf, True).FirstOrDefault(), Label)
-
-                MsgBox(containerOrigem.Name)
-
-            Next
-
-        Catch ex As Exception
-
-        End Try
+    Private Sub unidade_scroll(sender As Object, e As ScrollEventArgs)
+        Dim painel As FlowLayoutPanel = DirectCast(sender, FlowLayoutPanel)
+        MessageBox.Show($"Rolagem na posição: {painel.VerticalScroll.Value}")
 
     End Sub
 
@@ -442,7 +440,7 @@ Public Class FCNES
         Me.Icon = FplanejCNES.Icon
         Dim estabelecimentos As List(Of Estabelecimento) = xml.equipesXML().ToList()
         AddHandler contextMenuLabel.Opening, AddressOf contextMenuLabel_Opening
-
+        TimerBordas.Start()
         contextMenuLabel.Items.Clear()
         xml.verificarAlteracao()
 
@@ -456,6 +454,9 @@ Public Class FCNES
         If estabelecimentos.Count > 0 Then
 
             For Each est In estabelecimentos
+                Dim containerUnidade As New Panel()
+
+
                 If est.Equipes IsNot Nothing Then
                     For Each eq In est.Equipes
                         Dim unidade As New FlowLayoutPanel()
@@ -463,7 +464,7 @@ Public Class FCNES
                         unidade.Tag = est.NOME
                         unidade.AllowDrop = True
                         unidade.Width = 210
-                        unidade.Height = 300
+                        unidade.Height = 500
                         unidade.Margin = New Padding(5)
                         unidade.Padding = New Padding(0)
                         unidade.AutoScroll = True
@@ -501,18 +502,20 @@ Public Class FCNES
                         ' Adiciona os eventos de drag-and-drop
                         AddHandler unidade.DragEnter, AddressOf Container_DragEnter
                         AddHandler unidade.DragDrop, AddressOf Container_DragDrop
+                        AddHandler unidade.Scroll, AddressOf unidade_scroll
 
                         Dim labelNomeEquipe As New Label() With {
                             .AutoSize = False,
                             .Width = 190,
                             .Height = 50,
-                            .BackColor = Color.DarkSlateGray,
+                            .BackColor = Color.FromArgb(34, 34, 34),
                             .ForeColor = Color.Cyan,
                             .Font = New Font("Calibri", 10, FontStyle.Bold),
                             .Text = eq.NomeReferencia & " - " & eq.INE,
                             .TextAlign = ContentAlignment.MiddleCenter,
                             .Margin = New Padding(0, 0, 0, 10),
-                            .Padding = New Padding(5, 0, 0, 0)
+                            .Padding = New Padding(5, 0, 0, 0),
+                            .Tag = "title"
                         }
 
                         unidade.Controls.Add(labelNomeEquipe)
@@ -594,50 +597,24 @@ Public Class FCNES
 
     Private Sub Label_Paint(sender As Object, e As PaintEventArgs)
         Dim label As Label = DirectCast(sender, Label)
-        Dim borderWidth As Integer = 3
-        Dim borderGradientStart As Color = Color.Cyan ' Cor inicial do gradiente
-        Dim borderGradientEnd As Color = Color.Magenta ' Cor final do gradiente
+        Dim borderColor As Color = Color.Transparent ' Sem borda por padrão
+        Dim borderWidth As Integer = 4
 
         ' Verifica se o Label está marcado para ter uma borda
         If label.Tag IsNot Nothing Then
             Dim labelItens() As String = label.Tag.ToString().Split("/"c)
             If labelItens.Length >= 4 AndAlso labelItens(3) = "Bordered" Then
-                ' Cria um gradiente ao redor do Label
-                Using gradientBrush As New Drawing2D.LinearGradientBrush(
-                New Rectangle(0, 0, label.Width, label.Height),
-                gradientColors(borderColorIndex),
-                gradientColors((borderColorIndex + 1) Mod gradientColors.Length),
-                Drawing2D.LinearGradientMode.ForwardDiagonal
-            )
-                    Using pen As New Pen(gradientBrush, borderWidth)
-                        e.Graphics.DrawRectangle(pen, 1, 1, label.Width - borderWidth, label.Height - borderWidth)
-                    End Using
-                End Using
+                borderColor = Color.FromArgb(255, 0, 0) ' Define a cor da borda
             End If
         End If
+
+        ' Desenha a borda somente se a cor não for transparente
+        If borderColor <> Color.Transparent Then
+            Using pen As New Pen(borderColor, borderWidth)
+                e.Graphics.DrawRectangle(pen, 0, 0, label.Width, label.Height)
+            End Using
+        End If
     End Sub
-
-
-    'Private Sub Label_Paint(sender As Object, e As PaintEventArgs)
-    '    Dim label As Label = DirectCast(sender, Label)
-    '    Dim borderColor As Color = Color.Transparent ' Sem borda por padrão
-    '    Dim borderWidth As Integer = 4
-
-    '    ' Verifica se o Label está marcado para ter uma borda
-    '    If label.Tag IsNot Nothing Then
-    '        Dim labelItens() As String = label.Tag.ToString().Split("/"c)
-    '        If labelItens.Length >= 4 AndAlso labelItens(3) = "Bordered" Then
-    '            borderColor = Color.FromArgb(255, 0, 0) ' Define a cor da borda
-    '        End If
-    '    End If
-
-    '    ' Desenha a borda somente se a cor não for transparente
-    '    If borderColor <> Color.Transparent Then
-    '        Using pen As New Pen(borderColor, borderWidth)
-    '            e.Graphics.DrawRectangle(pen, 0, 0, label.Width, label.Height)
-    '        End Using
-    '    End If
-    'End Sub
 
     Private Sub contextMenuLabel_Opening(sender As Object, e As System.ComponentModel.CancelEventArgs)
         Dim menu = DirectCast(sender, ContextMenuStrip)
@@ -728,15 +705,6 @@ Public Class FCNES
             Dim label = DirectCast(sender, Label)
             contextMenuLabel.Show(label, e.Location)
         End If
-    End Sub
-
-    Private Sub TimerBordas_Tick(sender As Object, e As EventArgs) Handles TimerBordas.Tick
-        borderColorIndex = (borderColorIndex + 1) Mod gradientColors.Length
-        For Each ctrl As Control In Me.Controls
-            If TypeOf ctrl Is Label AndAlso ctrl.Tag IsNot Nothing Then
-                ctrl.Invalidate()
-            End If
-        Next
     End Sub
 
 End Class
