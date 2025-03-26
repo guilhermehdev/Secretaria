@@ -429,13 +429,6 @@ Public Class FCNES
             Next
         End If
     End Sub
-
-    Private Sub unidade_scroll(sender As Object, e As ScrollEventArgs)
-        Dim painel As FlowLayoutPanel = DirectCast(sender, FlowLayoutPanel)
-        MessageBox.Show($"Rolagem na posição: {painel.VerticalScroll.Value}")
-
-    End Sub
-
     Private Sub FCNES_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Icon = FplanejCNES.Icon
         Dim estabelecimentos As List(Of Estabelecimento) = xml.equipesXML().ToList()
@@ -444,9 +437,9 @@ Public Class FCNES
         contextMenuLabel.Items.Clear()
         xml.verificarAlteracao()
 
-        Do While estabelecimentos.Count = 0 ' Verifica se a lista está vazia
+        Do While estabelecimentos.Count = 0
             xml.copyXMLFileFromServer()
-            estabelecimentos = xml.equipesXML().ToList() ' Supondo que xml.equipesXML() retorne um array
+            estabelecimentos = xml.equipesXML().ToList()
         Loop
 
         AddHandler PanelContainer.DragOver, AddressOf Container_DragOver
@@ -454,9 +447,6 @@ Public Class FCNES
         If estabelecimentos.Count > 0 Then
 
             For Each est In estabelecimentos
-                Dim containerUnidade As New Panel()
-
-
                 If est.Equipes IsNot Nothing Then
                     For Each eq In est.Equipes
                         Dim unidade As New FlowLayoutPanel()
@@ -502,20 +492,19 @@ Public Class FCNES
                         ' Adiciona os eventos de drag-and-drop
                         AddHandler unidade.DragEnter, AddressOf Container_DragEnter
                         AddHandler unidade.DragDrop, AddressOf Container_DragDrop
-                        AddHandler unidade.Scroll, AddressOf unidade_scroll
 
                         Dim labelNomeEquipe As New Label() With {
                             .AutoSize = False,
                             .Width = 190,
                             .Height = 50,
                             .BackColor = Color.FromArgb(34, 34, 34),
-                            .ForeColor = Color.Cyan,
+                            .ForeColor = Color.Transparent,
                             .Font = New Font("Calibri", 10, FontStyle.Bold),
                             .Text = eq.NomeReferencia & " - " & eq.INE,
                             .TextAlign = ContentAlignment.MiddleCenter,
                             .Margin = New Padding(0, 0, 0, 10),
                             .Padding = New Padding(5, 0, 0, 0),
-                            .Tag = "title"
+                            .Name = "title"
                         }
 
                         unidade.Controls.Add(labelNomeEquipe)
