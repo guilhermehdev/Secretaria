@@ -320,25 +320,32 @@ Public Class XML
     End Sub
     Public Sub copyXMLFileFromServer()
         Try
-            If Directory.Exists(Application.StartupPath & "\XML") = False Then
-                Directory.CreateDirectory(Application.StartupPath & "\XML")
-            End If
-
-            If Directory.Exists(Application.StartupPath & "\PDF") = False Then
-                Directory.CreateDirectory(Application.StartupPath & "\PDF")
-            End If
-
             If My.Settings.server = "" Then
                 FConnSettings.ShowDialog()
                 Exit Sub
             End If
 
-            Dim origem As String = $"http://{My.Settings.server}/Secretaria/CNES/EQUIPES.xml" ' URL do arquivo no servidor web
-            Dim destino As String = Application.StartupPath & "\XML\EQUIPES.xml" ' Caminho de destino no cliente
-            Dim clienteWeb As New WebClient()
-            clienteWeb.DownloadFile(origem, destino)
+            If Not Directory.Exists(Application.StartupPath & "\XML") Or Not File.Exists(Application.StartupPath & "\XML\EQUIPES.xml") Then
+                Directory.CreateDirectory(Application.StartupPath & "\XML")
 
-            ' MessageBox.Show("Arquivo copiado com sucesso!")
+                Dim origem As String = $"http://{My.Settings.server}/Secretaria/CNES/EQUIPES.xml"
+                Dim destino As String = Application.StartupPath & "\XML\EQUIPES.xml" ' Caminho de destino no cliente
+                ' Verificar se o arquivo existe no servidor HTTP
+                Dim request As HttpWebRequest = CType(WebRequest.Create(origem), HttpWebRequest)
+                request.Method = "HEAD"
+
+                Using response As HttpWebResponse = CType(request.GetResponse(), HttpWebResponse)
+                    If response.StatusCode = HttpStatusCode.OK Then
+                        Dim clienteWeb As New WebClient()
+                        clienteWeb.DownloadFile(origem, destino)
+                        MsgBox("Atualizando arquivo de equipes...")
+                    Else
+                        MsgBox("Arquivo não encontrado no servidor.")
+                    End If
+                End Using
+
+            End If
+
         Catch ex As Exception
             MessageBox.Show("Erro ao copiar arquivo: " & ex.Message)
         End Try
@@ -355,7 +362,7 @@ Public Class XML
 
             MessageBox.Show("Arquivo copiado com sucesso!")
         Catch ex As Exception
-            MessageBox.Show($"Erro ao copiar arquivo: {ex.Message}{vbCrLf}{ex.StackTrace}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            ' MessageBox.Show($"Erro ao copiar arquivo: {ex.Message}{vbCrLf}{ex.StackTrace}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
     End Sub

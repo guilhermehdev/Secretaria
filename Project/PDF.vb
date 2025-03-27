@@ -5,7 +5,7 @@ Imports iTextSharp.text.pdf.parser
 Imports System.Data
 
 Public Class PDF
-    Dim pdfPath As String = Application.StartupPath & "/PDF/cnes.pdf"
+    Dim pdfPath As String = Application.StartupPath & "/PDF/PROFISSIONAIS.pdf"
     Dim xml As New XML
 
     Public Sub importPDFManifest(dialog As OpenFileDialog, multiselect As Boolean)

@@ -71,6 +71,7 @@ Partial Class FplanejCNES
         Me.ImportarPDFToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.FecharToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.UploadPDFParaServidorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.TabControl.SuspendLayout()
@@ -546,7 +547,7 @@ Partial Class FplanejCNES
         '
         'ConfiguraçõesToolStripMenuItem
         '
-        Me.ConfiguraçõesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ImportarPDFToolStripMenuItem})
+        Me.ConfiguraçõesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ImportarPDFToolStripMenuItem, Me.UploadPDFParaServidorToolStripMenuItem})
         Me.ConfiguraçõesToolStripMenuItem.Name = "ConfiguraçõesToolStripMenuItem"
         Me.ConfiguraçõesToolStripMenuItem.Size = New System.Drawing.Size(96, 20)
         Me.ConfiguraçõesToolStripMenuItem.Text = "Configurações"
@@ -554,7 +555,7 @@ Partial Class FplanejCNES
         'ImportarPDFToolStripMenuItem
         '
         Me.ImportarPDFToolStripMenuItem.Name = "ImportarPDFToolStripMenuItem"
-        Me.ImportarPDFToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
+        Me.ImportarPDFToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
         Me.ImportarPDFToolStripMenuItem.Text = "Importar PDF"
         '
         'FecharToolStripMenuItem
@@ -566,6 +567,12 @@ Partial Class FplanejCNES
         'OpenFileDialog1
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
+        '
+        'UploadPDFParaServidorToolStripMenuItem
+        '
+        Me.UploadPDFParaServidorToolStripMenuItem.Name = "UploadPDFParaServidorToolStripMenuItem"
+        Me.UploadPDFParaServidorToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
+        Me.UploadPDFParaServidorToolStripMenuItem.Text = "Upload PDF para servidor"
         '
         'FplanejCNES
         '
@@ -650,4 +657,5 @@ Partial Class FplanejCNES
     Friend WithEvents ImportarPDFToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents FecharToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
+    Friend WithEvents UploadPDFParaServidorToolStripMenuItem As ToolStripMenuItem
 End Class

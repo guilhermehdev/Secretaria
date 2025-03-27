@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports System.Net
 Imports com.itextpdf.text.pdf
 
 Public Class FplanejCNES
@@ -15,6 +16,41 @@ Public Class FplanejCNES
         cbcbFormaContratoEmpreg.SelectedIndex = -1
         cbDetalhamento.SelectedIndex = -1
         clearLabels()
+        copyXMLfromServer()
+    End Sub
+
+    Private Sub copyXMLfromServer()
+        Try
+
+            If My.Settings.server = "" Then
+                FConnSettings.ShowDialog()
+                Exit Sub
+            End If
+
+            If Not Directory.Exists(Application.StartupPath & "\PDF") Or Not File.Exists(Application.StartupPath & "\PDF\PROFISSIONAIS.pdf") Then
+                Directory.CreateDirectory(Application.StartupPath & "\PDF")
+
+                Dim origem As String = $"http://{My.Settings.server}/Secretaria/CNES/PROFISSIONAIS.pdf"
+                Dim destino As String = Application.StartupPath & "\PDF\PROFISSIONAIS.pdf"
+
+                ' Verificar se o arquivo existe no servidor HTTP
+                Dim request As HttpWebRequest = CType(WebRequest.Create(origem), HttpWebRequest)
+                request.Method = "HEAD"
+
+                Using response As HttpWebResponse = CType(request.GetResponse(), HttpWebResponse)
+                    If response.StatusCode = HttpStatusCode.OK Then
+                        Dim clienteWeb As New WebClient()
+                        clienteWeb.DownloadFile(origem, destino)
+                        MsgBox("Atualizando arquivo de profissionais...")
+                    Else
+                        MsgBox("Arquivo não encontrado no servidor.")
+                    End If
+                End Using
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show("Erro ao copiar arquivo: " & ex.Message)
+        End Try
     End Sub
 
     Function QuebrarTexto(texto As String, larguraMaxima As Integer, fonte As Font) As List(Of String)
@@ -223,9 +259,9 @@ Public Class FplanejCNES
         Me.Close()
     End Sub
     Private Sub ImportarPDFToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportarPDFToolStripMenuItem.Click
-        Dim filePath = Application.StartupPath & "\PDF\cnes.pdf"
+        Dim filePath = Application.StartupPath & "\PDF\PROFISSIONAIS.pdf"
         OpenFileDialog1.Filter = "pdf Files (*.pdf)|*.pdf"
-        OpenFileDialog1.FileName = "cnes.pdf"
+        OpenFileDialog1.FileName = "PROFISSIONAIS.pdf"
 
         If OpenFileDialog1.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             Dim pdfFile = OpenFileDialog1.FileName
@@ -240,6 +276,24 @@ Public Class FplanejCNES
             End If
             MessageBox.Show("Importado com sucesso!", "Importar arquivo PDF", MessageBoxButtons.OK)
         End If
+    End Sub
+
+    Private Sub UploadPDFParaServidorToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UploadPDFParaServidorToolStripMenuItem.Click
+        OpenFileDialog1.Filter = "pdf Files (*.pdf)|*.pdf"
+
+        OpenFileDialog1.ShowDialog()
+
+        Dim arquivoLocal As String = OpenFileDialog1.FileName
+        Dim caminhoServidor As String = $"\\{My.Settings.server}\htdocs\Secretaria\CNES\PROFISSIONAIS.pdf"
+
+        Try
+            File.Copy(arquivoLocal, caminhoServidor, True)
+            MessageBox.Show("Arquivo copiado com sucesso!")
+
+        Catch ex As Exception
+            MessageBox.Show($"Erro ao copiar arquivo: {ex.Message}{vbCrLf}{ex.StackTrace}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
     End Sub
 
 End Class
