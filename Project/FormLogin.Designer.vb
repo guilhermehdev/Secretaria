@@ -22,6 +22,7 @@ Partial Class FormLogin
     'Não o modifique usando o editor de códigos.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormLogin))
         Me.cbUsuarios = New System.Windows.Forms.ComboBox()
         Me.tbSenha = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -109,9 +110,10 @@ Partial Class FormLogin
         Me.Controls.Add(Me.tbSenha)
         Me.Controls.Add(Me.cbUsuarios)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "FormLogin"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "FormLogin"
+        Me.Text = "Secretaria Login"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
