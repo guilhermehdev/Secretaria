@@ -111,13 +111,13 @@ Partial Class FCNES
         '
         Me.ConfigToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.UploadXMLEsusToolStripMenuItem})
         Me.ConfigToolStripMenuItem.Name = "ConfigToolStripMenuItem"
-        Me.ConfigToolStripMenuItem.Size = New System.Drawing.Size(96, 20)
-        Me.ConfigToolStripMenuItem.Text = "Configurações"
+        Me.ConfigToolStripMenuItem.Size = New System.Drawing.Size(62, 20)
+        Me.ConfigToolStripMenuItem.Text = "Servidor"
         '
         'UploadXMLEsusToolStripMenuItem
         '
         Me.UploadXMLEsusToolStripMenuItem.Name = "UploadXMLEsusToolStripMenuItem"
-        Me.UploadXMLEsusToolStripMenuItem.Size = New System.Drawing.Size(165, 22)
+        Me.UploadXMLEsusToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.UploadXMLEsusToolStripMenuItem.Text = "Upload XML Esus"
         '
         'FecharToolStripMenuItem

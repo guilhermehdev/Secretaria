@@ -291,7 +291,7 @@ Public Class FplanejCNES
             MessageBox.Show("Arquivo copiado com sucesso!")
 
         Catch ex As Exception
-            MessageBox.Show($"Erro ao copiar arquivo: {ex.Message}{vbCrLf}{ex.StackTrace}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            ' MessageBox.Show($"Erro ao copiar arquivo: {ex.Message}{vbCrLf}{ex.StackTrace}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
     End Sub
