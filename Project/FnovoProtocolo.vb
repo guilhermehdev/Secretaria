@@ -1,6 +1,5 @@
 ﻿Public Class FnovoProtocolo
     Dim m As New Main
-    Dim vcaixa As New Caixa
     Dim vlog As New Logs
     Dim vlInicial As Decimal
     Dim dados As DataTable

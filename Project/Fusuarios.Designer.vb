@@ -265,7 +265,7 @@ Partial Class Fusuarios
         '
         'btSair
         '
-        Me.btSair.Image = Global.Project.My.Resources.Resources.logout_menor
+
         Me.btSair.Location = New System.Drawing.Point(513, 19)
         Me.btSair.Name = "btSair"
         Me.btSair.Size = New System.Drawing.Size(75, 47)
@@ -276,7 +276,7 @@ Partial Class Fusuarios
         '
         'btCancel
         '
-        Me.btCancel.Image = Global.Project.My.Resources.Resources.button_cancel
+
         Me.btCancel.Location = New System.Drawing.Point(343, 19)
         Me.btCancel.Name = "btCancel"
         Me.btCancel.Size = New System.Drawing.Size(75, 47)
@@ -287,7 +287,7 @@ Partial Class Fusuarios
         '
         'btNew
         '
-        Me.btNew.Image = Global.Project.My.Resources.Resources.Add_Male_User_icon32
+
         Me.btNew.Location = New System.Drawing.Point(19, 19)
         Me.btNew.Name = "btNew"
         Me.btNew.Size = New System.Drawing.Size(75, 47)
@@ -299,7 +299,6 @@ Partial Class Fusuarios
         'btDelete
         '
         Me.btDelete.Enabled = False
-        Me.btDelete.Image = Global.Project.My.Resources.Resources.trash_icon28
         Me.btDelete.Location = New System.Drawing.Point(262, 19)
         Me.btDelete.Name = "btDelete"
         Me.btDelete.Size = New System.Drawing.Size(75, 47)
@@ -323,7 +322,6 @@ Partial Class Fusuarios
         'btSave
         '
         Me.btSave.Enabled = False
-        Me.btSave.Image = Global.Project.My.Resources.Resources.save_icon32
         Me.btSave.Location = New System.Drawing.Point(100, 19)
         Me.btSave.Name = "btSave"
         Me.btSave.Size = New System.Drawing.Size(75, 47)
@@ -349,9 +347,8 @@ Partial Class Fusuarios
         Me.gbDadosUsuario.TabStop = False
         Me.gbDadosUsuario.Text = "Dados Usuário"
         '
-        'btSearchName
-        '
-        Me.btSearchName.Image = Global.Project.My.Resources.Resources.l2
+        'btSearchName        '
+
         Me.btSearchName.Location = New System.Drawing.Point(181, 26)
         Me.btSearchName.Name = "btSearchName"
         Me.btSearchName.Size = New System.Drawing.Size(33, 35)

@@ -25,7 +25,7 @@ Public Class FmainOuvidoria
     End Sub
 
     Private Sub BackupToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BackupToolStripMenuItem.Click
-        Fbackup.ShowDialog()
+
     End Sub
 
     Private Sub Fmain_Activated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Activated

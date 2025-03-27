@@ -378,19 +378,12 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Caixa.vb" />
     <Compile Include="Clientes.vb" />
     <Compile Include="Cmain.vb" />
     <Compile Include="Fbackground.Designer.vb">
       <DependentUpon>Fbackground.vb</DependentUpon>
     </Compile>
     <Compile Include="Fbackground.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Fbackup.designer.vb">
-      <DependentUpon>Fbackup.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Fbackup.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FcadEmendas.Designer.vb">
@@ -453,12 +446,6 @@
     <Compile Include="Fimpressao.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Flogin.designer.vb">
-      <DependentUpon>Flogin.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Flogin.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Flogs.Designer.vb">
       <DependentUpon>Flogs.vb</DependentUpon>
     </Compile>
@@ -488,6 +475,12 @@
       <DependentUpon>FormFadeNotify.vb</DependentUpon>
     </Compile>
     <Compile Include="FormFadeNotify.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLogin.Designer.vb">
+      <DependentUpon>FormLogin.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormLogin.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormOuvidoriaAndamento.Designer.vb">
@@ -549,16 +542,11 @@
     <Compile Include="Produtos.vb" />
     <Compile Include="Redis.vb" />
     <Compile Include="Usuarios.vb" />
-    <Compile Include="Vendas.vb" />
     <Compile Include="XML.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Fbackground.resx">
       <DependentUpon>Fbackground.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Fbackup.resx">
-      <DependentUpon>Fbackup.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FcadEmendas.resx">
@@ -594,10 +582,6 @@
       <DependentUpon>Fimpressao.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Flogin.resx">
-      <DependentUpon>Flogin.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Flogs.resx">
       <DependentUpon>Flogs.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -614,6 +598,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormFadeNotify.resx">
       <DependentUpon>FormFadeNotify.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLogin.resx">
+      <DependentUpon>FormLogin.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormOuvidoriaAndamento.resx">
       <DependentUpon>FormOuvidoriaAndamento.vb</DependentUpon>
@@ -724,6 +711,19 @@
     <Content Include="icone_e-ouv.ico" />
     <None Include="Resources\arrowdown.png" />
     <None Include="Resources\uparrow.png" />
+    <None Include="Resources\cnes-icon %281%29.png" />
+    <None Include="Resources\Spemtusymbol.svg.png" />
+    <None Include="Resources\Spemtusymbol.svg1.png" />
+    <None Include="Resources\icone_e-ouv1.png" />
+    <None Include="Resources\cnes-icon %281%291.png" />
+    <None Include="Resources\Image1.bmp" />
+    <None Include="Resources\icone_e-ouv %281%29.png" />
+    <None Include="Resources\Spemtusymbol.svg %281%29.png" />
+    <None Include="Resources\emtushadow.png" />
+    <None Include="Resources\emtushadow1.png" />
+    <None Include="Resources\icone_e-ouvshadow.png" />
+    <None Include="Resources\emtushadow2.png" />
+    <None Include="Resources\cnes.png" />
     <Content Include="sec-icon.ico" />
     <None Include="Resources\icone_e-ouv.png" />
     <None Include="Resources\sendmail.png" />

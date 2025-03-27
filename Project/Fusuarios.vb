@@ -41,7 +41,7 @@
         If tbDesc.Text <> String.Empty And tbSenha.Text <> String.Empty Then
             vusuarios.saveUsuario(tbDesc.Text, tbSenha.Text, cbAtivo.SelectedIndex, chkCadCli.CheckState, chkCadProd.CheckState, chkVendas.CheckState, chkCaixa.CheckState, chkRelatVendas.CheckState, chkConCli.CheckState, chkRelatCaixa.CheckState, chkBanco.CheckState, chkBkpBanco.CheckState, chkConProd.CheckState, chkCadUsuarios.CheckState, dgUsuarios)
 
-            vlog.insertLog("USUÁRIO CADASTRADO | NOME: " & tbDesc.Text, Flogin.idOperador)
+            ' vlog.insertLog("USUÁRIO CADASTRADO | NOME: " & tbDesc.Text, Flogin.idOperador)
 
         Else
             vmain.msgAlert("Preencha os campos em branco!")
@@ -54,10 +54,10 @@
         If tbDesc.Text <> String.Empty And tbSenha.Text <> String.Empty Then
             If dgUsuarios.SelectedRows.Item(0).Cells(4).Value = 10 Then
                 vusuarios.updateUsuario(tbDesc.Text, tbSenha.Text, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, dgUsuarios)
-                vlog.insertLog("ADMINISTRADOR ATUALIZADO | NOME: " & tbDesc.Text, Flogin.idOperador)
+                '  vlog.insertLog("ADMINISTRADOR ATUALIZADO | NOME: " & tbDesc.Text, Flogin.idOperador)
             Else
                 vusuarios.updateUsuario(tbDesc.Text, tbSenha.Text, cbAtivo.SelectedIndex, chkCadCli.CheckState, chkCadProd.CheckState, chkVendas.CheckState, chkCaixa.CheckState, chkRelatVendas.CheckState, chkConCli.CheckState, chkRelatCaixa.CheckState, chkBanco.CheckState, chkBkpBanco.CheckState, chkConProd.CheckState, chkCadUsuarios.CheckState, dgUsuarios)
-                vlog.insertLog("USUÁRIO ATUALIZADO | NOME: " & tbDesc.Text, Flogin.idOperador)
+                ' vlog.insertLog("USUÁRIO ATUALIZADO | NOME: " & tbDesc.Text, Flogin.idOperador)
             End If
         Else
             vmain.msgAlert("Preencha os campos em branco!")
@@ -67,7 +67,7 @@
 
     Private Sub btDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btDelete.Click
         If dgUsuarios.SelectedRows.Item(0).Cells(4).Value <> 10 Then
-            vlog.insertLog("USUÁRIO EXCLUÍDO | NOME: " & tbDesc.Text, Flogin.idOperador)
+            ' vlog.insertLog("USUÁRIO EXCLUÍDO | NOME: " & tbDesc.Text, Flogin.idOperador)
             vusuarios.deleteUsuario(dgUsuarios.SelectedRows.Item(0).Cells(0).Value, dgUsuarios)
             vmain.activeFields(gbDadosUsuario, False)
         Else
