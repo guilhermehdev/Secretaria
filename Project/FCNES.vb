@@ -498,7 +498,7 @@ Public Class FCNES
                             .Width = 190,
                             .Height = 50,
                             .BackColor = Color.FromArgb(34, 34, 34),
-                            .ForeColor = Color.Transparent,
+                            .ForeColor = Color.Cyan,
                             .Font = New Font("Calibri", 10, FontStyle.Bold),
                             .Text = eq.NomeReferencia & " - " & eq.INE,
                             .TextAlign = ContentAlignment.MiddleCenter,
