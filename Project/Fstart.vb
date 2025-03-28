@@ -26,5 +26,11 @@
         FormLogin.system = "CADUSUARIOS"
         Me.Visible = False
     End Sub
+    Private Sub btBLH_Click(sender As Object, e As EventArgs) Handles btBLH.Click
+        Dim importXLS As New XLStoSQL
+
+        importXLS.TransferirDados()
+
+    End Sub
 
 End Class

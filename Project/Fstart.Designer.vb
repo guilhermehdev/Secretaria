@@ -30,6 +30,7 @@ Partial Class Fstart
         Me.btCNES = New System.Windows.Forms.Button()
         Me.btRecepcao = New System.Windows.Forms.Button()
         Me.btOuvidoria = New System.Windows.Forms.Button()
+        Me.btBLH = New System.Windows.Forms.Button()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -42,7 +43,7 @@ Partial Class Fstart
         Me.btSair.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Firebrick
         Me.btSair.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btSair.ForeColor = System.Drawing.Color.Gainsboro
-        Me.btSair.Location = New System.Drawing.Point(230, 94)
+        Me.btSair.Location = New System.Drawing.Point(230, 163)
         Me.btSair.Name = "btSair"
         Me.btSair.Size = New System.Drawing.Size(37, 23)
         Me.btSair.TabIndex = 3
@@ -75,7 +76,7 @@ Partial Class Fstart
         Me.UsuárioToolStripMenuItem.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
         Me.UsuárioToolStripMenuItem.ForeColor = System.Drawing.Color.DodgerBlue
         Me.UsuárioToolStripMenuItem.Name = "UsuárioToolStripMenuItem"
-        Me.UsuárioToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.UsuárioToolStripMenuItem.Size = New System.Drawing.Size(121, 22)
         Me.UsuárioToolStripMenuItem.Text = "Usuários"
         '
         'btCNES
@@ -139,12 +140,33 @@ Partial Class Fstart
         Me.btOuvidoria.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btOuvidoria.UseVisualStyleBackColor = False
         '
+        'btBLH
+        '
+        Me.btBLH.BackColor = System.Drawing.Color.DodgerBlue
+        Me.btBLH.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btBLH.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btBLH.FlatAppearance.BorderColor = System.Drawing.Color.RoyalBlue
+        Me.btBLH.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DeepSkyBlue
+        Me.btBLH.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
+        Me.btBLH.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btBLH.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btBLH.ForeColor = System.Drawing.Color.Yellow
+        Me.btBLH.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btBLH.Location = New System.Drawing.Point(12, 91)
+        Me.btBLH.Name = "btBLH"
+        Me.btBLH.Size = New System.Drawing.Size(81, 55)
+        Me.btBLH.TabIndex = 6
+        Me.btBLH.Text = "Banco de Leite"
+        Me.btBLH.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btBLH.UseVisualStyleBackColor = False
+        '
         'Fstart
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(277, 129)
+        Me.ClientSize = New System.Drawing.Size(277, 198)
+        Me.Controls.Add(Me.btBLH)
         Me.Controls.Add(Me.btCNES)
         Me.Controls.Add(Me.btSair)
         Me.Controls.Add(Me.btRecepcao)
@@ -171,4 +193,5 @@ Partial Class Fstart
     Friend WithEvents CadastroToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents UsuárioToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents btRecepcao As Button
+    Friend WithEvents btBLH As Button
 End Class

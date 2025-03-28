@@ -369,7 +369,7 @@ Public Class XML
 
     Function equipesXML() As List(Of Estabelecimento)
         Dim estabelecimentos As New List(Of Estabelecimento)()
-        Dim doc As XDocument
+        Dim doc As XDocument = Nothing
 
         Try
 

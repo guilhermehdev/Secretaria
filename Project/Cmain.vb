@@ -96,7 +96,7 @@ Public Class Main
             Return True
         Catch ex As Exception
             If errorMsg Then
-                showErrors(ex)
+                MsgBox($"{ex}{vbCrLf}{sql}")
             End If
             Throw
         Finally

@@ -154,6 +154,7 @@ Partial Class FormCadUsuario
         '
         'btSalvarUsuario
         '
+        Me.btSalvarUsuario.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btSalvarUsuario.Location = New System.Drawing.Point(12, 319)
         Me.btSalvarUsuario.Name = "btSalvarUsuario"
         Me.btSalvarUsuario.Size = New System.Drawing.Size(75, 23)
@@ -196,6 +197,7 @@ Partial Class FormCadUsuario
         '
         'btAtualizarUsuario
         '
+        Me.btAtualizarUsuario.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btAtualizarUsuario.Enabled = False
         Me.btAtualizarUsuario.Location = New System.Drawing.Point(93, 319)
         Me.btAtualizarUsuario.Name = "btAtualizarUsuario"
@@ -206,6 +208,7 @@ Partial Class FormCadUsuario
         '
         'Button2
         '
+        Me.Button2.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Button2.Location = New System.Drawing.Point(257, 319)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(36, 23)
@@ -215,6 +218,7 @@ Partial Class FormCadUsuario
         '
         'btCancelaEdicao
         '
+        Me.btCancelaEdicao.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btCancelaEdicao.Enabled = False
         Me.btCancelaEdicao.Location = New System.Drawing.Point(174, 319)
         Me.btCancelaEdicao.Name = "btCancelaEdicao"

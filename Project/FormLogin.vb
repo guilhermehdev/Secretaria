@@ -84,9 +84,7 @@ Public Class FormLogin
         End Select
 
     End Function
-    Private Sub FormLogin_Load_1(sender As Object, e As EventArgs) Handles MyBase.Load
-        m.loadComboBox("SELECT * FROM usuarios WHERE ativo=1", cbUsuarios, "nome", "id")
-    End Sub
+
     Private Sub FormLogin_Activated(sender As Object, e As EventArgs) Handles MyBase.Activated
         tbSenha.Clear()
         tbSenha.Focus()
@@ -95,6 +93,15 @@ Public Class FormLogin
 
     Private Sub cbUsuarios_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbUsuarios.SelectionChangeCommitted
         tbSenha.Focus()
+    End Sub
+    Private Sub FormLogin_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        m.loadComboBox("SELECT * FROM usuarios WHERE ativo=1", cbUsuarios, "nome", "id")
+    End Sub
+    Private Sub FormLogin_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
+        If e.KeyCode = Keys.Return Then
+            btLogin_Click(sender, e)
+        End If
+
     End Sub
 
 End Class

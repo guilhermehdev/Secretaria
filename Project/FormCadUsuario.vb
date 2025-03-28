@@ -9,8 +9,9 @@ Public Class FormCadUsuario
     End Sub
 
     Private Sub loadUsers()
-        userData = m.loadComboBox("SELECT * FROM usuarios WHERE ativo=1", cbUsuariosCadastrados, "nome", "id")
-
+        cancel()
+        userData = m.loadComboBox("SELECT * FROM usuarios", cbUsuariosCadastrados, "nome", "id")
+        cbNivelAcesso.SelectedIndex = 0
     End Sub
 
     Private Sub cbUsuariosCadastrados_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbUsuariosCadastrados.SelectionChangeCommitted
@@ -32,7 +33,7 @@ Public Class FormCadUsuario
         btAtualizarUsuario.Enabled = True
     End Sub
 
-    Private Sub btCancelaEdicao_Click(sender As Object, e As EventArgs) Handles btCancelaEdicao.Click
+    Private Sub cancel()
         btSalvarUsuario.Enabled = True
         btCancelaEdicao.Enabled = False
         btAtualizarUsuario.Enabled = False
@@ -48,11 +49,44 @@ Public Class FormCadUsuario
         cbUsuariosCadastrados.SelectedIndex = -1
     End Sub
 
+    Private Sub btCancelaEdicao_Click(sender As Object, e As EventArgs) Handles btCancelaEdicao.Click
+        cancel()
+    End Sub
+
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Me.Close()
     End Sub
     Private Sub FormCadUsuario_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         Fstart.Visible = True
     End Sub
+    Private Sub btSalvarUsuario_Click(sender As Object, e As EventArgs) Handles btSalvarUsuario.Click
+        If tbNovoNome.Text IsNot "" AndAlso tbNovaSenha.Text IsNot "" AndAlso tbNovaSenhaConfirma.Text IsNot "" Then
 
+            If tbNovaSenha.Text = tbNovaSenhaConfirma.Text Then
+                m.doQuery($"INSERT INTO usuarios (nome, senha, level, ativo, eouve, emtu, cnes) VALUES ('{tbNovoNome.Text.ToUpper}', '{tbNovaSenha.Text}', {cbNivelAcesso.SelectedItem}, {If(CheckBoxAtivo.Checked, 1, 0)}, {If(CheckBoxeOuve.Checked, 1, 0)}, {If(CheckBoxEMTU.Checked, 1, 0)}, {If(CheckBoxCNES.Checked, 1, 0)})", True)
+                loadUsers()
+                m.msgInfo("Usuário cadastrado com sucesso")
+                cancel()
+            Else
+                m.msgAlert("As senhas não conferem")
+            End If
+        Else
+            m.msgAlert("Preencha todos os campos")
+        End If
+    End Sub
+
+    Private Sub btAtualizarUsuario_Click(sender As Object, e As EventArgs) Handles btAtualizarUsuario.Click
+        If tbNovoNome.Text IsNot "" AndAlso tbNovaSenha.Text IsNot "" AndAlso tbNovaSenhaConfirma.Text IsNot "" Then
+            If tbNovaSenha.Text = tbNovaSenhaConfirma.Text Then
+                m.doQuery($"UPDATE usuarios set nome='{tbNovoNome.Text.ToUpper}', senha='{tbNovaSenha.Text}', level={cbNivelAcesso.SelectedItem}, ativo={If(CheckBoxAtivo.Checked, 1, 0)}, eouve={If(CheckBoxeOuve.Checked, 1, 0)}, emtu={If(CheckBoxEMTU.Checked, 1, 0)}, cnes={If(CheckBoxCNES.Checked, 1, 0)} WHERE id={cbUsuariosCadastrados.SelectedValue }", True)
+                loadUsers()
+                m.msgInfo("Usuário atualizado com sucesso")
+            Else
+                m.msgAlert("As senhas não conferem")
+            End If
+        Else
+            m.msgAlert("Preencha todos os campos")
+        End If
+
+    End Sub
 End Class

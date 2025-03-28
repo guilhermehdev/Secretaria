@@ -125,6 +125,7 @@ Partial Class FormLogin
         Me.Controls.Add(Me.cbUsuarios)
         Me.Controls.Add(Me.btFechar)
         Me.FormBorderStyle = FormBorderStyle.None
+        Me.KeyPreview = True
         Me.Name = "FormLogin"
         Me.StartPosition = FormStartPosition.CenterScreen
         Me.ResumeLayout(False)
