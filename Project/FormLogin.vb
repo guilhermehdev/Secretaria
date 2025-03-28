@@ -15,10 +15,13 @@ Public Class FormLogin
             Select Case system
                 Case "CNES"
                     FCNES.Show()
+                    Me.Visible = False
                 Case "EMTU"
                     FmainEMTU.Show()
+                    Me.Visible = False
                 Case "EOUVE"
                     FmainOuvidoria.Show()
+                    Me.Visible = False
             End Select
         End If
     End Sub
@@ -28,6 +31,8 @@ Public Class FormLogin
         Dim emtu = userData.Rows(0).Item(6).ToString
         Dim cnes = userData.Rows(0).Item(7).ToString
         Dim pass = userData.Rows(0).Item(2)
+
+        ' MsgBox(tbSenha.Text & " / " & pass)
 
         If tbSenha IsNot Nothing Then
             If tbSenha.Text = "" Then
@@ -67,6 +72,10 @@ Public Class FormLogin
     End Function
     Private Sub FormLogin_Load_1(sender As Object, e As EventArgs) Handles MyBase.Load
         m.loadComboBox("SELECT * FROM usuarios", cbUsuarios, "nome", "id")
+    End Sub
+    Private Sub FormLogin_Activated(sender As Object, e As EventArgs) Handles MyBase.Activated
+        tbSenha.Clear()
+        tbSenha.Focus()
     End Sub
 
 End Class
