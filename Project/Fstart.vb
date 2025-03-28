@@ -21,4 +21,10 @@
         Me.Close()
     End Sub
 
+    Private Sub UsuárioToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UsuárioToolStripMenuItem.Click
+        FormLogin.Show()
+        FormLogin.system = "CADUSUARIOS"
+        Me.Visible = False
+    End Sub
+
 End Class

@@ -30,10 +30,11 @@ Public Class FmainOuvidoria
 
     Private Sub Fmain_Activated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Activated
         Me.BringToFront()
+        Me.Cursor = Cursors.Default
     End Sub
 
     Private Sub SairToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SairToolStripMenuItem.Click
-        Application.Exit()
+        Me.Close()
     End Sub
 
     Private Sub niMinimizar_MouseDoubleClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles niMinimizar.MouseDoubleClick
@@ -300,7 +301,7 @@ AND manifestacoes.ok = 0 AND (ouvidoria.status = 'Em andamento' OR ouvidoria.sta
     End Sub
 
     Private Sub FmainOuvidoria_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
-        Application.Exit()
+        Fstart.Visible = True
     End Sub
 
 

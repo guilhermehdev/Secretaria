@@ -471,6 +471,12 @@
     <Compile Include="FormAprovacao.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormCadUsuario.Designer.vb">
+      <DependentUpon>FormCadUsuario.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormCadUsuario.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormFadeNotify.Designer.vb">
       <DependentUpon>FormFadeNotify.vb</DependentUpon>
     </Compile>
@@ -595,6 +601,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormAprovacao.resx">
       <DependentUpon>FormAprovacao.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCadUsuario.resx">
+      <DependentUpon>FormCadUsuario.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormFadeNotify.resx">
       <DependentUpon>FormFadeNotify.vb</DependentUpon>

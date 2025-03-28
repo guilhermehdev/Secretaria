@@ -695,5 +695,8 @@ Public Class FCNES
             contextMenuLabel.Show(label, e.Location)
         End If
     End Sub
+    Private Sub FCNES_Activated(sender As Object, e As EventArgs) Handles MyBase.Activated
+        Me.Cursor = Cursors.Default
+    End Sub
 
 End Class

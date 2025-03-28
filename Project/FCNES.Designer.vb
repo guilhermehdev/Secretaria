@@ -117,14 +117,14 @@ Partial Class FCNES
         'UploadXMLEsusToolStripMenuItem
         '
         Me.UploadXMLEsusToolStripMenuItem.Name = "UploadXMLEsusToolStripMenuItem"
-        Me.UploadXMLEsusToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.UploadXMLEsusToolStripMenuItem.Size = New System.Drawing.Size(165, 22)
         Me.UploadXMLEsusToolStripMenuItem.Text = "Upload XML Esus"
         '
         'FecharToolStripMenuItem
         '
         Me.FecharToolStripMenuItem.Name = "FecharToolStripMenuItem"
-        Me.FecharToolStripMenuItem.Size = New System.Drawing.Size(54, 20)
-        Me.FecharToolStripMenuItem.Text = "Fechar"
+        Me.FecharToolStripMenuItem.Size = New System.Drawing.Size(38, 20)
+        Me.FecharToolStripMenuItem.Text = "Sair"
         '
         'GroupBox1
         '

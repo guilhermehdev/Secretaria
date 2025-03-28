@@ -27,7 +27,6 @@ Partial Class Fstart
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.CadastroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UsuárioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SenhaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.btCNES = New System.Windows.Forms.Button()
         Me.btRecepcao = New System.Windows.Forms.Button()
         Me.btOuvidoria = New System.Windows.Forms.Button()
@@ -73,20 +72,11 @@ Partial Class Fstart
         'UsuárioToolStripMenuItem
         '
         Me.UsuárioToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.UsuárioToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SenhaToolStripMenuItem})
         Me.UsuárioToolStripMenuItem.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
         Me.UsuárioToolStripMenuItem.ForeColor = System.Drawing.Color.DodgerBlue
         Me.UsuárioToolStripMenuItem.Name = "UsuárioToolStripMenuItem"
-        Me.UsuárioToolStripMenuItem.Size = New System.Drawing.Size(116, 22)
-        Me.UsuárioToolStripMenuItem.Text = "Usuário"
-        '
-        'SenhaToolStripMenuItem
-        '
-        Me.SenhaToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.SenhaToolStripMenuItem.ForeColor = System.Drawing.Color.DodgerBlue
-        Me.SenhaToolStripMenuItem.Name = "SenhaToolStripMenuItem"
-        Me.SenhaToolStripMenuItem.Size = New System.Drawing.Size(108, 22)
-        Me.SenhaToolStripMenuItem.Text = "Senha"
+        Me.UsuárioToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.UsuárioToolStripMenuItem.Text = "Usuários"
         '
         'btCNES
         '
@@ -180,6 +170,5 @@ Partial Class Fstart
     Friend WithEvents MenuStrip1 As MenuStrip
     Friend WithEvents CadastroToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents UsuárioToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents SenhaToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents btRecepcao As Button
 End Class

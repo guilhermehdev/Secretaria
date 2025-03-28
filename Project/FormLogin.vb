@@ -12,6 +12,7 @@ Public Class FormLogin
 
     Private Sub btLogin_Click(sender As Object, e As EventArgs) Handles btLogin.Click
         If checkCredentials(cbUsuarios.SelectedValue) = 1 Then
+            Me.Cursor = Cursors.WaitCursor
             Select Case system
                 Case "CNES"
                     FCNES.Show()
@@ -22,6 +23,9 @@ Public Class FormLogin
                 Case "EOUVE"
                     FmainOuvidoria.Show()
                     Me.Visible = False
+                Case "CADUSUARIOS"
+                    FormCadUsuario.Show()
+                    Me.Visible = False
             End Select
         End If
     End Sub
@@ -31,16 +35,15 @@ Public Class FormLogin
         Dim emtu = userData.Rows(0).Item(6).ToString
         Dim cnes = userData.Rows(0).Item(7).ToString
         Dim pass = userData.Rows(0).Item(2)
-
-        ' MsgBox(tbSenha.Text & " / " & pass)
+        Dim level = userData.Rows(0).Item(4)
 
         If tbSenha IsNot Nothing Then
-            If tbSenha.Text = "" Then
-                m.msgAlert("Digite a senha")
-                tbSenha.Focus()
-                Return 0
-            ElseIf tbSenha.Text <> pass Then
-                m.msgAlert("Senha inválida")
+                If tbSenha.Text = "" Then
+                    m.msgAlert("Digite a senha")
+                    tbSenha.Focus()
+                    Return 0
+                ElseIf tbSenha.Text <> pass Then
+                    m.msgAlert("Senha inválida")
                 tbSenha.Focus()
                 Return 0
             End If
@@ -51,30 +54,46 @@ Public Class FormLogin
                 If cnes = 1 And pass = tbSenha.Text Then
                     Return 1
                 Else
+                    m.msgAlert("Senha inválida")
                     Return 0
                 End If
             Case "EMTU"
                 If emtu = 1 And pass = tbSenha.Text Then
                     Return 1
                 Else
+                    m.msgAlert("Senha inválida")
                     Return 0
                 End If
             Case "EOUVE"
                 If eouve = 1 And pass = tbSenha.Text Then
                     Return 1
                 Else
+                    m.msgAlert("Senha inválida")
+                    Return 0
+                End If
+            Case "CADUSUARIOS"
+                If level = 10 And pass = tbSenha.Text Then
+                    Return 1
+                Else
+                    m.msgAlert("Senha inválida")
                     Return 0
                 End If
             Case Else
                 Return 0
+
         End Select
 
     End Function
     Private Sub FormLogin_Load_1(sender As Object, e As EventArgs) Handles MyBase.Load
-        m.loadComboBox("SELECT * FROM usuarios", cbUsuarios, "nome", "id")
+        m.loadComboBox("SELECT * FROM usuarios WHERE ativo=1", cbUsuarios, "nome", "id")
     End Sub
     Private Sub FormLogin_Activated(sender As Object, e As EventArgs) Handles MyBase.Activated
         tbSenha.Clear()
+        tbSenha.Focus()
+        Me.Cursor = Cursors.Default
+    End Sub
+
+    Private Sub cbUsuarios_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbUsuarios.SelectionChangeCommitted
         tbSenha.Focus()
     End Sub
 

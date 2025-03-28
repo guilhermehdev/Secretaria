@@ -2,7 +2,7 @@
     Dim m As New Main
 
     Private Sub FmainCadastro_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
-        Application.Exit()
+        Fstart.Visible = True
     End Sub
 
     Private Sub PacienteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PacienteToolStripMenuItem.Click
@@ -20,7 +20,7 @@
     End Sub
 
     Private Sub SairToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SairToolStripMenuItem.Click
-        Application.Exit()
+        Me.Close()
     End Sub
 
     Public Sub loadGrid(Optional ByVal where As String = Nothing)
@@ -67,6 +67,10 @@
             loadGrid()
         End If
 
+    End Sub
+
+    Private Sub FmainEMTU_Activated(sender As Object, e As EventArgs) Handles MyBase.Activated
+        Me.Cursor = Cursors.Default
     End Sub
 
 End Class
