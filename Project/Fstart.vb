@@ -27,9 +27,7 @@
         Me.Visible = False
     End Sub
     Private Sub btBLH_Click(sender As Object, e As EventArgs) Handles btBLH.Click
-        Dim importXLS As New XLStoSQL
-
-        importXLS.TransferirDados()
+        FormMainBLH.Show()
 
     End Sub
 

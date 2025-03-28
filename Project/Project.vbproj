@@ -507,6 +507,12 @@
     <Compile Include="FormLogin.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormMainBLH.Designer.vb">
+      <DependentUpon>FormMainBLH.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormMainBLH.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormOuvidoriaAndamento.Designer.vb">
       <DependentUpon>FormOuvidoriaAndamento.vb</DependentUpon>
     </Compile>
@@ -628,6 +634,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormLogin.resx">
       <DependentUpon>FormLogin.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMainBLH.resx">
+      <DependentUpon>FormMainBLH.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormOuvidoriaAndamento.resx">
       <DependentUpon>FormOuvidoriaAndamento.vb</DependentUpon>
