@@ -343,14 +343,25 @@ Public Class FCNES
                 Try
 
                     FlowLayoutPanelAleracoes.Controls.Add(containerPanel)
+                    Dim label As Label
 
-                    moveLabelsFast(lblUnidadeIn, lblUnidadeOut, btnDelete)
-                    Dim flowPanelDestino As FlowLayoutPanel = PanelContainer.Controls.Find(equipe_in, True).FirstOrDefault()
-                    Dim label As Label = flowPanelDestino.Controls.Find(cpf, True).FirstOrDefault()
+                    If equipe_in <> "DESLIGAMENTO DA AB" And equipe_in <> "DESLIGAMENTO DO CNES" Then
+                        moveLabelsFast(lblUnidadeIn, lblUnidadeOut, btnDelete)
+
+                        Dim flowPanelDestino As FlowLayoutPanel = PanelContainer.Controls.Find(equipe_in, True).FirstOrDefault()
+                        label = flowPanelDestino.Controls.Find(cpf, True).FirstOrDefault()
+
+                    Else
+
+                        Dim flowPanelOrigin As FlowLayoutPanel = PanelContainer.Controls.Find(equipe_out, True).FirstOrDefault()
+                        label = flowPanelOrigin.Controls.Find(cpf, True).FirstOrDefault()
+
+                    End If
 
                     label.Invalidate()
                     Dim labelItens = getlabelTAG(label)
                     label.Tag = labelItens(0) & "/" & labelItens(1) & "/" & labelItens(2) & "/" & "Bordered"
+
                     AddHandler label.Paint, AddressOf Label_Paint
 
                 Catch ex As Exception
@@ -400,34 +411,39 @@ Public Class FCNES
     End Sub
 
     Private Sub ClearLabelBorders(labelProf As Label)
-        ' Garante que o PanelContainer e seus controles existem
-        If PanelContainer IsNot Nothing AndAlso PanelContainer.Controls.Count > 0 Then
-            ' Itera sobre todos os FlowLayoutPanels no PanelContainer
-            For Each container As Control In PanelContainer.Controls
-                If TypeOf container Is FlowLayoutPanel Then
-                    ' Itera sobre os Labels dentro de cada FlowLayoutPanel
-                    For Each ctrl As Control In container.Controls
-                        If TypeOf ctrl Is Label Then
-                            Dim labelItens() As String = labelProf.Tag.Split("/"c)
-                            If labelItens.Length >= 3 Then
-                                Dim nome As String = labelItens(0)
-                                Dim cbo As String = labelItens(1)
-                                Dim cpf As String = labelItens(2)
+        Try
+            ' Garante que o PanelContainer e seus controles existem
+            If PanelContainer IsNot Nothing AndAlso PanelContainer.Controls.Count > 0 Then
+                ' Itera sobre todos os FlowLayoutPanels no PanelContainer
+                For Each container As Control In PanelContainer.Controls
+                    If TypeOf container Is FlowLayoutPanel Then
+                        ' Itera sobre os Labels dentro de cada FlowLayoutPanel
+                        For Each ctrl As Control In container.Controls
+                            If TypeOf ctrl Is Label Then
+                                Dim labelItens() As String = labelProf.Tag.Split("/"c)
+                                If labelItens.Length >= 3 Then
+                                    Dim nome As String = labelItens(0)
+                                    Dim cbo As String = labelItens(1)
+                                    Dim cpf As String = labelItens(2)
 
-                                ' MsgBox(labelItens(3))
+                                    ' MsgBox(labelItens(3))
 
-                                ' Redefine o estado do Label
-                                If labelItens.Length > 3 AndAlso labelItens(3) = "Bordered" Then
-                                    labelProf.Invalidate() ' Força o redesenho para remover a borda
-                                    labelProf.Tag = $"{nome}/{cbo}/{cpf}/Borderless" ' Remove a marcação
+                                    ' Redefine o estado do Label
+                                    If labelItens.Length > 3 AndAlso labelItens(3) = "Bordered" Then
+                                        labelProf.Invalidate() ' Força o redesenho para remover a borda
+                                        labelProf.Tag = $"{nome}/{cbo}/{cpf}/Borderless" ' Remove a marcação
+                                    End If
                                 End If
-                            End If
 
-                        End If
-                    Next
-                End If
-            Next
-        End If
+                            End If
+                        Next
+                    End If
+                Next
+            End If
+
+        Catch ex As Exception
+
+        End Try
     End Sub
     Private Sub FCNES_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Icon = FplanejCNES.Icon
@@ -605,6 +621,45 @@ Public Class FCNES
         End If
     End Sub
 
+    'Private Sub contextMenuLabel_Opening(sender As Object, e As System.ComponentModel.CancelEventArgs)
+    '    Dim menu = DirectCast(sender, ContextMenuStrip)
+    '    menu.Items.Clear()
+
+    '    ' Adiciona o cabeçalho como um item não clicável
+    '    Dim headerItem As New ToolStripMenuItem("Enviar para Equipe...") With {
+    '        .Font = New Font("Segoe UI", 10, FontStyle.Bold),
+    '        .ForeColor = Color.DarkBlue,
+    '        .Enabled = False ' Impede que o cabeçalho seja clicado
+    '    }
+    '    Dim DesligamentoItem As New ToolStripMenuItem("Desligar do CNES...") With {
+    '        .Font = New Font("Segoe UI", 10, FontStyle.Bold),
+    '        .ForeColor = Color.DarkRed,
+    '        .Enabled = True ' Impede que o cabeçalho seja clicado
+    '    }
+    '    menu.Items.Add(DesligamentoItem)
+    '    menu.Items.Add(headerItem)
+
+    '    ' Adiciona um separador após o cabeçalho
+    '    menu.Items.Add(New ToolStripSeparator())
+
+    '    ' Adiciona as opções dinamicamente com base nos containers disponíveis
+    '    For Each container As FlowLayoutPanel In PanelContainer.Controls
+    '        Dim item As New ToolStripMenuItem(container.Name)
+    '        AddHandler item.Click, AddressOf InsertLabelContextMenu
+    '        menu.Items.Add(item)
+    '    Next
+
+    '    ' Obtém o Label associado ao menu
+    '    Dim sourceControl = contextMenuLabel.SourceControl
+    '    If TypeOf sourceControl Is Label Then
+    '        selectedLabel = DirectCast(sourceControl, Label)
+    '    Else
+    '        ' Cancela a abertura se não houver Label selecionado
+    '        e.Cancel = True
+    '    End If
+
+    'End Sub
+
     Private Sub contextMenuLabel_Opening(sender As Object, e As System.ComponentModel.CancelEventArgs)
         Dim menu = DirectCast(sender, ContextMenuStrip)
         menu.Items.Clear()
@@ -619,6 +674,21 @@ Public Class FCNES
 
         ' Adiciona um separador após o cabeçalho
         menu.Items.Add(New ToolStripSeparator())
+
+        ' Opção de desligamento
+        Dim DesligamentoAB As New ToolStripMenuItem("Desligar da AB") With {
+            .Font = New Font("Segoe UI", 10, FontStyle.Bold),
+            .ForeColor = Color.DarkRed
+        }
+        Dim DesligamentoCNES As New ToolStripMenuItem("Desligar do CNES") With {
+            .Font = New Font("Segoe UI", 10, FontStyle.Bold),
+            .ForeColor = Color.DarkRed
+        }
+        AddHandler DesligamentoAB.Click, AddressOf DesligarAB
+        menu.Items.Add(DesligamentoAB)
+
+        AddHandler DesligamentoCNES.Click, AddressOf DesligarCNES
+        menu.Items.Add(DesligamentoCNES)
 
         ' Adiciona as opções dinamicamente com base nos containers disponíveis
         For Each container As FlowLayoutPanel In PanelContainer.Controls
@@ -637,6 +707,39 @@ Public Class FCNES
         End If
 
     End Sub
+
+    ' Função para remover o Label do container
+    Private Sub DesligarAB(sender As Object, e As EventArgs)
+        If selectedLabel IsNot Nothing AndAlso selectedLabel.Parent IsNot Nothing Then
+            insertAlteracao(selectedLabel)
+            'selectedLabel.Parent.Controls.Remove(selectedLabel)
+            idProf = m.getDataset("SELECT MAX(id) FROM movimento").Rows(0).Item(0)
+            Dim destino As String = InputBox("Para qual unidade o servidor foi destinado?", "")
+            m.SQLGeneric($"UPDATE movimento SET unidade_in='{destino.ToUpper}',equipe_in='DESLIGAMENTO DA AB' WHERE id={idProf}")
+            addPanelAlteracoes()
+
+            selectedLabel.Invalidate()
+            Dim labelItens = getlabelTAG(selectedLabel)
+            selectedLabel.Tag = labelItens(0) & "/" & labelItens(1) & "/" & labelItens(2) & "/" & "Bordered"
+            AddHandler selectedLabel.Paint, AddressOf Label_Paint
+
+        End If
+    End Sub
+
+    Private Sub DesligarCNES(sender As Object, e As EventArgs)
+        If selectedLabel IsNot Nothing AndAlso selectedLabel.Parent IsNot Nothing Then
+            insertAlteracao(selectedLabel)
+            idProf = m.getDataset("SELECT MAX(id) FROM movimento").Rows(0).Item(0)
+            m.SQLGeneric($"UPDATE movimento SET unidade_in='DESLIGAMENTO DO CNES',equipe_in='DESLIGAMENTO DO CNES' WHERE id={idProf}")
+            addPanelAlteracoes()
+
+            selectedLabel.Invalidate()
+            Dim labelItens = getlabelTAG(selectedLabel)
+            selectedLabel.Tag = labelItens(0) & "/" & labelItens(1) & "/" & labelItens(2) & "/" & "Bordered"
+            AddHandler selectedLabel.Paint, AddressOf Label_Paint
+        End If
+    End Sub
+
 
     Private Sub FCNES_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
         PanelContainer.Height = Me.Height
