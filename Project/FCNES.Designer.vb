@@ -37,6 +37,8 @@ Partial Class FCNES
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.TimerBordas = New System.Windows.Forms.Timer(Me.components)
+        Me.CadastroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CNESToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
@@ -93,7 +95,7 @@ Partial Class FCNES
         '
         'MenuStrip1
         '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PlanejamentoToolStripMenuItem, Me.ConfigToolStripMenuItem, Me.FecharToolStripMenuItem})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CadastroToolStripMenuItem, Me.PlanejamentoToolStripMenuItem, Me.ConfigToolStripMenuItem, Me.FecharToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
@@ -174,6 +176,19 @@ Partial Class FCNES
         Me.TimerBordas.Enabled = True
         Me.TimerBordas.Interval = 200
         '
+        'CadastroToolStripMenuItem
+        '
+        Me.CadastroToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CNESToolStripMenuItem})
+        Me.CadastroToolStripMenuItem.Name = "CadastroToolStripMenuItem"
+        Me.CadastroToolStripMenuItem.Size = New System.Drawing.Size(66, 20)
+        Me.CadastroToolStripMenuItem.Text = "Cadastro"
+        '
+        'CNESToolStripMenuItem
+        '
+        Me.CNESToolStripMenuItem.Name = "CNESToolStripMenuItem"
+        Me.CNESToolStripMenuItem.Size = New System.Drawing.Size(219, 22)
+        Me.CNESToolStripMenuItem.Text = "CNES - Inclusão de servidor"
+        '
         'FCNES
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -211,4 +226,6 @@ Partial Class FCNES
     Friend WithEvents FecharToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents FlowLayoutPanelAleracoes As FlowLayoutPanel
     Friend WithEvents TimerBordas As Timer
+    Friend WithEvents CadastroToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents CNESToolStripMenuItem As ToolStripMenuItem
 End Class
