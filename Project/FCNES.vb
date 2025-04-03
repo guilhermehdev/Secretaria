@@ -203,7 +203,7 @@ Public Class FCNES
         End If
     End Sub
 
-    Private Sub addPanelAlteracoes()
+    Public Sub addPanelAlteracoes()
         Dim alteraData = m.getDataset("SELECT * FROM movimento WHERE `status` = 0 ORDER BY id DESC")
 
         FlowLayoutPanelAleracoes.Controls.Clear()
@@ -800,6 +800,10 @@ Public Class FCNES
     End Sub
     Private Sub FCNES_Activated(sender As Object, e As EventArgs) Handles MyBase.Activated
         Me.Cursor = Cursors.Default
+    End Sub
+
+    Private Sub CNESToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CNESToolStripMenuItem.Click
+        FormCadastroServidorCNES.Show()
     End Sub
 
 End Class

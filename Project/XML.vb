@@ -33,14 +33,14 @@ Public Class XML
 
     End Function
 
-    Public Function getCNESXML(ByVal codCBO As String) As String
+    Public Function getCNESXML(ByVal CNES As String) As String
         xmlDocCBO.Load(XMLCNESfilePath)
 
         Dim cbo As String = ""
         Dim dataxml As XmlNodeList = xmlDocCBO.GetElementsByTagName("CODIGO")
 
         For i = 0 To dataxml.Count - 1
-            If dataxml.Item(i).InnerText = codCBO Then
+            If dataxml.Item(i).InnerText = CNES Then
                 cbo = dataxml.Item(i).NextSibling.ChildNodes(0).Value
             End If
         Next
@@ -65,76 +65,117 @@ Public Class XML
 
     End Function
 
-    Public Sub cbBuscaUnidades(ByVal combobox As ComboBox)
+    Public Sub cbOrgaoClasse(ByVal combobox As ComboBox)
         Dim comboSource As New Dictionary(Of String, String)()
 
-        comboSource.Add("3537607036892", "AMBULATORIO MEDICO DE ESPECIALIDADES DE PERUIBE")
-        comboSource.Add("3537609691723", "AMBULATORIO DE DOENCAS INFECTO CONTAGIOSAS")
-        comboSource.Add("3537602085763", "AMFFITO")
-        comboSource.Add("3537606439047", "CENTRO DE ATENCAO PSICOSSOCIAL DE PERUIBE - CAPS")
-        comboSource.Add("3537607721439", "CASA DA MULHER E DA CRIANCA")
-        comboSource.Add("3537607774826", "CASA DO ADOLESCENTE DE PERUIBE - CADOL")
-        comboSource.Add("3537607841965", "CENTRAL DE REGULACAO DE PERUIBE")
-        comboSource.Add("3537605057302", "CENTRO DE ESPECIALIDADES ODONTOLOGICAS DE PERUIBE")
-        comboSource.Add("3537600135801", "CENTRAL DE ABASTECIMENTO FARMACEUTICO PERUIBE")
-        comboSource.Add("3537609297715", "MATERNIDADE MUNICIPAL DE PERUIBE")
-        comboSource.Add("3537602855747", "SERV DE ATENCAO PSICOSSOCIAL A INFANCIA E JUVENTUDE-SAPSIJ")
-        comboSource.Add("3537606399576", "SECRETARIA MUNICIPAL DE SAUDE")
-        comboSource.Add("3537607135173", "UNIDADE DE PRONTO ATENDIMENTO DE PERUIBE - UPA24H")
-        comboSource.Add("3537607983174", "UNIDADE DE VIGILANCIA DE ZOONOSES")
-        comboSource.Add("3537606912273", "USB 12 PERUIBE")
-        comboSource.Add("3537606964869", "USA 40 ´PERUIBE")
-        comboSource.Add("3537606964893", "USB 11 PERUIBE")
-        comboSource.Add("3537609180249", "SAMU PERUIBE 192 MOTOLANCIA URAM 08")
-        comboSource.Add("3537600413933", "USAFA CENTRO")
-        comboSource.Add("3537602025795", "USAFA CARAGUAVA")
-        comboSource.Add("3537602060647", "USAFA VILA PERUIBE")
-        comboSource.Add("3537602085798", "USAFA GUARAU")
-        comboSource.Add("3537602087294", "USAFA JARDIM RIBAMAR")
-        comboSource.Add("3537602087308", "USAFA PARQUE DO TREVO")
-        comboSource.Add("3537602087316", "USAFA JARDIM VENEZA")
-        comboSource.Add("3537605341167", "USAFA NOVA ITARIRI")
-        comboSource.Add("3537605348862", "USAFA TORRE")
-        comboSource.Add("3537605348870", "USAFA JARDIM BRASIL")
-        comboSource.Add("3537605348889", "USAFA SANTA IZABEL")
-        comboSource.Add("3537607750269", "USAFA RECREIO SANTISTA")
+        comboSource.Add("COREN", "COREN")
+        comboSource.Add("CRM", "CRM")
+        comboSource.Add("CRF", "CRF")
+        comboSource.Add("CRESS", "CRESS")
 
         combobox.DataSource = New BindingSource(comboSource, Nothing)
         combobox.DisplayMember = "Value"
         combobox.ValueMember = "Key"
+        combobox.SelectedIndex = -1
+
     End Sub
+
+    Public Sub cbCBO(ByVal combobox As ComboBox)
+        Dim comboSource As New Dictionary(Of String, String)()
+
+        comboSource.Add("515105 - Agente comunitario de saude", "Agente comunitario de saude")
+        comboSource.Add("322205 - Tecnico de enfermagem", "Tecnico de enfermagem")
+        comboSource.Add("322245 - Tecnico de enfermagem da estrategia de saude da familia", "Tecnico de enfermagem da estrategia de saude da familia")
+        comboSource.Add("322250 - Auxiliar de enfermagem da estrategia de saude da familia", "Auxiliar de enfermagem da estrategia de saude da familia")
+        comboSource.Add("223505 - Enfermeiro", "Enfermeiro")
+        comboSource.Add("223565 - Enfermeiro da estrategia de saude da familia", "Enfermeiro da estrategia de saude da familia")
+        comboSource.Add("322430 - Auxiliar em saude bucal da estrategia de saude da familia", "Auxiliar em saude bucal da estrategia de saude da familia")
+        comboSource.Add("223293 - Cirurgiao-dentista da estrategia de saude da familia", "Cirurgiao-dentista da estrategia de saude da familia")
+        comboSource.Add("225125 - Medico clinico", "Medico clinico")
+        comboSource.Add("225142 - Medico da estrategia de saude da familia", "Medico da estrategia de saude da familia")
+        comboSource.Add("251605 - Assistente social", "Assistente social")
+        comboSource.Add("251510 - Psicologo clinico", "Psicologo clinico")
+        comboSource.Add("223710 - Nutricionista", "Nutricionista")
+
+        combobox.DataSource = New BindingSource(comboSource, Nothing)
+        combobox.DisplayMember = "Value"
+        combobox.ValueMember = "Key"
+        combobox.SelectedIndex = -1
+    End Sub
+
+    Public Sub cbBuscaUnidades(ByVal combobox As ComboBox)
+        Dim comboSource As New Dictionary(Of String, String)()
+
+        comboSource.Add("7036892", "AMBULATORIO MEDICO DE ESPECIALIDADES DE PERUIBE")
+        comboSource.Add("9691723", "AMBULATORIO DE DOENCAS INFECTO CONTAGIOSAS")
+        comboSource.Add("2085763", "AMFFITO")
+        comboSource.Add("6439047", "CENTRO DE ATENCAO PSICOSSOCIAL DE PERUIBE - CAPS")
+        comboSource.Add("7721439", "CASA DA MULHER E DA CRIANCA")
+        comboSource.Add("7774826", "CASA DO ADOLESCENTE DE PERUIBE - CADOL")
+        comboSource.Add("7841965", "CENTRAL DE REGULACAO DE PERUIBE")
+        comboSource.Add("5057302", "CENTRO DE ESPECIALIDADES ODONTOLOGICAS DE PERUIBE")
+        comboSource.Add("0135801", "CENTRAL DE ABASTECIMENTO FARMACEUTICO PERUIBE")
+        comboSource.Add("9297715", "MATERNIDADE MUNICIPAL DE PERUIBE")
+        comboSource.Add("2855747", "SERV DE ATENCAO PSICOSSOCIAL A INFANCIA E JUVENTUDE-SAPSIJ")
+        comboSource.Add("6399576", "SECRETARIA MUNICIPAL DE SAUDE")
+        comboSource.Add("7135173", "UNIDADE DE PRONTO ATENDIMENTO DE PERUIBE - UPA24H")
+        comboSource.Add("7983174", "UNIDADE DE VIGILANCIA DE ZOONOSES")
+        comboSource.Add("6912273", "USB 12 PERUIBE")
+        comboSource.Add("6964869", "USA 40 ´PERUIBE")
+        comboSource.Add("6964893", "USB 11 PERUIBE")
+        comboSource.Add("9180249", "SAMU PERUIBE 192 MOTOLANCIA URAM 08")
+        comboSource.Add("0413933", "USAFA CENTRO")
+        comboSource.Add("2025795", "USAFA CARAGUAVA")
+        comboSource.Add("2060647", "USAFA VILA PERUIBE")
+        comboSource.Add("2085798", "USAFA GUARAU")
+        comboSource.Add("2087294", "USAFA JARDIM RIBAMAR")
+        comboSource.Add("2087308", "USAFA PARQUE DO TREVO")
+        comboSource.Add("2087316", "USAFA JARDIM VENEZA")
+        comboSource.Add("5341167", "USAFA NOVA ITARIRI")
+        comboSource.Add("5348862", "USAFA TORRE")
+        comboSource.Add("5348870", "USAFA JARDIM BRASIL")
+        comboSource.Add("5348889", "USAFA SANTA IZABEL")
+        comboSource.Add("7750269", "USAFA RECREIO SANTISTA")
+
+        combobox.DataSource = New BindingSource(comboSource, Nothing)
+        combobox.DisplayMember = "Value"
+        combobox.ValueMember = "Key"
+        combobox.SelectedIndex = -1
+    End Sub
+
 
     Public Sub cbBuscaEquipes(ByVal combobox As ComboBox)
         Dim comboSource As New Dictionary(Of String, String)()
 
-        comboSource.Add("0000343366", "EMULTI-(NASF)- INE:343366")
-        comboSource.Add("0001988921", "EMAD- INE:1988921")
-        comboSource.Add("0002163136", "USAFA CENTRO- INE:2163136")
-        comboSource.Add("0000343358", "USAFA CARAGUAVA I- INE:343358")
-        comboSource.Add("0001473107", "USAFA CARAGUAVA II- INE:1473107")
-        comboSource.Add("0000343382", "USAFA GUARAU- INE:343382")
-        comboSource.Add("0000343420", "USAFA JARDIM VENEZA- INE:343420")
-        comboSource.Add("0000343463", "USAFA SANTA ISABEL I- INE:343463")
-        comboSource.Add("0001635557", "USAFA SANTA ISABEL II- INE:1635557")
-        comboSource.Add("0000343439", "USAFA NOVA ITARIRI- INE:343439")
-        comboSource.Add("0000343455", "USAFA JD. BRASIL- INE:343455")
-        comboSource.Add("0001652575", "USAFA RIBAMAR I- INE:1652575")
-        comboSource.Add("0001652583", "USAFA RIBAMAR II- INE:1652583")
-        comboSource.Add("0002294702", "USAFA RIBAMAR III- INE:2294702")
-        comboSource.Add("0000343447", "USAFA TORRE- INE:343447")
-        comboSource.Add("0000343412", "USAFA TREVO I- INE:343412")
-        comboSource.Add("0000343390", "USAFA TREVO II- INE:343390")
-        comboSource.Add("0000343404", "USAFA RECREIO SANTISTA- INE:343404")
-        comboSource.Add("0000343374", "USAFA VILA PERUIBE- INE:343374")
-        comboSource.Add("0002245825", "CARAGUAVA ODONTO- INE:2245825")
-        comboSource.Add("0002372495", "ODONTO JD BRASIL- INE:2372495")
-        comboSource.Add("0002245841", "GUARAU ODONTO- INE:2245841")
-        comboSource.Add("0002245833", "VENEZA ODONTO- INE:2245833")
-        comboSource.Add("0002245817", "TREVO ODONTO- INE:2245817")
+        comboSource.Add("EMULTI-(NASF)- INE:343366", "EMULTI-(NASF)- INE:343366")
+        comboSource.Add("EMAD- INE:1988921", "EMAD- INE:1988921")
+        comboSource.Add("USAFA CENTRO- INE:2163136", "USAFA CENTRO- INE:2163136")
+        comboSource.Add("USAFA CARAGUAVA I- INE:343358", "USAFA CARAGUAVA I- INE:343358")
+        comboSource.Add("USAFA CARAGUAVA II- INE:1473107", "USAFA CARAGUAVA II- INE:1473107")
+        comboSource.Add("USAFA GUARAU- INE:343382", "USAFA GUARAU- INE:343382")
+        comboSource.Add("USAFA JARDIM VENEZA- INE:343420", "USAFA JARDIM VENEZA- INE:343420")
+        comboSource.Add("USAFA SANTA ISABEL I- INE:343463", "USAFA SANTA ISABEL I- INE:343463")
+        comboSource.Add("USAFA SANTA ISABEL II- INE:1635557", "USAFA SANTA ISABEL II- INE:1635557")
+        comboSource.Add("USAFA NOVA ITARIRI- INE:343439", "USAFA NOVA ITARIRI- INE:343439")
+        comboSource.Add("USAFA JD. BRASIL- INE:343455", "USAFA JD. BRASIL- INE:343455")
+        comboSource.Add("USAFA RIBAMAR I- INE:1652575", "USAFA RIBAMAR I- INE:1652575")
+        comboSource.Add("USAFA RIBAMAR II- INE:1652583", "USAFA RIBAMAR II- INE:1652583")
+        comboSource.Add("USAFA RIBAMAR III- INE:2294702", "USAFA RIBAMAR III- INE:2294702")
+        comboSource.Add("USAFA TORRE- INE:343447", "USAFA TORRE- INE:343447")
+        comboSource.Add("USAFA TREVO I- INE:343412", "USAFA TREVO I- INE:343412")
+        comboSource.Add("USAFA TREVO II- INE:343390", "USAFA TREVO II- INE:343390")
+        comboSource.Add("USAFA RECREIO SANTISTA- INE:343404", "USAFA RECREIO SANTISTA- INE:343404")
+        comboSource.Add("USAFA VILA PERUIBE- INE:343374", "USAFA VILA PERUIBE- INE:343374")
+        comboSource.Add("CARAGUAVA ODONTO- INE:2245825", "CARAGUAVA ODONTO- INE:2245825")
+        comboSource.Add("ODONTO JD BRASIL- INE:2372495", "ODONTO JD BRASIL- INE:2372495")
+        comboSource.Add("GUARAU ODONTO- INE:2245841", "GUARAU ODONTO- INE:2245841")
+        comboSource.Add("VENEZA ODONTO- INE:2245833", "VENEZA ODONTO- INE:2245833")
+        comboSource.Add("TREVO ODONTO- INE:2245817", "TREVO ODONTO- INE:2245817")
 
         combobox.DataSource = New BindingSource(comboSource, Nothing)
         combobox.DisplayMember = "Value"
         combobox.ValueMember = "Key"
+        combobox.SelectedIndex = -1
     End Sub
 
     Public Sub cbFormaContEstab(ByVal combobox As ComboBox)
@@ -155,6 +196,7 @@ Public Class XML
         combobox.DataSource = New BindingSource(comboSource, Nothing)
         combobox.DisplayMember = "Value"
         combobox.ValueMember = "Key"
+        'combobox.SelectedIndex = -1
     End Sub
 
     Public Sub cbFormaContEmpregador(ByVal combobox As ComboBox, ByVal codFormaContEstab As String)
@@ -235,6 +277,7 @@ Public Class XML
         combobox.DataSource = New BindingSource(comboSource, Nothing)
         combobox.DisplayMember = "Value"
         combobox.ValueMember = "Key"
+        'combobox.SelectedIndex = -1
     End Sub
 
     Public Sub cbDetalhaento(ByVal combobox As ComboBox, ByVal codFormaContEstab As String, ByVal codFormaContEmpregador As String)
@@ -317,38 +360,7 @@ Public Class XML
         combobox.DataSource = New BindingSource(comboSource, Nothing)
         combobox.DisplayMember = "Value"
         combobox.ValueMember = "Key"
-    End Sub
-    Public Sub copyXMLFileFromServer()
-        Try
-            If My.Settings.server = "" Then
-                FConnSettings.ShowDialog()
-                Exit Sub
-            End If
-
-            If Not Directory.Exists(Application.StartupPath & "\XML") Or Not File.Exists(Application.StartupPath & "\XML\EQUIPES.xml") Then
-                Directory.CreateDirectory(Application.StartupPath & "\XML")
-
-                Dim origem As String = $"http://{My.Settings.server}/Secretaria/CNES/EQUIPES.xml"
-                Dim destino As String = Application.StartupPath & "\XML\EQUIPES.xml" ' Caminho de destino no cliente
-                ' Verificar se o arquivo existe no servidor HTTP
-                Dim request As HttpWebRequest = CType(WebRequest.Create(origem), HttpWebRequest)
-                request.Method = "HEAD"
-
-                Using response As HttpWebResponse = CType(request.GetResponse(), HttpWebResponse)
-                    If response.StatusCode = HttpStatusCode.OK Then
-                        Dim clienteWeb As New WebClient()
-                        clienteWeb.DownloadFile(origem, destino)
-                        MsgBox("Atualizando arquivo de equipes...")
-                    Else
-                        MsgBox("Arquivo não encontrado no servidor.")
-                    End If
-                End Using
-
-            End If
-
-        Catch ex As Exception
-            MessageBox.Show("Erro ao copiar arquivo: " & ex.Message)
-        End Try
+        'combobox.SelectedIndex = -1
     End Sub
 
     Public Sub copyXMLFileToServer()
@@ -424,23 +436,89 @@ Public Class XML
 
     End Function
 
-    Public Sub verificarAlteracao()
+    Public Sub copyXMLFileFromServer()
+        Dim equipesFile = Nothing
         Try
-            Dim caminhoArquivoServidor As String = $"\\{My.Settings.server}\htdocs\Secretaria\CNES\EQUIPES.xml"
-            Dim hashAtual As String = CalcularHashArquivo(caminhoArquivoServidor)
+            If My.Settings.server = "" Then
+                FConnSettings.ShowDialog()
+                Exit Sub
+            End If
 
-            If File.Exists(Application.StartupPath & "\XML\EQUIPES.xml") Then
-                If hashAtual <> My.Settings.ultimoHash Then
-                    copyXMLFileFromServer()
-                    My.Settings.ultimoHash = hashAtual
-                Else
-                    'MessageBox.Show("O arquivo não foi alterado.")
-                End If
+            If Not Directory.Exists(Application.StartupPath & "\XML") Or Not File.Exists(Application.StartupPath & "\XML\EQUIPES.xml") Then
+                Directory.CreateDirectory(Application.StartupPath & "\XML")
+
+                Dim origem As String = $"http://{My.Settings.server}/Secretaria/CNES/EQUIPES.xml"
+                Dim destino As String = Application.StartupPath & "\XML\EQUIPES.xml" ' Caminho de destino no cliente
+                ' Verificar se o arquivo existe no servidor HTTP
+                Dim request As HttpWebRequest = CType(WebRequest.Create(origem), HttpWebRequest)
+                request.Method = "HEAD"
+
+                Using response As HttpWebResponse = CType(request.GetResponse(), HttpWebResponse)
+                    If response.StatusCode = HttpStatusCode.OK Then
+                        Dim clienteWeb As New WebClient()
+                        clienteWeb.DownloadFile(origem, destino)
+                        MsgBox("Atualizando arquivo de equipes...")
+                        Dim ultimaModificacao As DateTime = ObterUltimaModificacaoHTTP(origem)
+                        My.Settings.ultimoHash = ultimaModificacao
+                    Else
+                        MsgBox("Arquivo não encontrado no servidor.")
+                    End If
+                End Using
 
             End If
 
         Catch ex As Exception
-            MessageBox.Show($"Erro: {ex.Message}")
+            MessageBox.Show("Erro ao copiar arquivo: " & ex.Message)
+        End Try
+    End Sub
+
+    Function ObterUltimaModificacaoHTTP(url As String) As DateTime
+    Dim request As HttpWebRequest = CType(WebRequest.Create(url), HttpWebRequest)
+    request.Method = "HEAD"
+
+        Using response As HttpWebResponse = CType(request.GetResponse(), HttpWebResponse)
+            Return DateTime.Parse(response.Headers("Last-Modified"))
+        End Using
+
+    End Function
+
+    Public Sub verificarAlteracao()
+        Dim origem As String = $"http://{My.Settings.server}/Secretaria/CNES/EQUIPES.xml"
+        Dim ultimaModificacao As DateTime = ObterUltimaModificacaoHTTP(origem)
+
+        ' Verifica se a configuração está vazia antes de comparar
+        If String.IsNullOrEmpty(My.Settings.ultimoHash) Then
+            ' Se for a primeira vez, armazena a data sem comparar
+            My.Settings.ultimoHash = ultimaModificacao.ToString("yyyy-MM-dd HH:mm:ss")
+            My.Settings.Save()
+            Console.WriteLine("Data inicial salva: " & My.Settings.ultimoHash)
+        Else
+            ' Tenta converter a string salva para DateTime
+            Dim dataSalva As DateTime
+            If DateTime.TryParse(My.Settings.ultimoHash, dataSalva) Then
+                If dataSalva <> ultimaModificacao Then
+                    Console.WriteLine("O arquivo foi modificado!")
+
+                    ' Atualiza e salva a nova data
+                    My.Settings.ultimoHash = ultimaModificacao.ToString("yyyy-MM-dd HH:mm:ss")
+                    My.Settings.Save()
+                Else
+                    Console.WriteLine("O arquivo não foi modificado.")
+                End If
+            Else
+                Console.WriteLine("Erro: Data salva é inválida, resetando valor...")
+                My.Settings.ultimoHash = ultimaModificacao.ToString("yyyy-MM-dd HH:mm:ss")
+                My.Settings.Save()
+            End If
+        End If
+
+        Try
+            If My.Settings.ultimoHash <> ultimaModificacao Then
+                copyXMLFileFromServer()
+            End If
+
+        Catch ex As Exception
+            Console.Write($"Erro: {ex.Message}")
         End Try
     End Sub
 

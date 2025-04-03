@@ -28,6 +28,8 @@ Partial Class FCNES
         Me.PanelContainer = New System.Windows.Forms.FlowLayoutPanel()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
+        Me.CadastroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CNESToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PlanejamentoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConfigToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UploadXMLEsusToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -37,8 +39,6 @@ Partial Class FCNES
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.TimerBordas = New System.Windows.Forms.Timer(Me.components)
-        Me.CadastroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.CNESToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
@@ -102,6 +102,19 @@ Partial Class FCNES
         Me.MenuStrip1.Size = New System.Drawing.Size(1254, 24)
         Me.MenuStrip1.TabIndex = 1
         Me.MenuStrip1.Text = "MenuStrip1"
+        '
+        'CadastroToolStripMenuItem
+        '
+        Me.CadastroToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CNESToolStripMenuItem})
+        Me.CadastroToolStripMenuItem.Name = "CadastroToolStripMenuItem"
+        Me.CadastroToolStripMenuItem.Size = New System.Drawing.Size(66, 20)
+        Me.CadastroToolStripMenuItem.Text = "Cadastro"
+        '
+        'CNESToolStripMenuItem
+        '
+        Me.CNESToolStripMenuItem.Name = "CNESToolStripMenuItem"
+        Me.CNESToolStripMenuItem.Size = New System.Drawing.Size(219, 22)
+        Me.CNESToolStripMenuItem.Text = "CNES - Inclusão de servidor"
         '
         'PlanejamentoToolStripMenuItem
         '
@@ -175,19 +188,6 @@ Partial Class FCNES
         '
         Me.TimerBordas.Enabled = True
         Me.TimerBordas.Interval = 200
-        '
-        'CadastroToolStripMenuItem
-        '
-        Me.CadastroToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CNESToolStripMenuItem})
-        Me.CadastroToolStripMenuItem.Name = "CadastroToolStripMenuItem"
-        Me.CadastroToolStripMenuItem.Size = New System.Drawing.Size(66, 20)
-        Me.CadastroToolStripMenuItem.Text = "Cadastro"
-        '
-        'CNESToolStripMenuItem
-        '
-        Me.CNESToolStripMenuItem.Name = "CNESToolStripMenuItem"
-        Me.CNESToolStripMenuItem.Size = New System.Drawing.Size(219, 22)
-        Me.CNESToolStripMenuItem.Text = "CNES - Inclusão de servidor"
         '
         'FCNES
         '
