@@ -401,6 +401,8 @@ Public Class FCNES
 
         If m.msgQuestion("Excluir esta alteração?", "Atenção") Then
 
+            m.doQuery($"DELETE FROM servidor_cnes WHERE id_movimento ={delButton.Tag}")
+
             If m.doQuery($"DELETE FROM movimento WHERE id ={delButton.Tag}") Then
                 addPanelAlteracoes()
                 moveLabelsFast(eqSendTo, eqOrigin, delButton)
@@ -621,45 +623,6 @@ Public Class FCNES
         End If
     End Sub
 
-    'Private Sub contextMenuLabel_Opening(sender As Object, e As System.ComponentModel.CancelEventArgs)
-    '    Dim menu = DirectCast(sender, ContextMenuStrip)
-    '    menu.Items.Clear()
-
-    '    ' Adiciona o cabeçalho como um item não clicável
-    '    Dim headerItem As New ToolStripMenuItem("Enviar para Equipe...") With {
-    '        .Font = New Font("Segoe UI", 10, FontStyle.Bold),
-    '        .ForeColor = Color.DarkBlue,
-    '        .Enabled = False ' Impede que o cabeçalho seja clicado
-    '    }
-    '    Dim DesligamentoItem As New ToolStripMenuItem("Desligar do CNES...") With {
-    '        .Font = New Font("Segoe UI", 10, FontStyle.Bold),
-    '        .ForeColor = Color.DarkRed,
-    '        .Enabled = True ' Impede que o cabeçalho seja clicado
-    '    }
-    '    menu.Items.Add(DesligamentoItem)
-    '    menu.Items.Add(headerItem)
-
-    '    ' Adiciona um separador após o cabeçalho
-    '    menu.Items.Add(New ToolStripSeparator())
-
-    '    ' Adiciona as opções dinamicamente com base nos containers disponíveis
-    '    For Each container As FlowLayoutPanel In PanelContainer.Controls
-    '        Dim item As New ToolStripMenuItem(container.Name)
-    '        AddHandler item.Click, AddressOf InsertLabelContextMenu
-    '        menu.Items.Add(item)
-    '    Next
-
-    '    ' Obtém o Label associado ao menu
-    '    Dim sourceControl = contextMenuLabel.SourceControl
-    '    If TypeOf sourceControl Is Label Then
-    '        selectedLabel = DirectCast(sourceControl, Label)
-    '    Else
-    '        ' Cancela a abertura se não houver Label selecionado
-    '        e.Cancel = True
-    '    End If
-
-    'End Sub
-
     Private Sub contextMenuLabel_Opening(sender As Object, e As System.ComponentModel.CancelEventArgs)
         Dim menu = DirectCast(sender, ContextMenuStrip)
         menu.Items.Clear()
@@ -801,8 +764,7 @@ Public Class FCNES
     Private Sub FCNES_Activated(sender As Object, e As EventArgs) Handles MyBase.Activated
         Me.Cursor = Cursors.Default
     End Sub
-
-    Private Sub CNESToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CNESToolStripMenuItem.Click
+    Private Sub btNovo_Click(sender As Object, e As EventArgs) Handles btNovo.Click
         FormCadastroServidorCNES.Show()
     End Sub
 

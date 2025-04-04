@@ -23,18 +23,18 @@ Partial Class FCNES
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FCNES))
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.PanelContainer = New System.Windows.Forms.FlowLayoutPanel()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
-        Me.CadastroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.CNESToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PlanejamentoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConfigToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UploadXMLEsusToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.FecharToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.btNovo = New System.Windows.Forms.Button()
         Me.FlowLayoutPanelAleracoes = New System.Windows.Forms.FlowLayoutPanel()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
@@ -95,26 +95,13 @@ Partial Class FCNES
         '
         'MenuStrip1
         '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CadastroToolStripMenuItem, Me.PlanejamentoToolStripMenuItem, Me.ConfigToolStripMenuItem, Me.FecharToolStripMenuItem})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PlanejamentoToolStripMenuItem, Me.ConfigToolStripMenuItem, Me.FecharToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
         Me.MenuStrip1.Size = New System.Drawing.Size(1254, 24)
         Me.MenuStrip1.TabIndex = 1
         Me.MenuStrip1.Text = "MenuStrip1"
-        '
-        'CadastroToolStripMenuItem
-        '
-        Me.CadastroToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CNESToolStripMenuItem})
-        Me.CadastroToolStripMenuItem.Name = "CadastroToolStripMenuItem"
-        Me.CadastroToolStripMenuItem.Size = New System.Drawing.Size(66, 20)
-        Me.CadastroToolStripMenuItem.Text = "Cadastro"
-        '
-        'CNESToolStripMenuItem
-        '
-        Me.CNESToolStripMenuItem.Name = "CNESToolStripMenuItem"
-        Me.CNESToolStripMenuItem.Size = New System.Drawing.Size(219, 22)
-        Me.CNESToolStripMenuItem.Text = "CNES - Inclusão de servidor"
         '
         'PlanejamentoToolStripMenuItem
         '
@@ -145,6 +132,7 @@ Partial Class FCNES
         '
         Me.GroupBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox1.Controls.Add(Me.btNovo)
         Me.GroupBox1.Controls.Add(Me.FlowLayoutPanelAleracoes)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 37)
         Me.GroupBox1.Name = "GroupBox1"
@@ -153,6 +141,22 @@ Partial Class FCNES
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Alterações pendentes"
         '
+        'btNovo
+        '
+        Me.btNovo.BackColor = System.Drawing.Color.White
+        Me.btNovo.BackgroundImage = CType(resources.GetObject("btNovo.BackgroundImage"), System.Drawing.Image)
+        Me.btNovo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btNovo.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btNovo.FlatAppearance.BorderSize = 0
+        Me.btNovo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btNovo.Font = New System.Drawing.Font("Microsoft Sans Serif", 20.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btNovo.Location = New System.Drawing.Point(281, 19)
+        Me.btNovo.Name = "btNovo"
+        Me.btNovo.Size = New System.Drawing.Size(31, 24)
+        Me.btNovo.TabIndex = 1
+        Me.ToolTip1.SetToolTip(Me.btNovo, "Inserir novo cadastro")
+        Me.btNovo.UseVisualStyleBackColor = False
+        '
         'FlowLayoutPanelAleracoes
         '
         Me.FlowLayoutPanelAleracoes.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -160,10 +164,10 @@ Partial Class FCNES
         Me.FlowLayoutPanelAleracoes.AutoScroll = True
         Me.FlowLayoutPanelAleracoes.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.FlowLayoutPanelAleracoes.FlowDirection = System.Windows.Forms.FlowDirection.TopDown
-        Me.FlowLayoutPanelAleracoes.Location = New System.Drawing.Point(6, 19)
+        Me.FlowLayoutPanelAleracoes.Location = New System.Drawing.Point(6, 49)
         Me.FlowLayoutPanelAleracoes.Name = "FlowLayoutPanelAleracoes"
         Me.FlowLayoutPanelAleracoes.Padding = New System.Windows.Forms.Padding(2, 4, 0, 0)
-        Me.FlowLayoutPanelAleracoes.Size = New System.Drawing.Size(306, 521)
+        Me.FlowLayoutPanelAleracoes.Size = New System.Drawing.Size(306, 491)
         Me.FlowLayoutPanelAleracoes.TabIndex = 0
         Me.FlowLayoutPanelAleracoes.WrapContents = False
         '
@@ -226,6 +230,5 @@ Partial Class FCNES
     Friend WithEvents FecharToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents FlowLayoutPanelAleracoes As FlowLayoutPanel
     Friend WithEvents TimerBordas As Timer
-    Friend WithEvents CadastroToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents CNESToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents btNovo As Button
 End Class
