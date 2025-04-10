@@ -30,6 +30,7 @@ Partial Class FCNES
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.PlanejamentoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.RelatóriosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConfigToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UploadXMLEsusToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.FecharToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -39,6 +40,8 @@ Partial Class FCNES
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.TimerBordas = New System.Windows.Forms.Timer(Me.components)
+        Me.CadastrosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.PendentesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
@@ -95,7 +98,7 @@ Partial Class FCNES
         '
         'MenuStrip1
         '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PlanejamentoToolStripMenuItem, Me.ConfigToolStripMenuItem, Me.FecharToolStripMenuItem})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PlanejamentoToolStripMenuItem, Me.CadastrosToolStripMenuItem, Me.ConfigToolStripMenuItem, Me.FecharToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
@@ -105,16 +108,23 @@ Partial Class FCNES
         '
         'PlanejamentoToolStripMenuItem
         '
+        Me.PlanejamentoToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RelatóriosToolStripMenuItem})
         Me.PlanejamentoToolStripMenuItem.Name = "PlanejamentoToolStripMenuItem"
         Me.PlanejamentoToolStripMenuItem.Size = New System.Drawing.Size(92, 20)
         Me.PlanejamentoToolStripMenuItem.Text = "Planejamento"
+        '
+        'RelatóriosToolStripMenuItem
+        '
+        Me.RelatóriosToolStripMenuItem.Name = "RelatóriosToolStripMenuItem"
+        Me.RelatóriosToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.RelatóriosToolStripMenuItem.Text = "Relatórios"
         '
         'ConfigToolStripMenuItem
         '
         Me.ConfigToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.UploadXMLEsusToolStripMenuItem})
         Me.ConfigToolStripMenuItem.Name = "ConfigToolStripMenuItem"
-        Me.ConfigToolStripMenuItem.Size = New System.Drawing.Size(62, 20)
-        Me.ConfigToolStripMenuItem.Text = "Servidor"
+        Me.ConfigToolStripMenuItem.Size = New System.Drawing.Size(96, 20)
+        Me.ConfigToolStripMenuItem.Text = "Configurações"
         '
         'UploadXMLEsusToolStripMenuItem
         '
@@ -193,6 +203,19 @@ Partial Class FCNES
         Me.TimerBordas.Enabled = True
         Me.TimerBordas.Interval = 200
         '
+        'CadastrosToolStripMenuItem
+        '
+        Me.CadastrosToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PendentesToolStripMenuItem})
+        Me.CadastrosToolStripMenuItem.Name = "CadastrosToolStripMenuItem"
+        Me.CadastrosToolStripMenuItem.Size = New System.Drawing.Size(71, 20)
+        Me.CadastrosToolStripMenuItem.Text = "Cadastros"
+        '
+        'PendentesToolStripMenuItem
+        '
+        Me.PendentesToolStripMenuItem.Name = "PendentesToolStripMenuItem"
+        Me.PendentesToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.PendentesToolStripMenuItem.Text = "Pendentes"
+        '
         'FCNES
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -201,6 +224,7 @@ Partial Class FCNES
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.MenuStrip1)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.MenuStrip1
         Me.Name = "FCNES"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
@@ -231,4 +255,7 @@ Partial Class FCNES
     Friend WithEvents FlowLayoutPanelAleracoes As FlowLayoutPanel
     Friend WithEvents TimerBordas As Timer
     Friend WithEvents btNovo As Button
+    Friend WithEvents RelatóriosToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents CadastrosToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents PendentesToolStripMenuItem As ToolStripMenuItem
 End Class

@@ -33,12 +33,11 @@ Partial Class FormCadastroServidorCNES
         Me.tbRegConselho = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.cbDetalhe = New System.Windows.Forms.ComboBox()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.cbEquipe = New System.Windows.Forms.ComboBox()
         Me.Label10 = New System.Windows.Forms.Label()
-        Me.cbUnidade = New System.Windows.Forms.ComboBox()
-        Me.Label9 = New System.Windows.Forms.Label()
-        Me.cbFormaContrato = New System.Windows.Forms.ComboBox()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.NumericOutros = New System.Windows.Forms.NumericUpDown()
@@ -46,13 +45,14 @@ Partial Class FormCadastroServidorCNES
         Me.NumericHosp = New System.Windows.Forms.NumericUpDown()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.numericAMB = New System.Windows.Forms.NumericUpDown()
+        Me.cbUnidade = New System.Windows.Forms.ComboBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.cbFormaContrato = New System.Windows.Forms.ComboBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.cbCBO = New System.Windows.Forms.ComboBox()
         Me.btSair = New System.Windows.Forms.Button()
         Me.btSalvar = New System.Windows.Forms.Button()
         Me.btCancelar = New System.Windows.Forms.Button()
-        Me.Label12 = New System.Windows.Forms.Label()
-        Me.cbDetalhe = New System.Windows.Forms.ComboBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -109,6 +109,7 @@ Partial Class FormCadastroServidorCNES
         '
         'cbOrgao
         '
+        Me.cbOrgao.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
         Me.cbOrgao.FormattingEnabled = True
         Me.cbOrgao.Location = New System.Drawing.Point(29, 93)
         Me.cbOrgao.Name = "cbOrgao"
@@ -164,6 +165,23 @@ Partial Class FormCadastroServidorCNES
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Dados do vinculo"
         '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(26, 220)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(119, 13)
+        Me.Label12.TabIndex = 18
+        Me.Label12.Text = "Detalhe da contratação"
+        '
+        'cbDetalhe
+        '
+        Me.cbDetalhe.FormattingEnabled = True
+        Me.cbDetalhe.Location = New System.Drawing.Point(29, 236)
+        Me.cbDetalhe.Name = "cbDetalhe"
+        Me.cbDetalhe.Size = New System.Drawing.Size(351, 21)
+        Me.cbDetalhe.TabIndex = 17
+        '
         'Label11
         '
         Me.Label11.AutoSize = True
@@ -189,31 +207,6 @@ Partial Class FormCadastroServidorCNES
         Me.Label10.Size = New System.Drawing.Size(84, 13)
         Me.Label10.TabIndex = 14
         Me.Label10.Text = "Unidade destino"
-        '
-        'cbUnidade
-        '
-        Me.cbUnidade.FormattingEnabled = True
-        Me.cbUnidade.Location = New System.Drawing.Point(29, 281)
-        Me.cbUnidade.Name = "cbUnidade"
-        Me.cbUnidade.Size = New System.Drawing.Size(351, 21)
-        Me.cbUnidade.TabIndex = 6
-        '
-        'Label9
-        '
-        Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(26, 178)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(196, 13)
-        Me.Label9.TabIndex = 12
-        Me.Label9.Text = "Forma de contrato com estabelecimento"
-        '
-        'cbFormaContrato
-        '
-        Me.cbFormaContrato.FormattingEnabled = True
-        Me.cbFormaContrato.Location = New System.Drawing.Point(29, 194)
-        Me.cbFormaContrato.Name = "cbFormaContrato"
-        Me.cbFormaContrato.Size = New System.Drawing.Size(351, 21)
-        Me.cbFormaContrato.TabIndex = 5
         '
         'GroupBox3
         '
@@ -278,6 +271,31 @@ Partial Class FormCadastroServidorCNES
         Me.numericAMB.Size = New System.Drawing.Size(33, 20)
         Me.numericAMB.TabIndex = 0
         '
+        'cbUnidade
+        '
+        Me.cbUnidade.FormattingEnabled = True
+        Me.cbUnidade.Location = New System.Drawing.Point(29, 281)
+        Me.cbUnidade.Name = "cbUnidade"
+        Me.cbUnidade.Size = New System.Drawing.Size(351, 21)
+        Me.cbUnidade.TabIndex = 6
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(26, 178)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(196, 13)
+        Me.Label9.TabIndex = 12
+        Me.Label9.Text = "Forma de contrato com estabelecimento"
+        '
+        'cbFormaContrato
+        '
+        Me.cbFormaContrato.FormattingEnabled = True
+        Me.cbFormaContrato.Location = New System.Drawing.Point(29, 194)
+        Me.cbFormaContrato.Name = "cbFormaContrato"
+        Me.cbFormaContrato.Size = New System.Drawing.Size(351, 21)
+        Me.cbFormaContrato.TabIndex = 5
+        '
         'Label5
         '
         Me.Label5.AutoSize = True
@@ -289,6 +307,7 @@ Partial Class FormCadastroServidorCNES
         '
         'cbCBO
         '
+        Me.cbCBO.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
         Me.cbCBO.FormattingEnabled = True
         Me.cbCBO.Location = New System.Drawing.Point(29, 53)
         Me.cbCBO.Name = "cbCBO"
@@ -324,23 +343,6 @@ Partial Class FormCadastroServidorCNES
         Me.btCancelar.TabIndex = 3
         Me.btCancelar.Text = "Cancelar"
         Me.btCancelar.UseVisualStyleBackColor = True
-        '
-        'Label12
-        '
-        Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(26, 220)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(119, 13)
-        Me.Label12.TabIndex = 18
-        Me.Label12.Text = "Detalhe da contratação"
-        '
-        'cbDetalhe
-        '
-        Me.cbDetalhe.FormattingEnabled = True
-        Me.cbDetalhe.Location = New System.Drawing.Point(29, 236)
-        Me.cbDetalhe.Name = "cbDetalhe"
-        Me.cbDetalhe.Size = New System.Drawing.Size(351, 21)
-        Me.cbDetalhe.TabIndex = 17
         '
         'FormCadastroServidorCNES
         '

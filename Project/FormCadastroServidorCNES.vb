@@ -25,6 +25,25 @@
             m.msgAlert("Nome, CPF, CBO, Carga horaria, Forma de contrato, unidade e equipe são obrigatórios")
         End If
 
+        clear()
+
+    End Sub
+    Private Sub btCancelar_Click(sender As Object, e As EventArgs) Handles btCancelar.Click
+        clear()
+    End Sub
+    Private Sub clear()
+        tbNome.Clear()
+        tbRegConselho.Clear()
+        tbCPF.Clear()
+        NumericHosp.Value = 0
+        numericAMB.Value = 0
+        NumericOutros.Value = 0
+        cbCBO.SelectedIndex = -1
+        cbFormaContrato.SelectedIndex = -1
+        cbOrgao.SelectedIndex = -1
+        cbDetalhe.SelectedIndex = -1
+        cbUnidade.SelectedIndex = -1
+        cbEquipe.SelectedIndex = -1
     End Sub
 
 End Class

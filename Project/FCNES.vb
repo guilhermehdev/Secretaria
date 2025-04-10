@@ -751,10 +751,6 @@ Public Class FCNES
     Private Sub FecharToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FecharToolStripMenuItem.Click
         Me.Close()
     End Sub
-
-    Private Sub PlanejamentoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PlanejamentoToolStripMenuItem.Click
-        FplanejCNES.Show()
-    End Sub
     Private Sub Label_MouseUp(sender As Object, e As MouseEventArgs)
         If e.Button = MouseButtons.Right Then
             Dim label = DirectCast(sender, Label)
@@ -766,6 +762,9 @@ Public Class FCNES
     End Sub
     Private Sub btNovo_Click(sender As Object, e As EventArgs) Handles btNovo.Click
         FormCadastroServidorCNES.Show()
+    End Sub
+    Private Sub RelatóriosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RelatóriosToolStripMenuItem.Click
+        FplanejCNES.Show()
     End Sub
 
 End Class
