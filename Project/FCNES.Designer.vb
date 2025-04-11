@@ -33,6 +33,7 @@ Partial Class FCNES
         Me.RelatóriosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CadastrosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PendentesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AlteraçõesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConfigToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UploadXMLEsusToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.FecharToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -42,7 +43,6 @@ Partial Class FCNES
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.TimerBordas = New System.Windows.Forms.Timer(Me.components)
-        Me.AlteraçõesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
@@ -133,6 +133,12 @@ Partial Class FCNES
         Me.PendentesToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.PendentesToolStripMenuItem.Text = "Cadastro"
         '
+        'AlteraçõesToolStripMenuItem
+        '
+        Me.AlteraçõesToolStripMenuItem.Name = "AlteraçõesToolStripMenuItem"
+        Me.AlteraçõesToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.AlteraçõesToolStripMenuItem.Text = "Alterações"
+        '
         'ConfigToolStripMenuItem
         '
         Me.ConfigToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.UploadXMLEsusToolStripMenuItem})
@@ -216,12 +222,6 @@ Partial Class FCNES
         '
         Me.TimerBordas.Enabled = True
         Me.TimerBordas.Interval = 200
-        '
-        'AlteraçõesToolStripMenuItem
-        '
-        Me.AlteraçõesToolStripMenuItem.Name = "AlteraçõesToolStripMenuItem"
-        Me.AlteraçõesToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.AlteraçõesToolStripMenuItem.Text = "Alterações"
         '
         'FCNES
         '
