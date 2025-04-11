@@ -3,7 +3,7 @@
     Dim id As Integer
     Private Sub dgCadastrosPendentes_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgAlteracoesPendentes.CellClick
         m.copyDatagridCellValue(dgAlteracoesPendentes, e)
-        id = dgAlteracoesPendentes.CurrentRow.Cells(0).Value
+        id = dgAlteracoesPendentes.SelectedRows.Item(0).Cells(0).Value
     End Sub
     Private Sub loadAlteracoes()
         Dim alteracoes = m.getDataset("SELECT * FROM movimento WHERE equipe_out <> 'NOVO CADASTRO' AND status=0 ORDER BY id DESC")
@@ -16,6 +16,8 @@
         dgAlteracoesPendentes.DataSource = alteracoes
 
         dgAlteracoesPendentes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells
+
+        dgAlteracoesPendentes.ClearSelection()
 
         dgAlteracoesPendentes.Columns(0).Visible = False
         dgAlteracoesPendentes.Columns(8).Visible = False
