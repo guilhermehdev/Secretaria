@@ -20,7 +20,7 @@
 
             Dim idProf = m.getDataset("SELECT MAX(id) FROM movimento").Rows(0).Item(0)
 
-            m.SQLinsert("servidor_cnes", "nome,cpf,chHosp,chAmb,chOut,classe,cbo,numero_classe,contrato,unidade,equipe,id_movimento", "'" & tbNome.Text.ToUpper & "','" & tbCPF.Text.Replace(".", "").Replace("-", "") & "'," & NumericHosp.Value & "," & numericAMB.Value & "," & NumericOutros.Value & ",'" & cbOrgao.SelectedValue & "','" & cbCBO.SelectedValue & "','" & tbRegConselho.Text & "','" & cbFormaContrato.SelectedValue & "','" & cbUnidade.SelectedValue & "','" & cbEquipe.SelectedValue & "'," & idProf, True)
+            m.SQLinsert("servidor_cnes", "nome,cpf,chHosp,chAmb,chOut,classe,cbo,numero_classe,contrato,detalhe,unidade,equipe,id_movimento", "'" & tbNome.Text.ToUpper & "','" & tbCPF.Text.Replace(".", "").Replace("-", "") & "'," & NumericHosp.Value & "," & numericAMB.Value & "," & NumericOutros.Value & ",'" & cbOrgao.SelectedValue & "','" & cbCBO.SelectedValue & "','" & tbRegConselho.Text & "','" & cbFormaContrato.SelectedValue & "','" & cbDetalhe.SelectedValue & "','" & cbUnidade.SelectedValue & "','" & cbEquipe.SelectedValue & "'," & idProf, True)
         Else
             m.msgAlert("Nome, CPF, CBO, Carga horaria, Forma de contrato, unidade e equipe são obrigatórios")
         End If

@@ -147,6 +147,7 @@ Public Class XML
     Public Sub cbBuscaEquipes(ByVal combobox As ComboBox)
         Dim comboSource As New Dictionary(Of String, String)()
 
+        comboSource.Add("SEM EQUIPE", "SEM EQUIPE")
         comboSource.Add("EMULTI-(NASF)- INE:343366", "EMULTI-(NASF)- INE:343366")
         comboSource.Add("EMAD- INE:1988921", "EMAD- INE:1988921")
         comboSource.Add("USAFA CENTRO- INE:2163136", "USAFA CENTRO- INE:2163136")

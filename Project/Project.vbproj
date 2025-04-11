@@ -535,6 +535,12 @@
     <Compile Include="FormMainBLH.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormNovoCadastroCNES.Designer.vb">
+      <DependentUpon>FormNovoCadastroCNES.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormNovoCadastroCNES.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormOuvidoriaAndamento.Designer.vb">
       <DependentUpon>FormOuvidoriaAndamento.vb</DependentUpon>
     </Compile>
@@ -663,6 +669,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormMainBLH.resx">
       <DependentUpon>FormMainBLH.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormNovoCadastroCNES.resx">
+      <DependentUpon>FormNovoCadastroCNES.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormOuvidoriaAndamento.resx">
       <DependentUpon>FormOuvidoriaAndamento.vb</DependentUpon>

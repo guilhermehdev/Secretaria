@@ -792,6 +792,17 @@ Public Class Main
 
     End Sub
 
+    Public Sub copyDatagridCellValue(datagrid As DataGridView, e As DataGridViewCellEventArgs)
+        If e.RowIndex >= 0 AndAlso e.ColumnIndex >= 0 Then
+            Try
+                Dim valorCelula As String = datagrid.Rows(e.RowIndex).Cells(e.ColumnIndex).Value.ToString()
+                Clipboard.SetText(valorCelula)
+            Catch ex As Exception
+
+            End Try
+        End If
+    End Sub
+
 End Class
 
 

@@ -766,5 +766,8 @@ Public Class FCNES
     Private Sub RelatóriosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RelatóriosToolStripMenuItem.Click
         FplanejCNES.Show()
     End Sub
+    Private Sub PendentesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PendentesToolStripMenuItem.Click
+        FormNovoCadastroCNES.Show()
+    End Sub
 
 End Class

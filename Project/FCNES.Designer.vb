@@ -31,6 +31,8 @@ Partial Class FCNES
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.PlanejamentoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.RelatóriosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CadastrosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.PendentesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConfigToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UploadXMLEsusToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.FecharToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -40,8 +42,7 @@ Partial Class FCNES
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.TimerBordas = New System.Windows.Forms.Timer(Me.components)
-        Me.CadastrosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.PendentesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AlteraçõesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
@@ -116,8 +117,21 @@ Partial Class FCNES
         'RelatóriosToolStripMenuItem
         '
         Me.RelatóriosToolStripMenuItem.Name = "RelatóriosToolStripMenuItem"
-        Me.RelatóriosToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.RelatóriosToolStripMenuItem.Size = New System.Drawing.Size(126, 22)
         Me.RelatóriosToolStripMenuItem.Text = "Relatórios"
+        '
+        'CadastrosToolStripMenuItem
+        '
+        Me.CadastrosToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PendentesToolStripMenuItem, Me.AlteraçõesToolStripMenuItem})
+        Me.CadastrosToolStripMenuItem.Name = "CadastrosToolStripMenuItem"
+        Me.CadastrosToolStripMenuItem.Size = New System.Drawing.Size(81, 20)
+        Me.CadastrosToolStripMenuItem.Text = "Movimento"
+        '
+        'PendentesToolStripMenuItem
+        '
+        Me.PendentesToolStripMenuItem.Name = "PendentesToolStripMenuItem"
+        Me.PendentesToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.PendentesToolStripMenuItem.Text = "Cadastro"
         '
         'ConfigToolStripMenuItem
         '
@@ -203,18 +217,11 @@ Partial Class FCNES
         Me.TimerBordas.Enabled = True
         Me.TimerBordas.Interval = 200
         '
-        'CadastrosToolStripMenuItem
+        'AlteraçõesToolStripMenuItem
         '
-        Me.CadastrosToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PendentesToolStripMenuItem})
-        Me.CadastrosToolStripMenuItem.Name = "CadastrosToolStripMenuItem"
-        Me.CadastrosToolStripMenuItem.Size = New System.Drawing.Size(71, 20)
-        Me.CadastrosToolStripMenuItem.Text = "Cadastros"
-        '
-        'PendentesToolStripMenuItem
-        '
-        Me.PendentesToolStripMenuItem.Name = "PendentesToolStripMenuItem"
-        Me.PendentesToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.PendentesToolStripMenuItem.Text = "Pendentes"
+        Me.AlteraçõesToolStripMenuItem.Name = "AlteraçõesToolStripMenuItem"
+        Me.AlteraçõesToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.AlteraçõesToolStripMenuItem.Text = "Alterações"
         '
         'FCNES
         '
@@ -258,4 +265,5 @@ Partial Class FCNES
     Friend WithEvents RelatóriosToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CadastrosToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents PendentesToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents AlteraçõesToolStripMenuItem As ToolStripMenuItem
 End Class
