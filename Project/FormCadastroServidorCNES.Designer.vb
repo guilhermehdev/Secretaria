@@ -180,7 +180,7 @@ Partial Class FormCadastroServidorCNES
         Me.cbDetalhe.Location = New System.Drawing.Point(29, 236)
         Me.cbDetalhe.Name = "cbDetalhe"
         Me.cbDetalhe.Size = New System.Drawing.Size(351, 21)
-        Me.cbDetalhe.TabIndex = 17
+        Me.cbDetalhe.TabIndex = 6
         '
         'Label11
         '
@@ -197,7 +197,7 @@ Partial Class FormCadastroServidorCNES
         Me.cbEquipe.Location = New System.Drawing.Point(29, 321)
         Me.cbEquipe.Name = "cbEquipe"
         Me.cbEquipe.Size = New System.Drawing.Size(351, 21)
-        Me.cbEquipe.TabIndex = 7
+        Me.cbEquipe.TabIndex = 8
         '
         'Label10
         '
@@ -277,7 +277,7 @@ Partial Class FormCadastroServidorCNES
         Me.cbUnidade.Location = New System.Drawing.Point(29, 281)
         Me.cbUnidade.Name = "cbUnidade"
         Me.cbUnidade.Size = New System.Drawing.Size(351, 21)
-        Me.cbUnidade.TabIndex = 6
+        Me.cbUnidade.TabIndex = 7
         '
         'Label9
         '
