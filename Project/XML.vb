@@ -437,6 +437,90 @@ Public Class XML
 
     End Function
 
+    Function ObterDadosLotacao(cpf As String, cnesUnidade As String, ineEquipe As String) As Boolean
+        Dim doc As XDocument = Nothing
+
+        Try
+            ' Carregar o arquivo XML
+            If File.Exists(Application.StartupPath & "\XML\EQUIPES.xml") Then
+                doc = XDocument.Load(Application.StartupPath & "\XML\EQUIPES.xml")
+            Else
+                Throw New Exception("Arquivo XML não encontrado.")
+            End If
+
+            ' Consulta o profissional pelo CPF
+            Dim profissional = doc.Descendants("DADOS_PROFISSIONAIS").
+            Where(Function(p) p.Attribute("CPF_PROF")?.Value = cpf).
+            Select(Function(p) New Profissional With {
+                .Nome = p.Attribute("NM_PROF")?.Value,
+                .CPF = p.Attribute("CPF_PROF")?.Value,
+                .CNS = p.Attribute("CO_CNS")?.Value,
+                .CNESLOTACAO = p.Element("LOTACOES")?.Element("DADOS_LOTACOES")?.Attribute("CNES")?.Value,
+                .CBOLOTACAO = p.Element("LOTACOES")?.Element("DADOS_LOTACOES")?.Attribute("CO_CBO")?.Value,
+                .INELOTACAO = p.Element("LOTACOES")?.Element("DADOS_LOTACOES")?.Attribute("CO_INE")?.Value
+            }).FirstOrDefault()
+
+            ' Verifica se o profissional foi encontrado
+            If profissional Is Nothing Then
+                Console.WriteLine("Profissional não encontrado.")
+                Return False
+            End If
+
+            ' Verifica se os dados de lotação correspondem ao CNES e INE fornecidos
+            If profissional.CNESLOTACAO = cnesUnidade AndAlso profissional.INELOTACAO = ineEquipe Then
+                Console.WriteLine($"Lotação encontrada para o profissional {profissional.Nome}.")
+                Return True
+            End If
+
+            Console.WriteLine("Lotação não encontrada com os critérios fornecidos.")
+            Return False
+
+        Catch ex As Exception
+            Console.WriteLine("Erro ao processar o XML: " & ex.Message)
+            Return False
+        End Try
+    End Function
+
+    Function ListarTodasLotações(cpf As String) As List(Of Lotacao)
+        Dim doc As XDocument = Nothing
+        Dim lotacoes As New List(Of Lotacao)()
+
+        Try
+            ' Carregar o arquivo XML
+            If File.Exists(Application.StartupPath & "\XML\EQUIPES.xml") Then
+                doc = XDocument.Load(Application.StartupPath & "\XML\EQUIPES.xml")
+            Else
+                Throw New Exception("Arquivo XML não encontrado.")
+            End If
+
+            ' Consulta o profissional pelo CPF
+            Dim profissional = doc.Descendants("DADOS_PROFISSIONAIS").
+            Where(Function(p) p.Attribute("CPF_PROF")?.Value = cpf).
+            FirstOrDefault()
+
+            ' Verifica se o profissional foi encontrado
+            If profissional Is Nothing Then
+                Console.WriteLine("Profissional não encontrado.")
+                Return lotacoes ' Retorna uma lista vazia
+            End If
+
+            ' Consulta todas as lotações do profissional
+            lotacoes = profissional.Descendants("DADOS_LOTACOES").
+            Select(Function(l) New Lotacao With {
+                .CNES = l.Attribute("CNES")?.Value,
+                .INE = l.Attribute("CO_INE")?.Value,
+                .CBO = l.Attribute("CO_CBO")?.Value,
+                .MicroArea = l.Attribute("MICROAREA")?.Value
+            }).ToList()
+
+            Return lotacoes
+        Catch ex As Exception
+            Console.WriteLine("Erro ao processar o XML: " & ex.Message)
+            Return lotacoes ' Retorna uma lista vazia em caso de erro
+        End Try
+    End Function
+
+
     Public Sub copyXMLFileFromServer()
         Dim equipesFile = Nothing
         Try
@@ -556,5 +640,12 @@ Public Class Profissional
     Public Property CNESLOTACAO As String
     Public Property INELOTACAO As String
     Public Property CBOLOTACAO As String
+End Class
+
+Public Class Lotacao
+    Public Property CNES As String
+    Public Property INE As String
+    Public Property CBO As String
+    Public Property MicroArea As String
 End Class
 

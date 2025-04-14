@@ -210,9 +210,9 @@ Public Class FCNES
 
         For Each row In alteraData.Rows
             Dim id = row(0).ToString
-            Dim unidade_out = row(1).ToString
+            Dim unidade_out = xml.getCNESXML(row(1).ToString)
             Dim equipe_out = row(2).ToString
-            Dim unidade_in = row(3).ToString
+            Dim unidade_in = xml.getCNESXML(row(3).ToString)
             Dim equipe_in = row(4).ToString
             Dim profissional = row(6).ToString
             Dim cbo = row(7).ToString
@@ -342,32 +342,35 @@ Public Class FCNES
 
                 Try
 
-                    FlowLayoutPanelAleracoes.Controls.Add(containerPanel)
-                    Dim label As Label
-
-                    If equipe_in <> "DESLIGAMENTO DA AB" And equipe_in <> "DESLIGAMENTO DO CNES" Then
-                        moveLabelsFast(lblUnidadeIn, lblUnidadeOut, btnDelete)
-
-                        Dim flowPanelDestino As FlowLayoutPanel = PanelContainer.Controls.Find(equipe_in, True).FirstOrDefault()
-                        label = flowPanelDestino.Controls.Find(cpf, True).FirstOrDefault()
-
+                    If xml.ObterDadosLotacao(cpf, unidade_in, equipe_in) Then
+                        Continue For
                     Else
+                        FlowLayoutPanelAleracoes.Controls.Add(containerPanel)
+                        Dim label As Label
 
-                        Dim flowPanelOrigin As FlowLayoutPanel = PanelContainer.Controls.Find(equipe_out, True).FirstOrDefault()
-                        label = flowPanelOrigin.Controls.Find(cpf, True).FirstOrDefault()
+                        If equipe_in <> "DESLIGAMENTO DA AB" And equipe_in <> "DESLIGAMENTO DO CNES" Then
+                            moveLabelsFast(lblUnidadeIn, lblUnidadeOut, btnDelete)
 
+                            Dim flowPanelDestino As FlowLayoutPanel = PanelContainer.Controls.Find(equipe_in, True).FirstOrDefault()
+                            label = flowPanelDestino.Controls.Find(cpf, True).FirstOrDefault()
+
+                        Else
+
+                            Dim flowPanelOrigin As FlowLayoutPanel = PanelContainer.Controls.Find(equipe_out, True).FirstOrDefault()
+                            label = flowPanelOrigin.Controls.Find(cpf, True).FirstOrDefault()
+
+                        End If
+
+                        label.Invalidate()
+                        Dim labelItens = getlabelTAG(label)
+                        label.Tag = labelItens(0) & "/" & labelItens(1) & "/" & labelItens(2) & "/" & "Bordered"
+
+                        AddHandler label.Paint, AddressOf Label_Paint
                     End If
-
-                    label.Invalidate()
-                    Dim labelItens = getlabelTAG(label)
-                    label.Tag = labelItens(0) & "/" & labelItens(1) & "/" & labelItens(2) & "/" & "Bordered"
-
-                    AddHandler label.Paint, AddressOf Label_Paint
 
                 Catch ex As Exception
 
                 End Try
-
 
             End If
         Next
@@ -506,7 +509,7 @@ Public Class FCNES
                     For Each eq In est.Equipes
                         Dim unidade As New FlowLayoutPanel()
                         unidade.Name = eq.NomeReferencia
-                        unidade.Tag = est.NOME
+                        unidade.Tag = est.CNES
                         unidade.AllowDrop = True
                         unidade.Width = 210
                         unidade.Height = 500
@@ -636,6 +639,8 @@ Public Class FCNES
         End If
 
         addPanelAlteracoes()
+
+        MsgBox(xml.ObterDadosLotacao("41817232835", "2025795", "0000343366"))
 
     End Sub
 
