@@ -214,9 +214,9 @@ Public Class FCNES
             Dim equipe_out = row(2).ToString
             Dim unidade_in = row(3).ToString
             Dim equipe_in = row(4).ToString
-            Dim profissional = row(5).ToString
-            Dim cbo = row(6).ToString
-            Dim cpf = row(7).ToString
+            Dim profissional = row(6).ToString
+            Dim cbo = row(7).ToString
+            Dim cpf = row(5).ToString
 
             equipesCpfList.Add((equipe_in, equipe_out, cpf))
 
@@ -373,24 +373,54 @@ Public Class FCNES
         Next
 
     End Sub
+    'Private Sub moveLabelsFast(equipeDestino As Label, equipeOrigem As Label, cpfProfissional As Button)
+    '    Try
+
+    '        Dim panelSendTo = PanelContainer.Controls.Find(equipeDestino.Tag, True).FirstOrDefault()
+    '        Dim panelOrigin = PanelContainer.Controls.Find(equipeOrigem.Tag, True).FirstOrDefault()
+
+    '        Dim label As Label = DirectCast(panelOrigin.Controls.Find(cpfProfissional.Name, True).FirstOrDefault(), Label)
+
+
+    '        panelOrigin.Controls.Remove(label)
+    '        panelSendTo.Controls.Add(label)
+    '        panelSendTo.Controls.SetChildIndex(label, 1)
+
+    '    Catch ex As Exception
+    '        Debug.Write(ex.Message)
+    '    End Try
+
+    'End Sub
+
     Private Sub moveLabelsFast(equipeDestino As Label, equipeOrigem As Label, cpfProfissional As Button)
         Try
-
+            ' Busca os painéis de origem e destino
             Dim panelSendTo = PanelContainer.Controls.Find(equipeDestino.Tag, True).FirstOrDefault()
             Dim panelOrigin = PanelContainer.Controls.Find(equipeOrigem.Tag, True).FirstOrDefault()
 
-            Dim label As Label = DirectCast(panelOrigin.Controls.Find(cpfProfissional.Name, True).FirstOrDefault(), Label)
+            ' Verifica se os painéis foram encontrados
+            If panelSendTo Is Nothing OrElse panelOrigin Is Nothing Then
+                Throw New Exception("Painel de origem ou destino não encontrado.")
+            End If
 
+            ' Busca o Label pelo nome no painel de origem
+            Dim label As Label = TryCast(panelOrigin.Controls.Find(cpfProfissional.Name, True).FirstOrDefault(), Label)
 
+            ' Verifica se o Label foi encontrado
+            If label Is Nothing Then
+                ' Throw New Exception("Label associado ao CPF do profissional não encontrado no painel de origem.")
+            End If
+
+            ' Move o Label
             panelOrigin.Controls.Remove(label)
             panelSendTo.Controls.Add(label)
             panelSendTo.Controls.SetChildIndex(label, 1)
 
         Catch ex As Exception
-            'Return m.msgError(ex.Message)
+            'm.msgError(ex.Message)
         End Try
-
     End Sub
+
 
     Private Sub deleteAlteracao(sender As Object, e As EventArgs)
         Dim delButton As Button = DirectCast(sender, Button)
@@ -399,16 +429,23 @@ Public Class FCNES
         Dim eqSendTo = panelAlt.Controls.Find("out-" & delButton.Tag, True).FirstOrDefault()
         Dim labelProf As Label = DirectCast(PanelContainer.Controls.Find(delButton.Name, True).FirstOrDefault(), Label)
 
-        If m.msgQuestion("Excluir esta alteração?", "Atenção") Then
+        Try
 
-            m.doQuery($"DELETE FROM servidor_cnes WHERE id_movimento ={delButton.Tag}")
+            If m.msgQuestion("Excluir esta alteração?", "Atenção") Then
 
-            If m.doQuery($"DELETE FROM movimento WHERE id ={delButton.Tag}") Then
-                addPanelAlteracoes()
-                moveLabelsFast(eqSendTo, eqOrigin, delButton)
-                ClearLabelBorders(labelProf)
+                m.doQuery($"DELETE FROM servidor_cnes WHERE id_movimento ={delButton.Tag}")
+
+                If m.doQuery($"DELETE FROM movimento WHERE id ={delButton.Tag}") Then
+
+                    addPanelAlteracoes()
+                    moveLabelsFast(eqSendTo, eqOrigin, delButton)
+                    ClearLabelBorders(labelProf)
+                End If
             End If
-        End If
+
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
 
     End Sub
 
