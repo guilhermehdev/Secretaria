@@ -218,8 +218,6 @@ Public Class FCNES
             Dim cbo = row(7).ToString
             Dim cpf = row(5).ToString
 
-            equipesCpfList.Add((equipe_in, equipe_out, cpf))
-
             ' Cria um novo Panel
             Dim containerPanel As New Panel With {
             .Size = New Size(280, 150),  ' Tamanho do painel
@@ -277,7 +275,7 @@ Public Class FCNES
             imgSetaVermelha.Image.RotateFlip(RotateFlipType.RotateNoneFlipY)
 
             Dim lblUnidadeOut As New Label With {
-                .Text = "Unidade: " & unidade_out & vbCrLf & "Equipe: " & equipe_out,
+                .Text = "Unidade: " & unidade_out & vbCrLf & "Equipe: " & xml.getINEXML(equipe_out),
                 .Location = New Point(27, 55),
                 .AutoSize = False,
                 .Width = 262,
@@ -304,7 +302,7 @@ Public Class FCNES
             imgSetaVerde.Image.RotateFlip(RotateFlipType.RotateNoneFlipY)
 
             Dim lblUnidadeIn As New Label With {
-                .Text = "Unidade: " & unidade_in & vbCrLf & "Equipe: " & equipe_in,
+                .Text = "Unidade: " & unidade_in & vbCrLf & "Equipe: " & xml.getINEXML(equipe_in),
                 .Location = New Point(27, 101),
                 .AutoSize = False,
                 .Width = 262,
@@ -342,7 +340,8 @@ Public Class FCNES
 
                 Try
 
-                    If xml.ObterDadosLotacao(cpf, unidade_in, equipe_in) Then
+                    If xml.ObterDadosLotacao(cpf, unidade_in, equipe_in) = True Then
+
                         Continue For
                     Else
                         FlowLayoutPanelAleracoes.Controls.Add(containerPanel)
@@ -508,7 +507,7 @@ Public Class FCNES
                 If est.Equipes IsNot Nothing Then
                     For Each eq In est.Equipes
                         Dim unidade As New FlowLayoutPanel()
-                        unidade.Name = eq.NomeReferencia
+                        unidade.Name = eq.INE
                         unidade.Tag = est.CNES
                         unidade.AllowDrop = True
                         unidade.Width = 210
@@ -640,7 +639,7 @@ Public Class FCNES
 
         addPanelAlteracoes()
 
-        MsgBox(xml.ObterDadosLotacao("41817232835", "2025795", "0000343366"))
+        'MsgBox(xml.ObterDadosLotacao("41817232835", "2025795", "0000343366"))
 
     End Sub
 

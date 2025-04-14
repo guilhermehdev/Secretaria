@@ -17,6 +17,7 @@ Public Class XML
     Dim XMLCNESfilePath As String = Application.StartupPath & "\XML\CNES.XML"
     Dim XMLOrgaofilePath As String = Application.StartupPath & "\XML\CLASSE.XML"
     Dim XMLEquipesPath As String = Application.StartupPath & "\XML\EQUIPES.XML"
+    Dim XMLINEfilePath As String = Application.StartupPath & "\XML\INE.XML"
     Public Function getCBOXML(ByVal codCBO As String) As String
         xmlDocCBO.Load(XMLCBOfilePath)
 
@@ -36,16 +37,32 @@ Public Class XML
     Public Function getCNESXML(ByVal CNES As String) As String
         xmlDocCBO.Load(XMLCNESfilePath)
 
-        Dim cbo As String = ""
+        Dim res As String = ""
         Dim dataxml As XmlNodeList = xmlDocCBO.GetElementsByTagName("CODIGO")
 
         For i = 0 To dataxml.Count - 1
             If dataxml.Item(i).InnerText = CNES Then
-                cbo = dataxml.Item(i).NextSibling.ChildNodes(0).Value
+                res = dataxml.Item(i).NextSibling.ChildNodes(0).Value
             End If
         Next
 
-        Return cbo
+        Return res
+
+    End Function
+
+    Public Function getINEXML(ByVal INE As String) As String
+        xmlDocCBO.Load(XMLINEfilePath)
+
+        Dim res As String = ""
+        Dim dataxml As XmlNodeList = xmlDocCBO.GetElementsByTagName("CODIGO")
+
+        For i = 0 To dataxml.Count - 1
+            If dataxml.Item(i).InnerText = INE Then
+                res = dataxml.Item(i).NextSibling.ChildNodes(0).Value
+            End If
+        Next
+
+        Return res
 
     End Function
 
@@ -148,7 +165,8 @@ Public Class XML
         Dim comboSource As New Dictionary(Of String, String)()
 
         comboSource.Add("SEM EQUIPE", "SEM EQUIPE")
-        comboSource.Add("EMULTI-(NASF)- INE:343366", "EMULTI-(NASF)- INE:343366")
+        comboSource.Add("EMULTI AMPLIADA- INE:343366", "EMULTI AMPLIADA- INE:343366")
+        comboSource.Add("EMULTI ESTRATEGICA- INE:2450208", "EMULTI ESTRATEGICA- INE:2450208")
         comboSource.Add("EMAD- INE:1988921", "EMAD- INE:1988921")
         comboSource.Add("USAFA CENTRO- INE:2163136", "USAFA CENTRO- INE:2163136")
         comboSource.Add("USAFA CARAGUAVA I- INE:343358", "USAFA CARAGUAVA I- INE:343358")
@@ -158,7 +176,9 @@ Public Class XML
         comboSource.Add("USAFA SANTA ISABEL I- INE:343463", "USAFA SANTA ISABEL I- INE:343463")
         comboSource.Add("USAFA SANTA ISABEL II- INE:1635557", "USAFA SANTA ISABEL II- INE:1635557")
         comboSource.Add("USAFA NOVA ITARIRI- INE:343439", "USAFA NOVA ITARIRI- INE:343439")
-        comboSource.Add("USAFA JD. BRASIL- INE:343455", "USAFA JD. BRASIL- INE:343455")
+        comboSource.Add("USAFA OASIS I- INE:1652575", "USAFA NOVA ITARIRI- INE:1652575")
+        comboSource.Add("USAFA OASIS II- INE:1652583", "USAFA NOVA ITARIRI- INE:1652583")
+        comboSource.Add("USAFA BRUNO COVAS- INE:343455", "USAFA BRUNO COVAS- INE:343455")
         comboSource.Add("USAFA RIBAMAR I- INE:1652575", "USAFA RIBAMAR I- INE:1652575")
         comboSource.Add("USAFA RIBAMAR II- INE:1652583", "USAFA RIBAMAR II- INE:1652583")
         comboSource.Add("USAFA RIBAMAR III- INE:2294702", "USAFA RIBAMAR III- INE:2294702")
@@ -167,8 +187,9 @@ Public Class XML
         comboSource.Add("USAFA TREVO II- INE:343390", "USAFA TREVO II- INE:343390")
         comboSource.Add("USAFA RECREIO SANTISTA- INE:343404", "USAFA RECREIO SANTISTA- INE:343404")
         comboSource.Add("USAFA VILA PERUIBE- INE:343374", "USAFA VILA PERUIBE- INE:343374")
-        comboSource.Add("CARAGUAVA ODONTO- INE:2245825", "CARAGUAVA ODONTO- INE:2245825")
-        comboSource.Add("ODONTO JD BRASIL- INE:2372495", "ODONTO JD BRASIL- INE:2372495")
+        comboSource.Add("CARAGUAVA ODONTO I- INE:2245825", "CARAGUAVA ODONTO- INE:2245825")
+        comboSource.Add("CARAGUAVA ODONTO II- INE:2433478", "CARAGUAVA ODONTO- INE:2245825")
+        comboSource.Add("BRUNO COVAS ODONTO- INE:2372495", "ODONTO JD BRASIL- INE:2372495")
         comboSource.Add("GUARAU ODONTO- INE:2245841", "GUARAU ODONTO- INE:2245841")
         comboSource.Add("VENEZA ODONTO- INE:2245833", "VENEZA ODONTO- INE:2245833")
         comboSource.Add("TREVO ODONTO- INE:2245817", "TREVO ODONTO- INE:2245817")
