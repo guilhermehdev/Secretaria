@@ -597,22 +597,22 @@ Public Class XML
             ' Se for a primeira vez, armazena a data sem comparar
             My.Settings.ultimoHash = ultimaModificacao.ToString("yyyy-MM-dd HH:mm:ss")
             My.Settings.Save()
-            Console.WriteLine("Data inicial salva: " & My.Settings.ultimoHash)
+            Debug.WriteLine("Data inicial salva: " & My.Settings.ultimoHash)
         Else
             ' Tenta converter a string salva para DateTime
             Dim dataSalva As DateTime
             If DateTime.TryParse(My.Settings.ultimoHash, dataSalva) Then
                 If dataSalva <> ultimaModificacao Then
-                    Console.WriteLine("O arquivo foi modificado!")
+                    Debug.WriteLine("O arquivo foi modificado!")
 
                     ' Atualiza e salva a nova data
                     My.Settings.ultimoHash = ultimaModificacao.ToString("yyyy-MM-dd HH:mm:ss")
                     My.Settings.Save()
                 Else
-                    Console.WriteLine("O arquivo não foi modificado.")
+                    Debug.WriteLine("O arquivo não foi modificado.")
                 End If
             Else
-                Console.WriteLine("Erro: Data salva é inválida, resetando valor...")
+                Debug.WriteLine("Erro: Data salva é inválida, resetando valor...")
                 My.Settings.ultimoHash = ultimaModificacao.ToString("yyyy-MM-dd HH:mm:ss")
                 My.Settings.Save()
             End If
@@ -624,18 +624,9 @@ Public Class XML
             End If
 
         Catch ex As Exception
-            Console.Write($"Erro: {ex.Message}")
+            Debug.Write($"Erro: {ex.Message}")
         End Try
     End Sub
-
-    Private Function CalcularHashArquivo(caminhoArquivo As String) As String
-        Using arquivo As New FileStream(caminhoArquivo, FileMode.Open, FileAccess.Read)
-            Using sha256 As SHA256 = sha256.Create()
-                Dim hashBytes As Byte() = sha256.ComputeHash(arquivo)
-                Return BitConverter.ToString(hashBytes).Replace("-", "").ToLower()
-            End Using
-        End Using
-    End Function
 
 End Class
 

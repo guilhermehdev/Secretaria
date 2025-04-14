@@ -134,7 +134,7 @@ Public Class FCNES
     Private Sub InsertLabelContextMenu(sender As Object, e As EventArgs)
         If selectedLabel IsNot Nothing Then
             Dim menuItem = DirectCast(sender, ToolStripMenuItem)
-            Dim destinationContainer = PanelContainer.Controls.Find(menuItem.Text, True).FirstOrDefault()
+            Dim destinationContainer = PanelContainer.Controls.Find(menuItem.Tag, True).FirstOrDefault()
             Dim labelTag = getlabelTAG(selectedLabel)
             Dim border As String = "Borderless"
             Dim containerOrigin = selectedLabel.Parent
@@ -210,9 +210,9 @@ Public Class FCNES
 
         For Each row In alteraData.Rows
             Dim id = row(0).ToString
-            Dim unidade_out = xml.getCNESXML(row(1).ToString)
+            Dim unidade_out = row(1).ToString
             Dim equipe_out = row(2).ToString
-            Dim unidade_in = xml.getCNESXML(row(3).ToString)
+            Dim unidade_in = row(3).ToString
             Dim equipe_in = row(4).ToString
             Dim profissional = row(6).ToString
             Dim cbo = row(7).ToString
@@ -275,7 +275,7 @@ Public Class FCNES
             imgSetaVermelha.Image.RotateFlip(RotateFlipType.RotateNoneFlipY)
 
             Dim lblUnidadeOut As New Label With {
-                .Text = "Unidade: " & unidade_out & vbCrLf & "Equipe: " & xml.getINEXML(equipe_out),
+                .Text = "Unidade: " & xml.getCNESXML(unidade_out) & vbCrLf & "Equipe: " & xml.getINEXML(equipe_out),
                 .Location = New Point(27, 55),
                 .AutoSize = False,
                 .Width = 262,
@@ -301,8 +301,19 @@ Public Class FCNES
             }
             imgSetaVerde.Image.RotateFlip(RotateFlipType.RotateNoneFlipY)
 
+            Dim unidade As String
+
+            If unidade_in = "DESLIGAMENTO DO CNES" And equipe_in = "DESLIGAMENTO DO CNES" Then
+                unidade = "Unidade: DESLIGAMENTO DO CNES" & vbCrLf & "Equipe: DESLIGAMENTO DO CNES"
+            ElseIf equipe_in = "DESLIGAMENTO DA AB" Then
+                unidade = "Unidade: " & unidade_in & vbCrLf & "Equipe: DESLIGAMENTO DA AB"
+            Else
+                unidade = "Unidade: " & xml.getCNESXML(unidade_in) & vbCrLf & "Equipe: " & xml.getINEXML(equipe_in)
+
+            End If
+
             Dim lblUnidadeIn As New Label With {
-                .Text = "Unidade: " & unidade_in & vbCrLf & "Equipe: " & xml.getINEXML(equipe_in),
+                .Text = unidade,
                 .Location = New Point(27, 101),
                 .AutoSize = False,
                 .Width = 262,
@@ -340,14 +351,15 @@ Public Class FCNES
 
                 Try
 
-                    If xml.ObterDadosLotacao(cpf, unidade_in, equipe_in) = True Then
 
+                    If xml.ObterDadosLotacao(cpf, unidade_in, equipe_in) = True Then
+                        m.doQuery("UPDATE movimento SET status=1 WHERE id=" & id)
                         Continue For
                     Else
                         FlowLayoutPanelAleracoes.Controls.Add(containerPanel)
                         Dim label As Label
 
-                        If equipe_in <> "DESLIGAMENTO DA AB" And equipe_in <> "DESLIGAMENTO DO CNES" Then
+                        If equipe_in <> "DESLIGAMENTO DA AB" And equipe_in <> "DESLIGAMENTO Do CNES" Then
                             moveLabelsFast(lblUnidadeIn, lblUnidadeOut, btnDelete)
 
                             Dim flowPanelDestino As FlowLayoutPanel = PanelContainer.Controls.Find(equipe_in, True).FirstOrDefault()
@@ -410,7 +422,7 @@ Public Class FCNES
 
             ' Verifica se o Label foi encontrado
             If label Is Nothing Then
-                ' Throw New Exception("Label associado ao CPF do profissional não encontrado no painel de origem.")
+                ' Throw New Exception("Label associado ao CPF Do profissional não encontrado no painel de origem.")
             End If
 
             ' Move o Label
@@ -427,7 +439,7 @@ Public Class FCNES
     Private Sub deleteAlteracao(sender As Object, e As EventArgs)
         Dim delButton As Button = DirectCast(sender, Button)
         Dim panelAlt = FlowLayoutPanelAleracoes.Controls.Find(delButton.Tag, True).FirstOrDefault()
-        Dim eqOrigin = panelAlt.Controls.Find("in-" & delButton.Tag, True).FirstOrDefault()
+        Dim eqOrigin = panelAlt.Controls.Find("In-" & delButton.Tag, True).FirstOrDefault()
         Dim eqSendTo = panelAlt.Controls.Find("out-" & delButton.Tag, True).FirstOrDefault()
         Dim labelProf As Label = DirectCast(PanelContainer.Controls.Find(delButton.Name, True).FirstOrDefault(), Label)
 
@@ -684,7 +696,7 @@ Public Class FCNES
             .Font = New Font("Segoe UI", 10, FontStyle.Bold),
             .ForeColor = Color.DarkRed
         }
-        Dim DesligamentoCNES As New ToolStripMenuItem("Desligar do CNES") With {
+        Dim DesligamentoCNES As New ToolStripMenuItem("Desligar Do CNES") With {
             .Font = New Font("Segoe UI", 10, FontStyle.Bold),
             .ForeColor = Color.DarkRed
         }
@@ -696,8 +708,9 @@ Public Class FCNES
 
         ' Adiciona as opções dinamicamente com base nos containers disponíveis
         For Each container As FlowLayoutPanel In PanelContainer.Controls
-            Dim item As New ToolStripMenuItem(container.Name)
+            Dim item As New ToolStripMenuItem(xml.getINEXML(container.Name))
             AddHandler item.Click, AddressOf InsertLabelContextMenu
+            item.Tag = container.Name
             menu.Items.Add(item)
         Next
 
@@ -717,9 +730,9 @@ Public Class FCNES
         If selectedLabel IsNot Nothing AndAlso selectedLabel.Parent IsNot Nothing Then
             insertAlteracao(selectedLabel)
             'selectedLabel.Parent.Controls.Remove(selectedLabel)
-            idProf = m.getDataset("SELECT MAX(id) FROM movimento").Rows(0).Item(0)
+            idProf = m.getDataset("Select MAX(id) FROM movimento").Rows(0).Item(0)
             Dim destino As String = InputBox("Para qual unidade o servidor foi destinado?", "")
-            m.SQLGeneric($"UPDATE movimento SET unidade_in='{destino.ToUpper}',equipe_in='DESLIGAMENTO DA AB' WHERE id={idProf}")
+            m.SQLGeneric($"UPDATE movimento Set unidade_in='{destino.ToUpper}',equipe_in='DESLIGAMENTO DA AB' WHERE id={idProf}")
             addPanelAlteracoes()
 
             selectedLabel.Invalidate()
