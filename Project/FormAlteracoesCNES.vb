@@ -7,7 +7,7 @@
         id = dgAlteracoesPendentes.SelectedRows.Item(0).Cells(0).Value
     End Sub
     Private Sub loadAlteracoes()
-        Dim alteracoes = m.getDataset("SELECT * FROM movimento WHERE equipe_out <> 'NOVO CADASTRO' AND status=0 ORDER BY id DESC")
+        Dim alteracoes = m.getDataset("SELECT * FROM movimento WHERE equipe_out <> 'NOVO CADASTRO' AND status=0 AND commited=0 ORDER BY id DESC")
 
         If alteracoes.Rows.Count = 0 Then
             dgAlteracoesPendentes.DataSource = Nothing
@@ -59,7 +59,7 @@
         Me.Close()
     End Sub
     Private Sub btConcluirCadastro_Click(sender As Object, e As EventArgs) Handles btConcluirCadastro.Click
-        If m.doQuery($"UPDATE movimento SET status=1 WHERE id={id}") Then
+        If m.doQuery($"UPDATE movimento SET commited=1 WHERE id={id}") Then
             loadAlteracoes()
             FCNES.addPanelAlteracoes()
         End If
