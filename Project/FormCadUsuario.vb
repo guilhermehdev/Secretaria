@@ -10,8 +10,9 @@ Public Class FormCadUsuario
 
     Private Sub loadUsers()
         cancel()
-        userData = m.loadComboBox("SELECT * FROM usuarios", cbUsuariosCadastrados, "nome", "id")
+        userData = m.loadComboBox("SELECT * FROM usuarios ORDER BY nome", cbUsuariosCadastrados, "nome", "id")
         cbNivelAcesso.SelectedIndex = 0
+        m.loadComboBox("SELECT * FROM usuarios ORDER BY nome", FormLogin.cbUsuarios, "nome", "id")
     End Sub
 
     Private Sub cbUsuariosCadastrados_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbUsuariosCadastrados.SelectionChangeCommitted
