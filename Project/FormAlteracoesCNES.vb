@@ -1,5 +1,6 @@
 ﻿Public Class FormAlteracoesCNES
     Dim m As New Main
+    Dim xml As New XML
     Dim id As Integer
     Private Sub dgCadastrosPendentes_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgAlteracoesPendentes.CellClick
         m.copyDatagridCellValue(dgAlteracoesPendentes, e)
@@ -41,6 +42,13 @@
         ' dgAlteracoesPendentes.Columns(4).Width = 150
 
         dgAlteracoesPendentes.Columns(7).HeaderText = "CBO"
+
+        For Each row In dgAlteracoesPendentes.Rows
+            row.Cells(1).Value = xml.getCNESXML(row.Cells(1).Value.ToString)
+            row.Cells(2).Value = xml.getINEXML(row.Cells(2).Value.ToString)
+            row.Cells(3).Value = xml.getCNESXML(row.Cells(3).Value.ToString)
+            row.Cells(4).Value = xml.getINEXML(row.Cells(4).Value.ToString)
+        Next
 
     End Sub
     Private Sub FormAlteracoesCNES_Load(sender As Object, e As EventArgs) Handles MyBase.Load
