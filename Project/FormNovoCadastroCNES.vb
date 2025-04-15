@@ -30,8 +30,21 @@
         dgCadastrosPendentes.Columns(15).Visible = False
 
     End Sub
+
+    Private Sub loadHistorico()
+        Dim pendentes = m.getDataset("SELECT * FROM servidor_cnes WHERE status=1")
+        dgHistorico.DataSource = pendentes
+
+        dgHistorico.Columns(1).HeaderText = "Nome"
+        dgHistorico.Columns(1).Width = 150
+
+        dgHistorico.Columns(2).HeaderText = "CPF"
+        dgHistorico.Columns(2).Width = 55
+
+    End Sub
     Private Sub FormNovoCadastroCNES_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         loadCadastros()
+        loadHistorico()
     End Sub
 
     Private Sub loadDadosVinculo()
