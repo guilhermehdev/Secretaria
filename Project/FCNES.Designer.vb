@@ -130,13 +130,13 @@ Partial Class FCNES
         'PendentesToolStripMenuItem
         '
         Me.PendentesToolStripMenuItem.Name = "PendentesToolStripMenuItem"
-        Me.PendentesToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.PendentesToolStripMenuItem.Text = "Cadastro"
+        Me.PendentesToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.PendentesToolStripMenuItem.Text = "Cadastros pendentes"
         '
         'AlteraçõesToolStripMenuItem
         '
         Me.AlteraçõesToolStripMenuItem.Name = "AlteraçõesToolStripMenuItem"
-        Me.AlteraçõesToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.AlteraçõesToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
         Me.AlteraçõesToolStripMenuItem.Text = "Alterações"
         '
         'ConfigToolStripMenuItem
