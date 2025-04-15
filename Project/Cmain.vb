@@ -569,6 +569,15 @@ Public Class Main
 
     End Function
 
+    Public Function singleDateFormat(ByVal data As String)
+        Try
+            Return Format(CDate(data), "dd-MM-yyyy")
+        Catch ex As Exception
+            Return Nothing
+        End Try
+
+    End Function
+
     Public Sub gridRowStyle(ByVal datagrid As DataGridView, ByVal background As Color, ByVal font As Color)
 
         Try

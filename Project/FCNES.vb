@@ -274,11 +274,19 @@ Public Class FCNES
             }
             imgSetaVermelha.Image.RotateFlip(RotateFlipType.RotateNoneFlipY)
 
+            Dim unidadeOut As String
+
+            If unidade_out = "NOVO CADASTRO" And equipe_out = "NOVO CADASTRO" Then
+                unidadeOut = "Unidade: NOVO CADASTRO" & vbCrLf & "Equipe: NOVO CADASTRO"
+            Else
+                unidadeOut = "Unidade: " & xml.getCNESXML(unidade_out) & vbCrLf & "Equipe: " & xml.getINEXML(equipe_out)
+            End If
+
             Dim lblUnidadeOut As New Label With {
-                .Text = "Unidade: " & xml.getCNESXML(unidade_out) & vbCrLf & "Equipe: " & xml.getINEXML(equipe_out),
+                .Text = unidadeOut,
                 .Location = New Point(27, 55),
                 .AutoSize = False,
-                .Width = 262,
+                .Width = 255,
                 .Height = 40,
                 .Font = New Font("Calibri", 8, FontStyle.Regular),
                 .Name = "out-" & id,
@@ -301,22 +309,27 @@ Public Class FCNES
             }
             imgSetaVerde.Image.RotateFlip(RotateFlipType.RotateNoneFlipY)
 
-            Dim unidade As String
+            Dim unidadeIn As String
 
             If unidade_in = "DESLIGAMENTO DO CNES" And equipe_in = "DESLIGAMENTO DO CNES" Then
-                unidade = "Unidade: DESLIGAMENTO DO CNES" & vbCrLf & "Equipe: DESLIGAMENTO DO CNES"
+                unidadeIn = "Unidade: DESLIGAMENTO DO CNES" & vbCrLf & "Equipe: DESLIGAMENTO DO CNES"
             ElseIf equipe_in = "DESLIGAMENTO DA AB" Then
-                unidade = "Unidade: " & unidade_in & vbCrLf & "Equipe: DESLIGAMENTO DA AB"
+                unidadeIn = "Unidade: " & unidade_in & vbCrLf & "Equipe: DESLIGAMENTO DA AB"
             Else
-                unidade = "Unidade: " & xml.getCNESXML(unidade_in) & vbCrLf & "Equipe: " & xml.getINEXML(equipe_in)
-
+                Dim eq
+                If IsNumeric(equipe_in) Then
+                    eq = xml.getINEXML(equipe_in)
+                Else
+                    eq = equipe_in
+                End If
+                unidadeIn = "Unidade: " & xml.getCNESXML(unidade_in) & vbCrLf & "Equipe: " & eq
             End If
 
             Dim lblUnidadeIn As New Label With {
-                .Text = unidade,
+                .Text = unidadeIn,
                 .Location = New Point(27, 101),
                 .AutoSize = False,
-                .Width = 262,
+                .Width = 255,
                 .Height = 40,
                 .Font = New Font("Calibri", 8, FontStyle.Regular),
                 .Name = "in-" & id,

@@ -107,7 +107,7 @@ Partial Class FormNovoCadastroCNES
         Me.dgCadastrosPendentes.RowHeadersWidth = 4
         Me.dgCadastrosPendentes.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgCadastrosPendentes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgCadastrosPendentes.Size = New System.Drawing.Size(367, 413)
+        Me.dgCadastrosPendentes.Size = New System.Drawing.Size(367, 384)
         Me.dgCadastrosPendentes.TabIndex = 31
         Me.dgCadastrosPendentes.TabStop = False
         '
@@ -313,7 +313,7 @@ Partial Class FormNovoCadastroCNES
         'btFechar
         '
         Me.btFechar.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btFechar.Location = New System.Drawing.Point(717, 396)
+        Me.btFechar.Location = New System.Drawing.Point(751, 450)
         Me.btFechar.Name = "btFechar"
         Me.btFechar.Size = New System.Drawing.Size(75, 23)
         Me.btFechar.TabIndex = 3
@@ -323,7 +323,7 @@ Partial Class FormNovoCadastroCNES
         'btConcluirCadastro
         '
         Me.btConcluirCadastro.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btConcluirCadastro.Location = New System.Drawing.Point(562, 396)
+        Me.btConcluirCadastro.Location = New System.Drawing.Point(596, 450)
         Me.btConcluirCadastro.Name = "btConcluirCadastro"
         Me.btConcluirCadastro.Size = New System.Drawing.Size(149, 23)
         Me.btConcluirCadastro.TabIndex = 2
@@ -337,19 +337,17 @@ Partial Class FormNovoCadastroCNES
         Me.TabControl1.Location = New System.Drawing.Point(12, 12)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(818, 455)
+        Me.TabControl1.Size = New System.Drawing.Size(818, 432)
         Me.TabControl1.TabIndex = 4
         '
         'TabPage1
         '
         Me.TabPage1.Controls.Add(Me.dgCadastrosPendentes)
-        Me.TabPage1.Controls.Add(Me.btConcluirCadastro)
         Me.TabPage1.Controls.Add(Me.GroupBox2)
-        Me.TabPage1.Controls.Add(Me.btFechar)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(810, 429)
+        Me.TabPage1.Size = New System.Drawing.Size(810, 406)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Cadastros pendentes"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -360,7 +358,7 @@ Partial Class FormNovoCadastroCNES
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(810, 429)
+        Me.TabPage2.Size = New System.Drawing.Size(810, 406)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Histórico"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -404,7 +402,7 @@ Partial Class FormNovoCadastroCNES
         Me.dgHistorico.RowHeadersWidth = 4
         Me.dgHistorico.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgHistorico.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgHistorico.Size = New System.Drawing.Size(798, 413)
+        Me.dgHistorico.Size = New System.Drawing.Size(798, 394)
         Me.dgHistorico.TabIndex = 32
         Me.dgHistorico.TabStop = False
         '
@@ -412,8 +410,10 @@ Partial Class FormNovoCadastroCNES
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(838, 479)
+        Me.ClientSize = New System.Drawing.Size(838, 485)
         Me.Controls.Add(Me.TabControl1)
+        Me.Controls.Add(Me.btConcluirCadastro)
+        Me.Controls.Add(Me.btFechar)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False

@@ -15,7 +15,7 @@
     Private Sub btSalvar_Click(sender As Object, e As EventArgs) Handles btSalvar.Click
         If tbNome.Text <> "" And tbCPF.Text <> "   .   .   -" And (numericAMB.Value > 0 Or NumericHosp.Value > 0 Or NumericOutros.Value > 0) And cbCBO.SelectedIndex >= 0 And cbFormaContrato.SelectedIndex >= 0 And cbDetalhe.SelectedIndex >= 0 And cbUnidade.SelectedIndex >= 0 And cbEquipe.SelectedIndex >= 0 Then
 
-            m.SQLinsert("movimento", "unidade_out,equipe_out,unidade_in, equipe_in, profissional, cbo, cpf", "'NOVO CADASTRO'," & "'NOVO CADASTRO'" & ",'" & xml.getCNESXML(cbUnidade.SelectedValue) & "','" & cbEquipe.SelectedValue & "','" & tbNome.Text.ToUpper & "','" & cbCBO.Text & "','" & tbCPF.Text.Replace(".", "").Replace("-", "") & "'",,,,, True)
+            m.SQLinsert("movimento", "unidade_out,equipe_out,unidade_in, equipe_in, profissional, cbo, cpf", "'NOVO CADASTRO'," & "'NOVO CADASTRO'" & ",'" & cbUnidade.SelectedValue & "','" & cbEquipe.SelectedValue & "','" & tbNome.Text.ToUpper & "','" & cbCBO.Text & "','" & tbCPF.Text.Replace(".", "").Replace("-", "") & "'",,,,, True)
             FCNES.addPanelAlteracoes()
 
             Dim idProf = m.getDataset("SELECT MAX(id) FROM movimento").Rows(0).Item(0)
