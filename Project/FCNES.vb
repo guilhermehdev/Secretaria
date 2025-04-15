@@ -664,8 +664,6 @@ Public Class FCNES
 
         addPanelAlteracoes()
 
-        'MsgBox(xml.ObterDadosLotacao("41817232835", "2025795", "0000343366"))
-
     End Sub
 
     Private Sub Label_Paint(sender As Object, e As PaintEventArgs)
