@@ -27,7 +27,6 @@ Partial Class FCNES
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.PanelContainer = New System.Windows.Forms.FlowLayoutPanel()
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.PlanejamentoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.RelatóriosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -55,7 +54,6 @@ Partial Class FCNES
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TabControl1.Controls.Add(Me.TabPage1)
-        Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Location = New System.Drawing.Point(332, 37)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
@@ -86,16 +84,6 @@ Partial Class FCNES
         Me.PanelContainer.Padding = New System.Windows.Forms.Padding(3)
         Me.PanelContainer.Size = New System.Drawing.Size(908, 515)
         Me.PanelContainer.TabIndex = 0
-        '
-        'TabPage2
-        '
-        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(914, 521)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Unidades"
-        Me.TabPage2.UseVisualStyleBackColor = True
         '
         'MenuStrip1
         '
@@ -249,7 +237,6 @@ Partial Class FCNES
 
     Friend WithEvents TabControl1 As TabControl
     Friend WithEvents TabPage1 As TabPage
-    Friend WithEvents TabPage2 As TabPage
     Friend WithEvents MenuStrip1 As MenuStrip
     Friend WithEvents PlanejamentoToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents PanelContainer As FlowLayoutPanel
