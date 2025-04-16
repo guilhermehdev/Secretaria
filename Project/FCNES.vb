@@ -510,6 +510,7 @@ Public Class FCNES
         Catch ex As Exception
 
         End Try
+
     End Sub
     Private Sub FCNES_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Icon = FplanejCNES.Icon
