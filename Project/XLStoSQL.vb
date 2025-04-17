@@ -136,57 +136,35 @@ Public Class XLStoSQL
                     For row As Integer = 2 To worksheet.Dimension.End.Row
 
                         ' Ler os valores das colunas
-                        Dim dataPasteurizacao As Date = m.mysqlDateFormat(worksheet.Cells(row, 1).Text)
-                        If dataPasteurizacao = "0001-01-01" Then
+                        Dim ano As Integer = worksheet.Cells(row, 2).Text
+
+                        If Not IsNumeric(ano) Then
                             MsgBox("Dados transferidos com sucesso!")
                             Return
                         End If
-                        Dim origem As String = worksheet.Cells(row, 2).Text
-                        Dim doadora As String = worksheet.Cells(row, 3).Text
-                        Dim frasco As String = worksheet.Cells(row, 4).Text
-                        Dim tl As String = worksheet.Cells(row, 5).Text
-                        Dim ordenha As Date = m.mysqlDateFormat(worksheet.Cells(row, 6).Text)
-                        Dim parto As Date = m.mysqlDateFormat(worksheet.Cells(row, 7).Text)
-                        Dim creme1 As Decimal = sanitizeDecimal(worksheet.Cells(row, 8).Text)
-                        Dim creme2 As Decimal = sanitizeDecimal(worksheet.Cells(row, 9).Text)
-                        Dim creme3 As Decimal = sanitizeDecimal(worksheet.Cells(row, 10).Text)
-                        Dim total1 As Decimal = sanitizeDecimal(worksheet.Cells(row, 11).Text)
-                        Dim total2 As Decimal = sanitizeDecimal(worksheet.Cells(row, 12).Text)
-                        Dim total3 As Decimal = sanitizeDecimal(worksheet.Cells(row, 13).Text)
-                        Dim percentCreme As Decimal = sanitizeDecimal(worksheet.Cells(row, 14).Text)
-                        Dim percentGordura As Decimal = sanitizeDecimal(worksheet.Cells(row, 15).Text)
-                        Dim calorias As Decimal = sanitizeDecimal(worksheet.Cells(row, 16).Text)
-                        Dim acidez As Decimal = sanitizeDecimal(worksheet.Cells(row, 17).Text)
-                        Dim bgbl As String = worksheet.Cells(row, 18).Text
-                        Dim ml As Decimal = sanitizeDecimal(worksheet.Cells(row, 19).Text)
-                        Dim dataDistrib As Date = m.mysqlDateFormat(worksheet.Cells(row, 20).Text)
-                        Dim destino As String = worksheet.Cells(row, 21).Text
 
-                        Dim query As String = "INSERT INTO blh_procesamento (dataPasteurizacao, origem, doadora, frasco, tl, ordenha, parto, creme1, creme2, creme3, total1, total2, total3, percentCreme, percentGordura, calorias, acidez, bgbl, ml, dataDistrib, destino) VALUES (@dataPasteurizacao, @origem, @doadora, @frasco, @tl, @ordenha, @parto, @creme1, @creme2, @creme3, @total1, @total2, @total3, @percentCreme, @percentGordura, @calorias, @acidez, @bgbl, @ml, @dataDistrib, @destino)"
+                        Dim doadora As String = worksheet.Cells(row, 3).Text
+                        Dim parto As Date = m.mysqlDateFormat(worksheet.Cells(row, 4).Text)
+                        Dim origem As String = worksheet.Cells(row, 5).Text
+                        Dim cadastro As Date = m.mysqlDateFormat(worksheet.Cells(row, 6).Text)
+                        Dim obs As String = worksheet.Cells(row, 7).Text
+                        Dim sorologia As Date = m.mysqlDateFormat(worksheet.Cells(row, 8).Text)
+                        Dim vencimento As Date = m.mysqlDateFormat(worksheet.Cells(row, 9).Text)
+                        Dim status As String = worksheet.Cells(row, 10).Text
+
+                        Dim query As String = "INSERT INTO blh_cadastro (ano, nome, parto, origem, data_cadastro, obs, sorologia, vencimento_exames, status) VALUES (@ano, @nome, @parto, @origem, @data_cadastro, @obs, @sorologia, @vencimento_exames, @status)"
 
                         Using command As New MySqlCommand(query, connection)
                             ' Substituir parâmetros
-                            command.Parameters.AddWithValue("@dataPasteurizacao", dataPasteurizacao)
-                            command.Parameters.AddWithValue("@origem", origem)
-                            command.Parameters.AddWithValue("@doadora", doadora)
-                            command.Parameters.AddWithValue("@frasco", frasco)
-                            command.Parameters.AddWithValue("@tl", tl)
-                            command.Parameters.AddWithValue("@ordenha", ordenha)
+                            command.Parameters.AddWithValue("@ano", ano)
+                            command.Parameters.AddWithValue("@nome", doadora)
                             command.Parameters.AddWithValue("@parto", parto)
-                            command.Parameters.AddWithValue("@creme1", creme1)
-                            command.Parameters.AddWithValue("@creme2", creme2)
-                            command.Parameters.AddWithValue("@creme3", creme3)
-                            command.Parameters.AddWithValue("@total1", total1)
-                            command.Parameters.AddWithValue("@total2", total2)
-                            command.Parameters.AddWithValue("@total3", total3)
-                            command.Parameters.AddWithValue("@percentCreme", percentCreme)
-                            command.Parameters.AddWithValue("@percentGordura", percentGordura)
-                            command.Parameters.AddWithValue("@calorias", calorias)
-                            command.Parameters.AddWithValue("@acidez", acidez)
-                            command.Parameters.AddWithValue("@bgbl", bgbl)
-                            command.Parameters.AddWithValue("@ml", ml)
-                            command.Parameters.AddWithValue("@dataDistrib", dataDistrib)
-                            command.Parameters.AddWithValue("@destino", destino)
+                            command.Parameters.AddWithValue("@origem", origem)
+                            command.Parameters.AddWithValue("@data_cadastro", cadastro)
+                            command.Parameters.AddWithValue("@obs", obs)
+                            command.Parameters.AddWithValue("@sorologia", sorologia)
+                            command.Parameters.AddWithValue("@vencimento_exames", vencimento)
+                            command.Parameters.AddWithValue("@status", status)
 
                             ' Executar a query
                             command.ExecuteNonQuery()
