@@ -36,6 +36,7 @@ Partial Class FormMainBLH
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Button3 = New System.Windows.Forms.Button()
+        Me.Button4 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'c1
@@ -152,11 +153,21 @@ Partial Class FormMainBLH
         Me.Button3.Text = "Import Cadastro"
         Me.Button3.UseVisualStyleBackColor = True
         '
+        'Button4
+        '
+        Me.Button4.Location = New System.Drawing.Point(288, 12)
+        Me.Button4.Name = "Button4"
+        Me.Button4.Size = New System.Drawing.Size(159, 23)
+        Me.Button4.TabIndex = 14
+        Me.Button4.Text = "Gerar Rotulos PDF"
+        Me.Button4.UseVisualStyleBackColor = True
+        '
         'FormMainBLH
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.Button4)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.Label4)
@@ -193,4 +204,5 @@ Partial Class FormMainBLH
     Friend WithEvents Label4 As Label
     Friend WithEvents Label5 As Label
     Friend WithEvents Button3 As Button
+    Friend WithEvents Button4 As Button
 End Class
