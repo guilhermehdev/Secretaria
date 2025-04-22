@@ -36,56 +36,7 @@ Public Class FormMainBLH
 
     End Function
 
-    'Public Sub GerarPDFComiTextSharp(dataTable As DataTable)
-    '    Dim filePath As String = Application.StartupPath & "\PDF\Rotulos.pdf"
-
-    '    ' Criação do documento PDF
-    '    Dim documento As New Document(PageSize.A4, 36, 36, 36, 36)
-    '    Dim writer As PdfWriter = PdfWriter.GetInstance(documento, New FileStream(filePath, FileMode.Create))
-
-    '    ' Abre o documento para escrita
-    '    documento.Open()
-
-    '    ' Cria uma tabela de duas colunas
-    '    Dim tabela As New PdfPTable(2)
-    '    tabela.WidthPercentage = 100
-    '    tabela.SetWidths(New Single() {50, 50}) ' Define a largura proporcional das colunas
-
-    '    ' Itera sobre as linhas do DataTable
-    '    For Each linha As DataRow In dataTable.Rows
-    '        ' Prepara os dados como uma célula de tabela
-    '        Dim dados As String = $"Doadora: {linha("doadora")}" & vbCrLf &
-    '                          $"Data ordenha: {linha("ordenha")}" & vbCrLf &
-    '                          $"Data parto: {linha("parto")}" & vbCrLf &
-    '                          $"Tipo de leite: C" & vbCrLf &
-    '                          $"Vol: 200 ml" & vbCrLf &
-    '                          $"Gordura (%): {linha("gordura")}" & vbCrLf &
-    '                          $"Kcal: {linha("caloria")}" & vbCrLf &
-    '                          $"Acidez (°D): {linha("acidez")}" & vbCrLf &
-    '                          $"BGBL: {linha("bgbl")}" & vbCrLf &
-    '                          $"Data pasteurização: {linha("pasteurizacao")}" & vbCrLf &
-    '                          $"Validade: 6 meses a partir da data da pasteurização" & vbCrLf &
-    '                          $"Armazenamento: congelado, no máximo -4°C"
-
-    '        ' Cria a célula da tabela
-    '        Dim cell As New PdfPCell(New Phrase(dados, FontFactory.GetFont(FontFactory.HELVETICA, 10)))
-    '        cell.Padding = 10
-    '        cell.Border = Rectangle.NO_BORDER
-    '        cell.VerticalAlignment = Element.ALIGN_TOP
-
-    '        ' Adiciona a célula à tabela
-    '        tabela.AddCell(cell)
-    '    Next
-
-    '    ' Adiciona a tabela ao documento
-    '    documento.Add(tabela)
-
-    '    ' Fecha o documento
-    '    documento.Close()
-    '    Console.WriteLine("PDF gerado com sucesso em: " & filePath)
-    'End Sub
-
-    Public Sub GerarPDFComiTextSharp(dataTable As DataTable)
+    Public Sub rotulosPDF(dataTable As DataTable)
         Dim filePath As String = Application.StartupPath & "\PDF\Rotulos.pdf"
 
         ' Criação do documento PDF
@@ -138,7 +89,11 @@ Public Class FormMainBLH
         Console.WriteLine("PDF gerado com sucesso em: " & filePath)
     End Sub
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
-        GerarPDFComiTextSharp(getProcessamento())
+        rotulosPDF(getProcessamento())
+    End Sub
+
+    Private Sub DoadorasToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DoadorasToolStripMenuItem.Click
+        FormBLHCadastroDoadoras.Show()
     End Sub
 
 End Class

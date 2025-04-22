@@ -27,10 +27,10 @@ Partial Class Fstart
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.CadastroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UsuárioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btBLH = New System.Windows.Forms.Button()
         Me.btCNES = New System.Windows.Forms.Button()
         Me.btRecepcao = New System.Windows.Forms.Button()
         Me.btOuvidoria = New System.Windows.Forms.Button()
-        Me.btBLH = New System.Windows.Forms.Button()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -43,7 +43,7 @@ Partial Class Fstart
         Me.btSair.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Firebrick
         Me.btSair.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btSair.ForeColor = System.Drawing.Color.Gainsboro
-        Me.btSair.Location = New System.Drawing.Point(230, 163)
+        Me.btSair.Location = New System.Drawing.Point(155, 159)
         Me.btSair.Name = "btSair"
         Me.btSair.Size = New System.Drawing.Size(37, 23)
         Me.btSair.TabIndex = 3
@@ -56,7 +56,7 @@ Partial Class Fstart
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CadastroToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(277, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(205, 24)
         Me.MenuStrip1.TabIndex = 5
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -79,6 +79,27 @@ Partial Class Fstart
         Me.UsuárioToolStripMenuItem.Size = New System.Drawing.Size(121, 22)
         Me.UsuárioToolStripMenuItem.Text = "Usuários"
         '
+        'btBLH
+        '
+        Me.btBLH.BackColor = System.Drawing.Color.DodgerBlue
+        Me.btBLH.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
+        Me.btBLH.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btBLH.FlatAppearance.BorderColor = System.Drawing.Color.RoyalBlue
+        Me.btBLH.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DeepSkyBlue
+        Me.btBLH.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
+        Me.btBLH.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btBLH.Font = New System.Drawing.Font("Calibri", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btBLH.ForeColor = System.Drawing.Color.Yellow
+        Me.btBLH.Image = Global.Project.My.Resources.Resources.blh
+        Me.btBLH.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btBLH.Location = New System.Drawing.Point(12, 98)
+        Me.btBLH.Name = "btBLH"
+        Me.btBLH.Size = New System.Drawing.Size(87, 55)
+        Me.btBLH.TabIndex = 6
+        Me.btBLH.Text = "Banco de Leite"
+        Me.btBLH.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btBLH.UseVisualStyleBackColor = False
+        '
         'btCNES
         '
         Me.btCNES.BackColor = System.Drawing.Color.DodgerBlue
@@ -87,13 +108,13 @@ Partial Class Fstart
         Me.btCNES.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DeepSkyBlue
         Me.btCNES.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
         Me.btCNES.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btCNES.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btCNES.Font = New System.Drawing.Font("Calibri", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btCNES.ForeColor = System.Drawing.Color.Yellow
         Me.btCNES.Image = CType(resources.GetObject("btCNES.Image"), System.Drawing.Image)
         Me.btCNES.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btCNES.Location = New System.Drawing.Point(186, 30)
+        Me.btCNES.Location = New System.Drawing.Point(105, 98)
         Me.btCNES.Name = "btCNES"
-        Me.btCNES.Size = New System.Drawing.Size(81, 55)
+        Me.btCNES.Size = New System.Drawing.Size(87, 55)
         Me.btCNES.TabIndex = 4
         Me.btCNES.Text = "CNES"
         Me.btCNES.TextAlign = System.Drawing.ContentAlignment.BottomCenter
@@ -107,13 +128,13 @@ Partial Class Fstart
         Me.btRecepcao.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DeepSkyBlue
         Me.btRecepcao.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
         Me.btRecepcao.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btRecepcao.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btRecepcao.Font = New System.Drawing.Font("Calibri", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btRecepcao.ForeColor = System.Drawing.Color.Yellow
         Me.btRecepcao.Image = CType(resources.GetObject("btRecepcao.Image"), System.Drawing.Image)
         Me.btRecepcao.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btRecepcao.Location = New System.Drawing.Point(99, 30)
+        Me.btRecepcao.Location = New System.Drawing.Point(105, 37)
         Me.btRecepcao.Name = "btRecepcao"
-        Me.btRecepcao.Size = New System.Drawing.Size(81, 55)
+        Me.btRecepcao.Size = New System.Drawing.Size(87, 55)
         Me.btRecepcao.TabIndex = 2
         Me.btRecepcao.Text = "EMTU"
         Me.btRecepcao.TextAlign = System.Drawing.ContentAlignment.BottomCenter
@@ -128,44 +149,24 @@ Partial Class Fstart
         Me.btOuvidoria.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DeepSkyBlue
         Me.btOuvidoria.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
         Me.btOuvidoria.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btOuvidoria.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btOuvidoria.Font = New System.Drawing.Font("Calibri", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btOuvidoria.ForeColor = System.Drawing.Color.Yellow
         Me.btOuvidoria.Image = CType(resources.GetObject("btOuvidoria.Image"), System.Drawing.Image)
         Me.btOuvidoria.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btOuvidoria.Location = New System.Drawing.Point(12, 30)
+        Me.btOuvidoria.Location = New System.Drawing.Point(12, 37)
         Me.btOuvidoria.Name = "btOuvidoria"
-        Me.btOuvidoria.Size = New System.Drawing.Size(81, 55)
+        Me.btOuvidoria.Size = New System.Drawing.Size(87, 55)
         Me.btOuvidoria.TabIndex = 1
         Me.btOuvidoria.Text = "Ouvidoria"
         Me.btOuvidoria.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btOuvidoria.UseVisualStyleBackColor = False
-        '
-        'btBLH
-        '
-        Me.btBLH.BackColor = System.Drawing.Color.DodgerBlue
-        Me.btBLH.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.btBLH.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btBLH.FlatAppearance.BorderColor = System.Drawing.Color.RoyalBlue
-        Me.btBLH.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DeepSkyBlue
-        Me.btBLH.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
-        Me.btBLH.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btBLH.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btBLH.ForeColor = System.Drawing.Color.Yellow
-        Me.btBLH.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btBLH.Location = New System.Drawing.Point(12, 91)
-        Me.btBLH.Name = "btBLH"
-        Me.btBLH.Size = New System.Drawing.Size(81, 55)
-        Me.btBLH.TabIndex = 6
-        Me.btBLH.Text = "Banco de Leite"
-        Me.btBLH.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btBLH.UseVisualStyleBackColor = False
         '
         'Fstart
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(277, 198)
+        Me.ClientSize = New System.Drawing.Size(205, 191)
         Me.Controls.Add(Me.btBLH)
         Me.Controls.Add(Me.btCNES)
         Me.Controls.Add(Me.btSair)

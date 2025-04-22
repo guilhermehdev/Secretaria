@@ -22,6 +22,7 @@ Partial Class FormMainBLH
     'Não o modifique usando o editor de códigos.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormMainBLH))
         Me.c1 = New System.Windows.Forms.TextBox()
         Me.c3 = New System.Windows.Forms.TextBox()
         Me.c2 = New System.Windows.Forms.TextBox()
@@ -37,6 +38,11 @@ Partial Class FormMainBLH
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.Button4 = New System.Windows.Forms.Button()
+        Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
+        Me.CadastroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DoadorasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ProcessamentoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'c1
@@ -98,7 +104,7 @@ Partial Class FormMainBLH
         '
         'Button2
         '
-        Me.Button2.Location = New System.Drawing.Point(12, 12)
+        Me.Button2.Location = New System.Drawing.Point(303, 306)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(132, 23)
         Me.Button2.TabIndex = 7
@@ -146,7 +152,7 @@ Partial Class FormMainBLH
         '
         'Button3
         '
-        Me.Button3.Location = New System.Drawing.Point(150, 12)
+        Me.Button3.Location = New System.Drawing.Point(441, 306)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(132, 23)
         Me.Button3.TabIndex = 13
@@ -155,12 +161,40 @@ Partial Class FormMainBLH
         '
         'Button4
         '
-        Me.Button4.Location = New System.Drawing.Point(288, 12)
+        Me.Button4.Location = New System.Drawing.Point(579, 306)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(159, 23)
         Me.Button4.TabIndex = 14
         Me.Button4.Text = "Gerar Rotulos PDF"
         Me.Button4.UseVisualStyleBackColor = True
+        '
+        'MenuStrip1
+        '
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CadastroToolStripMenuItem})
+        Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
+        Me.MenuStrip1.Name = "MenuStrip1"
+        Me.MenuStrip1.Size = New System.Drawing.Size(800, 24)
+        Me.MenuStrip1.TabIndex = 15
+        Me.MenuStrip1.Text = "MenuStrip1"
+        '
+        'CadastroToolStripMenuItem
+        '
+        Me.CadastroToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DoadorasToolStripMenuItem, Me.ProcessamentoToolStripMenuItem})
+        Me.CadastroToolStripMenuItem.Name = "CadastroToolStripMenuItem"
+        Me.CadastroToolStripMenuItem.Size = New System.Drawing.Size(66, 20)
+        Me.CadastroToolStripMenuItem.Text = "Cadastro"
+        '
+        'DoadorasToolStripMenuItem
+        '
+        Me.DoadorasToolStripMenuItem.Name = "DoadorasToolStripMenuItem"
+        Me.DoadorasToolStripMenuItem.Size = New System.Drawing.Size(155, 22)
+        Me.DoadorasToolStripMenuItem.Text = "Doadoras"
+        '
+        'ProcessamentoToolStripMenuItem
+        '
+        Me.ProcessamentoToolStripMenuItem.Name = "ProcessamentoToolStripMenuItem"
+        Me.ProcessamentoToolStripMenuItem.Size = New System.Drawing.Size(155, 22)
+        Me.ProcessamentoToolStripMenuItem.Text = "Processamento"
         '
         'FormMainBLH
         '
@@ -182,9 +216,14 @@ Partial Class FormMainBLH
         Me.Controls.Add(Me.c2)
         Me.Controls.Add(Me.c3)
         Me.Controls.Add(Me.c1)
+        Me.Controls.Add(Me.MenuStrip1)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.MainMenuStrip = Me.MenuStrip1
         Me.Name = "FormMainBLH"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "FormMainBLH"
+        Me.MenuStrip1.ResumeLayout(False)
+        Me.MenuStrip1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -205,4 +244,8 @@ Partial Class FormMainBLH
     Friend WithEvents Label5 As Label
     Friend WithEvents Button3 As Button
     Friend WithEvents Button4 As Button
+    Friend WithEvents MenuStrip1 As MenuStrip
+    Friend WithEvents CadastroToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents DoadorasToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ProcessamentoToolStripMenuItem As ToolStripMenuItem
 End Class

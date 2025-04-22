@@ -69,9 +69,9 @@ Partial Class FplanejCNES
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.ConfiguraçõesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ImportarPDFToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.UploadPDFParaServidorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.FecharToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
-        Me.UploadPDFParaServidorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.TabControl.SuspendLayout()
@@ -558,6 +558,12 @@ Partial Class FplanejCNES
         Me.ImportarPDFToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
         Me.ImportarPDFToolStripMenuItem.Text = "Importar PDF"
         '
+        'UploadPDFParaServidorToolStripMenuItem
+        '
+        Me.UploadPDFParaServidorToolStripMenuItem.Name = "UploadPDFParaServidorToolStripMenuItem"
+        Me.UploadPDFParaServidorToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
+        Me.UploadPDFParaServidorToolStripMenuItem.Text = "Upload PDF para servidor"
+        '
         'FecharToolStripMenuItem
         '
         Me.FecharToolStripMenuItem.Name = "FecharToolStripMenuItem"
@@ -567,12 +573,6 @@ Partial Class FplanejCNES
         'OpenFileDialog1
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
-        '
-        'UploadPDFParaServidorToolStripMenuItem
-        '
-        Me.UploadPDFParaServidorToolStripMenuItem.Name = "UploadPDFParaServidorToolStripMenuItem"
-        Me.UploadPDFParaServidorToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
-        Me.UploadPDFParaServidorToolStripMenuItem.Text = "Upload PDF para servidor"
         '
         'FplanejCNES
         '
