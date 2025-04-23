@@ -9,11 +9,15 @@
         End If
     End Sub
 
-    Private Sub loadDoadoras(datagrid As DataGridView)
-        m.loadDataGrid("SELECT id, nome, parto, origem, data_cadastro, obs, sorologia, vencimento_exames, status FROM blh_cadastro", datagrid, {False, True, True, False, False, False, False, False, False}, {"id", "Nome", "Parto", "", "", "", "", "", ""}, {0, 240, 70, 0, 0, 0, 0, 0, 0})
+    Private Sub loadDoadoras(datagrid As DataGridView, Optional where As String = "")
+        m.loadDataGrid($"SELECT id, nome, parto, origem, data_cadastro, obs, sorologia, vencimento_exames, status FROM blh_cadastro {where}", datagrid, {False, True, True, False, False, False, False, False, False}, {"id", "Nome", "Parto", "", "", "", "", "", ""}, {0, 240, 74, 0, 0, 0, 0, 0, 0})
+        ToolStripStatusLabel1.Text = "Total de doadoras: " & datagrid.Rows.Count
     End Sub
     Private Sub FormBLHCadastroDoadoras_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         loadDoadoras(dgDoadoras)
+    End Sub
+    Private Sub tbBusca_TextChanged(sender As Object, e As EventArgs) Handles tbBusca.TextChanged
+
     End Sub
 
 End Class

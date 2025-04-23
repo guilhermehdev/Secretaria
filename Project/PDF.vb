@@ -3,6 +3,7 @@ Imports System.Text.RegularExpressions
 Imports iTextSharp.text.pdf
 Imports iTextSharp.text.pdf.parser
 Imports System.Data
+Imports System.IO
 
 Public Class PDF
     Dim pdfPath As String = Application.StartupPath & "/PDF/PROFISSIONAIS.pdf"
@@ -363,7 +364,5 @@ Public Class PDF
 
     End Function
     '--------------------------------------------------------------------------------------------------
-
-
 
 End Class

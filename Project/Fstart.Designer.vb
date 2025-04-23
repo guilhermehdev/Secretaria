@@ -31,6 +31,7 @@ Partial Class Fstart
         Me.btCNES = New System.Windows.Forms.Button()
         Me.btRecepcao = New System.Windows.Forms.Button()
         Me.btOuvidoria = New System.Windows.Forms.Button()
+        Me.btAME = New System.Windows.Forms.Button()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -43,7 +44,7 @@ Partial Class Fstart
         Me.btSair.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Firebrick
         Me.btSair.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btSair.ForeColor = System.Drawing.Color.Gainsboro
-        Me.btSair.Location = New System.Drawing.Point(155, 159)
+        Me.btSair.Location = New System.Drawing.Point(248, 130)
         Me.btSair.Name = "btSair"
         Me.btSair.Size = New System.Drawing.Size(37, 23)
         Me.btSair.TabIndex = 3
@@ -56,7 +57,7 @@ Partial Class Fstart
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CadastroToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(205, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(298, 24)
         Me.MenuStrip1.TabIndex = 5
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -161,12 +162,32 @@ Partial Class Fstart
         Me.btOuvidoria.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btOuvidoria.UseVisualStyleBackColor = False
         '
+        'btAME
+        '
+        Me.btAME.BackColor = System.Drawing.Color.DodgerBlue
+        Me.btAME.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btAME.FlatAppearance.BorderColor = System.Drawing.Color.RoyalBlue
+        Me.btAME.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DeepSkyBlue
+        Me.btAME.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
+        Me.btAME.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btAME.Font = New System.Drawing.Font("Calibri", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btAME.ForeColor = System.Drawing.Color.Yellow
+        Me.btAME.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btAME.Location = New System.Drawing.Point(198, 37)
+        Me.btAME.Name = "btAME"
+        Me.btAME.Size = New System.Drawing.Size(87, 55)
+        Me.btAME.TabIndex = 7
+        Me.btAME.Text = "AME"
+        Me.btAME.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btAME.UseVisualStyleBackColor = False
+        '
         'Fstart
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(205, 191)
+        Me.ClientSize = New System.Drawing.Size(298, 170)
+        Me.Controls.Add(Me.btAME)
         Me.Controls.Add(Me.btBLH)
         Me.Controls.Add(Me.btCNES)
         Me.Controls.Add(Me.btSair)
@@ -195,4 +216,5 @@ Partial Class Fstart
     Friend WithEvents UsuárioToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents btRecepcao As Button
     Friend WithEvents btBLH As Button
+    Friend WithEvents btAME As Button
 End Class

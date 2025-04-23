@@ -6,6 +6,8 @@ Imports System.Xml.Linq
 Imports ServiceStack
 Imports System.Linq
 Imports System.Security.Cryptography
+Imports System.Security
+
 
 
 Public Class XML
@@ -541,85 +543,165 @@ Public Class XML
         End Try
     End Function
 
-
     Public Sub copyXMLFileFromServer()
-        Dim equipesFile = Nothing
         Try
-            If My.Settings.server = "" Then
+            ' Verificar se o servidor foi configurado
+            If String.IsNullOrWhiteSpace(My.Settings.server) Then
                 FConnSettings.ShowDialog()
                 Exit Sub
             End If
 
-            If Not Directory.Exists(Application.StartupPath & "\XML") Or Not File.Exists(Application.StartupPath & "\XML\EQUIPES.xml") Then
-                Directory.CreateDirectory(Application.StartupPath & "\XML")
+            Dim xmlDirectory As String = Path.Combine(Application.StartupPath, "XML")
+            Dim destino As String = Path.Combine(xmlDirectory, "EQUIPES.xml")
+            Dim origem As String = $"http://{My.Settings.server}/Secretaria/CNES/EQUIPES.xml"
 
-                Dim origem As String = $"http://{My.Settings.server}/Secretaria/CNES/EQUIPES.xml"
-                Dim destino As String = Application.StartupPath & "\XML\EQUIPES.xml" ' Caminho de destino no cliente
-                ' Verificar se o arquivo existe no servidor HTTP
-                Dim request As HttpWebRequest = CType(WebRequest.Create(origem), HttpWebRequest)
-                request.Method = "HEAD"
-
-                Using response As HttpWebResponse = CType(request.GetResponse(), HttpWebResponse)
-                    If response.StatusCode = HttpStatusCode.OK Then
-                        Dim clienteWeb As New WebClient()
-                        clienteWeb.DownloadFile(origem, destino)
-                        MsgBox("Atualizando arquivo de equipes...")
-                        Dim ultimaModificacao As DateTime = ObterUltimaModificacaoHTTP(origem)
-                        My.Settings.ultimoHash = ultimaModificacao
-                    Else
-                        MsgBox("Arquivo não encontrado no servidor.")
-                    End If
-                End Using
-
+            ' Criar diretório se não existir
+            If Not Directory.Exists(xmlDirectory) Then
+                Directory.CreateDirectory(xmlDirectory)
             End If
 
+            ' Verificar se o arquivo existe no servidor HTTP
+            Dim request As HttpWebRequest = CType(WebRequest.Create(origem), HttpWebRequest)
+            request.Method = "HEAD"
+
+            Using response As HttpWebResponse = CType(request.GetResponse(), HttpWebResponse)
+                If response.StatusCode = HttpStatusCode.OK Then
+                    ' Fazer download do arquivo
+                    Dim clienteWeb As New WebClient()
+                    clienteWeb.DownloadFile(origem, destino)
+                    ' MsgBox("Atualizando arquivo de equipes...")
+
+                    ' Atualizar o hash da última modificação
+                    Dim ultimaModificacao As DateTime = DateTime.Parse(response.Headers("Last-Modified"))
+                    My.Settings.ultimoHash = ultimaModificacao
+                    My.Settings.Save()
+                Else
+                    MsgBox($"Arquivo não encontrado no servidor. Código: {response.StatusCode}")
+                End If
+            End Using
+        Catch ex As WebException
+            MessageBox.Show($"Erro de rede ao acessar o servidor: {ex.Message}")
         Catch ex As Exception
-            MessageBox.Show("Erro ao copiar arquivo: " & ex.Message)
+            MessageBox.Show($"Erro ao copiar arquivo: {ex.Message}")
         End Try
     End Sub
 
+
+    'Public Sub copyXMLFileFromServer()
+    '    Dim equipesFile = Nothing
+    '    Try
+    '        If My.Settings.server = "" Then
+    '            FConnSettings.ShowDialog()
+    '            Exit Sub
+    '        End If
+
+    '        If Not Directory.Exists(Application.StartupPath & "\XML") Or Not File.Exists(Application.StartupPath & "\XML\EQUIPES.xml") Then
+    '            Directory.CreateDirectory(Application.StartupPath & "\XML")
+
+    '            Dim origem As String = $"http://{My.Settings.server}/Secretaria/CNES/EQUIPES.xml"
+    '            Dim destino As String = Application.StartupPath & "\XML\EQUIPES.xml" ' Caminho de destino no cliente
+    '            ' Verificar se o arquivo existe no servidor HTTP
+    '            Dim request As HttpWebRequest = CType(WebRequest.Create(origem), HttpWebRequest)
+    '            request.Method = "HEAD"
+
+    '            Using response As HttpWebResponse = CType(request.GetResponse(), HttpWebResponse)
+    '                MsgBox(response)
+    '                If response.StatusCode = HttpStatusCode.OK Then
+    '                    Dim clienteWeb As New WebClient()
+    '                    clienteWeb.DownloadFile(origem, destino)
+    '                    MsgBox("Atualizando arquivo de equipes...")
+    '                    Dim ultimaModificacao As DateTime = ObterUltimaModificacaoHTTP(origem)
+    '                    My.Settings.ultimoHash = ultimaModificacao
+    '                Else
+    '                    MsgBox("Arquivo não encontrado no servidor.")
+    '                End If
+    '            End Using
+
+    '        End If
+
+    '    Catch ex As Exception
+    '        MessageBox.Show("Erro ao copiar arquivo: " & ex.Message)
+    '    End Try
+    'End Sub
+
     Function ObterUltimaModificacaoHTTP(url As String) As DateTime
-    Dim request As HttpWebRequest = CType(WebRequest.Create(url), HttpWebRequest)
-    request.Method = "HEAD"
+        Dim request As HttpWebRequest = CType(WebRequest.Create(url), HttpWebRequest)
+        request.Method = "HEAD"
 
         Using response As HttpWebResponse = CType(request.GetResponse(), HttpWebResponse)
             Return DateTime.Parse(response.Headers("Last-Modified"))
         End Using
 
     End Function
+    Function ObterUltimaModificacaoLocal(caminhoArquivo As String) As DateTime
+        Dim fileInfo As New FileInfo(caminhoArquivo)
+        If fileInfo.Exists Then
+            Return fileInfo.LastWriteTime
+        Else
+            Throw New FileNotFoundException($"O arquivo '{caminhoArquivo}' não foi encontrado.")
+        End If
+    End Function
+
+    Function ObterHashHTTP(url As String) As String
+        Try
+            ' Fazer download do arquivo para um fluxo de memória
+            Dim clienteWeb As New WebClient()
+            Using stream As Stream = clienteWeb.OpenRead(url)
+                If stream IsNot Nothing Then
+                    ' Calcular o hash do conteúdo do arquivo
+                    Using md5 As MD5 = MD5.Create()
+                        Dim hashBytes As Byte() = md5.ComputeHash(stream)
+                        ' Converter o hash em uma string hexadecimal
+                        Return BitConverter.ToString(hashBytes).Replace("-", "").ToLower()
+                    End Using
+                End If
+            End Using
+        Catch ex As WebException
+            Throw New Exception($"Erro ao acessar o servidor: {ex.Message}")
+        End Try
+
+        Return Nothing ' Retorna Nothing se algo falhar
+    End Function
+
+    Function ObterHashLocal(caminhoArquivo As String) As String
+        ' Verificar se o caminho do arquivo é válido
+        If String.IsNullOrWhiteSpace(caminhoArquivo) Then
+            Throw New ArgumentException("O caminho do arquivo não pode ser nulo ou vazio.")
+        End If
+
+        ' Verificar se o arquivo existe
+        Dim fileInfo As New FileInfo(caminhoArquivo)
+        If Not fileInfo.Exists Then
+            Throw New FileNotFoundException($"O arquivo '{caminhoArquivo}' não foi encontrado.")
+        End If
+
+        ' Calcular o hash do arquivo
+        Using stream As FileStream = fileInfo.OpenRead()
+            Using md5 As MD5 = MD5.Create()
+                Dim hashBytes As Byte() = md5.ComputeHash(stream)
+                ' Converter o hash em uma string hexadecimal
+                Return BitConverter.ToString(hashBytes).Replace("-", "").ToLower()
+            End Using
+        End Using
+    End Function
 
     Public Sub verificarAlteracao()
         Dim origem As String = $"http://{My.Settings.server}/Secretaria/CNES/EQUIPES.xml"
-        Dim ultimaModificacao As DateTime = ObterUltimaModificacaoHTTP(origem)
+        Dim ultimaModificacao As String = ObterHashHTTP(origem)
+        Dim localFileMod As String = ObterHashLocal(XMLEquipesPath)
 
         ' Verifica se a configuração está vazia antes de comparar
         If String.IsNullOrEmpty(My.Settings.ultimoHash) Then
             ' Se for a primeira vez, armazena a data sem comparar
-            My.Settings.ultimoHash = ultimaModificacao.ToString("yyyy-MM-dd HH:mm:ss")
+            My.Settings.ultimoHash = ultimaModificacao
             My.Settings.Save()
             Debug.WriteLine("Data inicial salva: " & My.Settings.ultimoHash)
-        Else
-            ' Tenta converter a string salva para DateTime
-            Dim dataSalva As DateTime
-            If DateTime.TryParse(My.Settings.ultimoHash, dataSalva) Then
-                If dataSalva <> ultimaModificacao Then
-                    Debug.WriteLine("O arquivo foi modificado!")
-
-                    ' Atualiza e salva a nova data
-                    My.Settings.ultimoHash = ultimaModificacao.ToString("yyyy-MM-dd HH:mm:ss")
-                    My.Settings.Save()
-                Else
-                    Debug.WriteLine("O arquivo não foi modificado.")
-                End If
-            Else
-                Debug.WriteLine("Erro: Data salva é inválida, resetando valor...")
-                My.Settings.ultimoHash = ultimaModificacao.ToString("yyyy-MM-dd HH:mm:ss")
-                My.Settings.Save()
-            End If
         End If
 
+        ' MsgBox(ultimaModificacao & " - " & localFileMod)
+
         Try
-            If My.Settings.ultimoHash <> ultimaModificacao Then
+            If ultimaModificacao <> localFileMod Then
                 copyXMLFileFromServer()
             End If
 

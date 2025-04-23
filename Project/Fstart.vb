@@ -28,7 +28,11 @@
     End Sub
     Private Sub btBLH_Click(sender As Object, e As EventArgs) Handles btBLH.Click
         FormMainBLH.Show()
-
+        Me.Visible = False
+    End Sub
+    Private Sub btAME_Click(sender As Object, e As EventArgs) Handles btAME.Click
+        FormAME.Show()
+        Me.Visible = False
     End Sub
 
 End Class

@@ -26,7 +26,12 @@ Partial Class FormBLHCadastroDoadoras
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormBLHCadastroDoadoras))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.tbOBS = New System.Windows.Forms.TextBox()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.btSalvarDoadora = New System.Windows.Forms.Button()
         Me.Label6 = New System.Windows.Forms.Label()
+        Me.btAtualizarDoadora = New System.Windows.Forms.Button()
+        Me.btExcluirDoadora = New System.Windows.Forms.Button()
         Me.cbResultado = New System.Windows.Forms.ComboBox()
         Me.tbDataVencimento = New System.Windows.Forms.MaskedTextBox()
         Me.Label5 = New System.Windows.Forms.Label()
@@ -40,16 +45,11 @@ Partial Class FormBLHCadastroDoadoras
         Me.Label1 = New System.Windows.Forms.Label()
         Me.dgDoadoras = New System.Windows.Forms.DataGridView()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.btExcluirDoadora = New System.Windows.Forms.Button()
-        Me.btAtualizarDoadora = New System.Windows.Forms.Button()
-        Me.btSalvarDoadora = New System.Windows.Forms.Button()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.tbBusca = New System.Windows.Forms.TextBox()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.Button4 = New System.Windows.Forms.Button()
-        Me.Label7 = New System.Windows.Forms.Label()
-        Me.tbOBS = New System.Windows.Forms.TextBox()
-        Me.tbBusca = New System.Windows.Forms.TextBox()
-        Me.Label8 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         CType(Me.dgDoadoras, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
@@ -58,6 +58,7 @@ Partial Class FormBLHCadastroDoadoras
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.Button4)
         Me.GroupBox1.Controls.Add(Me.tbOBS)
         Me.GroupBox1.Controls.Add(Me.Label7)
         Me.GroupBox1.Controls.Add(Me.btSalvarDoadora)
@@ -82,6 +83,33 @@ Partial Class FormBLHCadastroDoadoras
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Dados doadora"
         '
+        'tbOBS
+        '
+        Me.tbOBS.Location = New System.Drawing.Point(109, 120)
+        Me.tbOBS.Multiline = True
+        Me.tbOBS.Name = "tbOBS"
+        Me.tbOBS.Size = New System.Drawing.Size(222, 47)
+        Me.tbOBS.TabIndex = 7
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(106, 104)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(29, 13)
+        Me.Label7.TabIndex = 12
+        Me.Label7.Text = "Obs."
+        '
+        'btSalvarDoadora
+        '
+        Me.btSalvarDoadora.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btSalvarDoadora.Location = New System.Drawing.Point(6, 179)
+        Me.btSalvarDoadora.Name = "btSalvarDoadora"
+        Me.btSalvarDoadora.Size = New System.Drawing.Size(75, 23)
+        Me.btSalvarDoadora.TabIndex = 1
+        Me.btSalvarDoadora.Text = "Salvar"
+        Me.btSalvarDoadora.UseVisualStyleBackColor = True
+        '
         'Label6
         '
         Me.Label6.AutoSize = True
@@ -90,6 +118,26 @@ Partial Class FormBLHCadastroDoadoras
         Me.Label6.Size = New System.Drawing.Size(55, 13)
         Me.Label6.TabIndex = 11
         Me.Label6.Text = "Resultado"
+        '
+        'btAtualizarDoadora
+        '
+        Me.btAtualizarDoadora.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btAtualizarDoadora.Location = New System.Drawing.Point(87, 179)
+        Me.btAtualizarDoadora.Name = "btAtualizarDoadora"
+        Me.btAtualizarDoadora.Size = New System.Drawing.Size(75, 23)
+        Me.btAtualizarDoadora.TabIndex = 2
+        Me.btAtualizarDoadora.Text = "Atualizar"
+        Me.btAtualizarDoadora.UseVisualStyleBackColor = True
+        '
+        'btExcluirDoadora
+        '
+        Me.btExcluirDoadora.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btExcluirDoadora.Location = New System.Drawing.Point(168, 179)
+        Me.btExcluirDoadora.Name = "btExcluirDoadora"
+        Me.btExcluirDoadora.Size = New System.Drawing.Size(75, 23)
+        Me.btExcluirDoadora.TabIndex = 3
+        Me.btExcluirDoadora.Text = "Excluir"
+        Me.btExcluirDoadora.UseVisualStyleBackColor = True
         '
         'cbResultado
         '
@@ -243,40 +291,26 @@ Partial Class FormBLHCadastroDoadoras
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Doadoras cadastradas"
         '
-        'btExcluirDoadora
+        'Label8
         '
-        Me.btExcluirDoadora.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btExcluirDoadora.Location = New System.Drawing.Point(256, 173)
-        Me.btExcluirDoadora.Name = "btExcluirDoadora"
-        Me.btExcluirDoadora.Size = New System.Drawing.Size(75, 23)
-        Me.btExcluirDoadora.TabIndex = 3
-        Me.btExcluirDoadora.Text = "Excluir"
-        Me.btExcluirDoadora.UseVisualStyleBackColor = True
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(6, 32)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(40, 13)
+        Me.Label8.TabIndex = 2
+        Me.Label8.Text = "Busca:"
         '
-        'btAtualizarDoadora
+        'tbBusca
         '
-        Me.btAtualizarDoadora.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btAtualizarDoadora.Location = New System.Drawing.Point(175, 173)
-        Me.btAtualizarDoadora.Name = "btAtualizarDoadora"
-        Me.btAtualizarDoadora.Size = New System.Drawing.Size(75, 23)
-        Me.btAtualizarDoadora.TabIndex = 2
-        Me.btAtualizarDoadora.Text = "Atualizar"
-        Me.btAtualizarDoadora.UseVisualStyleBackColor = True
-        '
-        'btSalvarDoadora
-        '
-        Me.btSalvarDoadora.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btSalvarDoadora.Location = New System.Drawing.Point(94, 173)
-        Me.btSalvarDoadora.Name = "btSalvarDoadora"
-        Me.btSalvarDoadora.Size = New System.Drawing.Size(75, 23)
-        Me.btSalvarDoadora.TabIndex = 1
-        Me.btSalvarDoadora.Text = "Salvar"
-        Me.btSalvarDoadora.UseVisualStyleBackColor = True
+        Me.tbBusca.Location = New System.Drawing.Point(49, 29)
+        Me.tbBusca.Name = "tbBusca"
+        Me.tbBusca.Size = New System.Drawing.Size(294, 20)
+        Me.tbBusca.TabIndex = 1
         '
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 520)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 490)
         Me.StatusStrip1.Name = "StatusStrip1"
         Me.StatusStrip1.Size = New System.Drawing.Size(374, 22)
         Me.StatusStrip1.TabIndex = 36
@@ -291,52 +325,18 @@ Partial Class FormBLHCadastroDoadoras
         'Button4
         '
         Me.Button4.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Button4.Location = New System.Drawing.Point(286, 493)
+        Me.Button4.Location = New System.Drawing.Point(268, 179)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(75, 23)
         Me.Button4.TabIndex = 5
         Me.Button4.Text = "Fechar"
         Me.Button4.UseVisualStyleBackColor = True
         '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(106, 104)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(29, 13)
-        Me.Label7.TabIndex = 12
-        Me.Label7.Text = "Obs."
-        '
-        'tbOBS
-        '
-        Me.tbOBS.Location = New System.Drawing.Point(109, 120)
-        Me.tbOBS.Multiline = True
-        Me.tbOBS.Name = "tbOBS"
-        Me.tbOBS.Size = New System.Drawing.Size(222, 47)
-        Me.tbOBS.TabIndex = 7
-        '
-        'tbBusca
-        '
-        Me.tbBusca.Location = New System.Drawing.Point(49, 29)
-        Me.tbBusca.Name = "tbBusca"
-        Me.tbBusca.Size = New System.Drawing.Size(294, 20)
-        Me.tbBusca.TabIndex = 1
-        '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(6, 32)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(40, 13)
-        Me.Label8.TabIndex = 2
-        Me.Label8.Text = "Busca:"
-        '
         'FormBLHCadastroDoadoras
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(374, 542)
-        Me.Controls.Add(Me.Button4)
+        Me.ClientSize = New System.Drawing.Size(374, 512)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
