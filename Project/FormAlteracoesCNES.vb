@@ -43,8 +43,13 @@
             For Each row In dgAlteracoesPendentes.Rows
                 row.Cells(1).Value = xml.getCNESXML(row.Cells(1).Value.ToString)
                 row.Cells(2).Value = xml.getINEXML(row.Cells(2).Value.ToString)
-                row.Cells(3).Value = xml.getCNESXML(row.Cells(3).Value.ToString)
-                row.Cells(4).Value = xml.getINEXML(row.Cells(4).Value.ToString)
+                If IsNumeric(row.Cells(3).Value) Then
+                    row.Cells(3).Value = xml.getCNESXML(row.Cells(3).Value.ToString)
+                End If
+
+                If IsNumeric(row.Cells(4).Value) Then
+                    row.Cells(4).Value = xml.getINEXML(row.Cells(4).Value)
+                End If
             Next
 
         Else
@@ -82,8 +87,13 @@
             For Each row In dgHistoricoAlteracoes.Rows
                 row.Cells(1).Value = xml.getCNESXML(row.Cells(1).Value.ToString)
                 row.Cells(2).Value = xml.getINEXML(row.Cells(2).Value.ToString)
-                row.Cells(3).Value = xml.getCNESXML(row.Cells(3).Value.ToString)
-                row.Cells(4).Value = xml.getINEXML(row.Cells(4).Value.ToString)
+                If IsNumeric(row.Cells(3).Value) Then
+                    row.Cells(3).Value = xml.getCNESXML(row.Cells(3).Value.ToString)
+                End If
+
+                If IsNumeric(row.Cells(4).Value) Then
+                    row.Cells(4).Value = xml.getINEXML(row.Cells(4).Value)
+                End If
             Next
 
             dgHistoricoAlteracoes.ClearSelection()
