@@ -262,29 +262,6 @@ Public Class PDF
         Return texto.ToString()
     End Function
 
-    Public Function RemoverLinhasDuplicadasPorColunas(ByRef tabela As DataTable, ByVal colunasChave As String()) As DataTable
-        ' Usar LINQ para identificar linhas únicas com base nas colunas fornecidas
-        Dim linhasUnicas = tabela.AsEnumerable().
-        GroupBy(Function(row) String.Join("|", colunasChave.Select(Function(coluna) row(coluna)))).
-        Select(Function(grupo) grupo.First()).
-        ToList()
-
-        ' Criar um novo DataTable com as linhas únicas
-        Dim tabelaTemp As DataTable = tabela.Clone()
-        For Each linha In linhasUnicas
-            tabelaTemp.ImportRow(linha)
-        Next
-
-        ' Substituir o conteúdo do DataTable original pelo das linhas únicas
-        tabela.Clear()
-        For Each linha In tabelaTemp.Rows
-            tabela.ImportRow(linha)
-        Next
-
-        Return tabela
-
-    End Function
-
     Public Function ExtrairCNES(ByVal linha As String) As String
         Dim regexLinhaDados As New Regex("^(?<cpf>\d{11})\s+(?<cns>\d+)\s+(?<nome>.+?)\s+(?<cnes>\d+)\s+(?<cbo>\d{6})\s*-\s*(?<descricao>.+)$")
         Dim match = regexLinhaDados.Match(linha)
