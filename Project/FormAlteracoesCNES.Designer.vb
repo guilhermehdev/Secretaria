@@ -190,7 +190,7 @@ Partial Class FormAlteracoesCNES
         Me.MinimizeBox = False
         Me.Name = "FormAlteracoesCNES"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Alerações CNES"
+        Me.Text = "Alterações CNES"
         CType(Me.dgAlteracoesPendentes, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)

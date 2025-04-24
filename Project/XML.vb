@@ -460,7 +460,7 @@ Public Class XML
 
     End Function
 
-    Function ObterDadosLotacao(cpf As String, cnesUnidade As String, ineEquipe As String) As Boolean
+    Function ObterDadosLotacao(cpf As String, cnesUnidade As String, ineEquipe As String) As String
         Dim doc As XDocument = Nothing
 
         Try
@@ -484,23 +484,25 @@ Public Class XML
             }).FirstOrDefault()
 
             ' Verifica se o profissional foi encontrado
-            If profissional Is Nothing Then
-                Console.WriteLine("Profissional não encontrado.")
-                Return False
+            If profissional Is Nothing And cnesUnidade = "DESLIGAMENTO DO CNES" Then
+                Return "1"
             End If
 
             ' Verifica se os dados de lotação correspondem ao CNES e INE fornecidos
             If profissional.CNESLOTACAO = cnesUnidade AndAlso profissional.INELOTACAO = ineEquipe Then
-                Console.WriteLine($"Lotação encontrada para o profissional {profissional.Nome}.")
-                Return True
+                Return "1"
+            ElseIf profissional.CNESLOTACAO = cnesUnidade And profissional.INELOTACAO = "" Then
+                Return "1"
+            ElseIf profissional.CNESLOTACAO <> "" And profissional.INELOTACAO = "" And ineEquipe = "DESLIGAMENTO DA AB" Then
+                Return "1"
             End If
 
             Console.WriteLine("Lotação não encontrada com os critérios fornecidos.")
-            Return False
+            Return ""
 
         Catch ex As Exception
             Console.WriteLine("Erro ao processar o XML: " & ex.Message)
-            Return False
+            Return ""
         End Try
     End Function
 

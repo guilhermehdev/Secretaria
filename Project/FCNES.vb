@@ -360,19 +360,20 @@ Public Class FCNES
             containerPanel.Controls.Add(lblUnidadeIn)
             containerPanel.Controls.Add(btnDelete)
 
+
+
             If equipe_in <> equipe_out Then
 
                 Try
 
-
-                    If xml.ObterDadosLotacao(cpf, unidade_in, equipe_in) = True Then
+                    If xml.ObterDadosLotacao(cpf, unidade_in, equipe_in) = "1" Then
                         m.doQuery("UPDATE movimento SET status=1 WHERE id=" & id)
                         Continue For
                     Else
                         FlowLayoutPanelAleracoes.Controls.Add(containerPanel)
                         Dim label As Label
 
-                        If equipe_in <> "DESLIGAMENTO DA AB" And equipe_in <> "DESLIGAMENTO Do CNES" Then
+                        If equipe_in <> "DESLIGAMENTO DA AB" And equipe_in <> "DESLIGAMENTO DO CNES" Then
                             moveLabelsFast(lblUnidadeIn, lblUnidadeOut, btnDelete)
 
                             Dim flowPanelDestino As FlowLayoutPanel = PanelContainer.Controls.Find(equipe_in, True).FirstOrDefault()
@@ -393,31 +394,13 @@ Public Class FCNES
                     End If
 
                 Catch ex As Exception
-
+                    ' MsgBox(ex.Message)
                 End Try
 
             End If
         Next
 
     End Sub
-    'Private Sub moveLabelsFast(equipeDestino As Label, equipeOrigem As Label, cpfProfissional As Button)
-    '    Try
-
-    '        Dim panelSendTo = PanelContainer.Controls.Find(equipeDestino.Tag, True).FirstOrDefault()
-    '        Dim panelOrigin = PanelContainer.Controls.Find(equipeOrigem.Tag, True).FirstOrDefault()
-
-    '        Dim label As Label = DirectCast(panelOrigin.Controls.Find(cpfProfissional.Name, True).FirstOrDefault(), Label)
-
-
-    '        panelOrigin.Controls.Remove(label)
-    '        panelSendTo.Controls.Add(label)
-    '        panelSendTo.Controls.SetChildIndex(label, 1)
-
-    '    Catch ex As Exception
-    '        Debug.Write(ex.Message)
-    '    End Try
-
-    'End Sub
 
     Private Sub moveLabelsFast(equipeDestino As Label, equipeOrigem As Label, cpfProfissional As Button)
         Try
@@ -512,18 +495,21 @@ Public Class FCNES
         End Try
 
     End Sub
-    Private Sub FCNES_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Me.Icon = FplanejCNES.Icon
+
+    Private Sub loadPaineisEquipes()
+        xml.verificarAlteracao()
+
         Dim estabelecimentos As List(Of Estabelecimento) = xml.equipesXML().ToList()
         AddHandler contextMenuLabel.Opening, AddressOf contextMenuLabel_Opening
         TimerBordas.Start()
         contextMenuLabel.Items.Clear()
-        xml.verificarAlteracao()
 
-        Do While estabelecimentos.Count = 0
-            xml.copyXMLFileFromServer()
-            estabelecimentos = xml.equipesXML().ToList()
-        Loop
+        Me.Cursor = Cursors.WaitCursor
+
+        'Do While estabelecimentos.Count = 0
+        '    xml.copyXMLFileFromServer()
+        '    estabelecimentos = xml.equipesXML().ToList()
+        'Loop
 
         AddHandler PanelContainer.DragOver, AddressOf Container_DragOver
 
@@ -664,7 +650,11 @@ Public Class FCNES
         End If
 
         addPanelAlteracoes()
-
+        Me.Cursor = Cursors.Default
+    End Sub
+    Private Sub FCNES_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.Icon = FplanejCNES.Icon
+        loadPaineisEquipes()
     End Sub
 
     Private Sub Label_Paint(sender As Object, e As PaintEventArgs)
@@ -837,6 +827,11 @@ Public Class FCNES
     End Sub
     Private Sub AlteraçõesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AlteraçõesToolStripMenuItem.Click
         FormAlteracoesCNES.Show()
+    End Sub
+
+    Private Sub btAtualizar_Click(sender As Object, e As EventArgs) Handles btAtualizar.Click
+        PanelContainer.Controls.Clear()
+        loadPaineisEquipes()
     End Sub
 
 End Class

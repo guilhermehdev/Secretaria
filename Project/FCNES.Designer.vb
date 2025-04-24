@@ -42,6 +42,7 @@ Partial Class FCNES
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.TimerBordas = New System.Windows.Forms.Timer(Me.components)
+        Me.btAtualizar = New System.Windows.Forms.Button()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
@@ -211,11 +212,22 @@ Partial Class FCNES
         Me.TimerBordas.Enabled = True
         Me.TimerBordas.Interval = 200
         '
+        'btAtualizar
+        '
+        Me.btAtualizar.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btAtualizar.Location = New System.Drawing.Point(332, 3)
+        Me.btAtualizar.Name = "btAtualizar"
+        Me.btAtualizar.Size = New System.Drawing.Size(102, 23)
+        Me.btAtualizar.TabIndex = 3
+        Me.btAtualizar.Text = "Atualizar paineis"
+        Me.btAtualizar.UseVisualStyleBackColor = True
+        '
         'FCNES
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1254, 596)
+        Me.Controls.Add(Me.btAtualizar)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.MenuStrip1)
@@ -253,4 +265,5 @@ Partial Class FCNES
     Friend WithEvents CadastrosToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents PendentesToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AlteraçõesToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents btAtualizar As Button
 End Class

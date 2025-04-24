@@ -9,37 +9,36 @@
     Private Sub loadAlteracoes()
         Dim alteracoes = m.getDataset("SELECT * FROM movimento WHERE equipe_out <> 'NOVO CADASTRO' AND status=0 AND commited=0 ORDER BY id DESC")
 
-        If alteracoes.Rows.Count > 0 Then
+        dgAlteracoesPendentes.DataSource = alteracoes
+        dgAlteracoesPendentes.Columns(0).Visible = False
+        dgAlteracoesPendentes.Columns(8).Visible = False
+        dgAlteracoesPendentes.Columns(9).Visible = False
+        dgAlteracoesPendentes.Columns(10).Visible = False
 
-            dgAlteracoesPendentes.DataSource = alteracoes
+        dgAlteracoesPendentes.Columns(1).HeaderText = "Desligando da Unidade"
+        ' dgAlteracoesPendentes.Columns(1).Width = 150
+
+        dgAlteracoesPendentes.Columns(2).HeaderText = "da Equipe"
+        ' dgAlteracoesPendentes.Columns(2).Width = 150
+
+        dgAlteracoesPendentes.Columns(3).HeaderText = "Realocado na Unidade"
+        ' dgAlteracoesPendentes.Columns(3).Width = 150
+
+        dgAlteracoesPendentes.Columns(4).HeaderText = "na Equipe"
+        ' dgAlteracoesPendentes.Columns(4).Width = 150
+
+        dgAlteracoesPendentes.Columns(5).HeaderText = "CPF"
+
+        dgAlteracoesPendentes.Columns(6).HeaderText = "Profissional"
+        ' dgAlteracoesPendentes.Columns(4).Width = 150
+
+        dgAlteracoesPendentes.Columns(7).HeaderText = "CBO"
+
+        If alteracoes.Rows.Count > 0 Then
 
             dgAlteracoesPendentes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells
 
             dgAlteracoesPendentes.ClearSelection()
-
-            dgAlteracoesPendentes.Columns(0).Visible = False
-            dgAlteracoesPendentes.Columns(8).Visible = False
-            dgAlteracoesPendentes.Columns(9).Visible = False
-            dgAlteracoesPendentes.Columns(10).Visible = False
-
-            dgAlteracoesPendentes.Columns(1).HeaderText = "Desligando da Unidade"
-            ' dgAlteracoesPendentes.Columns(1).Width = 150
-
-            dgAlteracoesPendentes.Columns(2).HeaderText = "da Equipe"
-            ' dgAlteracoesPendentes.Columns(2).Width = 150
-
-            dgAlteracoesPendentes.Columns(3).HeaderText = "Realocado na Unidade"
-            ' dgAlteracoesPendentes.Columns(3).Width = 150
-
-            dgAlteracoesPendentes.Columns(4).HeaderText = "na Equipe"
-            ' dgAlteracoesPendentes.Columns(4).Width = 150
-
-            dgAlteracoesPendentes.Columns(5).HeaderText = "CPF"
-
-            dgAlteracoesPendentes.Columns(6).HeaderText = "Profissional"
-            ' dgAlteracoesPendentes.Columns(4).Width = 150
-
-            dgAlteracoesPendentes.Columns(7).HeaderText = "CBO"
 
             For Each row In dgAlteracoesPendentes.Rows
                 row.Cells(1).Value = xml.getCNESXML(row.Cells(1).Value.ToString)
@@ -60,25 +59,25 @@
     Private Sub loadHistorico()
         Dim historico = m.getDataset("SELECT * FROM movimento WHERE equipe_out <> 'NOVO CADASTRO' AND commited=1 ORDER BY data_conclusao DESC")
 
-        If historico.Rows.Count > 0 Then
+        dgHistoricoAlteracoes.DataSource = historico
+        dgHistoricoAlteracoes.Columns(0).Visible = False
+        dgHistoricoAlteracoes.Columns(8).Visible = False
+        dgHistoricoAlteracoes.Columns(9).Visible = False
+        dgHistoricoAlteracoes.Columns(1).HeaderText = "Desligando da Unidade"
+        ' dgAlteracoesPendentes.Columns(1).Width = 150
+        dgHistoricoAlteracoes.Columns(2).HeaderText = "da Equipe"
+        ' dgAlteracoesPendentes.Columns(2).Width = 150
+        dgHistoricoAlteracoes.Columns(3).HeaderText = "Realocado na Unidade"
+        ' dgAlteracoesPendentes.Columns(3).Width = 150
+        dgHistoricoAlteracoes.Columns(4).HeaderText = "na Equipe"
+        ' dgAlteracoesPendentes.Columns(4).Width = 150
+        dgHistoricoAlteracoes.Columns(5).HeaderText = "CPF"
+        dgHistoricoAlteracoes.Columns(6).HeaderText = "Profissional"
+        ' dgAlteracoesPendentes.Columns(4).Width = 150
+        dgHistoricoAlteracoes.Columns(7).HeaderText = "CBO"
+        dgHistoricoAlteracoes.Columns(10).HeaderText = "Data conclusão"
 
-            dgHistoricoAlteracoes.DataSource = historico
-            dgHistoricoAlteracoes.Columns(0).Visible = False
-            dgHistoricoAlteracoes.Columns(8).Visible = False
-            dgHistoricoAlteracoes.Columns(9).Visible = False
-            dgHistoricoAlteracoes.Columns(1).HeaderText = "Desligando da Unidade"
-            ' dgAlteracoesPendentes.Columns(1).Width = 150
-            dgHistoricoAlteracoes.Columns(2).HeaderText = "da Equipe"
-            ' dgAlteracoesPendentes.Columns(2).Width = 150
-            dgHistoricoAlteracoes.Columns(3).HeaderText = "Realocado na Unidade"
-            ' dgAlteracoesPendentes.Columns(3).Width = 150
-            dgHistoricoAlteracoes.Columns(4).HeaderText = "na Equipe"
-            ' dgAlteracoesPendentes.Columns(4).Width = 150
-            dgHistoricoAlteracoes.Columns(5).HeaderText = "CPF"
-            dgHistoricoAlteracoes.Columns(6).HeaderText = "Profissional"
-            ' dgAlteracoesPendentes.Columns(4).Width = 150
-            dgHistoricoAlteracoes.Columns(7).HeaderText = "CBO"
-            dgHistoricoAlteracoes.Columns(10).HeaderText = "Data conclusão"
+        If historico.Rows.Count > 0 Then
 
             For Each row In dgHistoricoAlteracoes.Rows
                 row.Cells(1).Value = xml.getCNESXML(row.Cells(1).Value.ToString)
