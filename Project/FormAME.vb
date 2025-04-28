@@ -12,41 +12,6 @@ Public Class FormAME
     Dim pig As New PDFPig
     Dim pdfPath As String = "E:\Desktop\mensal_abril.pdf"
 
-    'Public Function GerarTabelaPorItens(texto As String, itensEspecificos() As String) As DataTable
-    '    ' Dividir o texto em linhas
-    '    Dim linhas() As String = texto.Split(New String() {Environment.NewLine}, StringSplitOptions.None)
-
-    '    ' Criar um DataTable para armazenar os resultados
-    '    Dim tabela As New DataTable()
-    '    tabela.Columns.Add("Espec", GetType(String)) ' Coluna para o item encontrado
-    '    Dim capturarEspecialidade As Boolean = False
-
-    '    ' Percorrer cada linha do texto
-    '    For Each linha As String In linhas
-    '        linha = linha.Trim() ' Remover espaços em branco
-
-    '        ' Verificar se a linha contém o item específico
-    '        For Each item As String In itensEspecificos
-    '            If linha.Contains(item) Then
-    '                capturarEspecialidade = True ' Ativar captura nas próximas linhas
-    '                Exit For ' Parar a verificação atual
-    '            End If
-    '        Next
-
-    '        ' Capturar o nome da especialidade após o item encontrado
-    '        ' Capturar apenas o nome da especialidade, ignorando códigos e outros detalhes
-    '        If capturarEspecialidade AndAlso Not String.IsNullOrWhiteSpace(linha) Then
-    '            If Not itensEspecificos.Any(Function(it) linha.Contains(it)) Then
-    '                tabela.Rows.Add(linha) ' Adicionar ao DataTable apenas o nome da especialidade
-    '                capturarEspecialidade = False ' Resetar captura após identificar a especialidade
-    '            End If
-    '        End If
-
-    '    Next
-    '    ' Retornar o DataTable com os resultados encontrados
-    '    Return tabela
-    'End Function
-
     Public Function ExtrairConsultas() As List(Of Consulta)
         Dim consultas As New List(Of Consulta)()
 
@@ -64,7 +29,18 @@ Public Class FormAME
             If linha = "Especialidade" Then
                 If i + 2 < linhas.Length Then
                     especialidadeAtual = linhas(i + 2).Trim()
-                    i += 2
+                    Dim j = i + 3
+                    While j < linhas.Length AndAlso Not linhas(j).StartsWith("Profissional") AndAlso Not IsNumeric(linhas(j))
+                        ' Verificar se é uma data ou hora
+                        If Regex.IsMatch(linhas(j), "^\d{2}/\d{2}/\d{4}") OrElse Regex.IsMatch(linhas(j), "^\d{2}:\d{2}:\d{2}") Then
+                            Exit While
+                        End If
+
+                        especialidadeAtual &= " " & linhas(j).Trim()
+                        j += 1
+                    End While
+                    especialidadeAtual = especialidadeAtual.Trim()
+                    i = j - 1
                 End If
 
             ElseIf linha = "Profissional" Then
@@ -103,7 +79,7 @@ Public Class FormAME
                     Integer.TryParse(linhas(i + 8), total)
 
                     Dim consulta As New Consulta With {
-                    .Especialidade = especialidadeAtual,
+                     .Especialidade = especialidadeAtual,
                     .Profissional = profissionalAtual,
                     .TipoAtendimento = tipoAtendimentoAtual,
                     .Agendados = agendados,
@@ -129,35 +105,57 @@ Public Class FormAME
         Return consultas
     End Function
 
-    Private Function CorrigirLinha(linha As String) As List(Of String)
-        Dim partes As New List(Of String)()
+    Public Function ListToDataTable(lista As List(Of Consulta)) As DataTable
+        Dim tabela As New DataTable()
 
-        ' Verifica se tem palavras coladas como "Especialidade2" ou "TotalCONSULTA"
-        Dim match = Regex.Match(linha, "^([A-Za-z]+)(\d+)$")
-        If match.Success Then
-            partes.Add(match.Groups(1).Value)
-            partes.Add(match.Groups(2).Value)
-        Else
-            ' Verifica colagem tipo "TotalCONSULTA" (duas palavras)
-            match = Regex.Match(linha, "^([A-Za-z]+)([A-Za-z\-]+)$")
-            If match.Success Then
-                partes.Add(match.Groups(1).Value)
-                partes.Add(match.Groups(2).Value)
-            Else
-                partes.Add(linha) ' Se não, mantém a linha
-            End If
-        End If
+        ' Criar colunas
+        tabela.Columns.Add("Especialidade", GetType(String))
+        tabela.Columns.Add("Profissional", GetType(String))
+        tabela.Columns.Add("TipoAtendimento", GetType(String))
+        tabela.Columns.Add("Agendados", GetType(Integer))
+        tabela.Columns.Add("Presentes", GetType(Integer))
+        tabela.Columns.Add("PercentualPresentes", GetType(Double))
+        tabela.Columns.Add("Faltosos", GetType(Integer))
+        tabela.Columns.Add("PercentualFaltosos", GetType(Double))
+        tabela.Columns.Add("Livre", GetType(Integer))
+        tabela.Columns.Add("Disponibilizadas", GetType(Integer))
+        tabela.Columns.Add("Demanda", GetType(Integer))
+        tabela.Columns.Add("Total", GetType(Integer))
 
-        Return partes
+        ' Preencher linhas
+        For Each item In lista
+            tabela.Rows.Add(item.Especialidade, item.Profissional, item.TipoAtendimento,
+                        item.Agendados, item.Presentes, item.PercentualPresentes,
+                        item.Faltosos, item.PercentualFaltosos, item.Livre,
+                        item.Disponibilizadas, item.Demanda, item.Total)
+        Next
+
+        Return tabela
     End Function
+
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
-        'TextBox1.Text = pig.ExtrairDadosPDF()
-        ' RichTextBox1.Text = pig.ExtrairDadosPDF()
-
         Dim consultasExtraidas As List(Of Consulta) = ExtrairConsultas()
-        dgAME.DataSource = consultasExtraidas
+
+        Dim consultasOrdenadas = consultasExtraidas _
+    .OrderBy(Function(c) c.Especialidade) _
+    .ThenBy(Function(c) c.Profissional) _
+    .ThenBy(Function(c)
+                If c.TipoAtendimento.StartsWith("CONSULTA SUBSEQUENTE-RETORNO") Then
+                    Return 1
+                ElseIf c.TipoAtendimento.StartsWith("REGULAÇÃO") Then
+                    Return 2
+                Else
+                    Return 3
+                End If
+            End Function) _
+    .ThenBy(Function(c) c.TipoAtendimento) _
+    .ToList()
+
+        ' Converte para DataTable
+        Dim tabelaConsultas As DataTable = ListToDataTable(consultasOrdenadas)
+        dgAME.DataSource = tabelaConsultas
 
     End Sub
 
@@ -174,17 +172,20 @@ Public Class FormAME
 End Class
 
 Public Class Consulta
-    Public Property Unidade As String
+    ' Public Property Unidade As String
+
     Public Property Especialidade As String
     Public Property Profissional As String
-    Public Property Total As Integer
-    Public Property Demanda As Integer
+    Public Property TipoAtendimento As String
     Public Property Disponibilizadas As Integer
-    Public Property Livre As Integer
-    Public Property PercentualFaltosos As Double
     Public Property Faltosos As Integer
+    Public Property PercentualFaltosos As Double
+    Public Property Demanda As Integer
+    Public Property Total As Integer
+    Public Property Agendados As Integer
+    Public Property Livre As Integer
     Public Property PercentualPresentes As Double
     Public Property Presentes As Integer
-    Public Property Agendados As Integer
-    Public Property TipoAtendimento As String
+
+
 End Class
