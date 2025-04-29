@@ -275,7 +275,7 @@ Public Class FormAME
         Dim tipoConsulta = "CONSULTA SUBSEQUENTE-RETORNO"
         Dim tipoRegulacao = "REGULAÇÃO"
 
-        ' Agrupamento por Especialidade + Profissional
+        ' Agrupar por Especialidade + Profissional
         Dim grupos = tabela.AsEnumerable().
         Where(Function(r) r("TipoAtendimento").ToString() = tipoConsulta OrElse r("TipoAtendimento").ToString() = tipoRegulacao).
         GroupBy(Function(r) New With {
@@ -286,10 +286,10 @@ Public Class FormAME
         ' Cabeçalhos
         worksheet.Cells(1, 1).Value = "ESPECIALIDADE"
         worksheet.Cells(1, 2).Value = "PROFISSIONAL"
-        worksheet.Cells(1, 3).Value = $"{tipoConsulta} - DISPONIBILIZADAS"
-        worksheet.Cells(1, 4).Value = $"{tipoRegulacao} - DISPONIBILIZADAS"
+        worksheet.Cells(1, 3).Value = $"{tipoConsulta}"
+        worksheet.Cells(1, 4).Value = $"{tipoRegulacao}"
         worksheet.Cells(1, 5).Value = "DISPONIBILIZADAS"
-        worksheet.Cells(1, 6).Value = "PRESENTES"
+        worksheet.Cells(1, 6).Value = "FATURADOS"
         worksheet.Cells(1, 7).Value = "FALTOSOS"
         worksheet.Cells(1, 8).Value = "% FALTOSOS"
 
@@ -297,7 +297,7 @@ Public Class FormAME
         worksheet.Rows("1:1").Interior.Color = RGB(79, 129, 189)
         worksheet.Rows("1:1").Font.Color = RGB(255, 255, 255)
 
-        ' Dados
+        ' Preencher dados com fórmulas
         Dim linha = 2
         For Each grupo In grupos
             Dim disponibilizadasConsulta = grupo.
@@ -308,20 +308,18 @@ Public Class FormAME
             Where(Function(r) r("TipoAtendimento").ToString() = tipoRegulacao).
             Sum(Function(r) Convert.ToInt32(r("Disponibilizadas")))
 
-            Dim totalDisponibilizadas = disponibilizadasConsulta + disponibilizadasRegulacao
-
             Dim presentes = grupo.Sum(Function(r) Convert.ToInt32(r("Presentes")))
-            Dim faltosos = grupo.Sum(Function(r) Convert.ToInt32(r("Faltosos")))
-            Dim percentualFaltosos As Double = If(presentes + faltosos > 0, faltosos / (faltosos + presentes), 0)
 
             worksheet.Cells(linha, 1).Value = grupo.Key.Especialidade
             worksheet.Cells(linha, 2).Value = grupo.Key.Profissional
             worksheet.Cells(linha, 3).Value = disponibilizadasConsulta
             worksheet.Cells(linha, 4).Value = disponibilizadasRegulacao
-            worksheet.Cells(linha, 5).Value = totalDisponibilizadas
+
+            ' Fórmulas: DISPONIBILIZADAS (E), FALTOSOS (G), % FALTOSOS (H)
+            worksheet.Cells(linha, 5).Formula = $"=C{linha}+D{linha}"
             worksheet.Cells(linha, 6).Value = presentes
-            worksheet.Cells(linha, 7).Value = faltosos
-            worksheet.Cells(linha, 8).Value = Math.Round(percentualFaltosos, 4)
+            worksheet.Cells(linha, 7).Formula = $"=E{linha}-F{linha}"
+            worksheet.Cells(linha, 8).Formula = $"=IF(E{linha}=0,0,G{linha}/E{linha})"
             worksheet.Cells(linha, 8).NumberFormat = "0.00%"
 
             linha += 1
@@ -332,22 +330,58 @@ Public Class FormAME
         worksheet.Cells(linhaTotal, 1).Value = "TOTAL GERAL"
         worksheet.Cells(linhaTotal, 1).Font.Bold = True
 
-        ' Soma das colunas 3 a 7
+        ' Soma de colunas 3 a 7
         For col = 3 To 7
-            Dim colLetra As String = GetExcelColumnName(col)
+            Dim colLetra = GetExcelColumnName(col)
             worksheet.Cells(linhaTotal, col).Formula = $"=SUM({colLetra}2:{colLetra}{linha - 1})"
             worksheet.Cells(linhaTotal, col).Font.Bold = True
         Next
 
-        ' Fórmula de % Faltosos total
-        worksheet.Cells(linhaTotal, 8).Formula = $"=G{linhaTotal}/(F{linhaTotal}+G{linhaTotal})"
+        ' % Faltosos total com fórmula
+        worksheet.Cells(linhaTotal, 8).Formula = $"=IF(E{linhaTotal}=0,0,G{linhaTotal}/E{linhaTotal})"
         worksheet.Cells(linhaTotal, 8).NumberFormat = "0.00%"
         worksheet.Cells(linhaTotal, 8).Font.Bold = True
 
-        ' Congelar cabeçalho e autoajustar
+        ' Congelar, ajustar
         worksheet.Range("A2").Select()
         excelApp.ActiveWindow.FreezePanes = True
         worksheet.Columns.AutoFit()
+
+        ' Gráficos por Especialidade + Profissional
+        'Dim chartTop As Integer = (linhaTotal + 2) * 15 ' posição inicial (pode ajustar)
+        'For linhaGrafico As Integer = 2 To linhaTotal - 1
+        '    Dim categoriaRange As String = $"E1:G1"
+        '    Dim valorRange As String = $"E{linhaGrafico}:G{linhaGrafico}"
+        '    Dim dadosGraficoRange As String = $"E{linhaGrafico - 1}:G{linhaGrafico}" ' inclui categorias + valores
+
+        '    Dim chartObjects = worksheet.ChartObjects()
+        '    Dim chartObject = chartObjects.Add(300, chartTop, 400, 200)
+        '    Dim chart = chartObject.Chart
+        '    chart.ChartType = 51 ' xlColumnClustered
+
+        '    ' Usa a faixa de categorias + valores
+        '    chart.SetSourceData(worksheet.Range(dadosGraficoRange))
+
+        '    ' Título automático
+        '    Dim nomeProfissional = worksheet.Cells(linhaGrafico, 2).Value
+        '    Dim especialidade = worksheet.Cells(linhaGrafico, 1).Value
+        '    chart.HasTitle = True
+        '    chart.ChartTitle.Text = $"{especialidade} - {nomeProfissional}"
+
+        '    chartTop += 220
+
+        'Next
+
+
+        'Dim chartObjects = worksheet.ChartObjects()
+        'Dim chartObject = chartObjects.Add(300, 10, 500, 300) ' (x, y, largura, altura)
+        'Dim chart = chartObject.Chart
+
+        'chart.ChartType = 51 ' xlColumnClustered
+        'chart.SetSourceData(worksheet.Range($"C{linhaTotal}:G{linhaTotal}"))
+        'chart.HasTitle = True
+        'chart.ChartTitle.Text = "Totais por Métrica"
+
 
         ' Salvar
         workbook.SaveAs(caminho)
