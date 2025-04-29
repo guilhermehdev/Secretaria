@@ -11,6 +11,9 @@ Public Class FormAME
     Dim pdf As New PDF
     Dim pig As New PDFPig
     Dim pdfPath As String = "E:\Desktop\mensal_abril.pdf"
+    ' Essas duas variáveis vão guardar tudo carregado
+    Private tabelaConsultas As DataTable
+    Private tabelaConsultasFiltradas As DataTable
 
     Public Function ExtrairConsultas() As List(Of Consulta)
         Dim consultas As New List(Of Consulta)()
@@ -133,30 +136,44 @@ Public Class FormAME
         Return tabela
     End Function
 
-
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-
+    Private Sub CarregarConsultas()
         Dim consultasExtraidas As List(Of Consulta) = ExtrairConsultas()
 
         Dim consultasOrdenadas = consultasExtraidas _
-    .OrderBy(Function(c) c.Especialidade) _
-    .ThenBy(Function(c) c.Profissional) _
-    .ThenBy(Function(c)
-                If c.TipoAtendimento.StartsWith("CONSULTA SUBSEQUENTE-RETORNO") Then
-                    Return 1
-                ElseIf c.TipoAtendimento.StartsWith("REGULAÇÃO") Then
-                    Return 2
-                Else
-                    Return 3
-                End If
-            End Function) _
-    .ThenBy(Function(c) c.TipoAtendimento) _
-    .ToList()
+        .OrderBy(Function(c) c.Especialidade) _
+        .ThenBy(Function(c) c.Profissional) _
+        .ThenBy(Function(c)
+                    If c.TipoAtendimento.StartsWith("CONSULTA SUBSEQUENTE-RETORNO") Then
+                        Return 1
+                    ElseIf c.TipoAtendimento.StartsWith("REGULAÇÃO") Then
+                        Return 2
+                    Else
+                        Return 3
+                    End If
+                End Function) _
+        .ThenBy(Function(c) c.TipoAtendimento) _
+        .ToList()
 
-        ' Converte para DataTable
-        Dim tabelaConsultas As DataTable = ListToDataTable(consultasOrdenadas)
-        dgAME.DataSource = tabelaConsultas
+        tabelaConsultas = ListToDataTable(consultasOrdenadas)
+        tabelaConsultasFiltradas = tabelaConsultas.Copy()
 
+        dgAME.DataSource = tabelaConsultasFiltradas
+
+        ' Carregar os filtros
+        CarregarFiltros()
+    End Sub
+
+    Private Sub CarregarFiltros()
+        ComboBoxEspecialidade.Items.Clear()
+        ComboBoxEspecialidade.Items.Add("Todos")
+        ComboBoxEspecialidade.Items.AddRange(tabelaConsultas.DefaultView.ToTable(True, "Especialidade").AsEnumerable().Select(Function(r) r(0).ToString()).ToArray())
+
+        ComboBoxProfissional.Items.Clear()
+        ComboBoxProfissional.Items.Add("Todos")
+        ComboBoxProfissional.Items.AddRange(tabelaConsultas.DefaultView.ToTable(True, "Profissional").AsEnumerable().Select(Function(r) r(0).ToString()).ToArray())
+
+        ComboBoxEspecialidade.SelectedIndex = 0
+        ComboBoxProfissional.SelectedIndex = 0
     End Sub
 
     Private Sub FormAME_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
@@ -169,6 +186,71 @@ Public Class FormAME
         m.copyDatagridCellValue(dgAME, e)
     End Sub
 
+    Private Sub ButtonFiltrar_Click(sender As Object, e As EventArgs) Handles ButtonFiltrar.Click
+        Dim filtro As String = ""
+
+        If ComboBoxEspecialidade.SelectedIndex > 0 Then
+            filtro &= $"Especialidade = '{ComboBoxEspecialidade.SelectedItem}'"
+        End If
+
+        If ComboBoxProfissional.SelectedIndex > 0 Then
+            If filtro <> "" Then filtro &= " AND "
+            filtro &= $"Profissional = '{ComboBoxProfissional.SelectedItem}'"
+        End If
+
+        Dim view As New DataView(tabelaConsultas)
+        view.RowFilter = filtro
+
+        tabelaConsultasFiltradas = view.ToTable()
+        dgAME.DataSource = tabelaConsultasFiltradas
+        AtualizarTotais()
+        ' Atualizar totais
+    End Sub
+
+    Private Sub AtualizarTotais()
+        Dim agendados = tabelaConsultasFiltradas.AsEnumerable().Sum(Function(r) Convert.ToInt32(r("Agendados")))
+        Dim presentes = tabelaConsultasFiltradas.AsEnumerable().Sum(Function(r) Convert.ToInt32(r("Presentes")))
+        Dim faltosos = tabelaConsultasFiltradas.AsEnumerable().Sum(Function(r) Convert.ToInt32(r("Faltosos")))
+
+        LabelTotais.Text = $"Agendados: {agendados} | Presentes: {presentes} | Faltosos: {faltosos}"
+    End Sub
+
+    Private Sub ButtonExportarExcel_Click(sender As Object, e As EventArgs) Handles ButtonExportarExcel.Click
+        Dim sfd As New SaveFileDialog()
+        sfd.Filter = "Excel Files|*.xlsx"
+        sfd.Title = "Salvar Arquivo Excel"
+
+        If sfd.ShowDialog() = DialogResult.OK Then
+            ExportarDataTableParaExcel(tabelaConsultasFiltradas, sfd.FileName)
+            MessageBox.Show("Arquivo Excel exportado com sucesso!")
+        End If
+    End Sub
+
+    Private Sub ExportarDataTableParaExcel(tabela As DataTable, caminho As String)
+        Dim excelApp As Object = CreateObject("Excel.Application")
+        Dim workbook = excelApp.Workbooks.Add()
+        Dim worksheet = workbook.Sheets(1)
+
+        ' Cabeçalhos
+        For i As Integer = 0 To tabela.Columns.Count - 1
+            worksheet.Cells(1, i + 1).Value = tabela.Columns(i).ColumnName
+        Next
+
+        ' Dados
+        For i As Integer = 0 To tabela.Rows.Count - 1
+            For j As Integer = 0 To tabela.Columns.Count - 1
+                worksheet.Cells(i + 2, j + 1).Value = tabela.Rows(i)(j)
+            Next
+        Next
+
+        workbook.SaveAs(caminho)
+        workbook.Close()
+        excelApp.Quit()
+    End Sub
+
+    Private Sub FormAME_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        CarregarConsultas()
+    End Sub
 End Class
 
 Public Class Consulta
