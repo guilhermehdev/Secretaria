@@ -267,6 +267,8 @@ Public Class FormAME
 
     Private Sub ExportarDataTableResumoAbril(tabela As DataTable, caminho As String, SheetName As String)
         Dim excelApp As Object = CreateObject("Excel.Application")
+        excelApp.DisplayAlerts = False
+
         Dim workbook = excelApp.Workbooks.Add()
         Dim worksheet = workbook.Sheets(1)
         worksheet.Name = SheetName
@@ -283,20 +285,29 @@ Public Class FormAME
             Key .Profissional = r("Profissional").ToString()
         }).ToList()
 
+
         ' Cabeçalhos
         worksheet.Cells(1, 1).Value = "ESPECIALIDADE"
+        worksheet.Cells(1, 1).FONT.Bold = True
         worksheet.Cells(1, 2).Value = "PROFISSIONAL"
-        worksheet.Cells(1, 3).Value = $"{tipoConsulta}"
-        worksheet.Cells(1, 4).Value = $"{tipoRegulacao}"
-        worksheet.Cells(1, 5).Value = "DISPONIBILIZADAS"
-        worksheet.Cells(1, 6).Value = "FATURADOS"
-        worksheet.Cells(1, 7).Value = "FALTOSOS"
-        worksheet.Cells(1, 8).Value = "% FALTOSOS"
+        worksheet.Cells(1, 2).FONT.Bold = True
+        worksheet.Cells(1, 3).Value = $"RETORNO"
+        worksheet.Cells(1, 3).FONT.Bold = True
+        worksheet.Cells(1, 4).Value = $"1ª CONSULTA"
+        worksheet.Cells(1, 4).FONT.Bold = True
+        worksheet.Cells(1, 5).Value = "DISPONIVEL"
+        worksheet.Cells(1, 5).FONT.Bold = True
+        worksheet.Cells(1, 6).Value = "FATURADO"
+        worksheet.Cells(1, 6).FONT.Bold = True
+        worksheet.Cells(1, 7).Value = "FALTAS"
+        worksheet.Cells(1, 7).FONT.Bold = True
+        worksheet.Cells(1, 8).Value = "% FALTAS"
+        worksheet.Cells(1, 8).FONT.Bold = True
 
         worksheet.Rows("1:1").Font.Bold = True
         worksheet.Rows("1:1").Interior.Color = RGB(79, 129, 189)
         worksheet.Rows("1:1").Font.Color = RGB(255, 255, 255)
-
+        worksheet.Rows("1:1").Font.Size = 9
         ' Preencher dados com fórmulas
         Dim linha = 2
         For Each grupo In grupos
@@ -308,18 +319,27 @@ Public Class FormAME
             Where(Function(r) r("TipoAtendimento").ToString() = tipoRegulacao).
             Sum(Function(r) Convert.ToInt32(r("Disponibilizadas")))
 
-            Dim presentes = grupo.Sum(Function(r) Convert.ToInt32(r("Presentes")))
+            ' Dim presentes = grupo.Sum(Function(r) Convert.ToInt32(r("Presentes")))
+            Dim presentes = 0
 
             worksheet.Cells(linha, 1).Value = grupo.Key.Especialidade
+            worksheet.Cells(linha, 1).FONT.Bold = True
             worksheet.Cells(linha, 2).Value = grupo.Key.Profissional
+            ' worksheet.Cells(linha, 2).FONT.Bold = True
             worksheet.Cells(linha, 3).Value = disponibilizadasConsulta
+            'worksheet.Cells(linha, 3).FONT.Bold = True
             worksheet.Cells(linha, 4).Value = disponibilizadasRegulacao
+            'worksheet.Cells(linha, 4).FONT.Bold = True
 
             ' Fórmulas: DISPONIBILIZADAS (E), FALTOSOS (G), % FALTOSOS (H)
             worksheet.Cells(linha, 5).Formula = $"=C{linha}+D{linha}"
+            'worksheet.Cells(linha, 5).FONT.Bold = True
             worksheet.Cells(linha, 6).Value = presentes
+            'worksheet.Cells(linha, 6).FONT.Bold = True
             worksheet.Cells(linha, 7).Formula = $"=E{linha}-F{linha}"
+            'worksheet.Cells(linha, 7).FONT.Bold = True
             worksheet.Cells(linha, 8).Formula = $"=IF(E{linha}=0,0,G{linha}/E{linha})"
+            'worksheet.Cells(linha, 8).FONT.Bold = True
             worksheet.Cells(linha, 8).NumberFormat = "0.00%"
 
             linha += 1
@@ -341,6 +361,41 @@ Public Class FormAME
         worksheet.Cells(linhaTotal, 8).Formula = $"=IF(E{linhaTotal}=0,0,G{linhaTotal}/E{linhaTotal})"
         worksheet.Cells(linhaTotal, 8).NumberFormat = "0.00%"
         worksheet.Cells(linhaTotal, 8).Font.Bold = True
+
+        Dim celulasTotais = worksheet.Range($"A{linhaTotal}:B{linhaTotal}")
+        celulasTotais.Merge()
+        celulasTotais.Value = "TOTAL GERAL"
+        celulasTotais.Font.Bold = True
+
+        Dim especCardio = worksheet.Range($"A2:A3")
+        especCardio.Merge()
+        especCardio.Value = "CARDIOLOGIA"
+        especCardio.Font.Bold = True
+        especCardio.VerticalAlignment = -4108
+
+        Dim especOfta = worksheet.Range($"A13:A14")
+        especOfta.Merge()
+        especOfta.Value = "OFTALMOLOGIA"
+        especOfta.Font.Bold = True
+        especOfta.VerticalAlignment = -4108
+
+        Dim especOrto = worksheet.Range($"A15:A16")
+        especOrto.Merge()
+        especOrto.Value = "ORTOPEDIA"
+        especOrto.Font.Bold = True
+        especOrto.VerticalAlignment = -4108
+
+        Dim especOtorrino = worksheet.Range($"A17:A18")
+        especOtorrino.Merge()
+        especOtorrino.Value = "OTORRINOLARINGOLOGIA"
+        especOtorrino.Font.Bold = True
+        especOtorrino.VerticalAlignment = -4108
+
+        Dim especUsg = worksheet.Range($"A20:A23")
+        especUsg.Merge()
+        especUsg.Value = "ULTRASSONOGRAFIA"
+        especUsg.Font.Bold = True
+        especUsg.VerticalAlignment = -4108
 
         ' Congelar, ajustar
         worksheet.Range("A2").Select()
@@ -381,14 +436,31 @@ Public Class FormAME
         'chart.SetSourceData(worksheet.Range($"C{linhaTotal}:G{linhaTotal}"))
         'chart.HasTitle = True
         'chart.ChartTitle.Text = "Totais por Métrica"
+        ' Determina o intervalo de células com conteúdo
+        Dim ultimaLinha As Integer = worksheet.Cells(worksheet.Rows.Count, 1).End(-4162).Row ' xlUp
+        Dim ultimaColuna As Integer = worksheet.Cells(1, worksheet.Columns.Count).End(-4159).Column ' xlToLeft
 
+        ' Intervalo de células preenchidas
+        Dim intervalo As Object = worksheet.Range(worksheet.Cells(1, 1), worksheet.Cells(ultimaLinha, ultimaColuna))
 
-        ' Salvar
+        ' Aplicar bordas no intervalo
+        ComBorda(intervalo)
+
+        worksheet.Columns("C:H").ColumnWidth = 10
+
         workbook.SaveAs(caminho)
         workbook.Close(False)
         excelApp.Quit()
 
         MsgBox("Relatório exportado com sucesso!", MsgBoxStyle.Information)
+    End Sub
+    Private Sub ComBorda(intervalo As Object)
+        intervalo.Borders.Item(1).LineStyle = 1 ' Borda superior
+        intervalo.Borders.Item(2).LineStyle = 1 ' Borda inferior
+        intervalo.Borders.Item(3).LineStyle = 1 ' Borda esquerda
+        intervalo.Borders.Item(4).LineStyle = 1 ' Borda direita
+        intervalo.Borders.Item(5).LineStyle = 0 ' Bordas diagonais (não usadas)
+        intervalo.Borders.Item(6).LineStyle = 0 ' Bordas diagonais (não usadas)
     End Sub
 
     Private Function GetExcelColumnName(colIndex As Integer) As String
