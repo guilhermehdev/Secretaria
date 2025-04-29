@@ -11,7 +11,8 @@ Public Class FormAME
     Dim pdf As New PDF
     Dim pig As New PDFPig
     Dim pdfPath As String = "D:\Desktop\mensal_abril.pdf"
-
+    Private tabelaConsultas As DataTable
+    Private tabelaConsultasFiltradas As DataTable
     Public Function ExtrairConsultas() As List(Of Consulta)
         Dim consultas As New List(Of Consulta)()
 
@@ -108,30 +109,37 @@ Public Class FormAME
     Public Function ListToDataTable(lista As List(Of Consulta)) As DataTable
         Dim tabela As New DataTable()
 
-        ' Criar colunas
         tabela.Columns.Add("Especialidade", GetType(String))
         tabela.Columns.Add("Profissional", GetType(String))
         tabela.Columns.Add("TipoAtendimento", GetType(String))
         tabela.Columns.Add("Agendados", GetType(Integer))
         tabela.Columns.Add("Presentes", GetType(Integer))
-        tabela.Columns.Add("PercentualPresentes", GetType(Double))
+        tabela.Columns.Add("PercentualPresentes", GetType(Double)) ' já como 0.6338 para exibir 63,38%
         tabela.Columns.Add("Faltosos", GetType(Integer))
-        tabela.Columns.Add("PercentualFaltosos", GetType(Double))
+        tabela.Columns.Add("PercentualFaltosos", GetType(Double)) ' idem
         tabela.Columns.Add("Livre", GetType(Integer))
         tabela.Columns.Add("Disponibilizadas", GetType(Integer))
         tabela.Columns.Add("Demanda", GetType(Integer))
         tabela.Columns.Add("Total", GetType(Integer))
 
-        ' Preencher linhas
         For Each item In lista
-            tabela.Rows.Add(item.Especialidade, item.Profissional, item.TipoAtendimento,
-                        item.Agendados, item.Presentes, item.PercentualPresentes,
-                        item.Faltosos, item.PercentualFaltosos, item.Livre,
-                        item.Disponibilizadas, item.Demanda, item.Total)
+            tabela.Rows.Add(item.Especialidade,
+                        item.Profissional,
+                        item.TipoAtendimento,
+                        item.Agendados,
+                        item.Presentes,
+                        item.PercentualPresentes / 100.0, ' 💡 aqui o segredo
+                        item.Faltosos,
+                        item.PercentualFaltosos / 100.0, ' 💡 idem
+                        item.Livre,
+                        item.Disponibilizadas,
+                        item.Demanda,
+                        item.Total)
         Next
 
         Return tabela
     End Function
+
 
     Private Sub CarregarConsultas()
         Dim consultasExtraidas As List(Of Consulta) = ExtrairConsultas()
@@ -156,17 +164,52 @@ Public Class FormAME
 
         dgAME.DataSource = tabelaConsultasFiltradas
 
+        dgAME.Columns("Especialidade").Width = 180
+        dgAME.Columns("Especialidade").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        dgAME.Columns("Profissional").Width = 220
+        dgAME.Columns("Profissional").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        dgAME.Columns("TipoAtendimento").HeaderText = "Tipo de Atendimento"
+        dgAME.Columns("TipoAtendimento").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        dgAME.Columns("TipoAtendimento").Width = 210
+        dgAME.Columns("PercentualPresentes").HeaderText = "% Pres"
+        dgAME.Columns("PercentualPresentes").Width = 45
+        dgAME.Columns("PercentualFaltosos").HeaderText = "% Faltas"
+        dgAME.Columns("PercentualFaltosos").Width = 45
+        dgAME.Columns("PercentualPresentes").DefaultCellStyle.Format = "P2"
+        dgAME.Columns("PercentualFaltosos").DefaultCellStyle.Format = "P2"
+        dgAME.Columns("Agendados").DefaultCellStyle.Format = "N0"
+        dgAME.Columns("Agendados").HeaderText = "Agend"
+        dgAME.Columns("Presentes").DefaultCellStyle.Format = "N0"
+        dgAME.Columns("Presentes").HeaderText = "Pres"
+        dgAME.Columns("Faltosos").DefaultCellStyle.Format = "N0"
+        dgAME.Columns("Faltosos").HeaderText = "Faltas"
+        dgAME.Columns("Livre").DefaultCellStyle.Format = "N0"
+
+        dgAME.Columns("Demanda").DefaultCellStyle.Format = "N0"
+        dgAME.Columns("Demanda").HeaderText = "Dem"
+        dgAME.Columns("Total").DefaultCellStyle.Format = "N0"
+        dgAME.Columns("Agendados").Width = 40
+        dgAME.Columns("Presentes").Width = 40
+        dgAME.Columns("Faltosos").Width = 40
+        dgAME.Columns("Livre").Width = 40
+        dgAME.Columns("Disponibilizadas").DefaultCellStyle.Format = "N0"
+        dgAME.Columns("Disponibilizadas").Width = 40
+        dgAME.Columns("Disponibilizadas").HeaderText = "Disp"
+        dgAME.Columns("Demanda").Width = 40
+        dgAME.Columns("Total").Width = 40
+
+
         ' Carregar os filtros
         CarregarFiltros()
     End Sub
 
     Private Sub CarregarFiltros()
         ComboBoxEspecialidade.Items.Clear()
-        ComboBoxEspecialidade.Items.Add("Todos")
+        ComboBoxEspecialidade.Items.Add("TODOS")
         ComboBoxEspecialidade.Items.AddRange(tabelaConsultas.DefaultView.ToTable(True, "Especialidade").AsEnumerable().Select(Function(r) r(0).ToString()).ToArray())
 
         ComboBoxProfissional.Items.Clear()
-        ComboBoxProfissional.Items.Add("Todos")
+        ComboBoxProfissional.Items.Add("TODOS")
         ComboBoxProfissional.Items.AddRange(tabelaConsultas.DefaultView.ToTable(True, "Profissional").AsEnumerable().Select(Function(r) r(0).ToString()).ToArray())
 
         ComboBoxEspecialidade.SelectedIndex = 0

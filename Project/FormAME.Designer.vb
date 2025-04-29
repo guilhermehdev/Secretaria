@@ -22,14 +22,18 @@ Partial Class FormAME
     'Não o modifique usando o editor de códigos.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.dgAME = New System.Windows.Forms.DataGridView()
         Me.ComboBoxEspecialidade = New System.Windows.Forms.ComboBox()
         Me.ComboBoxProfissional = New System.Windows.Forms.ComboBox()
         Me.ButtonFiltrar = New System.Windows.Forms.Button()
         Me.ButtonExportarExcel = New System.Windows.Forms.Button()
         Me.LabelTotais = New System.Windows.Forms.Label()
+        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
         CType(Me.dgAME, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -42,96 +46,131 @@ Partial Class FormAME
         Me.dgAME.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.dgAME.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgAME.BackgroundColor = System.Drawing.Color.White
         Me.dgAME.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgAME.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgAME.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgAME.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.SteelBlue
-        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgAME.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.SteelBlue
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgAME.DefaultCellStyle = DataGridViewCellStyle2
         Me.dgAME.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
-        Me.dgAME.Location = New System.Drawing.Point(12, 41)
+        Me.dgAME.Location = New System.Drawing.Point(12, 60)
         Me.dgAME.MultiSelect = False
         Me.dgAME.Name = "dgAME"
         Me.dgAME.ReadOnly = True
         Me.dgAME.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.ControlDark
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgAME.RowHeadersDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.ControlDark
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgAME.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
         Me.dgAME.RowHeadersWidth = 4
         Me.dgAME.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgAME.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgAME.Size = New System.Drawing.Size(1004, 484)
+        Me.dgAME.Size = New System.Drawing.Size(1004, 410)
         Me.dgAME.TabIndex = 31
         Me.dgAME.TabStop = False
         '
         'ComboBoxEspecialidade
         '
         Me.ComboBoxEspecialidade.FormattingEnabled = True
-        Me.ComboBoxEspecialidade.Location = New System.Drawing.Point(12, 14)
+        Me.ComboBoxEspecialidade.Location = New System.Drawing.Point(12, 33)
         Me.ComboBoxEspecialidade.Name = "ComboBoxEspecialidade"
-        Me.ComboBoxEspecialidade.Size = New System.Drawing.Size(194, 21)
+        Me.ComboBoxEspecialidade.Size = New System.Drawing.Size(211, 21)
         Me.ComboBoxEspecialidade.TabIndex = 32
         '
         'ComboBoxProfissional
         '
         Me.ComboBoxProfissional.FormattingEnabled = True
-        Me.ComboBoxProfissional.Location = New System.Drawing.Point(229, 14)
+        Me.ComboBoxProfissional.Location = New System.Drawing.Point(229, 33)
         Me.ComboBoxProfissional.Name = "ComboBoxProfissional"
         Me.ComboBoxProfissional.Size = New System.Drawing.Size(254, 21)
         Me.ComboBoxProfissional.TabIndex = 33
         '
         'ButtonFiltrar
         '
-        Me.ButtonFiltrar.Location = New System.Drawing.Point(489, 14)
+        Me.ButtonFiltrar.Location = New System.Drawing.Point(489, 32)
         Me.ButtonFiltrar.Name = "ButtonFiltrar"
         Me.ButtonFiltrar.Size = New System.Drawing.Size(75, 23)
         Me.ButtonFiltrar.TabIndex = 34
-        Me.ButtonFiltrar.Text = "Button2"
+        Me.ButtonFiltrar.Text = "Filtrar"
         Me.ButtonFiltrar.UseVisualStyleBackColor = True
         '
         'ButtonExportarExcel
         '
-        Me.ButtonExportarExcel.Location = New System.Drawing.Point(570, 14)
+        Me.ButtonExportarExcel.Location = New System.Drawing.Point(570, 32)
         Me.ButtonExportarExcel.Name = "ButtonExportarExcel"
         Me.ButtonExportarExcel.Size = New System.Drawing.Size(75, 23)
         Me.ButtonExportarExcel.TabIndex = 35
-        Me.ButtonExportarExcel.Text = "Button2"
+        Me.ButtonExportarExcel.Text = "Excel"
         Me.ButtonExportarExcel.UseVisualStyleBackColor = True
         '
         'LabelTotais
         '
         Me.LabelTotais.AutoSize = True
-        Me.LabelTotais.Location = New System.Drawing.Point(675, 19)
+        Me.LabelTotais.Location = New System.Drawing.Point(651, 36)
         Me.LabelTotais.Name = "LabelTotais"
-        Me.LabelTotais.Size = New System.Drawing.Size(39, 13)
+        Me.LabelTotais.Size = New System.Drawing.Size(60, 13)
         Me.LabelTotais.TabIndex = 36
-        Me.LabelTotais.Text = "Label1"
+        Me.LabelTotais.Text = "Resultados"
+        '
+        'StatusStrip1
+        '
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 473)
+        Me.StatusStrip1.Name = "StatusStrip1"
+        Me.StatusStrip1.Size = New System.Drawing.Size(1028, 22)
+        Me.StatusStrip1.TabIndex = 37
+        Me.StatusStrip1.Text = "StatusStrip1"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(9, 17)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(73, 13)
+        Me.Label1.TabIndex = 38
+        Me.Label1.Text = "Especialidade"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(226, 17)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(60, 13)
+        Me.Label2.TabIndex = 39
+        Me.Label2.Text = "Profissional"
         '
         'FormAME
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1028, 537)
+        Me.ClientSize = New System.Drawing.Size(1028, 495)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.LabelTotais)
         Me.Controls.Add(Me.ButtonExportarExcel)
         Me.Controls.Add(Me.ButtonFiltrar)
         Me.Controls.Add(Me.ComboBoxProfissional)
         Me.Controls.Add(Me.ComboBoxEspecialidade)
         Me.Controls.Add(Me.dgAME)
-        Me.MaximizeBox = False
-        Me.MinimizeBox = False
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Name = "FormAME"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "AME"
@@ -146,4 +185,7 @@ Partial Class FormAME
     Friend WithEvents ButtonFiltrar As Button
     Friend WithEvents ButtonExportarExcel As Button
     Friend WithEvents LabelTotais As Label
+    Friend WithEvents StatusStrip1 As StatusStrip
+    Friend WithEvents Label1 As Label
+    Friend WithEvents Label2 As Label
 End Class
