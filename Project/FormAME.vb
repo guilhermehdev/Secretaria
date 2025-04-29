@@ -10,7 +10,7 @@ Imports System.Text
 Public Class FormAME
     Dim pdf As New PDF
     Dim pig As New PDFPig
-    Dim pdfPath As String = "E:\Desktop\mensal_abril.pdf"
+    Dim pdfPath As String = "D:\Desktop\mensal_abril.pdf"
 
     Public Function ExtrairConsultas() As List(Of Consulta)
         Dim consultas As New List(Of Consulta)()
