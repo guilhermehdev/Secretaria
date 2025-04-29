@@ -258,40 +258,219 @@ Public Class FormAME
     Private Sub ButtonExportarExcel_Click(sender As Object, e As EventArgs) Handles ButtonExportarExcel.Click
         Dim sfd As New SaveFileDialog()
         sfd.Filter = "Excel Files|*.xlsx"
-        sfd.Title = "Salvar Arquivo Excel"
+        sfd.Title = "Salvar Relatório Formato Abril"
 
         If sfd.ShowDialog() = DialogResult.OK Then
-            ExportarDataTableParaExcel(tabelaConsultasFiltradas, sfd.FileName)
-            MessageBox.Show("Arquivo Excel exportado com sucesso!")
+            ExportarDataTableResumoAbril(tabelaConsultasFiltradas, sfd.FileName, "Abril")
         End If
     End Sub
 
-    Private Sub ExportarDataTableParaExcel(tabela As DataTable, caminho As String)
+    Private Sub ExportarDataTableResumoAbril(tabela As DataTable, caminho As String, SheetName As String)
         Dim excelApp As Object = CreateObject("Excel.Application")
         Dim workbook = excelApp.Workbooks.Add()
         Dim worksheet = workbook.Sheets(1)
+        worksheet.Name = SheetName
+
+        ' Tipos desejados
+        Dim tipoConsulta = "CONSULTA SUBSEQUENTE-RETORNO"
+        Dim tipoRegulacao = "REGULAÇÃO"
+
+        ' Agrupamento por Especialidade + Profissional
+        Dim grupos = tabela.AsEnumerable().
+        Where(Function(r) r("TipoAtendimento").ToString() = tipoConsulta OrElse r("TipoAtendimento").ToString() = tipoRegulacao).
+        GroupBy(Function(r) New With {
+            Key .Especialidade = r("Especialidade").ToString(),
+            Key .Profissional = r("Profissional").ToString()
+        }).ToList()
 
         ' Cabeçalhos
-        For i As Integer = 0 To tabela.Columns.Count - 1
-            worksheet.Cells(1, i + 1).Value = tabela.Columns(i).ColumnName
-        Next
+        worksheet.Cells(1, 1).Value = "ESPECIALIDADE"
+        worksheet.Cells(1, 2).Value = "PROFISSIONAL"
+        worksheet.Cells(1, 3).Value = $"{tipoConsulta} - DISPONIBILIZADAS"
+        worksheet.Cells(1, 4).Value = $"{tipoRegulacao} - DISPONIBILIZADAS"
+        worksheet.Cells(1, 5).Value = "DISPONIBILIZADAS"
+        worksheet.Cells(1, 6).Value = "PRESENTES"
+        worksheet.Cells(1, 7).Value = "FALTOSOS"
+        worksheet.Cells(1, 8).Value = "% FALTOSOS"
+
+        worksheet.Rows("1:1").Font.Bold = True
+        worksheet.Rows("1:1").Interior.Color = RGB(79, 129, 189)
+        worksheet.Rows("1:1").Font.Color = RGB(255, 255, 255)
 
         ' Dados
-        For i As Integer = 0 To tabela.Rows.Count - 1
-            For j As Integer = 0 To tabela.Columns.Count - 1
-                worksheet.Cells(i + 2, j + 1).Value = tabela.Rows(i)(j)
-            Next
+        Dim linha = 2
+        For Each grupo In grupos
+            Dim disponibilizadasConsulta = grupo.
+            Where(Function(r) r("TipoAtendimento").ToString() = tipoConsulta).
+            Sum(Function(r) Convert.ToInt32(r("Disponibilizadas")))
+
+            Dim disponibilizadasRegulacao = grupo.
+            Where(Function(r) r("TipoAtendimento").ToString() = tipoRegulacao).
+            Sum(Function(r) Convert.ToInt32(r("Disponibilizadas")))
+
+            Dim totalDisponibilizadas = disponibilizadasConsulta + disponibilizadasRegulacao
+
+            Dim presentes = grupo.Sum(Function(r) Convert.ToInt32(r("Presentes")))
+            Dim faltosos = grupo.Sum(Function(r) Convert.ToInt32(r("Faltosos")))
+            Dim percentualFaltosos As Double = If(presentes + faltosos > 0, faltosos / (faltosos + presentes), 0)
+
+            worksheet.Cells(linha, 1).Value = grupo.Key.Especialidade
+            worksheet.Cells(linha, 2).Value = grupo.Key.Profissional
+            worksheet.Cells(linha, 3).Value = disponibilizadasConsulta
+            worksheet.Cells(linha, 4).Value = disponibilizadasRegulacao
+            worksheet.Cells(linha, 5).Value = totalDisponibilizadas
+            worksheet.Cells(linha, 6).Value = presentes
+            worksheet.Cells(linha, 7).Value = faltosos
+            worksheet.Cells(linha, 8).Value = Math.Round(percentualFaltosos, 4)
+            worksheet.Cells(linha, 8).NumberFormat = "0.00%"
+
+            linha += 1
         Next
 
+        ' Linha de total geral
+        Dim linhaTotal As Integer = linha
+        worksheet.Cells(linhaTotal, 1).Value = "TOTAL GERAL"
+        worksheet.Cells(linhaTotal, 1).Font.Bold = True
+
+        ' Soma das colunas 3 a 7
+        For col = 3 To 7
+            Dim colLetra As String = GetExcelColumnName(col)
+            worksheet.Cells(linhaTotal, col).Formula = $"=SUM({colLetra}2:{colLetra}{linha - 1})"
+            worksheet.Cells(linhaTotal, col).Font.Bold = True
+        Next
+
+        ' Fórmula de % Faltosos total
+        worksheet.Cells(linhaTotal, 8).Formula = $"=G{linhaTotal}/(F{linhaTotal}+G{linhaTotal})"
+        worksheet.Cells(linhaTotal, 8).NumberFormat = "0.00%"
+        worksheet.Cells(linhaTotal, 8).Font.Bold = True
+
+        ' Congelar cabeçalho e autoajustar
+        worksheet.Range("A2").Select()
+        excelApp.ActiveWindow.FreezePanes = True
+        worksheet.Columns.AutoFit()
+
+        ' Salvar
         workbook.SaveAs(caminho)
-        workbook.Close()
+        workbook.Close(False)
         excelApp.Quit()
+
+        MsgBox("Relatório exportado com sucesso!", MsgBoxStyle.Information)
+    End Sub
+
+    Private Function GetExcelColumnName(colIndex As Integer) As String
+        Dim dividend As Integer = colIndex
+        Dim columnName As String = String.Empty
+        Dim modulo As Integer
+
+        While dividend > 0
+            modulo = (dividend - 1) Mod 26
+            columnName = Chr(65 + modulo) & columnName
+            dividend = (dividend - modulo) \ 26
+        End While
+
+        Return columnName
+    End Function
+
+
+    Private Sub ExportarEXCEL(tabela As DataTable, caminho As String, SheetName As String)
+        Dim excelApp As Object = CreateObject("Excel.Application")
+        Dim workbook = excelApp.Workbooks.Add()
+        Dim worksheet = workbook.Sheets(1)
+        worksheet.Name = SheetName
+
+        ' Obter todos os tipos de atendimento únicos
+        ' Apenas tipos de atendimento permitidos
+        Dim tiposPermitidos = New List(Of String) From {
+    "CONSULTA SUBSEQUENTE-RETORNO",
+    "REGULAÇÃO"
+}
+
+        ' Obter tipos existentes filtrando os permitidos
+        Dim tiposAtendimento = tabela.DefaultView.ToTable(True, "TipoAtendimento") _
+    .AsEnumerable().
+    Select(Function(r) r(0).ToString()).
+    Where(Function(t) tiposPermitidos.Contains(t)).
+    Distinct().
+    ToList()
+
+
+        ' Estrutura da tabela pivotada em memória
+        Dim linhasAgrupadas = tabela.AsEnumerable().
+        GroupBy(Function(r) New With {
+            Key .Especialidade = r("Especialidade").ToString(),
+            Key .Profissional = r("Profissional").ToString()
+        }).ToList()
+
+        ' Cabeçalhos fixos
+        worksheet.Cells(1, 1).Value = "ESPECIALIDADE"
+        worksheet.Cells(1, 2).Value = "PROFISSIONAL"
+
+        Dim colIndex As Integer = 3
+        For Each tipo In tiposAtendimento
+            worksheet.Cells(1, colIndex).Value = tipo & " - DISPONIBILIZADAS"
+            worksheet.Cells(1, colIndex + 1).Value = tipo & " - PRESENTES"
+            worksheet.Cells(1, colIndex + 2).Value = tipo & " - FALTOSOS"
+            worksheet.Cells(1, colIndex + 3).Value = tipo & " - % FALTOSOS"
+            colIndex += 4
+        Next
+
+        ' Preencher os dados
+        Dim linhaExcel As Integer = 2
+        For Each grupo In linhasAgrupadas
+            worksheet.Cells(linhaExcel, 1).Value = grupo.Key.Especialidade
+            worksheet.Cells(linhaExcel, 2).Value = grupo.Key.Profissional
+
+            colIndex = 3
+            For Each tipo In tiposAtendimento
+                Dim linhaTipo = grupo.FirstOrDefault(Function(r) r("TipoAtendimento").ToString() = tipo)
+
+                If linhaTipo IsNot Nothing Then
+                    worksheet.Cells(linhaExcel, colIndex).Value = linhaTipo("Disponibilizadas")
+                    worksheet.Cells(linhaExcel, colIndex + 1).Value = linhaTipo("Presentes")
+                    worksheet.Cells(linhaExcel, colIndex + 2).Value = linhaTipo("Faltosos")
+                    worksheet.Cells(linhaExcel, colIndex + 3).Value = Math.Round(Convert.ToDouble(linhaTipo("PercentualFaltosos")), 2) / 100.0
+                    worksheet.Cells(linhaExcel, colIndex + 3).NumberFormat = "0.00%"
+                Else
+                    worksheet.Cells(linhaExcel, colIndex).Value = 0
+                    worksheet.Cells(linhaExcel, colIndex + 1).Value = 0
+                    worksheet.Cells(linhaExcel, colIndex + 2).Value = 0
+                    worksheet.Cells(linhaExcel, colIndex + 3).Value = 0
+                    worksheet.Cells(linhaExcel, colIndex + 3).NumberFormat = "0.00%"
+                End If
+
+                colIndex += 4
+            Next
+
+            linhaExcel += 1
+        Next
+
+        ' Congelar cabeçalhos e aplicar estilo
+        worksheet.Range("A2").Select()
+        excelApp.ActiveWindow.FreezePanes = True
+
+        worksheet.Rows("1:1").Font.Bold = True
+        worksheet.Rows("1:1").Interior.Color = RGB(79, 129, 189)
+        worksheet.Rows("1:1").Font.Color = RGB(255, 255, 255)
+
+        ' Autoajustar colunas
+        worksheet.Columns.AutoFit()
+
+        ' Salvar
+        workbook.SaveAs(caminho)
+        workbook.Close(False)
+        excelApp.Quit()
+
+        MsgBox("Arquivo Excel exportado com sucesso!", MsgBoxStyle.Information)
     End Sub
 
     Private Sub FormAME_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         CarregarConsultas()
     End Sub
+
 End Class
+
+
+
 
 Public Class Consulta
     ' Public Property Unidade As String
