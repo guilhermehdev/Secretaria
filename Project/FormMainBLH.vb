@@ -95,5 +95,11 @@ Public Class FormMainBLH
     Private Sub DoadorasToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DoadorasToolStripMenuItem.Click
         FormBLHCadastroDoadoras.Show()
     End Sub
+    Private Sub ProcessamentoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ProcessamentoToolStripMenuItem.Click
+        FormBLHProcessamento.Show()
+    End Sub
+    Private Sub FormMainBLH_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        Fstart.Visible = True
+    End Sub
 
 End Class
