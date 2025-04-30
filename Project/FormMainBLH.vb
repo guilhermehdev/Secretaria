@@ -37,7 +37,14 @@ Public Class FormMainBLH
     End Function
 
     Public Sub rotulosPDF(dataTable As DataTable)
-        Dim filePath As String = Application.StartupPath & "\PDF\Rotulos.pdf"
+        Dim sfd As New SaveFileDialog()
+        sfd.Filter = "PDF Files|*.pdf"
+        sfd.Title = "Salvar Rótulos"
+        Dim filePath As String = Application.StartupPath & "\PDF\Rotulos.pdf" ' Caminho padrão para salvar o arquivo PDF
+
+        If sfd.ShowDialog() = DialogResult.OK Then
+            filePath = sfd.FileName
+        End If
 
         ' Criação do documento PDF
         Dim documento As New Document(PageSize.A4, 10, 10, 15, 15)
