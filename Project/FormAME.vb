@@ -568,15 +568,11 @@ Public Class FormAME
 
         MsgBox("Arquivo Excel exportado com sucesso!", MsgBoxStyle.Information)
     End Sub
-
     Private Sub FormAME_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         CarregarConsultas()
     End Sub
 
 End Class
-
-
-
 
 Public Class Consulta
     ' Public Property Unidade As String
