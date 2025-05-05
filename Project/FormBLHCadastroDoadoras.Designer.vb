@@ -26,23 +26,15 @@ Partial Class FormBLHCadastroDoadoras
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormBLHCadastroDoadoras))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.tbDataCadastro = New System.Windows.Forms.MaskedTextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.btCancelar = New System.Windows.Forms.Button()
         Me.Button4 = New System.Windows.Forms.Button()
         Me.tbOBS = New System.Windows.Forms.TextBox()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.btSalvarDoadora = New System.Windows.Forms.Button()
-        Me.Label6 = New System.Windows.Forms.Label()
         Me.btAtualizarDoadora = New System.Windows.Forms.Button()
         Me.btExcluirDoadora = New System.Windows.Forms.Button()
-        Me.cbResultado = New System.Windows.Forms.ComboBox()
-        Me.tbDataVencimento = New System.Windows.Forms.MaskedTextBox()
-        Me.Label5 = New System.Windows.Forms.Label()
-        Me.tbDataSorologia = New System.Windows.Forms.MaskedTextBox()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.cbOrigem = New System.Windows.Forms.ComboBox()
-        Me.tbDataParto = New System.Windows.Forms.MaskedTextBox()
-        Me.Label2 = New System.Windows.Forms.Label()
         Me.tbNome = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.dgDoadoras = New System.Windows.Forms.DataGridView()
@@ -59,23 +51,15 @@ Partial Class FormBLHCadastroDoadoras
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.tbDataCadastro)
+        Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.btCancelar)
         Me.GroupBox1.Controls.Add(Me.Button4)
         Me.GroupBox1.Controls.Add(Me.tbOBS)
         Me.GroupBox1.Controls.Add(Me.Label7)
         Me.GroupBox1.Controls.Add(Me.btSalvarDoadora)
-        Me.GroupBox1.Controls.Add(Me.Label6)
         Me.GroupBox1.Controls.Add(Me.btAtualizarDoadora)
         Me.GroupBox1.Controls.Add(Me.btExcluirDoadora)
-        Me.GroupBox1.Controls.Add(Me.cbResultado)
-        Me.GroupBox1.Controls.Add(Me.tbDataVencimento)
-        Me.GroupBox1.Controls.Add(Me.Label5)
-        Me.GroupBox1.Controls.Add(Me.tbDataSorologia)
-        Me.GroupBox1.Controls.Add(Me.Label4)
-        Me.GroupBox1.Controls.Add(Me.Label3)
-        Me.GroupBox1.Controls.Add(Me.cbOrigem)
-        Me.GroupBox1.Controls.Add(Me.tbDataParto)
-        Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.tbNome)
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 280)
@@ -84,6 +68,25 @@ Partial Class FormBLHCadastroDoadoras
         Me.GroupBox1.TabIndex = 1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Dados doadora"
+        '
+        'tbDataCadastro
+        '
+        Me.tbDataCadastro.Location = New System.Drawing.Point(264, 42)
+        Me.tbDataCadastro.Mask = "00/00/0000"
+        Me.tbDataCadastro.Name = "tbDataCadastro"
+        Me.tbDataCadastro.ReadOnly = True
+        Me.tbDataCadastro.Size = New System.Drawing.Size(76, 20)
+        Me.tbDataCadastro.TabIndex = 14
+        Me.tbDataCadastro.ValidatingType = GetType(Date)
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(261, 26)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(78, 13)
+        Me.Label2.TabIndex = 15
+        Me.Label2.Text = "Cadastrada em"
         '
         'btCancelar
         '
@@ -115,16 +118,16 @@ Partial Class FormBLHCadastroDoadoras
         '
         'tbOBS
         '
-        Me.tbOBS.Location = New System.Drawing.Point(109, 120)
+        Me.tbOBS.Location = New System.Drawing.Point(9, 81)
         Me.tbOBS.Multiline = True
         Me.tbOBS.Name = "tbOBS"
-        Me.tbOBS.Size = New System.Drawing.Size(222, 47)
+        Me.tbOBS.Size = New System.Drawing.Size(330, 92)
         Me.tbOBS.TabIndex = 7
         '
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(106, 104)
+        Me.Label7.Location = New System.Drawing.Point(6, 65)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(29, 13)
         Me.Label7.TabIndex = 12
@@ -143,15 +146,6 @@ Partial Class FormBLHCadastroDoadoras
         Me.btSalvarDoadora.TabIndex = 1
         Me.btSalvarDoadora.Text = "Salvar"
         Me.btSalvarDoadora.UseVisualStyleBackColor = False
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(225, 65)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(62, 13)
-        Me.Label6.TabIndex = 11
-        Me.Label6.Text = "Resultado *"
         '
         'btAtualizarDoadora
         '
@@ -183,98 +177,17 @@ Partial Class FormBLHCadastroDoadoras
         Me.btExcluirDoadora.Text = "Excluir"
         Me.btExcluirDoadora.UseVisualStyleBackColor = False
         '
-        'cbResultado
-        '
-        Me.cbResultado.FormattingEnabled = True
-        Me.cbResultado.Items.AddRange(New Object() {"REGULAR", "VENCIDO"})
-        Me.cbResultado.Location = New System.Drawing.Point(228, 80)
-        Me.cbResultado.Name = "cbResultado"
-        Me.cbResultado.Size = New System.Drawing.Size(103, 21)
-        Me.cbResultado.TabIndex = 5
-        '
-        'tbDataVencimento
-        '
-        Me.tbDataVencimento.Location = New System.Drawing.Point(18, 120)
-        Me.tbDataVencimento.Mask = "00/00/0000"
-        Me.tbDataVencimento.Name = "tbDataVencimento"
-        Me.tbDataVencimento.Size = New System.Drawing.Size(85, 20)
-        Me.tbDataVencimento.TabIndex = 6
-        Me.tbDataVencimento.ValidatingType = GetType(Date)
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(15, 104)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(70, 13)
-        Me.Label5.TabIndex = 8
-        Me.Label5.Text = "Vencimento *"
-        '
-        'tbDataSorologia
-        '
-        Me.tbDataSorologia.Location = New System.Drawing.Point(145, 81)
-        Me.tbDataSorologia.Mask = "00/00/0000"
-        Me.tbDataSorologia.Name = "tbDataSorologia"
-        Me.tbDataSorologia.Size = New System.Drawing.Size(78, 20)
-        Me.tbDataSorologia.TabIndex = 4
-        Me.tbDataSorologia.ValidatingType = GetType(Date)
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(142, 65)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(82, 13)
-        Me.Label4.TabIndex = 6
-        Me.Label4.Text = "Data sorologia *"
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(15, 65)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(47, 13)
-        Me.Label3.TabIndex = 5
-        Me.Label3.Text = "Origem *"
-        '
-        'cbOrigem
-        '
-        Me.cbOrigem.FormattingEnabled = True
-        Me.cbOrigem.Items.AddRange(New Object() {"HRI", "CASA", "CESCRIM", "PG", "ITANHAÉM"})
-        Me.cbOrigem.Location = New System.Drawing.Point(18, 80)
-        Me.cbOrigem.Name = "cbOrigem"
-        Me.cbOrigem.Size = New System.Drawing.Size(121, 21)
-        Me.cbOrigem.TabIndex = 3
-        '
-        'tbDataParto
-        '
-        Me.tbDataParto.Location = New System.Drawing.Point(253, 42)
-        Me.tbDataParto.Mask = "00/00/0000"
-        Me.tbDataParto.Name = "tbDataParto"
-        Me.tbDataParto.Size = New System.Drawing.Size(78, 20)
-        Me.tbDataParto.TabIndex = 2
-        Me.tbDataParto.ValidatingType = GetType(Date)
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(250, 26)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(79, 13)
-        Me.Label2.TabIndex = 2
-        Me.Label2.Text = "Data do parto *"
-        '
         'tbNome
         '
-        Me.tbNome.Location = New System.Drawing.Point(18, 42)
+        Me.tbNome.Location = New System.Drawing.Point(9, 42)
         Me.tbNome.Name = "tbNome"
-        Me.tbNome.Size = New System.Drawing.Size(229, 20)
+        Me.tbNome.Size = New System.Drawing.Size(249, 20)
         Me.tbNome.TabIndex = 1
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(15, 26)
+        Me.Label1.Location = New System.Drawing.Point(6, 26)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(42, 13)
         Me.Label1.TabIndex = 0
@@ -363,8 +276,8 @@ Partial Class FormBLHCadastroDoadoras
         'ToolStripStatusLabel1
         '
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(119, 17)
-        Me.ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(67, 17)
+        Me.ToolStripStatusLabel1.Text = "N Registros"
         '
         'FormBLHCadastroDoadoras
         '
@@ -396,16 +309,6 @@ Partial Class FormBLHCadastroDoadoras
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents tbNome As TextBox
     Friend WithEvents Label1 As Label
-    Friend WithEvents tbDataParto As MaskedTextBox
-    Friend WithEvents Label2 As Label
-    Friend WithEvents Label3 As Label
-    Friend WithEvents cbOrigem As ComboBox
-    Friend WithEvents tbDataVencimento As MaskedTextBox
-    Friend WithEvents Label5 As Label
-    Friend WithEvents tbDataSorologia As MaskedTextBox
-    Friend WithEvents Label4 As Label
-    Friend WithEvents Label6 As Label
-    Friend WithEvents cbResultado As ComboBox
     Friend WithEvents dgDoadoras As DataGridView
     Friend WithEvents GroupBox2 As GroupBox
     Friend WithEvents btExcluirDoadora As Button
@@ -419,4 +322,6 @@ Partial Class FormBLHCadastroDoadoras
     Friend WithEvents Label8 As Label
     Friend WithEvents tbBusca As TextBox
     Friend WithEvents btCancelar As Button
+    Friend WithEvents tbDataCadastro As MaskedTextBox
+    Friend WithEvents Label2 As Label
 End Class
