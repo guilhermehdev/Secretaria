@@ -10,13 +10,13 @@ Imports System.Text
 Public Class FormAME
     Dim pdf As New PDF
     Dim pig As New PDFPig
-    Dim pdfPath As String = "D:\Desktop\mensal_abril.pdf"
+    Dim pdfPath As String
     Private tabelaConsultas As DataTable
     Private tabelaConsultasFiltradas As DataTable
     Public Function ExtrairConsultas() As List(Of Consulta)
         Dim consultas As New List(Of Consulta)()
 
-        Dim textoFormatado As String = pig.ExtrairDadosPDF()
+        Dim textoFormatado As String = pig.ExtrairDadosPDF(pdfPath)
         Dim linhas() As String = textoFormatado.Split(New String() {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)
 
         Dim especialidadeAtual As String = ""
@@ -229,22 +229,27 @@ Public Class FormAME
     Private Sub ButtonFiltrar_Click(sender As Object, e As EventArgs) Handles ButtonFiltrar.Click
         Dim filtro As String = ""
 
-        If ComboBoxEspecialidade.SelectedIndex > 0 Then
-            filtro &= $"Especialidade = '{ComboBoxEspecialidade.SelectedItem}'"
-        End If
+        Try
 
-        If ComboBoxProfissional.SelectedIndex > 0 Then
-            If filtro <> "" Then filtro &= " AND "
-            filtro &= $"Profissional = '{ComboBoxProfissional.SelectedItem}'"
-        End If
+            If ComboBoxEspecialidade.SelectedIndex > 0 Then
+                filtro &= $"Especialidade = '{ComboBoxEspecialidade.SelectedItem}'"
+            End If
 
-        Dim view As New DataView(tabelaConsultas)
-        view.RowFilter = filtro
+            If ComboBoxProfissional.SelectedIndex > 0 Then
+                If filtro <> "" Then filtro &= " AND "
+                filtro &= $"Profissional = '{ComboBoxProfissional.SelectedItem}'"
+            End If
 
-        tabelaConsultasFiltradas = view.ToTable()
-        dgAME.DataSource = tabelaConsultasFiltradas
-        AtualizarTotais()
-        ' Atualizar totais
+            Dim view As New DataView(tabelaConsultas)
+            view.RowFilter = filtro
+
+            tabelaConsultasFiltradas = view.ToTable()
+            dgAME.DataSource = tabelaConsultasFiltradas
+            AtualizarTotais()
+            ' Atualizar totais
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Sub AtualizarTotais()
@@ -261,198 +266,205 @@ Public Class FormAME
         sfd.Title = "Salvar Relatório Formato Abril"
 
         If sfd.ShowDialog() = DialogResult.OK Then
-            ExportarDataTableResumoAbril(tabelaConsultasFiltradas, sfd.FileName, "Abril")
+            ExportarDataTableToExcel(tabelaConsultasFiltradas, sfd.FileName, "Abril")
         End If
     End Sub
 
-    Private Sub ExportarDataTableResumoAbril(tabela As DataTable, caminho As String, SheetName As String)
-        Dim excelApp As Object = CreateObject("Excel.Application")
-        excelApp.DisplayAlerts = False
-
-        Dim workbook = excelApp.Workbooks.Add()
-        Dim worksheet = workbook.Sheets(1)
-        worksheet.Name = SheetName
-
-        ' Tipos desejados
-        Dim tipoConsulta = "CONSULTA SUBSEQUENTE-RETORNO"
-        Dim tipoRegulacao = "REGULAÇÃO"
-
-        ' Agrupar por Especialidade + Profissional
-        Dim grupos = tabela.AsEnumerable().
-        Where(Function(r) r("TipoAtendimento").ToString() = tipoConsulta OrElse r("TipoAtendimento").ToString() = tipoRegulacao).
-        GroupBy(Function(r) New With {
-            Key .Especialidade = r("Especialidade").ToString(),
-            Key .Profissional = r("Profissional").ToString()
-        }).ToList()
+    Private Sub ExportarDataTableToExcel(tabela As DataTable, caminho As String, SheetName As String)
+        Try
 
 
-        ' Cabeçalhos
-        worksheet.Cells(1, 1).Value = "ESPECIALIDADE"
-        worksheet.Cells(1, 1).FONT.Bold = True
-        worksheet.Cells(1, 2).Value = "PROFISSIONAL"
-        worksheet.Cells(1, 2).FONT.Bold = True
-        worksheet.Cells(1, 3).Value = $"RETORNO"
-        worksheet.Cells(1, 3).FONT.Bold = True
-        worksheet.Cells(1, 4).Value = $"1ª CONSULTA"
-        worksheet.Cells(1, 4).FONT.Bold = True
-        worksheet.Cells(1, 5).Value = "DISPONIVEL"
-        worksheet.Cells(1, 5).FONT.Bold = True
-        worksheet.Cells(1, 6).Value = "FATURADO"
-        worksheet.Cells(1, 6).FONT.Bold = True
-        worksheet.Cells(1, 7).Value = "FALTAS"
-        worksheet.Cells(1, 7).FONT.Bold = True
-        worksheet.Cells(1, 8).Value = "% FALTAS"
-        worksheet.Cells(1, 8).FONT.Bold = True
+            Dim excelApp As Object = CreateObject("Excel.Application")
+            excelApp.DisplayAlerts = False
 
-        worksheet.Rows("1:1").Font.Bold = True
-        worksheet.Rows("1:1").Interior.Color = RGB(79, 129, 189)
-        worksheet.Rows("1:1").Font.Color = RGB(255, 255, 255)
-        worksheet.Rows("1:1").Font.Size = 9
-        ' Preencher dados com fórmulas
-        Dim linha = 2
-        For Each grupo In grupos
-            Dim disponibilizadasConsulta = grupo.
-            Where(Function(r) r("TipoAtendimento").ToString() = tipoConsulta).
-            Sum(Function(r) Convert.ToInt32(r("Disponibilizadas")))
+            Dim workbook = excelApp.Workbooks.Add()
+            Dim worksheet = workbook.Sheets(1)
+            worksheet.Name = SheetName
 
-            Dim disponibilizadasRegulacao = grupo.
-            Where(Function(r) r("TipoAtendimento").ToString() = tipoRegulacao).
-            Sum(Function(r) Convert.ToInt32(r("Disponibilizadas")))
+            ' Tipos desejados
+            Dim tipoConsulta = "CONSULTA SUBSEQUENTE-RETORNO"
+            Dim tipoRegulacao = "REGULAÇÃO"
 
-            ' Dim presentes = grupo.Sum(Function(r) Convert.ToInt32(r("Presentes")))
-            Dim presentes = 0
-
-            worksheet.Cells(linha, 1).Value = grupo.Key.Especialidade
-            worksheet.Cells(linha, 1).FONT.Bold = True
-            worksheet.Cells(linha, 2).Value = grupo.Key.Profissional
-            ' worksheet.Cells(linha, 2).FONT.Bold = True
-            worksheet.Cells(linha, 3).Value = disponibilizadasConsulta
-            'worksheet.Cells(linha, 3).FONT.Bold = True
-            worksheet.Cells(linha, 4).Value = disponibilizadasRegulacao
-            'worksheet.Cells(linha, 4).FONT.Bold = True
-
-            ' Fórmulas: DISPONIBILIZADAS (E), FALTOSOS (G), % FALTOSOS (H)
-            worksheet.Cells(linha, 5).Formula = $"=C{linha}+D{linha}"
-            'worksheet.Cells(linha, 5).FONT.Bold = True
-            worksheet.Cells(linha, 6).Value = presentes
-            'worksheet.Cells(linha, 6).FONT.Bold = True
-            worksheet.Cells(linha, 7).Formula = $"=E{linha}-F{linha}"
-            'worksheet.Cells(linha, 7).FONT.Bold = True
-            worksheet.Cells(linha, 8).Formula = $"=IF(E{linha}=0,0,G{linha}/E{linha})"
-            'worksheet.Cells(linha, 8).FONT.Bold = True
-            worksheet.Cells(linha, 8).NumberFormat = "0.00%"
-
-            linha += 1
-        Next
-
-        ' Linha de total geral
-        Dim linhaTotal As Integer = linha
-        worksheet.Cells(linhaTotal, 1).Value = "TOTAL GERAL"
-        worksheet.Cells(linhaTotal, 1).Font.Bold = True
-
-        ' Soma de colunas 3 a 7
-        For col = 3 To 7
-            Dim colLetra = GetExcelColumnName(col)
-            worksheet.Cells(linhaTotal, col).Formula = $"=SUM({colLetra}2:{colLetra}{linha - 1})"
-            worksheet.Cells(linhaTotal, col).Font.Bold = True
-        Next
-
-        ' % Faltosos total com fórmula
-        worksheet.Cells(linhaTotal, 8).Formula = $"=IF(E{linhaTotal}=0,0,G{linhaTotal}/E{linhaTotal})"
-        worksheet.Cells(linhaTotal, 8).NumberFormat = "0.00%"
-        worksheet.Cells(linhaTotal, 8).Font.Bold = True
-
-        Dim celulasTotais = worksheet.Range($"A{linhaTotal}:B{linhaTotal}")
-        celulasTotais.Merge()
-        celulasTotais.Value = "TOTAL GERAL"
-        celulasTotais.Font.Bold = True
-
-        Dim especCardio = worksheet.Range($"A2:A3")
-        especCardio.Merge()
-        especCardio.Value = "CARDIOLOGIA"
-        especCardio.Font.Bold = True
-        especCardio.VerticalAlignment = -4108
-
-        Dim especOfta = worksheet.Range($"A13:A14")
-        especOfta.Merge()
-        especOfta.Value = "OFTALMOLOGIA"
-        especOfta.Font.Bold = True
-        especOfta.VerticalAlignment = -4108
-
-        Dim especOrto = worksheet.Range($"A15:A16")
-        especOrto.Merge()
-        especOrto.Value = "ORTOPEDIA"
-        especOrto.Font.Bold = True
-        especOrto.VerticalAlignment = -4108
-
-        Dim especOtorrino = worksheet.Range($"A17:A18")
-        especOtorrino.Merge()
-        especOtorrino.Value = "OTORRINOLARINGOLOGIA"
-        especOtorrino.Font.Bold = True
-        especOtorrino.VerticalAlignment = -4108
-
-        Dim especUsg = worksheet.Range($"A20:A23")
-        especUsg.Merge()
-        especUsg.Value = "ULTRASSONOGRAFIA"
-        especUsg.Font.Bold = True
-        especUsg.VerticalAlignment = -4108
-
-        ' Congelar, ajustar
-        worksheet.Range("A2").Select()
-        excelApp.ActiveWindow.FreezePanes = True
-        worksheet.Columns.AutoFit()
-
-        ' Gráficos por Especialidade + Profissional
-        'Dim chartTop As Integer = (linhaTotal + 2) * 15 ' posição inicial (pode ajustar)
-        'For linhaGrafico As Integer = 2 To linhaTotal - 1
-        '    Dim categoriaRange As String = $"E1:G1"
-        '    Dim valorRange As String = $"E{linhaGrafico}:G{linhaGrafico}"
-        '    Dim dadosGraficoRange As String = $"E{linhaGrafico - 1}:G{linhaGrafico}" ' inclui categorias + valores
-
-        '    Dim chartObjects = worksheet.ChartObjects()
-        '    Dim chartObject = chartObjects.Add(300, chartTop, 400, 200)
-        '    Dim chart = chartObject.Chart
-        '    chart.ChartType = 51 ' xlColumnClustered
-
-        '    ' Usa a faixa de categorias + valores
-        '    chart.SetSourceData(worksheet.Range(dadosGraficoRange))
-
-        '    ' Título automático
-        '    Dim nomeProfissional = worksheet.Cells(linhaGrafico, 2).Value
-        '    Dim especialidade = worksheet.Cells(linhaGrafico, 1).Value
-        '    chart.HasTitle = True
-        '    chart.ChartTitle.Text = $"{especialidade} - {nomeProfissional}"
-
-        '    chartTop += 220
-
-        'Next
+            ' Agrupar por Especialidade + Profissional
+            Dim grupos = tabela.AsEnumerable().
+            Where(Function(r) r("TipoAtendimento").ToString() = tipoConsulta OrElse r("TipoAtendimento").ToString() = tipoRegulacao).
+            GroupBy(Function(r) New With {
+                Key .Especialidade = r("Especialidade").ToString(),
+                Key .Profissional = r("Profissional").ToString()
+            }).ToList()
 
 
-        'Dim chartObjects = worksheet.ChartObjects()
-        'Dim chartObject = chartObjects.Add(300, 10, 500, 300) ' (x, y, largura, altura)
-        'Dim chart = chartObject.Chart
+            ' Cabeçalhos
+            worksheet.Cells(1, 1).Value = "ESPECIALIDADE"
+            worksheet.Cells(1, 1).FONT.Bold = True
+            worksheet.Cells(1, 2).Value = "PROFISSIONAL"
+            worksheet.Cells(1, 2).FONT.Bold = True
+            worksheet.Cells(1, 3).Value = $"RETORNO"
+            worksheet.Cells(1, 3).FONT.Bold = True
+            worksheet.Cells(1, 4).Value = $"1ª CONSULTA"
+            worksheet.Cells(1, 4).FONT.Bold = True
+            worksheet.Cells(1, 5).Value = "DISPONIVEL"
+            worksheet.Cells(1, 5).FONT.Bold = True
+            worksheet.Cells(1, 6).Value = "PRESENTES"
+            worksheet.Cells(1, 6).FONT.Bold = True
+            worksheet.Cells(1, 7).Value = "FALTAS"
+            worksheet.Cells(1, 7).FONT.Bold = True
+            worksheet.Cells(1, 8).Value = "% FALTAS"
+            worksheet.Cells(1, 8).FONT.Bold = True
 
-        'chart.ChartType = 51 ' xlColumnClustered
-        'chart.SetSourceData(worksheet.Range($"C{linhaTotal}:G{linhaTotal}"))
-        'chart.HasTitle = True
-        'chart.ChartTitle.Text = "Totais por Métrica"
-        ' Determina o intervalo de células com conteúdo
-        Dim ultimaLinha As Integer = worksheet.Cells(worksheet.Rows.Count, 1).End(-4162).Row ' xlUp
-        Dim ultimaColuna As Integer = worksheet.Cells(1, worksheet.Columns.Count).End(-4159).Column ' xlToLeft
+            worksheet.Rows("1:1").Font.Bold = True
+            worksheet.Rows("1:1").Interior.Color = RGB(79, 129, 189)
+            worksheet.Rows("1:1").Font.Color = RGB(255, 255, 255)
+            worksheet.Rows("1:1").Font.Size = 9
+            ' Preencher dados com fórmulas
+            Dim linha = 2
+            For Each grupo In grupos
+                Dim disponibilizadasConsulta = grupo.
+                Where(Function(r) r("TipoAtendimento").ToString() = tipoConsulta).
+                Sum(Function(r) Convert.ToInt32(r("Disponibilizadas")))
 
-        ' Intervalo de células preenchidas
-        Dim intervalo As Object = worksheet.Range(worksheet.Cells(1, 1), worksheet.Cells(ultimaLinha, ultimaColuna))
+                Dim disponibilizadasRegulacao = grupo.
+                Where(Function(r) r("TipoAtendimento").ToString() = tipoRegulacao).
+                Sum(Function(r) Convert.ToInt32(r("Disponibilizadas")))
 
-        ' Aplicar bordas no intervalo
-        ComBorda(intervalo)
+                Dim presentes = grupo.Sum(Function(r) Convert.ToInt32(r("Presentes")))
+                ' Dim presentes = 0
 
-        worksheet.Columns("C:H").ColumnWidth = 10
+                worksheet.Cells(linha, 1).Value = grupo.Key.Especialidade
+                worksheet.Cells(linha, 1).FONT.Bold = True
+                worksheet.Cells(linha, 2).Value = grupo.Key.Profissional
+                ' worksheet.Cells(linha, 2).FONT.Bold = True
+                worksheet.Cells(linha, 3).Value = disponibilizadasConsulta
+                'worksheet.Cells(linha, 3).FONT.Bold = True
+                worksheet.Cells(linha, 4).Value = disponibilizadasRegulacao
+                'worksheet.Cells(linha, 4).FONT.Bold = True
 
-        workbook.SaveAs(caminho)
-        workbook.Close(False)
-        excelApp.Quit()
+                ' Fórmulas: DISPONIBILIZADAS (E), FALTOSOS (G), % FALTOSOS (H)
+                worksheet.Cells(linha, 5).Formula = $"=C{linha}+D{linha}"
+                'worksheet.Cells(linha, 5).FONT.Bold = True
+                worksheet.Cells(linha, 6).Value = presentes
+                'worksheet.Cells(linha, 6).FONT.Bold = True
+                worksheet.Cells(linha, 7).Formula = $"=E{linha}-F{linha}"
+                'worksheet.Cells(linha, 7).FONT.Bold = True
+                worksheet.Cells(linha, 8).Formula = $"=IF(E{linha}=0,0,G{linha}/E{linha})"
+                'worksheet.Cells(linha, 8).FONT.Bold = True
+                worksheet.Cells(linha, 8).NumberFormat = "0.00%"
 
-        MsgBox("Relatório exportado com sucesso!", MsgBoxStyle.Information)
+                linha += 1
+            Next
+
+            ' Linha de total geral
+            Dim linhaTotal As Integer = linha
+            worksheet.Cells(linhaTotal, 1).Value = "TOTAL GERAL"
+            worksheet.Cells(linhaTotal, 1).Font.Bold = True
+
+            ' Soma de colunas 3 a 7
+            For col = 3 To 7
+                Dim colLetra = GetExcelColumnName(col)
+                worksheet.Cells(linhaTotal, col).Formula = $"=SUM({colLetra}2:{colLetra}{linha - 1})"
+                worksheet.Cells(linhaTotal, col).Font.Bold = True
+            Next
+
+            ' % Faltosos total com fórmula
+            worksheet.Cells(linhaTotal, 8).Formula = $"=IF(E{linhaTotal}=0,0,G{linhaTotal}/E{linhaTotal})"
+            worksheet.Cells(linhaTotal, 8).NumberFormat = "0.00%"
+            worksheet.Cells(linhaTotal, 8).Font.Bold = True
+
+            Dim celulasTotais = worksheet.Range($"A{linhaTotal}:B{linhaTotal}")
+            celulasTotais.Merge()
+            celulasTotais.Value = "TOTAL GERAL"
+            celulasTotais.Font.Bold = True
+
+            Dim especCardio = worksheet.Range($"A2:A3")
+            especCardio.Merge()
+            especCardio.Value = "CARDIOLOGIA"
+            especCardio.Font.Bold = True
+            especCardio.VerticalAlignment = -4108
+
+            Dim especOfta = worksheet.Range($"A13:A14")
+            especOfta.Merge()
+            especOfta.Value = "OFTALMOLOGIA"
+            especOfta.Font.Bold = True
+            especOfta.VerticalAlignment = -4108
+
+            Dim especOrto = worksheet.Range($"A15:A16")
+            especOrto.Merge()
+            especOrto.Value = "ORTOPEDIA"
+            especOrto.Font.Bold = True
+            especOrto.VerticalAlignment = -4108
+
+            Dim especOtorrino = worksheet.Range($"A17:A18")
+            especOtorrino.Merge()
+            especOtorrino.Value = "OTORRINOLARINGOLOGIA"
+            especOtorrino.Font.Bold = True
+            especOtorrino.VerticalAlignment = -4108
+
+            Dim especUsg = worksheet.Range($"A20:A23")
+            especUsg.Merge()
+            especUsg.Value = "ULTRASSONOGRAFIA"
+            especUsg.Font.Bold = True
+            especUsg.VerticalAlignment = -4108
+
+            ' Congelar, ajustar
+            worksheet.Range("A2").Select()
+            excelApp.ActiveWindow.FreezePanes = True
+            worksheet.Columns.AutoFit()
+
+            ' Gráficos por Especialidade + Profissional
+            'Dim chartTop As Integer = (linhaTotal + 2) * 15 ' posição inicial (pode ajustar)
+            'For linhaGrafico As Integer = 2 To linhaTotal - 1
+            '    Dim categoriaRange As String = $"E1:G1"
+            '    Dim valorRange As String = $"E{linhaGrafico}:G{linhaGrafico}"
+            '    Dim dadosGraficoRange As String = $"E{linhaGrafico - 1}:G{linhaGrafico}" ' inclui categorias + valores
+
+            '    Dim chartObjects = worksheet.ChartObjects()
+            '    Dim chartObject = chartObjects.Add(300, chartTop, 400, 200)
+            '    Dim chart = chartObject.Chart
+            '    chart.ChartType = 51 ' xlColumnClustered
+
+            '    ' Usa a faixa de categorias + valores
+            '    chart.SetSourceData(worksheet.Range(dadosGraficoRange))
+
+            '    ' Título automático
+            '    Dim nomeProfissional = worksheet.Cells(linhaGrafico, 2).Value
+            '    Dim especialidade = worksheet.Cells(linhaGrafico, 1).Value
+            '    chart.HasTitle = True
+            '    chart.ChartTitle.Text = $"{especialidade} - {nomeProfissional}"
+
+            '    chartTop += 220
+
+            'Next
+
+
+            'Dim chartObjects = worksheet.ChartObjects()
+            'Dim chartObject = chartObjects.Add(300, 10, 500, 300) ' (x, y, largura, altura)
+            'Dim chart = chartObject.Chart
+
+            'chart.ChartType = 51 ' xlColumnClustered
+            'chart.SetSourceData(worksheet.Range($"C{linhaTotal}:G{linhaTotal}"))
+            'chart.HasTitle = True
+            'chart.ChartTitle.Text = "Totais por Métrica"
+            ' Determina o intervalo de células com conteúdo
+            Dim ultimaLinha As Integer = worksheet.Cells(worksheet.Rows.Count, 1).End(-4162).Row ' xlUp
+            Dim ultimaColuna As Integer = worksheet.Cells(1, worksheet.Columns.Count).End(-4159).Column ' xlToLeft
+
+            ' Intervalo de células preenchidas
+            Dim intervalo As Object = worksheet.Range(worksheet.Cells(1, 1), worksheet.Cells(ultimaLinha, ultimaColuna))
+
+            ' Aplicar bordas no intervalo
+            ComBorda(intervalo)
+
+            worksheet.Columns("C:H").ColumnWidth = 10
+
+            workbook.SaveAs(caminho)
+            workbook.Close(False)
+            excelApp.Quit()
+
+            MsgBox("Relatório exportado com sucesso!", MsgBoxStyle.Information)
+
+        Catch ex As Exception
+            MsgBox($"Erro:{ex.Message}", MsgBoxStyle.Critical)
+        End Try
     End Sub
     Private Sub ComBorda(intervalo As Object)
         intervalo.Borders.Item(1).LineStyle = 1 ' Borda superior
@@ -568,8 +580,17 @@ Public Class FormAME
 
         MsgBox("Arquivo Excel exportado com sucesso!", MsgBoxStyle.Information)
     End Sub
-    Private Sub FormAME_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        CarregarConsultas()
+
+    Private Sub GCASPPToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles GCASPPToolStripMenuItem.Click
+        Dim ofd As New OpenFileDialog()
+        ofd.Filter = "PDF Files|*.pdf"
+        ofd.Title = "Importar PDF do GCASPP"
+
+        If ofd.ShowDialog() = DialogResult.OK Then
+            pdfPath = ofd.FileName
+            CarregarConsultas()
+        End If
+
     End Sub
 
 End Class
