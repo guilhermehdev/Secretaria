@@ -438,101 +438,83 @@
     <Compile Include="BLH.vb" />
     <Compile Include="Clientes.vb" />
     <Compile Include="Cmain.vb" />
-    <Compile Include="Fbackground.Designer.vb">
-      <DependentUpon>Fbackground.vb</DependentUpon>
+    <Compile Include="FormSystemBackground.Designer.vb">
+      <DependentUpon>FormSystemBackground.vb</DependentUpon>
     </Compile>
-    <Compile Include="Fbackground.vb">
+    <Compile Include="FormSystemBackground.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FcadEmendas.Designer.vb">
-      <DependentUpon>FcadEmendas.vb</DependentUpon>
+    <Compile Include="FormEMTUcadPacientes.Designer.vb">
+      <DependentUpon>FormEMTUcadPacientes.vb</DependentUpon>
     </Compile>
-    <Compile Include="FcadEmendas.vb">
+    <Compile Include="FormEMTUcadPacientes.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FcadPacientesEMTU.Designer.vb">
-      <DependentUpon>FcadPacientesEMTU.vb</DependentUpon>
+    <Compile Include="FormCNESmain.Designer.vb">
+      <DependentUpon>FormCNESmain.vb</DependentUpon>
     </Compile>
-    <Compile Include="FcadPacientesEMTU.vb">
+    <Compile Include="FormCNESmain.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FCNES.Designer.vb">
-      <DependentUpon>FCNES.vb</DependentUpon>
+    <Compile Include="FormOuvidoriaEditarProtocolo.Designer.vb">
+      <DependentUpon>FormOuvidoriaEditarProtocolo.vb</DependentUpon>
     </Compile>
-    <Compile Include="FCNES.vb">
+    <Compile Include="FormOuvidoriaEditarProtocolo.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FeditarProtocolo.Designer.vb">
-      <DependentUpon>FeditarProtocolo.vb</DependentUpon>
+    <Compile Include="FormOuvidoriaMail.Designer.vb">
+      <DependentUpon>FormOuvidoriaMail.vb</DependentUpon>
     </Compile>
-    <Compile Include="FeditarProtocolo.vb">
+    <Compile Include="FormOuvidoriaMail.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Fmail.Designer.vb">
-      <DependentUpon>Fmail.vb</DependentUpon>
+    <Compile Include="FormEMTUmain.Designer.vb">
+      <DependentUpon>FormEMTUmain.vb</DependentUpon>
     </Compile>
-    <Compile Include="Fmail.vb">
+    <Compile Include="FormEMTUmain.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FmainEMTU.Designer.vb">
-      <DependentUpon>FmainEMTU.vb</DependentUpon>
+    <Compile Include="FormOuvidoriaNovoProtocolo.Designer.vb">
+      <DependentUpon>FormOuvidoriaNovoProtocolo.vb</DependentUpon>
     </Compile>
-    <Compile Include="FmainEMTU.vb">
+    <Compile Include="FormOuvidoriaNovoProtocolo.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FmainEmendas.Designer.vb">
-      <DependentUpon>FmainEmendas.vb</DependentUpon>
+    <Compile Include="FormSystemConnSettings.designer.vb">
+      <DependentUpon>FormSystemConnSettings.vb</DependentUpon>
     </Compile>
-    <Compile Include="FmainEmendas.vb">
+    <Compile Include="FormSystemConnSettings.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FnovoProtocolo.Designer.vb">
-      <DependentUpon>FnovoProtocolo.vb</DependentUpon>
+    <Compile Include="FormSystemLogs.Designer.vb">
+      <DependentUpon>FormSystemLogs.vb</DependentUpon>
     </Compile>
-    <Compile Include="FnovoProtocolo.vb">
+    <Compile Include="FormSystemLogs.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FConnSettings.designer.vb">
-      <DependentUpon>FConnSettings.vb</DependentUpon>
-    </Compile>
-    <Compile Include="FConnSettings.vb">
+    <Compile Include="FormOuvidoriaMain.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Fimpressao.designer.vb">
-      <DependentUpon>Fimpressao.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Fimpressao.vb">
+    <Compile Include="FormOuvidoriaMain.Designer.vb">
+      <DependentUpon>FormOuvidoriaMain.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Flogs.Designer.vb">
-      <DependentUpon>Flogs.vb</DependentUpon>
+    <Compile Include="FormCNESAlteracoes.Designer.vb">
+      <DependentUpon>FormCNESAlteracoes.vb</DependentUpon>
     </Compile>
-    <Compile Include="Flogs.vb">
+    <Compile Include="FormCNESAlteracoes.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FmainOuvidoria.vb">
+    <Compile Include="FormAMEmain.Designer.vb">
+      <DependentUpon>FormAMEmain.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormAMEmain.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FmainOuvidoria.Designer.vb">
-      <DependentUpon>FmainOuvidoria.vb</DependentUpon>
-      <SubType>Form</SubType>
+    <Compile Include="FormOuvidoriaAprovacao.Designer.vb">
+      <DependentUpon>FormOuvidoriaAprovacao.vb</DependentUpon>
     </Compile>
-    <Compile Include="FormAlteracoesCNES.Designer.vb">
-      <DependentUpon>FormAlteracoesCNES.vb</DependentUpon>
-    </Compile>
-    <Compile Include="FormAlteracoesCNES.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormAME.Designer.vb">
-      <DependentUpon>FormAME.vb</DependentUpon>
-    </Compile>
-    <Compile Include="FormAME.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormAprovacao.Designer.vb">
-      <DependentUpon>FormAprovacao.vb</DependentUpon>
-    </Compile>
-    <Compile Include="FormAprovacao.vb">
+    <Compile Include="FormOuvidoriaAprovacao.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormBLHCadastroDoadoras.Designer.vb">
@@ -547,22 +529,22 @@
     <Compile Include="FormBLHProcessamento.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormCadastroServidorCNES.Designer.vb">
-      <DependentUpon>FormCadastroServidorCNES.vb</DependentUpon>
+    <Compile Include="FormCNESCadastroServidor.Designer.vb">
+      <DependentUpon>FormCNESCadastroServidor.vb</DependentUpon>
     </Compile>
-    <Compile Include="FormCadastroServidorCNES.vb">
+    <Compile Include="FormCNESCadastroServidor.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormCadUsuario.Designer.vb">
-      <DependentUpon>FormCadUsuario.vb</DependentUpon>
+    <Compile Include="FormLoginCadUsuario.Designer.vb">
+      <DependentUpon>FormLoginCadUsuario.vb</DependentUpon>
     </Compile>
-    <Compile Include="FormCadUsuario.vb">
+    <Compile Include="FormLoginCadUsuario.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormFadeNotify.Designer.vb">
-      <DependentUpon>FormFadeNotify.vb</DependentUpon>
+    <Compile Include="FormOuvidoriaFadeNotify.Designer.vb">
+      <DependentUpon>FormOuvidoriaFadeNotify.vb</DependentUpon>
     </Compile>
-    <Compile Include="FormFadeNotify.vb">
+    <Compile Include="FormOuvidoriaFadeNotify.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormLogin.Designer.vb">
@@ -571,16 +553,16 @@
     <Compile Include="FormLogin.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormMainBLH.Designer.vb">
-      <DependentUpon>FormMainBLH.vb</DependentUpon>
+    <Compile Include="FormBLHmain.Designer.vb">
+      <DependentUpon>FormBLHmain.vb</DependentUpon>
     </Compile>
-    <Compile Include="FormMainBLH.vb">
+    <Compile Include="FormBLHmain.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormNovoCadastroCNES.Designer.vb">
-      <DependentUpon>FormNovoCadastroCNES.vb</DependentUpon>
+    <Compile Include="FormCNESNovoCadastro.Designer.vb">
+      <DependentUpon>FormCNESNovoCadastro.vb</DependentUpon>
     </Compile>
-    <Compile Include="FormNovoCadastroCNES.vb">
+    <Compile Include="FormCNESNovoCadastro.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormOuvidoriaAndamento.Designer.vb">
@@ -595,32 +577,25 @@
     <Compile Include="FormOuvidoriasOK.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FplanejCNES.Designer.vb">
-      <DependentUpon>FplanejCNES.vb</DependentUpon>
+    <Compile Include="FormCNESPlanejamento.Designer.vb">
+      <DependentUpon>FormCNESPlanejamento.vb</DependentUpon>
     </Compile>
-    <Compile Include="FplanejCNES.vb">
+    <Compile Include="FormCNESPlanejamento.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FRelatorioPrazos.Designer.vb">
-      <DependentUpon>FRelatorioPrazos.vb</DependentUpon>
+    <Compile Include="FormOuvidoriaRelatorioPrazos.Designer.vb">
+      <DependentUpon>FormOuvidoriaRelatorioPrazos.vb</DependentUpon>
     </Compile>
-    <Compile Include="FRelatorioPrazos.vb">
+    <Compile Include="FormOuvidoriaRelatorioPrazos.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Fstart.Designer.vb">
-      <DependentUpon>Fstart.vb</DependentUpon>
+    <Compile Include="FormSystemStart.Designer.vb">
+      <DependentUpon>FormSystemStart.vb</DependentUpon>
     </Compile>
-    <Compile Include="Fstart.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Fusuarios.Designer.vb">
-      <DependentUpon>Fusuarios.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Fusuarios.vb">
+    <Compile Include="FormSystemStart.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GoogleDriveUploader.vb" />
-    <Compile Include="List.vb" />
     <Compile Include="Logs.vb" />
     <Compile Include="Mail.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -641,65 +616,53 @@
     </Compile>
     <Compile Include="PDF.vb" />
     <Compile Include="PDFPig.vb" />
-    <Compile Include="Produtos.vb" />
-    <Compile Include="Usuarios.vb" />
     <Compile Include="XLStoSQL.vb" />
     <Compile Include="XML.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Fbackground.resx">
-      <DependentUpon>Fbackground.vb</DependentUpon>
+    <EmbeddedResource Include="FormSystemBackground.resx">
+      <DependentUpon>FormSystemBackground.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="FcadEmendas.resx">
-      <DependentUpon>FcadEmendas.vb</DependentUpon>
+    <EmbeddedResource Include="FormEMTUcadPacientes.resx">
+      <DependentUpon>FormEMTUcadPacientes.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FcadPacientesEMTU.resx">
-      <DependentUpon>FcadPacientesEMTU.vb</DependentUpon>
+    <EmbeddedResource Include="FormCNESmain.resx">
+      <DependentUpon>FormCNESmain.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FCNES.resx">
-      <DependentUpon>FCNES.vb</DependentUpon>
+    <EmbeddedResource Include="FormOuvidoriaEditarProtocolo.resx">
+      <DependentUpon>FormOuvidoriaEditarProtocolo.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FeditarProtocolo.resx">
-      <DependentUpon>FeditarProtocolo.vb</DependentUpon>
+    <EmbeddedResource Include="FormOuvidoriaMail.resx">
+      <DependentUpon>FormOuvidoriaMail.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Fmail.resx">
-      <DependentUpon>Fmail.vb</DependentUpon>
+    <EmbeddedResource Include="FormEMTUmain.resx">
+      <DependentUpon>FormEMTUmain.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FmainEMTU.resx">
-      <DependentUpon>FmainEMTU.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FmainEmendas.resx">
-      <DependentUpon>FmainEmendas.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FnovoProtocolo.resx">
-      <DependentUpon>FnovoProtocolo.vb</DependentUpon>
+    <EmbeddedResource Include="FormOuvidoriaNovoProtocolo.resx">
+      <DependentUpon>FormOuvidoriaNovoProtocolo.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="FConnSettings.resx">
-      <DependentUpon>FConnSettings.vb</DependentUpon>
+    <EmbeddedResource Include="FormSystemConnSettings.resx">
+      <DependentUpon>FormSystemConnSettings.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Fimpressao.resx">
-      <DependentUpon>Fimpressao.vb</DependentUpon>
+    <EmbeddedResource Include="FormSystemLogs.resx">
+      <DependentUpon>FormSystemLogs.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Flogs.resx">
-      <DependentUpon>Flogs.vb</DependentUpon>
+    <EmbeddedResource Include="FormOuvidoriaMain.resx">
+      <DependentUpon>FormOuvidoriaMain.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="FmainOuvidoria.resx">
-      <DependentUpon>FmainOuvidoria.vb</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="FormCNESAlteracoes.resx">
+      <DependentUpon>FormCNESAlteracoes.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormAlteracoesCNES.resx">
-      <DependentUpon>FormAlteracoesCNES.vb</DependentUpon>
+    <EmbeddedResource Include="FormAMEmain.resx">
+      <DependentUpon>FormAMEmain.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormAME.resx">
-      <DependentUpon>FormAME.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormAprovacao.resx">
-      <DependentUpon>FormAprovacao.vb</DependentUpon>
+    <EmbeddedResource Include="FormOuvidoriaAprovacao.resx">
+      <DependentUpon>FormOuvidoriaAprovacao.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormBLHCadastroDoadoras.resx">
       <DependentUpon>FormBLHCadastroDoadoras.vb</DependentUpon>
@@ -707,23 +670,23 @@
     <EmbeddedResource Include="FormBLHProcessamento.resx">
       <DependentUpon>FormBLHProcessamento.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormCadastroServidorCNES.resx">
-      <DependentUpon>FormCadastroServidorCNES.vb</DependentUpon>
+    <EmbeddedResource Include="FormCNESCadastroServidor.resx">
+      <DependentUpon>FormCNESCadastroServidor.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormCadUsuario.resx">
-      <DependentUpon>FormCadUsuario.vb</DependentUpon>
+    <EmbeddedResource Include="FormLoginCadUsuario.resx">
+      <DependentUpon>FormLoginCadUsuario.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormFadeNotify.resx">
-      <DependentUpon>FormFadeNotify.vb</DependentUpon>
+    <EmbeddedResource Include="FormOuvidoriaFadeNotify.resx">
+      <DependentUpon>FormOuvidoriaFadeNotify.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormLogin.resx">
       <DependentUpon>FormLogin.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormMainBLH.resx">
-      <DependentUpon>FormMainBLH.vb</DependentUpon>
+    <EmbeddedResource Include="FormBLHmain.resx">
+      <DependentUpon>FormBLHmain.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormNovoCadastroCNES.resx">
-      <DependentUpon>FormNovoCadastroCNES.vb</DependentUpon>
+    <EmbeddedResource Include="FormCNESNovoCadastro.resx">
+      <DependentUpon>FormCNESNovoCadastro.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormOuvidoriaAndamento.resx">
       <DependentUpon>FormOuvidoriaAndamento.vb</DependentUpon>
@@ -731,18 +694,14 @@
     <EmbeddedResource Include="FormOuvidoriasOK.resx">
       <DependentUpon>FormOuvidoriasOK.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FplanejCNES.resx">
-      <DependentUpon>FplanejCNES.vb</DependentUpon>
+    <EmbeddedResource Include="FormCNESPlanejamento.resx">
+      <DependentUpon>FormCNESPlanejamento.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FRelatorioPrazos.resx">
-      <DependentUpon>FRelatorioPrazos.vb</DependentUpon>
+    <EmbeddedResource Include="FormOuvidoriaRelatorioPrazos.resx">
+      <DependentUpon>FormOuvidoriaRelatorioPrazos.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Fstart.resx">
-      <DependentUpon>Fstart.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Fusuarios.resx">
-      <DependentUpon>Fusuarios.vb</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="FormSystemStart.resx">
+      <DependentUpon>FormSystemStart.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

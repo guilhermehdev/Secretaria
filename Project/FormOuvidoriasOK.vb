@@ -4,7 +4,7 @@ Public Class FormOuvidoriasOK
     Dim main As New Main
     Dim protocolsData As DataTable
     Private Sub FormOuvidoriasOK_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Me.Icon = FmainOuvidoria.Icon
+        Me.Icon = FormOuvidoriaMain.Icon
         Try
 
             getProtocols()

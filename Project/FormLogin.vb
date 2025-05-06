@@ -7,7 +7,7 @@ Public Class FormLogin
         Me.Close()
     End Sub
     Private Sub FormLogin_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        Fstart.Visible = True
+        FormSystemStart.Visible = True
     End Sub
 
     Private Sub btLogin_Click(sender As Object, e As EventArgs) Handles btLogin.Click
@@ -15,16 +15,16 @@ Public Class FormLogin
             Me.Cursor = Cursors.WaitCursor
             Select Case system
                 Case "CNES"
-                    FCNES.Show()
+                    FormCNESmain.Show()
                     Me.Visible = False
                 Case "EMTU"
-                    FmainEMTU.Show()
+                    FormEMTUmain.Show()
                     Me.Visible = False
                 Case "EOUVE"
-                    FmainOuvidoria.Show()
+                    FormOuvidoriaMain.Show()
                     Me.Visible = False
                 Case "CADUSUARIOS"
-                    FormCadUsuario.Show()
+                    FormLoginCadUsuario.Show()
                     Me.Visible = False
             End Select
         End If

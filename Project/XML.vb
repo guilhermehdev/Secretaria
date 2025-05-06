@@ -388,10 +388,10 @@ Public Class XML
     End Sub
 
     Public Sub copyXMLFileToServer()
-        FCNES.OpenFileDialog1.ShowDialog()
+        FormCNESmain.OpenFileDialog1.ShowDialog()
 
         Try
-            Dim arquivoLocal As String = FCNES.OpenFileDialog1.FileName ' Caminho do arquivo XML local
+            Dim arquivoLocal As String = FormCNESmain.OpenFileDialog1.FileName ' Caminho do arquivo XML local
             Dim caminhoServidor As String = $"\\{My.Settings.server}\htdocs\Secretaria\CNES\EQUIPES.xml" ' Caminho da pasta no servidor
 
             File.Copy(arquivoLocal, caminhoServidor, True) ' O terceiro parâmetro 'True' permite sobrescrever o arquivo de destino
@@ -549,7 +549,7 @@ Public Class XML
         Try
             ' Verificar se o servidor foi configurado
             If String.IsNullOrWhiteSpace(My.Settings.server) Then
-                FConnSettings.ShowDialog()
+                FormSystemConnSettings.ShowDialog()
                 Exit Sub
             End If
 

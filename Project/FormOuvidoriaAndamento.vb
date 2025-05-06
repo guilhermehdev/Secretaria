@@ -22,7 +22,7 @@
 
     End Sub
     Private Sub FormOuvidoriaAndamento_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Me.Icon = FmainOuvidoria.Icon
+        Me.Icon = FormOuvidoriaMain.Icon
         TextBoxResposta.Focus()
     End Sub
 
@@ -65,7 +65,7 @@
                 sts = 0
             End If
             main.doQuery($"UPDATE manifestacoes SET ok={sts} WHERE id= {idManifest}")
-            FormAprovacao.getProtocols()
+            FormOuvidoriaAprovacao.getProtocols()
         Else
             CheckBoxOKResposta.Checked = False
         End If

@@ -61,6 +61,7 @@ Partial Class FormBLHProcessamento
         Me.cbDoadoras = New System.Windows.Forms.ComboBox()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
+        Me.TabPage3 = New System.Windows.Forms.TabPage()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -72,7 +73,7 @@ Partial Class FormBLHProcessamento
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(325, 30)
+        Me.Label2.Location = New System.Drawing.Point(444, 30)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(75, 13)
         Me.Label2.TabIndex = 4
@@ -81,7 +82,7 @@ Partial Class FormBLHProcessamento
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(331, 70)
+        Me.Label6.Location = New System.Drawing.Point(405, 70)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(58, 13)
         Me.Label6.TabIndex = 19
@@ -91,25 +92,25 @@ Partial Class FormBLHProcessamento
         '
         Me.cbResultado.FormattingEnabled = True
         Me.cbResultado.Items.AddRange(New Object() {"REGULAR", "VENCIDO"})
-        Me.cbResultado.Location = New System.Drawing.Point(334, 85)
+        Me.cbResultado.Location = New System.Drawing.Point(408, 85)
         Me.cbResultado.Name = "cbResultado"
-        Me.cbResultado.Size = New System.Drawing.Size(109, 21)
+        Me.cbResultado.Size = New System.Drawing.Size(154, 21)
         Me.cbResultado.TabIndex = 14
         '
         'tbDataVencimento
         '
-        Me.tbDataVencimento.Location = New System.Drawing.Point(249, 85)
+        Me.tbDataVencimento.Location = New System.Drawing.Point(320, 85)
         Me.tbDataVencimento.Mask = "00/00/0000"
         Me.tbDataVencimento.Name = "tbDataVencimento"
         Me.tbDataVencimento.ReadOnly = True
-        Me.tbDataVencimento.Size = New System.Drawing.Size(79, 20)
+        Me.tbDataVencimento.Size = New System.Drawing.Size(82, 20)
         Me.tbDataVencimento.TabIndex = 16
         Me.tbDataVencimento.ValidatingType = GetType(Date)
         '
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(246, 70)
+        Me.Label5.Location = New System.Drawing.Point(317, 70)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(66, 13)
         Me.Label5.TabIndex = 18
@@ -117,7 +118,7 @@ Partial Class FormBLHProcessamento
         '
         'tbDataSorologia
         '
-        Me.tbDataSorologia.Location = New System.Drawing.Point(161, 85)
+        Me.tbDataSorologia.Location = New System.Drawing.Point(232, 85)
         Me.tbDataSorologia.Mask = "00/00/0000"
         Me.tbDataSorologia.Name = "tbDataSorologia"
         Me.tbDataSorologia.Size = New System.Drawing.Size(82, 20)
@@ -127,7 +128,7 @@ Partial Class FormBLHProcessamento
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(158, 69)
+        Me.Label4.Location = New System.Drawing.Point(229, 69)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(78, 13)
         Me.Label4.TabIndex = 17
@@ -148,7 +149,7 @@ Partial Class FormBLHProcessamento
         Me.cbOrigem.Items.AddRange(New Object() {"HRI", "CASA", "CESCRIM", "PG", "ITANHAÉM"})
         Me.cbOrigem.Location = New System.Drawing.Point(26, 85)
         Me.cbOrigem.Name = "cbOrigem"
-        Me.cbOrigem.Size = New System.Drawing.Size(129, 21)
+        Me.cbOrigem.Size = New System.Drawing.Size(200, 21)
         Me.cbOrigem.TabIndex = 12
         '
         'Label1
@@ -163,11 +164,12 @@ Partial Class FormBLHProcessamento
         'TabControl1
         '
         Me.TabControl1.Controls.Add(Me.TabPage1)
+        Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Location = New System.Drawing.Point(12, 26)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(477, 453)
+        Me.TabControl1.Size = New System.Drawing.Size(598, 377)
         Me.TabControl1.TabIndex = 22
         '
         'TabPage1
@@ -194,7 +196,7 @@ Partial Class FormBLHProcessamento
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(469, 427)
+        Me.TabPage1.Size = New System.Drawing.Size(590, 351)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Cadastro"
         '
@@ -205,7 +207,7 @@ Partial Class FormBLHProcessamento
         Me.btCancelar.FlatAppearance.BorderSize = 0
         Me.btCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btCancelar.ForeColor = System.Drawing.Color.White
-        Me.btCancelar.Location = New System.Drawing.Point(254, 391)
+        Me.btCancelar.Location = New System.Drawing.Point(254, 312)
         Me.btCancelar.Name = "btCancelar"
         Me.btCancelar.Size = New System.Drawing.Size(75, 23)
         Me.btCancelar.TabIndex = 30
@@ -219,7 +221,7 @@ Partial Class FormBLHProcessamento
         Me.Button4.FlatAppearance.BorderSize = 0
         Me.Button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Button4.ForeColor = System.Drawing.Color.White
-        Me.Button4.Location = New System.Drawing.Point(410, 391)
+        Me.Button4.Location = New System.Drawing.Point(529, 312)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(33, 23)
         Me.Button4.TabIndex = 29
@@ -233,7 +235,7 @@ Partial Class FormBLHProcessamento
         Me.btSalvarDoadora.FlatAppearance.BorderSize = 0
         Me.btSalvarDoadora.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btSalvarDoadora.ForeColor = System.Drawing.Color.White
-        Me.btSalvarDoadora.Location = New System.Drawing.Point(26, 391)
+        Me.btSalvarDoadora.Location = New System.Drawing.Point(26, 312)
         Me.btSalvarDoadora.Name = "btSalvarDoadora"
         Me.btSalvarDoadora.Size = New System.Drawing.Size(75, 23)
         Me.btSalvarDoadora.TabIndex = 26
@@ -248,7 +250,7 @@ Partial Class FormBLHProcessamento
         Me.btAtualizarDoadora.FlatAppearance.BorderSize = 0
         Me.btAtualizarDoadora.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btAtualizarDoadora.ForeColor = System.Drawing.Color.White
-        Me.btAtualizarDoadora.Location = New System.Drawing.Point(102, 391)
+        Me.btAtualizarDoadora.Location = New System.Drawing.Point(102, 312)
         Me.btAtualizarDoadora.Name = "btAtualizarDoadora"
         Me.btAtualizarDoadora.Size = New System.Drawing.Size(75, 23)
         Me.btAtualizarDoadora.TabIndex = 27
@@ -263,7 +265,7 @@ Partial Class FormBLHProcessamento
         Me.btExcluirDoadora.FlatAppearance.BorderSize = 0
         Me.btExcluirDoadora.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btExcluirDoadora.ForeColor = System.Drawing.Color.White
-        Me.btExcluirDoadora.Location = New System.Drawing.Point(178, 391)
+        Me.btExcluirDoadora.Location = New System.Drawing.Point(178, 312)
         Me.btExcluirDoadora.Name = "btExcluirDoadora"
         Me.btExcluirDoadora.Size = New System.Drawing.Size(75, 23)
         Me.btExcluirDoadora.TabIndex = 28
@@ -272,6 +274,7 @@ Partial Class FormBLHProcessamento
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.gbMotivos)
         Me.GroupBox1.Controls.Add(Me.GroupBox2)
         Me.GroupBox1.Controls.Add(Me.Label9)
         Me.GroupBox1.Controls.Add(Me.cbTipoLeite)
@@ -281,21 +284,20 @@ Partial Class FormBLHProcessamento
         Me.GroupBox1.Controls.Add(Me.tbDataOrdenha)
         Me.GroupBox1.Controls.Add(Me.RadioButton1)
         Me.GroupBox1.Controls.Add(Me.RadioButton2)
-        Me.GroupBox1.Location = New System.Drawing.Point(26, 125)
+        Me.GroupBox1.Location = New System.Drawing.Point(26, 121)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(417, 260)
+        Me.GroupBox1.Size = New System.Drawing.Size(536, 181)
         Me.GroupBox1.TabIndex = 25
         Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Cadastro do leite"
+        Me.GroupBox1.Text = "Dados do leite"
         '
         'GroupBox2
         '
-        Me.GroupBox2.Controls.Add(Me.gbMotivos)
         Me.GroupBox2.Controls.Add(Me.rbNaoConforme)
         Me.GroupBox2.Controls.Add(Me.rbConforme)
         Me.GroupBox2.Location = New System.Drawing.Point(16, 84)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(382, 166)
+        Me.GroupBox2.Size = New System.Drawing.Size(194, 79)
         Me.GroupBox2.TabIndex = 31
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Criterios de conformidade"
@@ -307,9 +309,9 @@ Partial Class FormBLHProcessamento
         Me.gbMotivos.Controls.Add(Me.cbRefrigeracao)
         Me.gbMotivos.Controls.Add(Me.cbVencidos15dias)
         Me.gbMotivos.Enabled = False
-        Me.gbMotivos.Location = New System.Drawing.Point(23, 70)
+        Me.gbMotivos.Location = New System.Drawing.Point(216, 84)
         Me.gbMotivos.Name = "gbMotivos"
-        Me.gbMotivos.Size = New System.Drawing.Size(335, 82)
+        Me.gbMotivos.Size = New System.Drawing.Size(302, 82)
         Me.gbMotivos.TabIndex = 2
         Me.gbMotivos.TabStop = False
         Me.gbMotivos.Text = "Motivos"
@@ -453,7 +455,7 @@ Partial Class FormBLHProcessamento
         'cbParto
         '
         Me.cbParto.FormattingEnabled = True
-        Me.cbParto.Location = New System.Drawing.Point(328, 46)
+        Me.cbParto.Location = New System.Drawing.Point(447, 46)
         Me.cbParto.Name = "cbParto"
         Me.cbParto.Size = New System.Drawing.Size(115, 21)
         Me.cbParto.TabIndex = 22
@@ -465,7 +467,7 @@ Partial Class FormBLHProcessamento
         Me.cbDoadoras.FormattingEnabled = True
         Me.cbDoadoras.Location = New System.Drawing.Point(26, 46)
         Me.cbDoadoras.Name = "cbDoadoras"
-        Me.cbDoadoras.Size = New System.Drawing.Size(296, 21)
+        Me.cbDoadoras.Size = New System.Drawing.Size(417, 21)
         Me.cbDoadoras.TabIndex = 21
         '
         'TabPage2
@@ -480,17 +482,26 @@ Partial Class FormBLHProcessamento
         '
         'StatusStrip1
         '
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 487)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 409)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(498, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(622, 22)
         Me.StatusStrip1.TabIndex = 23
         Me.StatusStrip1.Text = "StatusStrip1"
+        '
+        'TabPage3
+        '
+        Me.TabPage3.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage3.Name = "TabPage3"
+        Me.TabPage3.Size = New System.Drawing.Size(590, 427)
+        Me.TabPage3.TabIndex = 2
+        Me.TabPage3.Text = "Leites cadastrados"
+        Me.TabPage3.UseVisualStyleBackColor = True
         '
         'FormBLHProcessamento
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(498, 509)
+        Me.ClientSize = New System.Drawing.Size(622, 431)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.TabControl1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -551,4 +562,5 @@ Partial Class FormBLHProcessamento
     Friend WithEvents btAtualizarDoadora As Button
     Friend WithEvents btExcluirDoadora As Button
     Friend WithEvents StatusStrip1 As StatusStrip
+    Friend WithEvents TabPage3 As TabPage
 End Class

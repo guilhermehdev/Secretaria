@@ -1,4 +1,0 @@
-﻿
-Class List
-
-End Class

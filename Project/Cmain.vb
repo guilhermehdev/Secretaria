@@ -32,7 +32,7 @@ Public Class Main
                 vconexao.Open()
             Catch ex As Exception
                 MsgBox("Não foi possível realizar a conexão com o servidor!" & vbCrLf & vbCrLf & "Erro: " & ex.Message, MsgBoxStyle.Information)
-                FConnSettings.ShowDialog()
+                FormSystemConnSettings.ShowDialog()
             End Try
 
         Else
