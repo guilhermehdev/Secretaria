@@ -544,7 +544,9 @@
     <Compile Include="FormBLHProcessamento.Designer.vb">
       <DependentUpon>FormBLHProcessamento.vb</DependentUpon>
     </Compile>
-    <Compile Include="FormBLHProcessamento.vb" />
+    <Compile Include="FormBLHProcessamento.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormCadastroServidorCNES.Designer.vb">
       <DependentUpon>FormCadastroServidorCNES.vb</DependentUpon>
     </Compile>
