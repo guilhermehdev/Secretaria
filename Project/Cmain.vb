@@ -360,7 +360,7 @@ Public Class Main
             End If
 
         Catch ex As Exception
-            'showErrors(ex)
+            Debug.Write(ex.Message)
             Return Nothing
         End Try
 

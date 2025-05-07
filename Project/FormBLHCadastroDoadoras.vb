@@ -3,6 +3,7 @@ Imports ServiceStack
 
 Public Class FormBLHCadastroDoadoras
     Dim m As New Main
+    Dim blh As New BLH
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Me.Close()
     End Sub
@@ -34,8 +35,9 @@ Public Class FormBLHCadastroDoadoras
     End Sub
 
     Private Sub loadDoadoras(datagrid As DataGridView, Optional where As String = "")
-        m.loadDataGrid($"SELECT id, nome, data_cadastro, obs FROM blh_cadastro {where} ORDER BY nome", datagrid, {False, True, False, False, False, False, False, False, False}, {"id", "Nome", "", "", "", "", "", "", ""}, {0, 240, 0, 0, 0, 0, 0, 0, 0}, DataGridViewAutoSizeColumnsMode.Fill, True)
+        m.loadDataGrid($"SELECT id, nome, dtnasc, data_cadastro, obs FROM blh_cadastro {where} ORDER BY nome", datagrid, {False, True, True, False, False, False, False, False, False, False}, {"id", "Nome", "Nasc", "", "", "", "", "", "", ""}, {0, 240, 60, 0, 0, 0, 0, 0, 0, 0}, DataGridViewAutoSizeColumnsMode.Fill, True)
         ToolStripStatusLabel1.Text = "Total de doadoras: " & datagrid.Rows.Count
+        dgDoadoras.ClearSelection()
     End Sub
 
     Private Sub FormBLHCadastroDoadoras_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -60,7 +62,7 @@ Public Class FormBLHCadastroDoadoras
     End Sub
     Private Sub btExcluirDoadora_Click(sender As Object, e As EventArgs) Handles btExcluirDoadora.Click
 
-        If m.SQLdelete("blh_cadastro", "id", dgDoadoras, 0, True, True, "SELECT id, nome, data_cadastro, obs FROM blh_cadastro ORDER BY nome", True) Then
+        If m.SQLdelete("blh_cadastro", "id", dgDoadoras, 0, True, True, "SELECT id, nome, dtnasc, data_cadastro, obs FROM blh_cadastro ORDER BY nome", True) Then
             btAtualizarDoadora.Enabled = False
             btExcluirDoadora.Enabled = False
             btSalvarDoadora.Enabled = True
@@ -76,11 +78,14 @@ Public Class FormBLHCadastroDoadoras
     Private Sub dgDoadoras_CellEnter(sender As Object, e As DataGridViewCellEventArgs) Handles dgDoadoras.CellEnter
         If dgDoadoras.SelectedRows.Count > 0 Then
             tbNome.Text = dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(1).Value.ToString
-            tbOBS.Text = dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(3).Value.ToString
-            tbDataCadastro.Text = dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(2).Value.ToString
+            tbOBS.Text = dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(4).Value.ToString
+            tbDataCadastro.Text = dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(3).Value.ToString
             btAtualizarDoadora.Enabled = True
             btSalvarDoadora.Enabled = False
             btExcluirDoadora.Enabled = True
+
+            blh.loadPartos(cbPartos, dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(0).Value)
+
         End If
     End Sub
 End Class

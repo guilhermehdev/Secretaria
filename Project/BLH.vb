@@ -1,5 +1,5 @@
 ﻿Public Class BLH
-
+    Dim m As New Main
     Public Function percentualCreme(creme1 As Double, total1 As Double, creme2 As Double, total2 As Double, creme3 As Double, total3 As Double) As Double
         ' Validações para evitar divisões por zero
         If total1 = 0 Or total2 = 0 Or total3 = 0 Then
@@ -54,5 +54,11 @@
 
         Return resultado
     End Function
+
+    Public Sub loadPartos(combobox As ComboBox, idDoadora As Integer)
+        If m.loadComboBox($"SELECT id, data FROM blh_partos WHERE id_doadora={idDoadora} ORDER BY data DESC", combobox, "data", "id").Rows.count = 0 Then
+            combobox.DataSource = Nothing
+        End If
+    End Sub
 
 End Class

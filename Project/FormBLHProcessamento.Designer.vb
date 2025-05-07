@@ -22,6 +22,9 @@ Partial Class FormBLHProcessamento
     'Não o modifique usando o editor de códigos.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormBLHProcessamento))
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
@@ -35,18 +38,19 @@ Partial Class FormBLHProcessamento
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.btCancelar = New System.Windows.Forms.Button()
-        Me.Button4 = New System.Windows.Forms.Button()
-        Me.btSalvarDoadora = New System.Windows.Forms.Button()
-        Me.btAtualizarDoadora = New System.Windows.Forms.Button()
-        Me.btExcluirDoadora = New System.Windows.Forms.Button()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.tbBuscaDN = New System.Windows.Forms.MaskedTextBox()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.tbBuscaDoadora = New System.Windows.Forms.TextBox()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.dgLeite = New System.Windows.Forms.DataGridView()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.gbMotivos = New System.Windows.Forms.GroupBox()
         Me.cbExamesVencidos = New System.Windows.Forms.CheckBox()
         Me.cbEmbalagem = New System.Windows.Forms.CheckBox()
         Me.cbRefrigeracao = New System.Windows.Forms.CheckBox()
         Me.cbVencidos15dias = New System.Windows.Forms.CheckBox()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.rbNaoConforme = New System.Windows.Forms.RadioButton()
         Me.rbConforme = New System.Windows.Forms.RadioButton()
         Me.Label9 = New System.Windows.Forms.Label()
@@ -55,25 +59,29 @@ Partial Class FormBLHProcessamento
         Me.tbVolume = New System.Windows.Forms.NumericUpDown()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.tbDataOrdenha = New System.Windows.Forms.MaskedTextBox()
-        Me.RadioButton1 = New System.Windows.Forms.RadioButton()
-        Me.RadioButton2 = New System.Windows.Forms.RadioButton()
         Me.cbParto = New System.Windows.Forms.ComboBox()
         Me.cbDoadoras = New System.Windows.Forms.ComboBox()
+        Me.rbApta = New System.Windows.Forms.RadioButton()
+        Me.rbInapta = New System.Windows.Forms.RadioButton()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
-        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
-        Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.btCancelar = New System.Windows.Forms.Button()
+        Me.Button4 = New System.Windows.Forms.Button()
+        Me.btSalvarDoadora = New System.Windows.Forms.Button()
+        Me.btExcluirDoadora = New System.Windows.Forms.Button()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
+        CType(Me.dgLeite, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
         Me.gbMotivos.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
         CType(Me.tbVolume, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(444, 30)
+        Me.Label2.Location = New System.Drawing.Point(434, 15)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(75, 13)
         Me.Label2.TabIndex = 4
@@ -82,7 +90,7 @@ Partial Class FormBLHProcessamento
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(405, 70)
+        Me.Label6.Location = New System.Drawing.Point(13, 145)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(58, 13)
         Me.Label6.TabIndex = 19
@@ -92,25 +100,25 @@ Partial Class FormBLHProcessamento
         '
         Me.cbResultado.FormattingEnabled = True
         Me.cbResultado.Items.AddRange(New Object() {"REGULAR", "VENCIDO"})
-        Me.cbResultado.Location = New System.Drawing.Point(408, 85)
+        Me.cbResultado.Location = New System.Drawing.Point(16, 160)
         Me.cbResultado.Name = "cbResultado"
-        Me.cbResultado.Size = New System.Drawing.Size(154, 21)
+        Me.cbResultado.Size = New System.Drawing.Size(107, 21)
         Me.cbResultado.TabIndex = 14
         '
         'tbDataVencimento
         '
-        Me.tbDataVencimento.Location = New System.Drawing.Point(320, 85)
+        Me.tbDataVencimento.Location = New System.Drawing.Point(16, 119)
         Me.tbDataVencimento.Mask = "00/00/0000"
         Me.tbDataVencimento.Name = "tbDataVencimento"
         Me.tbDataVencimento.ReadOnly = True
-        Me.tbDataVencimento.Size = New System.Drawing.Size(82, 20)
+        Me.tbDataVencimento.Size = New System.Drawing.Size(107, 20)
         Me.tbDataVencimento.TabIndex = 16
         Me.tbDataVencimento.ValidatingType = GetType(Date)
         '
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(317, 70)
+        Me.Label5.Location = New System.Drawing.Point(13, 104)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(66, 13)
         Me.Label5.TabIndex = 18
@@ -118,17 +126,17 @@ Partial Class FormBLHProcessamento
         '
         'tbDataSorologia
         '
-        Me.tbDataSorologia.Location = New System.Drawing.Point(232, 85)
+        Me.tbDataSorologia.Location = New System.Drawing.Point(16, 77)
         Me.tbDataSorologia.Mask = "00/00/0000"
         Me.tbDataSorologia.Name = "tbDataSorologia"
-        Me.tbDataSorologia.Size = New System.Drawing.Size(82, 20)
+        Me.tbDataSorologia.Size = New System.Drawing.Size(107, 20)
         Me.tbDataSorologia.TabIndex = 13
         Me.tbDataSorologia.ValidatingType = GetType(Date)
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(229, 69)
+        Me.Label4.Location = New System.Drawing.Point(13, 61)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(78, 13)
         Me.Label4.TabIndex = 17
@@ -137,7 +145,7 @@ Partial Class FormBLHProcessamento
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(23, 70)
+        Me.Label3.Location = New System.Drawing.Point(553, 16)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(40, 13)
         Me.Label3.TabIndex = 15
@@ -147,15 +155,15 @@ Partial Class FormBLHProcessamento
         '
         Me.cbOrigem.FormattingEnabled = True
         Me.cbOrigem.Items.AddRange(New Object() {"HRI", "CASA", "CESCRIM", "PG", "ITANHAÉM"})
-        Me.cbOrigem.Location = New System.Drawing.Point(26, 85)
+        Me.cbOrigem.Location = New System.Drawing.Point(556, 31)
         Me.cbOrigem.Name = "cbOrigem"
-        Me.cbOrigem.Size = New System.Drawing.Size(200, 21)
+        Me.cbOrigem.Size = New System.Drawing.Size(222, 21)
         Me.cbOrigem.TabIndex = 12
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(23, 30)
+        Me.Label1.Location = New System.Drawing.Point(13, 15)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(48, 13)
         Me.Label1.TabIndex = 20
@@ -163,23 +171,23 @@ Partial Class FormBLHProcessamento
         '
         'TabControl1
         '
+        Me.TabControl1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TabControl1.Controls.Add(Me.TabPage1)
-        Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Location = New System.Drawing.Point(12, 26)
+        Me.TabControl1.HotTrack = True
+        Me.TabControl1.Location = New System.Drawing.Point(12, 17)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(598, 377)
+        Me.TabControl1.Size = New System.Drawing.Size(805, 502)
         Me.TabControl1.TabIndex = 22
         '
         'TabPage1
         '
         Me.TabPage1.BackColor = System.Drawing.SystemColors.ButtonFace
-        Me.TabPage1.Controls.Add(Me.btCancelar)
-        Me.TabPage1.Controls.Add(Me.Button4)
-        Me.TabPage1.Controls.Add(Me.btSalvarDoadora)
-        Me.TabPage1.Controls.Add(Me.btAtualizarDoadora)
-        Me.TabPage1.Controls.Add(Me.btExcluirDoadora)
+        Me.TabPage1.Controls.Add(Me.GroupBox3)
+        Me.TabPage1.Controls.Add(Me.dgLeite)
         Me.TabPage1.Controls.Add(Me.GroupBox1)
         Me.TabPage1.Controls.Add(Me.cbParto)
         Me.TabPage1.Controls.Add(Me.cbDoadoras)
@@ -188,6 +196,8 @@ Partial Class FormBLHProcessamento
         Me.TabPage1.Controls.Add(Me.Label6)
         Me.TabPage1.Controls.Add(Me.cbOrigem)
         Me.TabPage1.Controls.Add(Me.cbResultado)
+        Me.TabPage1.Controls.Add(Me.rbApta)
+        Me.TabPage1.Controls.Add(Me.rbInapta)
         Me.TabPage1.Controls.Add(Me.Label3)
         Me.TabPage1.Controls.Add(Me.tbDataVencimento)
         Me.TabPage1.Controls.Add(Me.Label4)
@@ -196,9 +206,313 @@ Partial Class FormBLHProcessamento
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(590, 351)
+        Me.TabPage1.Size = New System.Drawing.Size(797, 476)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Cadastro"
+        '
+        'GroupBox3
+        '
+        Me.GroupBox3.Controls.Add(Me.tbBuscaDN)
+        Me.GroupBox3.Controls.Add(Me.Label11)
+        Me.GroupBox3.Controls.Add(Me.tbBuscaDoadora)
+        Me.GroupBox3.Controls.Add(Me.Label10)
+        Me.GroupBox3.Location = New System.Drawing.Point(4, 216)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(788, 48)
+        Me.GroupBox3.TabIndex = 35
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Pesquisar leites cadastrados"
+        '
+        'tbBuscaDN
+        '
+        Me.tbBuscaDN.Location = New System.Drawing.Point(378, 25)
+        Me.tbBuscaDN.Mask = "00/00/0000"
+        Me.tbBuscaDN.Name = "tbBuscaDN"
+        Me.tbBuscaDN.Size = New System.Drawing.Size(65, 20)
+        Me.tbBuscaDN.TabIndex = 35
+        Me.tbBuscaDN.ValidatingType = GetType(Date)
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Location = New System.Drawing.Point(352, 28)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(26, 13)
+        Me.Label11.TabIndex = 34
+        Me.Label11.Text = "DN:"
+        '
+        'tbBuscaDoadora
+        '
+        Me.tbBuscaDoadora.Location = New System.Drawing.Point(58, 25)
+        Me.tbBuscaDoadora.Name = "tbBuscaDoadora"
+        Me.tbBuscaDoadora.Size = New System.Drawing.Size(288, 20)
+        Me.tbBuscaDoadora.TabIndex = 32
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(8, 28)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(51, 13)
+        Me.Label10.TabIndex = 33
+        Me.Label10.Text = "Doadora:"
+        '
+        'dgLeite
+        '
+        Me.dgLeite.AllowUserToAddRows = False
+        Me.dgLeite.AllowUserToDeleteRows = False
+        Me.dgLeite.AllowUserToOrderColumns = True
+        Me.dgLeite.AllowUserToResizeRows = False
+        Me.dgLeite.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.dgLeite.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.dgLeite.BackgroundColor = System.Drawing.Color.White
+        Me.dgLeite.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.dgLeite.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgLeite.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        Me.dgLeite.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.SteelBlue
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgLeite.DefaultCellStyle = DataGridViewCellStyle2
+        Me.dgLeite.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
+        Me.dgLeite.Location = New System.Drawing.Point(4, 264)
+        Me.dgLeite.MultiSelect = False
+        Me.dgLeite.Name = "dgLeite"
+        Me.dgLeite.ReadOnly = True
+        Me.dgLeite.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.ControlDark
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgLeite.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
+        Me.dgLeite.RowHeadersWidth = 4
+        Me.dgLeite.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+        Me.dgLeite.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgLeite.Size = New System.Drawing.Size(788, 206)
+        Me.dgLeite.TabIndex = 32
+        Me.dgLeite.TabStop = False
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.gbMotivos)
+        Me.GroupBox1.Controls.Add(Me.GroupBox2)
+        Me.GroupBox1.Controls.Add(Me.Label9)
+        Me.GroupBox1.Controls.Add(Me.cbTipoLeite)
+        Me.GroupBox1.Controls.Add(Me.Label8)
+        Me.GroupBox1.Controls.Add(Me.tbVolume)
+        Me.GroupBox1.Controls.Add(Me.Label7)
+        Me.GroupBox1.Controls.Add(Me.tbDataOrdenha)
+        Me.GroupBox1.Location = New System.Drawing.Point(129, 61)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(663, 151)
+        Me.GroupBox1.TabIndex = 25
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Dados do leite"
+        '
+        'gbMotivos
+        '
+        Me.gbMotivos.Controls.Add(Me.cbExamesVencidos)
+        Me.gbMotivos.Controls.Add(Me.cbEmbalagem)
+        Me.gbMotivos.Controls.Add(Me.cbRefrigeracao)
+        Me.gbMotivos.Controls.Add(Me.cbVencidos15dias)
+        Me.gbMotivos.Enabled = False
+        Me.gbMotivos.Location = New System.Drawing.Point(329, 31)
+        Me.gbMotivos.Name = "gbMotivos"
+        Me.gbMotivos.Size = New System.Drawing.Size(320, 114)
+        Me.gbMotivos.TabIndex = 2
+        Me.gbMotivos.TabStop = False
+        Me.gbMotivos.Text = "Motivos"
+        '
+        'cbExamesVencidos
+        '
+        Me.cbExamesVencidos.AutoSize = True
+        Me.cbExamesVencidos.Location = New System.Drawing.Point(203, 70)
+        Me.cbExamesVencidos.Name = "cbExamesVencidos"
+        Me.cbExamesVencidos.Size = New System.Drawing.Size(109, 17)
+        Me.cbExamesVencidos.TabIndex = 3
+        Me.cbExamesVencidos.Text = "Exames vencidos"
+        Me.cbExamesVencidos.UseVisualStyleBackColor = True
+        '
+        'cbEmbalagem
+        '
+        Me.cbEmbalagem.AutoSize = True
+        Me.cbEmbalagem.Location = New System.Drawing.Point(203, 34)
+        Me.cbEmbalagem.Name = "cbEmbalagem"
+        Me.cbEmbalagem.Size = New System.Drawing.Size(81, 17)
+        Me.cbEmbalagem.TabIndex = 2
+        Me.cbEmbalagem.Text = "Embalagem"
+        Me.cbEmbalagem.UseVisualStyleBackColor = True
+        '
+        'cbRefrigeracao
+        '
+        Me.cbRefrigeracao.AutoSize = True
+        Me.cbRefrigeracao.Location = New System.Drawing.Point(19, 70)
+        Me.cbRefrigeracao.Name = "cbRefrigeracao"
+        Me.cbRefrigeracao.Size = New System.Drawing.Size(149, 17)
+        Me.cbRefrigeracao.TabIndex = 1
+        Me.cbRefrigeracao.Text = "Problemas de refrigeração"
+        Me.cbRefrigeracao.UseVisualStyleBackColor = True
+        '
+        'cbVencidos15dias
+        '
+        Me.cbVencidos15dias.AutoSize = True
+        Me.cbVencidos15dias.Location = New System.Drawing.Point(19, 34)
+        Me.cbVencidos15dias.Name = "cbVencidos15dias"
+        Me.cbVencidos15dias.Size = New System.Drawing.Size(168, 17)
+        Me.cbVencidos15dias.TabIndex = 0
+        Me.cbVencidos15dias.Text = "Vencimento superior a 15 dias"
+        Me.cbVencidos15dias.UseVisualStyleBackColor = True
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.rbNaoConforme)
+        Me.GroupBox2.Controls.Add(Me.rbConforme)
+        Me.GroupBox2.Location = New System.Drawing.Point(183, 31)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(140, 114)
+        Me.GroupBox2.TabIndex = 31
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "Criterios de conformidade"
+        '
+        'rbNaoConforme
+        '
+        Me.rbNaoConforme.AutoSize = True
+        Me.rbNaoConforme.Location = New System.Drawing.Point(24, 70)
+        Me.rbNaoConforme.Name = "rbNaoConforme"
+        Me.rbNaoConforme.Size = New System.Drawing.Size(92, 17)
+        Me.rbNaoConforme.TabIndex = 1
+        Me.rbNaoConforme.Text = "Não conforme"
+        Me.rbNaoConforme.UseVisualStyleBackColor = True
+        '
+        'rbConforme
+        '
+        Me.rbConforme.AutoSize = True
+        Me.rbConforme.Checked = True
+        Me.rbConforme.Location = New System.Drawing.Point(24, 36)
+        Me.rbConforme.Name = "rbConforme"
+        Me.rbConforme.Size = New System.Drawing.Size(70, 17)
+        Me.rbConforme.TabIndex = 0
+        Me.rbConforme.TabStop = True
+        Me.rbConforme.Text = "Conforme"
+        Me.rbConforme.UseVisualStyleBackColor = True
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(13, 84)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(65, 13)
+        Me.Label9.TabIndex = 30
+        Me.Label9.Text = "Tipo do leite"
+        '
+        'cbTipoLeite
+        '
+        Me.cbTipoLeite.FormattingEnabled = True
+        Me.cbTipoLeite.Location = New System.Drawing.Point(16, 101)
+        Me.cbTipoLeite.Name = "cbTipoLeite"
+        Me.cbTipoLeite.Size = New System.Drawing.Size(161, 21)
+        Me.cbTipoLeite.TabIndex = 29
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(101, 43)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(42, 13)
+        Me.Label8.TabIndex = 28
+        Me.Label8.Text = "Volume"
+        '
+        'tbVolume
+        '
+        Me.tbVolume.Location = New System.Drawing.Point(104, 60)
+        Me.tbVolume.Maximum = New Decimal(New Integer() {999, 0, 0, 0})
+        Me.tbVolume.Name = "tbVolume"
+        Me.tbVolume.Size = New System.Drawing.Size(73, 20)
+        Me.tbVolume.TabIndex = 27
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(13, 43)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(72, 13)
+        Me.Label7.TabIndex = 26
+        Me.Label7.Text = "Data ordenha"
+        '
+        'tbDataOrdenha
+        '
+        Me.tbDataOrdenha.Location = New System.Drawing.Point(16, 59)
+        Me.tbDataOrdenha.Mask = "00/00/0000"
+        Me.tbDataOrdenha.Name = "tbDataOrdenha"
+        Me.tbDataOrdenha.Size = New System.Drawing.Size(82, 20)
+        Me.tbDataOrdenha.TabIndex = 25
+        Me.tbDataOrdenha.ValidatingType = GetType(Date)
+        '
+        'cbParto
+        '
+        Me.cbParto.FormattingEnabled = True
+        Me.cbParto.Location = New System.Drawing.Point(437, 31)
+        Me.cbParto.Name = "cbParto"
+        Me.cbParto.Size = New System.Drawing.Size(115, 21)
+        Me.cbParto.TabIndex = 22
+        '
+        'cbDoadoras
+        '
+        Me.cbDoadoras.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.cbDoadoras.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me.cbDoadoras.FormattingEnabled = True
+        Me.cbDoadoras.Location = New System.Drawing.Point(16, 31)
+        Me.cbDoadoras.Name = "cbDoadoras"
+        Me.cbDoadoras.Size = New System.Drawing.Size(417, 21)
+        Me.cbDoadoras.TabIndex = 21
+        '
+        'rbApta
+        '
+        Me.rbApta.AutoSize = True
+        Me.rbApta.Checked = True
+        Me.rbApta.Location = New System.Drawing.Point(16, 186)
+        Me.rbApta.Name = "rbApta"
+        Me.rbApta.Size = New System.Drawing.Size(47, 17)
+        Me.rbApta.TabIndex = 23
+        Me.rbApta.TabStop = True
+        Me.rbApta.Text = "Apta"
+        Me.rbApta.UseVisualStyleBackColor = True
+        '
+        'rbInapta
+        '
+        Me.rbInapta.AutoSize = True
+        Me.rbInapta.Location = New System.Drawing.Point(68, 186)
+        Me.rbInapta.Name = "rbInapta"
+        Me.rbInapta.Size = New System.Drawing.Size(55, 17)
+        Me.rbInapta.TabIndex = 24
+        Me.rbInapta.Text = "Inapta"
+        Me.rbInapta.UseVisualStyleBackColor = True
+        '
+        'TabPage2
+        '
+        Me.TabPage2.BackColor = System.Drawing.SystemColors.ButtonFace
+        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage2.Size = New System.Drawing.Size(797, 476)
+        Me.TabPage2.TabIndex = 1
+        Me.TabPage2.Text = "Seleção para pasteurização"
         '
         'btCancelar
         '
@@ -207,7 +521,7 @@ Partial Class FormBLHProcessamento
         Me.btCancelar.FlatAppearance.BorderSize = 0
         Me.btCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btCancelar.ForeColor = System.Drawing.Color.White
-        Me.btCancelar.Location = New System.Drawing.Point(254, 312)
+        Me.btCancelar.Location = New System.Drawing.Point(168, 525)
         Me.btCancelar.Name = "btCancelar"
         Me.btCancelar.Size = New System.Drawing.Size(75, 23)
         Me.btCancelar.TabIndex = 30
@@ -221,7 +535,7 @@ Partial Class FormBLHProcessamento
         Me.Button4.FlatAppearance.BorderSize = 0
         Me.Button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Button4.ForeColor = System.Drawing.Color.White
-        Me.Button4.Location = New System.Drawing.Point(529, 312)
+        Me.Button4.Location = New System.Drawing.Point(784, 525)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(33, 23)
         Me.Button4.TabIndex = 29
@@ -235,27 +549,12 @@ Partial Class FormBLHProcessamento
         Me.btSalvarDoadora.FlatAppearance.BorderSize = 0
         Me.btSalvarDoadora.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btSalvarDoadora.ForeColor = System.Drawing.Color.White
-        Me.btSalvarDoadora.Location = New System.Drawing.Point(26, 312)
+        Me.btSalvarDoadora.Location = New System.Drawing.Point(16, 525)
         Me.btSalvarDoadora.Name = "btSalvarDoadora"
         Me.btSalvarDoadora.Size = New System.Drawing.Size(75, 23)
         Me.btSalvarDoadora.TabIndex = 26
         Me.btSalvarDoadora.Text = "Salvar"
         Me.btSalvarDoadora.UseVisualStyleBackColor = False
-        '
-        'btAtualizarDoadora
-        '
-        Me.btAtualizarDoadora.BackColor = System.Drawing.Color.SteelBlue
-        Me.btAtualizarDoadora.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btAtualizarDoadora.Enabled = False
-        Me.btAtualizarDoadora.FlatAppearance.BorderSize = 0
-        Me.btAtualizarDoadora.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btAtualizarDoadora.ForeColor = System.Drawing.Color.White
-        Me.btAtualizarDoadora.Location = New System.Drawing.Point(102, 312)
-        Me.btAtualizarDoadora.Name = "btAtualizarDoadora"
-        Me.btAtualizarDoadora.Size = New System.Drawing.Size(75, 23)
-        Me.btAtualizarDoadora.TabIndex = 27
-        Me.btAtualizarDoadora.Text = "Atualizar"
-        Me.btAtualizarDoadora.UseVisualStyleBackColor = False
         '
         'btExcluirDoadora
         '
@@ -265,245 +564,23 @@ Partial Class FormBLHProcessamento
         Me.btExcluirDoadora.FlatAppearance.BorderSize = 0
         Me.btExcluirDoadora.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btExcluirDoadora.ForeColor = System.Drawing.Color.White
-        Me.btExcluirDoadora.Location = New System.Drawing.Point(178, 312)
+        Me.btExcluirDoadora.Location = New System.Drawing.Point(92, 525)
         Me.btExcluirDoadora.Name = "btExcluirDoadora"
         Me.btExcluirDoadora.Size = New System.Drawing.Size(75, 23)
         Me.btExcluirDoadora.TabIndex = 28
         Me.btExcluirDoadora.Text = "Excluir"
         Me.btExcluirDoadora.UseVisualStyleBackColor = False
         '
-        'GroupBox1
-        '
-        Me.GroupBox1.Controls.Add(Me.gbMotivos)
-        Me.GroupBox1.Controls.Add(Me.GroupBox2)
-        Me.GroupBox1.Controls.Add(Me.Label9)
-        Me.GroupBox1.Controls.Add(Me.cbTipoLeite)
-        Me.GroupBox1.Controls.Add(Me.Label8)
-        Me.GroupBox1.Controls.Add(Me.tbVolume)
-        Me.GroupBox1.Controls.Add(Me.Label7)
-        Me.GroupBox1.Controls.Add(Me.tbDataOrdenha)
-        Me.GroupBox1.Controls.Add(Me.RadioButton1)
-        Me.GroupBox1.Controls.Add(Me.RadioButton2)
-        Me.GroupBox1.Location = New System.Drawing.Point(26, 121)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(536, 181)
-        Me.GroupBox1.TabIndex = 25
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Dados do leite"
-        '
-        'GroupBox2
-        '
-        Me.GroupBox2.Controls.Add(Me.rbNaoConforme)
-        Me.GroupBox2.Controls.Add(Me.rbConforme)
-        Me.GroupBox2.Location = New System.Drawing.Point(16, 84)
-        Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(194, 79)
-        Me.GroupBox2.TabIndex = 31
-        Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "Criterios de conformidade"
-        '
-        'gbMotivos
-        '
-        Me.gbMotivos.Controls.Add(Me.cbExamesVencidos)
-        Me.gbMotivos.Controls.Add(Me.cbEmbalagem)
-        Me.gbMotivos.Controls.Add(Me.cbRefrigeracao)
-        Me.gbMotivos.Controls.Add(Me.cbVencidos15dias)
-        Me.gbMotivos.Enabled = False
-        Me.gbMotivos.Location = New System.Drawing.Point(216, 84)
-        Me.gbMotivos.Name = "gbMotivos"
-        Me.gbMotivos.Size = New System.Drawing.Size(302, 82)
-        Me.gbMotivos.TabIndex = 2
-        Me.gbMotivos.TabStop = False
-        Me.gbMotivos.Text = "Motivos"
-        '
-        'cbExamesVencidos
-        '
-        Me.cbExamesVencidos.AutoSize = True
-        Me.cbExamesVencidos.Location = New System.Drawing.Point(197, 48)
-        Me.cbExamesVencidos.Name = "cbExamesVencidos"
-        Me.cbExamesVencidos.Size = New System.Drawing.Size(109, 17)
-        Me.cbExamesVencidos.TabIndex = 3
-        Me.cbExamesVencidos.Text = "Exames vencidos"
-        Me.cbExamesVencidos.UseVisualStyleBackColor = True
-        '
-        'cbEmbalagem
-        '
-        Me.cbEmbalagem.AutoSize = True
-        Me.cbEmbalagem.Location = New System.Drawing.Point(197, 25)
-        Me.cbEmbalagem.Name = "cbEmbalagem"
-        Me.cbEmbalagem.Size = New System.Drawing.Size(81, 17)
-        Me.cbEmbalagem.TabIndex = 2
-        Me.cbEmbalagem.Text = "Embalagem"
-        Me.cbEmbalagem.UseVisualStyleBackColor = True
-        '
-        'cbRefrigeracao
-        '
-        Me.cbRefrigeracao.AutoSize = True
-        Me.cbRefrigeracao.Location = New System.Drawing.Point(23, 48)
-        Me.cbRefrigeracao.Name = "cbRefrigeracao"
-        Me.cbRefrigeracao.Size = New System.Drawing.Size(149, 17)
-        Me.cbRefrigeracao.TabIndex = 1
-        Me.cbRefrigeracao.Text = "Problemas de refrigeração"
-        Me.cbRefrigeracao.UseVisualStyleBackColor = True
-        '
-        'cbVencidos15dias
-        '
-        Me.cbVencidos15dias.AutoSize = True
-        Me.cbVencidos15dias.Location = New System.Drawing.Point(23, 25)
-        Me.cbVencidos15dias.Name = "cbVencidos15dias"
-        Me.cbVencidos15dias.Size = New System.Drawing.Size(168, 17)
-        Me.cbVencidos15dias.TabIndex = 0
-        Me.cbVencidos15dias.Text = "Vencimento superior a 15 dias"
-        Me.cbVencidos15dias.UseVisualStyleBackColor = True
-        '
-        'rbNaoConforme
-        '
-        Me.rbNaoConforme.AutoSize = True
-        Me.rbNaoConforme.Location = New System.Drawing.Point(99, 37)
-        Me.rbNaoConforme.Name = "rbNaoConforme"
-        Me.rbNaoConforme.Size = New System.Drawing.Size(92, 17)
-        Me.rbNaoConforme.TabIndex = 1
-        Me.rbNaoConforme.Text = "Não conforme"
-        Me.rbNaoConforme.UseVisualStyleBackColor = True
-        '
-        'rbConforme
-        '
-        Me.rbConforme.AutoSize = True
-        Me.rbConforme.Checked = True
-        Me.rbConforme.Location = New System.Drawing.Point(23, 37)
-        Me.rbConforme.Name = "rbConforme"
-        Me.rbConforme.Size = New System.Drawing.Size(70, 17)
-        Me.rbConforme.TabIndex = 0
-        Me.rbConforme.TabStop = True
-        Me.rbConforme.Text = "Conforme"
-        Me.rbConforme.UseVisualStyleBackColor = True
-        '
-        'Label9
-        '
-        Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(180, 28)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(65, 13)
-        Me.Label9.TabIndex = 30
-        Me.Label9.Text = "Tipo do leite"
-        '
-        'cbTipoLeite
-        '
-        Me.cbTipoLeite.FormattingEnabled = True
-        Me.cbTipoLeite.Location = New System.Drawing.Point(183, 45)
-        Me.cbTipoLeite.Name = "cbTipoLeite"
-        Me.cbTipoLeite.Size = New System.Drawing.Size(121, 21)
-        Me.cbTipoLeite.TabIndex = 29
-        '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(101, 28)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(42, 13)
-        Me.Label8.TabIndex = 28
-        Me.Label8.Text = "Volume"
-        '
-        'tbVolume
-        '
-        Me.tbVolume.Location = New System.Drawing.Point(104, 45)
-        Me.tbVolume.Maximum = New Decimal(New Integer() {999, 0, 0, 0})
-        Me.tbVolume.Name = "tbVolume"
-        Me.tbVolume.Size = New System.Drawing.Size(73, 20)
-        Me.tbVolume.TabIndex = 27
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(13, 28)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(72, 13)
-        Me.Label7.TabIndex = 26
-        Me.Label7.Text = "Data ordenha"
-        '
-        'tbDataOrdenha
-        '
-        Me.tbDataOrdenha.Location = New System.Drawing.Point(16, 44)
-        Me.tbDataOrdenha.Mask = "00/00/0000"
-        Me.tbDataOrdenha.Name = "tbDataOrdenha"
-        Me.tbDataOrdenha.Size = New System.Drawing.Size(82, 20)
-        Me.tbDataOrdenha.TabIndex = 25
-        Me.tbDataOrdenha.ValidatingType = GetType(Date)
-        '
-        'RadioButton1
-        '
-        Me.RadioButton1.AutoSize = True
-        Me.RadioButton1.Checked = True
-        Me.RadioButton1.Location = New System.Drawing.Point(310, 47)
-        Me.RadioButton1.Name = "RadioButton1"
-        Me.RadioButton1.Size = New System.Drawing.Size(47, 17)
-        Me.RadioButton1.TabIndex = 23
-        Me.RadioButton1.TabStop = True
-        Me.RadioButton1.Text = "Apta"
-        Me.RadioButton1.UseVisualStyleBackColor = True
-        '
-        'RadioButton2
-        '
-        Me.RadioButton2.AutoSize = True
-        Me.RadioButton2.Location = New System.Drawing.Point(357, 47)
-        Me.RadioButton2.Name = "RadioButton2"
-        Me.RadioButton2.Size = New System.Drawing.Size(55, 17)
-        Me.RadioButton2.TabIndex = 24
-        Me.RadioButton2.Text = "Inapta"
-        Me.RadioButton2.UseVisualStyleBackColor = True
-        '
-        'cbParto
-        '
-        Me.cbParto.FormattingEnabled = True
-        Me.cbParto.Location = New System.Drawing.Point(447, 46)
-        Me.cbParto.Name = "cbParto"
-        Me.cbParto.Size = New System.Drawing.Size(115, 21)
-        Me.cbParto.TabIndex = 22
-        '
-        'cbDoadoras
-        '
-        Me.cbDoadoras.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
-        Me.cbDoadoras.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
-        Me.cbDoadoras.FormattingEnabled = True
-        Me.cbDoadoras.Location = New System.Drawing.Point(26, 46)
-        Me.cbDoadoras.Name = "cbDoadoras"
-        Me.cbDoadoras.Size = New System.Drawing.Size(417, 21)
-        Me.cbDoadoras.TabIndex = 21
-        '
-        'TabPage2
-        '
-        Me.TabPage2.BackColor = System.Drawing.SystemColors.ButtonFace
-        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(469, 427)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Seleção para pasteurização"
-        '
-        'StatusStrip1
-        '
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 409)
-        Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(622, 22)
-        Me.StatusStrip1.TabIndex = 23
-        Me.StatusStrip1.Text = "StatusStrip1"
-        '
-        'TabPage3
-        '
-        Me.TabPage3.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage3.Name = "TabPage3"
-        Me.TabPage3.Size = New System.Drawing.Size(590, 427)
-        Me.TabPage3.TabIndex = 2
-        Me.TabPage3.Text = "Leites cadastrados"
-        Me.TabPage3.UseVisualStyleBackColor = True
-        '
         'FormBLHProcessamento
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(622, 431)
-        Me.Controls.Add(Me.StatusStrip1)
+        Me.ClientSize = New System.Drawing.Size(829, 560)
+        Me.Controls.Add(Me.Button4)
+        Me.Controls.Add(Me.btCancelar)
         Me.Controls.Add(Me.TabControl1)
+        Me.Controls.Add(Me.btSalvarDoadora)
+        Me.Controls.Add(Me.btExcluirDoadora)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -513,15 +590,17 @@ Partial Class FormBLHProcessamento
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
+        CType(Me.dgLeite, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
-        Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox2.PerformLayout()
         Me.gbMotivos.ResumeLayout(False)
         Me.gbMotivos.PerformLayout()
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
         CType(Me.tbVolume, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Friend WithEvents Label2 As Label
@@ -539,8 +618,8 @@ Partial Class FormBLHProcessamento
     Friend WithEvents TabPage2 As TabPage
     Friend WithEvents cbDoadoras As ComboBox
     Friend WithEvents cbParto As ComboBox
-    Friend WithEvents RadioButton2 As RadioButton
-    Friend WithEvents RadioButton1 As RadioButton
+    Friend WithEvents rbInapta As RadioButton
+    Friend WithEvents rbApta As RadioButton
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents Label7 As Label
     Friend WithEvents tbDataOrdenha As MaskedTextBox
@@ -559,8 +638,11 @@ Partial Class FormBLHProcessamento
     Friend WithEvents btCancelar As Button
     Friend WithEvents Button4 As Button
     Friend WithEvents btSalvarDoadora As Button
-    Friend WithEvents btAtualizarDoadora As Button
     Friend WithEvents btExcluirDoadora As Button
-    Friend WithEvents StatusStrip1 As StatusStrip
-    Friend WithEvents TabPage3 As TabPage
+    Friend WithEvents dgLeite As DataGridView
+    Friend WithEvents GroupBox3 As GroupBox
+    Friend WithEvents tbBuscaDoadora As TextBox
+    Friend WithEvents Label10 As Label
+    Friend WithEvents tbBuscaDN As MaskedTextBox
+    Friend WithEvents Label11 As Label
 End Class
