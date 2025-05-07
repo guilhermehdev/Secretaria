@@ -219,7 +219,6 @@ Partial Class FormBLHCadastroDoadoras
         Me.dgDoadoras.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.dgDoadoras.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgDoadoras.BackgroundColor = System.Drawing.Color.White
         Me.dgDoadoras.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgDoadoras.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText

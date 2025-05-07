@@ -35,7 +35,7 @@ Public Class FormBLHCadastroDoadoras
     End Sub
 
     Private Sub loadDoadoras(datagrid As DataGridView, Optional where As String = "")
-        m.loadDataGrid($"SELECT id, nome, dtnasc, data_cadastro, obs FROM blh_cadastro {where} ORDER BY nome", datagrid, {False, True, True, False, False, False, False, False, False, False}, {"id", "Nome", "Nasc", "", "", "", "", "", "", ""}, {0, 240, 60, 0, 0, 0, 0, 0, 0, 0}, DataGridViewAutoSizeColumnsMode.Fill, True)
+        m.loadDataGrid($"SELECT id, nome, dtnasc, data_cadastro, obs FROM blh_cadastro WHERE ativo=1 {where} ORDER BY nome", datagrid, {False, True, True, False, False, False, False, False, False, False}, {"id", "Nome", "Nasc", "", "", "", "", "", "", ""}, {0, 230, 70, 0, 0, 0, 0, 0, 0, 0}, DataGridViewAutoSizeColumnsMode.Fill, True)
         ToolStripStatusLabel1.Text = "Total de doadoras: " & datagrid.Rows.Count
         dgDoadoras.ClearSelection()
     End Sub
@@ -45,7 +45,7 @@ Public Class FormBLHCadastroDoadoras
 
     End Sub
     Private Sub tbBusca_TextChanged(sender As Object, e As EventArgs) Handles tbBusca.TextChanged
-        loadDoadoras(dgDoadoras, $"WHERE nome LIKE '%{tbBusca.Text}%'")
+        loadDoadoras(dgDoadoras, $"AND nome LIKE '%{tbBusca.Text}%'")
     End Sub
     Private Sub btAtualizarDoadora_Click(sender As Object, e As EventArgs) Handles btAtualizarDoadora.Click
         If Not IsNothing(tbNome.Text) Then
@@ -62,10 +62,16 @@ Public Class FormBLHCadastroDoadoras
     End Sub
     Private Sub btExcluirDoadora_Click(sender As Object, e As EventArgs) Handles btExcluirDoadora.Click
 
-        If m.SQLdelete("blh_cadastro", "id", dgDoadoras, 0, True, True, "SELECT id, nome, dtnasc, data_cadastro, obs FROM blh_cadastro ORDER BY nome", True) Then
-            btAtualizarDoadora.Enabled = False
-            btExcluirDoadora.Enabled = False
-            btSalvarDoadora.Enabled = True
+        ' If m.SQLdelete("blh_cadastro", "id", dgDoadoras, 0, True, True, "SELECT id, nome, dtnasc, data_cadastro, obs FROM blh_cadastro ORDER BY nome", True) Then
+        If m.msgQuestion("Excluir Doadora?", "Atenção") Then
+
+            If m.doQuery($"UPDATE blh_cadastro SET ativo=0 WHERE id={dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(0).Value}") Then
+                btAtualizarDoadora.Enabled = False
+                btExcluirDoadora.Enabled = False
+                btSalvarDoadora.Enabled = True
+                loadDoadoras(dgDoadoras)
+            End If
+
         End If
 
     End Sub
@@ -86,6 +92,11 @@ Public Class FormBLHCadastroDoadoras
 
             blh.loadPartos(cbPartos, dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(0).Value)
 
+        End If
+    End Sub
+    Private Sub btExcluirParto_Click(sender As Object, e As EventArgs) Handles btExcluirParto.Click
+        If m.doQuery($"DELETE FROM blh_partos WHERE id={cbPartos.SelectedValue}") Then
+            blh.loadPartos(cbPartos, dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(0).Value)
         End If
     End Sub
 End Class
