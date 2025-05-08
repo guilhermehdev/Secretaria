@@ -1,7 +1,4 @@
-﻿Imports Google.Protobuf.WellKnownTypes
-Imports ServiceStack
-
-Public Class FormBLHCadastroDoadoras
+﻿Public Class FormBLHCadastroDoadoras
     Dim m As New Main
     Dim blh As New BLH
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
@@ -24,7 +21,7 @@ Public Class FormBLHCadastroDoadoras
 
     Private Sub btSalvarDoadora_Click(sender As Object, e As EventArgs) Handles btSalvarDoadora.Click
         If Not IsNothing(tbNome.Text) Then
-            m.doQuery("INSERT INTO blh_cadastro (nome, obs) VALUES ('" & tbNome.Text & "','" & tbOBS.Text & "')", True)
+            m.doQuery("INSERT INTO blh_cadastro (nome, obs, dtnasc) VALUES ('" & tbNome.Text & "','" & tbOBS.Text & "','" & m.mysqlDateFormat(tbNasc.Text) & "')", True)
             MessageBox.Show("Salvo com sucesso!")
             loadDoadoras(dgDoadoras)
         Else
@@ -51,6 +48,8 @@ Public Class FormBLHCadastroDoadoras
     Private Sub tbBusca_TextChanged(sender As Object, e As EventArgs) Handles tbBusca.TextChanged
         If tbBusca.Text.Length >= 3 Then
             loadDoadoras(dgDoadoras, $"AND nome LIKE '%{tbBusca.Text}%'")
+        Else
+            loadDoadoras(dgDoadoras)
         End If
     End Sub
     Private Sub tbBuscaDN_TextChanged(sender As Object, e As EventArgs) Handles tbBuscaDN.TextChanged
@@ -61,9 +60,9 @@ Public Class FormBLHCadastroDoadoras
         End If
     End Sub
     Private Sub btAtualizarDoadora_Click(sender As Object, e As EventArgs) Handles btAtualizarDoadora.Click
-        If Not IsNothing(tbNome.Text) Then
+        If Not IsNothing(tbNome.Text) AndAlso tbNasc.Text.Length >= 10 Then
 
-            If m.SQLupdate("blh_cadastro", $"nome='{tbNome.Text.ToUpper}',obs='{tbOBS.Text.ToUpper}',dtnasc='{tbNasc.Text}'", "id", dgDoadoras, 0, "", True, True, "SELECT id, nome, dtnasc, data_cadastro, obs FROM blh_cadastro ORDER BY nome", True) Then
+            If m.SQLupdate("blh_cadastro", $"nome='{tbNome.Text.ToUpper}',obs='{tbOBS.Text.ToUpper}',dtnasc='{m.mysqlDateFormat(tbNasc.Text)}'", "id", dgDoadoras, 0, "", True, True, "SELECT id, nome, dtnasc, data_cadastro, obs FROM blh_cadastro WHERE ativo=1 ORDER BY nome", True) Then
                 btAtualizarDoadora.Enabled = False
                 btExcluirDoadora.Enabled = False
                 btSalvarDoadora.Enabled = True
@@ -93,6 +92,7 @@ Public Class FormBLHCadastroDoadoras
         btAtualizarDoadora.Enabled = False
         btSalvarDoadora.Enabled = True
         btExcluirDoadora.Enabled = False
+        btNovoParto.Enabled = False
         tbNome.Clear()
         tbOBS.Clear()
         tbNasc.Clear()
@@ -104,6 +104,7 @@ Public Class FormBLHCadastroDoadoras
     Private Sub dgDoadoras_CellEnter(sender As Object, e As DataGridViewCellEventArgs) Handles dgDoadoras.CellEnter
         If dgDoadoras.SelectedRows.Count > 0 Then
             tbNome.Text = dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(1).Value.ToString
+            tbNasc.Text = dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(2).Value.ToString
             tbOBS.Text = dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(4).Value.ToString
             tbDataCadastro.Text = dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(3).Value.ToString
             btAtualizarDoadora.Enabled = True
@@ -137,6 +138,7 @@ Public Class FormBLHCadastroDoadoras
             If tbNovoParto.Text.Length >= 10 Then
                 If m.SQLinsert("blh_partos", "data, id_doadora", "'" & m.mysqlDateFormat(tbNovoParto.Text) & "'," & idDoadora, True) Then
                     blh.loadPartos(cbPartos, idDoadora)
+                    loadDoadoras(dgDoadoras)
                     tbNovoParto.Clear()
                 End If
             End If
@@ -170,6 +172,8 @@ Public Class FormBLHCadastroDoadoras
     Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles tbBuscaDesativados.TextChanged
         If tbBuscaDesativados.Text.Length >= 3 Then
             loadDesativados($"AND nome LIKE '%{tbBuscaDesativados.Text}%'")
+        Else
+            loadDesativados()
         End If
 
     End Sub
@@ -179,6 +183,10 @@ Public Class FormBLHCadastroDoadoras
         Else
             loadDesativados()
         End If
+    End Sub
+
+    Private Sub dgDoadoras_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgDoadoras.CellClick
+        dgDoadoras_CellEnter(sender, e)
     End Sub
 
 End Class

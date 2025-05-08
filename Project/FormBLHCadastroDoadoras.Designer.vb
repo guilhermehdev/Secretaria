@@ -98,16 +98,15 @@ Partial Class FormBLHCadastroDoadoras
         Me.GroupBox1.Size = New System.Drawing.Size(405, 208)
         Me.GroupBox1.TabIndex = 1
         Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Dados doadora"
+        Me.GroupBox1.Text = "Dados da nova doadora"
         '
         'tbNasc
         '
         Me.tbNasc.Location = New System.Drawing.Point(266, 42)
         Me.tbNasc.Mask = "00/00/0000"
         Me.tbNasc.Name = "tbNasc"
-        Me.tbNasc.ReadOnly = True
         Me.tbNasc.Size = New System.Drawing.Size(65, 20)
-        Me.tbNasc.TabIndex = 16
+        Me.tbNasc.TabIndex = 1
         Me.tbNasc.ValidatingType = GetType(Date)
         '
         'Label5
@@ -195,12 +194,14 @@ Partial Class FormBLHCadastroDoadoras
         Me.tbDataCadastro.AllowPromptAsInput = False
         Me.tbDataCadastro.CausesValidation = False
         Me.tbDataCadastro.Cursor = System.Windows.Forms.Cursors.Default
+        Me.tbDataCadastro.Enabled = False
         Me.tbDataCadastro.Location = New System.Drawing.Point(334, 42)
         Me.tbDataCadastro.Mask = "00/00/0000"
         Me.tbDataCadastro.Name = "tbDataCadastro"
         Me.tbDataCadastro.ReadOnly = True
         Me.tbDataCadastro.Size = New System.Drawing.Size(65, 20)
-        Me.tbDataCadastro.TabIndex = 1
+        Me.tbDataCadastro.TabIndex = 2
+        Me.tbDataCadastro.TabStop = False
         Me.tbDataCadastro.ValidatingType = GetType(Date)
         '
         'Label2
