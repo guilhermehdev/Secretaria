@@ -30,7 +30,7 @@ Partial Class FormBLHCadastroDoadoras
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.tbNasc = New System.Windows.Forms.MaskedTextBox()
         Me.Label5 = New System.Windows.Forms.Label()
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.gbPartos = New System.Windows.Forms.GroupBox()
         Me.btNovoParto = New System.Windows.Forms.Button()
         Me.btExcluirParto = New System.Windows.Forms.Button()
         Me.tbNovoParto = New System.Windows.Forms.MaskedTextBox()
@@ -66,7 +66,7 @@ Partial Class FormBLHCadastroDoadoras
         Me.tbBuscaDesativados = New System.Windows.Forms.TextBox()
         Me.dgDoadorasDesativadas = New System.Windows.Forms.DataGridView()
         Me.GroupBox1.SuspendLayout()
-        Me.GroupBox3.SuspendLayout()
+        Me.gbPartos.SuspendLayout()
         CType(Me.dgDoadoras, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
@@ -81,13 +81,13 @@ Partial Class FormBLHCadastroDoadoras
         '
         Me.GroupBox1.Controls.Add(Me.tbNasc)
         Me.GroupBox1.Controls.Add(Me.Label5)
-        Me.GroupBox1.Controls.Add(Me.GroupBox3)
+        Me.GroupBox1.Controls.Add(Me.tbOBS)
+        Me.GroupBox1.Controls.Add(Me.Label7)
+        Me.GroupBox1.Controls.Add(Me.gbPartos)
         Me.GroupBox1.Controls.Add(Me.tbDataCadastro)
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.btCancelar)
         Me.GroupBox1.Controls.Add(Me.Button4)
-        Me.GroupBox1.Controls.Add(Me.tbOBS)
-        Me.GroupBox1.Controls.Add(Me.Label7)
         Me.GroupBox1.Controls.Add(Me.btSalvarDoadora)
         Me.GroupBox1.Controls.Add(Me.btAtualizarDoadora)
         Me.GroupBox1.Controls.Add(Me.btExcluirDoadora)
@@ -118,19 +118,20 @@ Partial Class FormBLHCadastroDoadoras
         Me.Label5.TabIndex = 17
         Me.Label5.Text = "Nascimento"
         '
-        'GroupBox3
+        'gbPartos
         '
-        Me.GroupBox3.Controls.Add(Me.btNovoParto)
-        Me.GroupBox3.Controls.Add(Me.btExcluirParto)
-        Me.GroupBox3.Controls.Add(Me.tbNovoParto)
-        Me.GroupBox3.Controls.Add(Me.Label4)
-        Me.GroupBox3.Controls.Add(Me.cbPartos)
-        Me.GroupBox3.Location = New System.Drawing.Point(6, 68)
-        Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(124, 105)
-        Me.GroupBox3.TabIndex = 2
-        Me.GroupBox3.TabStop = False
-        Me.GroupBox3.Text = "Partos"
+        Me.gbPartos.Controls.Add(Me.btNovoParto)
+        Me.gbPartos.Controls.Add(Me.btExcluirParto)
+        Me.gbPartos.Controls.Add(Me.tbNovoParto)
+        Me.gbPartos.Controls.Add(Me.Label4)
+        Me.gbPartos.Controls.Add(Me.cbPartos)
+        Me.gbPartos.Enabled = False
+        Me.gbPartos.Location = New System.Drawing.Point(275, 68)
+        Me.gbPartos.Name = "gbPartos"
+        Me.gbPartos.Size = New System.Drawing.Size(124, 105)
+        Me.gbPartos.TabIndex = 2
+        Me.gbPartos.TabStop = False
+        Me.gbPartos.Text = "Partos"
         '
         'btNovoParto
         '
@@ -215,16 +216,17 @@ Partial Class FormBLHCadastroDoadoras
         '
         'btCancelar
         '
-        Me.btCancelar.BackColor = System.Drawing.Color.Chocolate
+        Me.btCancelar.BackColor = System.Drawing.Color.Orange
         Me.btCancelar.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btCancelar.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.btCancelar.FlatAppearance.BorderSize = 0
         Me.btCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btCancelar.ForeColor = System.Drawing.Color.White
-        Me.btCancelar.Location = New System.Drawing.Point(233, 179)
+        Me.btCancelar.ForeColor = System.Drawing.SystemColors.Control
+        Me.btCancelar.Location = New System.Drawing.Point(6, 179)
         Me.btCancelar.Name = "btCancelar"
         Me.btCancelar.Size = New System.Drawing.Size(75, 23)
         Me.btCancelar.TabIndex = 7
-        Me.btCancelar.Text = "Cancelar"
+        Me.btCancelar.Text = "Novo"
         Me.btCancelar.UseVisualStyleBackColor = False
         '
         'Button4
@@ -243,7 +245,7 @@ Partial Class FormBLHCadastroDoadoras
         '
         'tbOBS
         '
-        Me.tbOBS.Location = New System.Drawing.Point(136, 81)
+        Me.tbOBS.Location = New System.Drawing.Point(9, 81)
         Me.tbOBS.Multiline = True
         Me.tbOBS.Name = "tbOBS"
         Me.tbOBS.Size = New System.Drawing.Size(263, 92)
@@ -252,7 +254,7 @@ Partial Class FormBLHCadastroDoadoras
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(133, 68)
+        Me.Label7.Location = New System.Drawing.Point(6, 68)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(29, 13)
         Me.Label7.TabIndex = 12
@@ -265,7 +267,7 @@ Partial Class FormBLHCadastroDoadoras
         Me.btSalvarDoadora.FlatAppearance.BorderSize = 0
         Me.btSalvarDoadora.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btSalvarDoadora.ForeColor = System.Drawing.Color.White
-        Me.btSalvarDoadora.Location = New System.Drawing.Point(5, 179)
+        Me.btSalvarDoadora.Location = New System.Drawing.Point(87, 179)
         Me.btSalvarDoadora.Name = "btSalvarDoadora"
         Me.btSalvarDoadora.Size = New System.Drawing.Size(75, 23)
         Me.btSalvarDoadora.TabIndex = 4
@@ -280,7 +282,7 @@ Partial Class FormBLHCadastroDoadoras
         Me.btAtualizarDoadora.FlatAppearance.BorderSize = 0
         Me.btAtualizarDoadora.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btAtualizarDoadora.ForeColor = System.Drawing.Color.White
-        Me.btAtualizarDoadora.Location = New System.Drawing.Point(81, 179)
+        Me.btAtualizarDoadora.Location = New System.Drawing.Point(168, 179)
         Me.btAtualizarDoadora.Name = "btAtualizarDoadora"
         Me.btAtualizarDoadora.Size = New System.Drawing.Size(75, 23)
         Me.btAtualizarDoadora.TabIndex = 5
@@ -295,7 +297,7 @@ Partial Class FormBLHCadastroDoadoras
         Me.btExcluirDoadora.FlatAppearance.BorderSize = 0
         Me.btExcluirDoadora.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btExcluirDoadora.ForeColor = System.Drawing.Color.White
-        Me.btExcluirDoadora.Location = New System.Drawing.Point(157, 179)
+        Me.btExcluirDoadora.Location = New System.Drawing.Point(249, 179)
         Me.btExcluirDoadora.Name = "btExcluirDoadora"
         Me.btExcluirDoadora.Size = New System.Drawing.Size(75, 23)
         Me.btExcluirDoadora.TabIndex = 6
@@ -412,7 +414,7 @@ Partial Class FormBLHCadastroDoadoras
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1})
         Me.StatusStrip1.Location = New System.Drawing.Point(0, 526)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(443, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(442, 22)
         Me.StatusStrip1.TabIndex = 36
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -564,7 +566,7 @@ Partial Class FormBLHCadastroDoadoras
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(443, 548)
+        Me.ClientSize = New System.Drawing.Size(442, 548)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.StatusStrip1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
@@ -576,8 +578,8 @@ Partial Class FormBLHCadastroDoadoras
         Me.Text = "BLH - Cadastro de doadoras"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
-        Me.GroupBox3.ResumeLayout(False)
-        Me.GroupBox3.PerformLayout()
+        Me.gbPartos.ResumeLayout(False)
+        Me.gbPartos.PerformLayout()
         CType(Me.dgDoadoras, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
@@ -612,7 +614,7 @@ Partial Class FormBLHCadastroDoadoras
     Friend WithEvents btCancelar As Button
     Friend WithEvents tbDataCadastro As MaskedTextBox
     Friend WithEvents Label2 As Label
-    Friend WithEvents GroupBox3 As GroupBox
+    Friend WithEvents gbPartos As GroupBox
     Friend WithEvents cbPartos As ComboBox
     Friend WithEvents tbBuscaDN As MaskedTextBox
     Friend WithEvents Label3 As Label

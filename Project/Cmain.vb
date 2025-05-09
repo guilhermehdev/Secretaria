@@ -40,28 +40,6 @@ Public Class Main
         End If
     End Sub
 
-    'Public Sub databaseBackup(ByVal caminhofixo As String)
-    '    Dim comando As String
-
-    '    If My.Settings.mysqldump = String.Empty Then
-    '        If Fbackup.OpenFileDialog1.ShowDialog = DialogResult.OK Then
-    '            My.Settings.mysqldump = Fbackup.OpenFileDialog1.FileName
-    '        End If
-    '    Else
-    '        comando = Chr(34) & My.Settings.mysqldump & Chr(34) & " -h " & My.Settings.server & " -u " & My.Settings.user & " -p" & My.Settings.password & " " & My.Settings.database & "  > " & caminhofixo & "\" & My.Settings.database & "-" + Format(Date.Now.Day.ToString) + "-" + Format(Date.Now.Month.ToString) + "-" + Format(Date.Now.Year.ToString) + "-Hora-" + Format(Date.Now.Hour.ToString) + "_" + Format(Date.Now.Minute.ToString) & ".sql"
-    '        Try
-    '            Shell("cmd.exe /c" & comando)
-
-    '            If My.Settings.bkpstatus = "Desativado" Then
-    '                MsgBox("Backup realizado com sucesso!", MsgBoxStyle.Information)
-    '            End If
-
-    '        Catch ex As Exception
-    '            showErrors(ex)
-    '        End Try
-    '    End If
-    'End Sub
-
     Public Sub copyFromDatagridview(ByVal datagrid As DataGridView, cellIndex As Integer)
         Dim copy_buffer As New System.Text.StringBuilder
         'For Each item As DataGridViewRow In datagrid.SelectedRows
@@ -84,6 +62,15 @@ Public Class Main
             showErrors(ex)
         End Try
 
+    End Sub
+
+    Public Sub disabledApparence(button As Button)
+        button.Enabled = True
+        button.BackColor = Color.Gray
+        button.ForeColor = Color.DarkGray
+        button.Cursor = Cursors.Default
+        button.FlatStyle = FlatStyle.Flat
+        button.FlatAppearance.BorderColor = Color.DarkGray
     End Sub
 
     Public Function doQuery(ByVal sql As String, Optional ByVal errorMsg As Boolean = False) 'insert/update/delete

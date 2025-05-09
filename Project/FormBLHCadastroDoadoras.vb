@@ -37,7 +37,7 @@
     End Sub
 
     Private Sub loadDesativados(Optional where As String = "")
-        m.loadDataGrid($"SELECT id, nome, dtnasc, data_cadastro, obs FROM blh_cadastro WHERE ativo=0 {where}  ORDER BY nome", dgDoadorasDesativadas, {False, True, True, True, False}, {"id", "Nome", "Nasc", "Cadastro", ""}, {0, 245, 70, 70, 0}, DataGridViewAutoSizeColumnsMode.None)
+        m.loadDataGrid($"SELECT id, nome, dtnasc, data_cadastro, obs FROM blh_cadastro WHERE ativo=0 {where}  ORDER BY nome", dgDoadorasDesativadas, {False, True, True, True, False}, {"id", "Nome", "Nasc", "Cadastro", ""}, {0, 240, 75, 70, 0}, DataGridViewAutoSizeColumnsMode.None)
         dgDoadorasDesativadas.ClearSelection()
     End Sub
 
@@ -46,6 +46,7 @@
         loadDesativados()
     End Sub
     Private Sub tbBusca_TextChanged(sender As Object, e As EventArgs) Handles tbBusca.TextChanged
+
         If tbBusca.Text.Length >= 3 Then
             loadDoadoras(dgDoadoras, $"AND nome LIKE '%{tbBusca.Text}%'")
         Else
@@ -53,6 +54,7 @@
         End If
     End Sub
     Private Sub tbBuscaDN_TextChanged(sender As Object, e As EventArgs) Handles tbBuscaDN.TextChanged
+
         If tbBuscaDN.Text.Length = 10 Then
             loadDoadoras(dgDoadoras, $"AND dtnasc ='{m.mysqlDateFormat(tbBuscaDN.Text)}'")
         Else
@@ -74,15 +76,18 @@
     End Sub
     Private Sub btExcluirDoadora_Click(sender As Object, e As EventArgs) Handles btExcluirDoadora.Click
 
-        ' If m.SQLdelete("blh_cadastro", "id", dgDoadoras, 0, True, True, "SELECT id, nome, dtnasc, data_cadastro, obs FROM blh_cadastro ORDER BY nome", True) Then
-        If m.msgQuestion("Excluir Doadora?", "Atenção") Then
+        If dgDoadoras.RowCount > 0 Then
 
-            If m.doQuery($"UPDATE blh_cadastro SET ativo=0 WHERE id={dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(0).Value}") Then
-                btAtualizarDoadora.Enabled = False
-                btExcluirDoadora.Enabled = False
-                btSalvarDoadora.Enabled = True
-                loadDoadoras(dgDoadoras)
-                loadDesativados()
+            If m.msgQuestion("Excluir Doadora?", "Atenção") Then
+
+                If m.doQuery($"UPDATE blh_cadastro SET ativo=0 WHERE id={dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(0).Value}") Then
+                    btAtualizarDoadora.Enabled = False
+                    btExcluirDoadora.Enabled = False
+                    btSalvarDoadora.Enabled = True
+                    loadDoadoras(dgDoadoras)
+                    loadDesativados()
+                End If
+
             End If
 
         End If
@@ -99,6 +104,8 @@
         tbDataCadastro.Clear()
         cbPartos.DataSource = Nothing
         tbNovoParto.Clear()
+        tbNome.Focus()
+        gbPartos.Enabled = False
     End Sub
 
     Private Sub dgDoadoras_CellEnter(sender As Object, e As DataGridViewCellEventArgs) Handles dgDoadoras.CellEnter
@@ -111,6 +118,7 @@
             btSalvarDoadora.Enabled = False
             btExcluirDoadora.Enabled = True
             btNovoParto.Enabled = True
+            gbPartos.Enabled = True
 
             blh.loadPartos(cbPartos, dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(0).Value)
             If cbPartos.Items.Count > 0 Then
@@ -124,13 +132,19 @@
             btExcluirDoadora.Enabled = False
             btNovoParto.Enabled = False
             btExcluirParto.Enabled = False
-
+            gbPartos.Enabled = False
         End If
     End Sub
     Private Sub btExcluirParto_Click(sender As Object, e As EventArgs) Handles btExcluirParto.Click
-        If m.doQuery($"DELETE FROM blh_partos WHERE id={cbPartos.SelectedValue}") Then
-            blh.loadPartos(cbPartos, dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(0).Value)
+        If cbPartos.Items.Count > 0 Then
+            If m.doQuery($"DELETE FROM blh_partos WHERE id={cbPartos.SelectedValue}") Then
+                blh.loadPartos(cbPartos, dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(0).Value)
+            End If
+        Else
+            m.msgAlert("Selecione uma data.")
+            cbPartos.Focus()
         End If
+
     End Sub
     Private Sub btNovoParto_Click(sender As Object, e As EventArgs) Handles btNovoParto.Click
         Try
@@ -187,6 +201,15 @@
 
     Private Sub dgDoadoras_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgDoadoras.CellClick
         dgDoadoras_CellEnter(sender, e)
+    End Sub
+    Private Sub FormBLHCadastroDoadoras_Activated(sender As Object, e As EventArgs) Handles MyBase.Activated
+        tbBusca.Focus()
+    End Sub
+    Private Sub tbBusca_Enter(sender As Object, e As EventArgs) Handles tbBusca.Enter
+        tbBuscaDN.Clear()
+    End Sub
+    Private Sub tbBuscaDN_Enter(sender As Object, e As EventArgs) Handles tbBuscaDN.Enter
+        tbBusca.Clear()
     End Sub
 
 End Class
