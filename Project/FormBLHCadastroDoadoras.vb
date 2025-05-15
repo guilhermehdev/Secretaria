@@ -1,6 +1,7 @@
 ﻿Public Class FormBLHCadastroDoadoras
     Dim m As New Main
     Dim blh As New BLH
+    Dim currentIndex As Integer
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Me.Close()
     End Sub
@@ -33,7 +34,12 @@
     Private Sub loadDoadoras(datagrid As DataGridView, Optional where As String = "")
         m.loadDataGrid($"SELECT id, nome, dtnasc, data_cadastro, obs FROM blh_cadastro WHERE ativo=1 {where} ORDER BY nome", datagrid, {False, True, True, False, False}, {"id", "Nome", "Nasc", "", ""}, {0, 230, 70, 0, 0}, DataGridViewAutoSizeColumnsMode.Fill, True)
         ToolStripStatusLabel1.Text = "Total de doadoras: " & datagrid.Rows.Count
-        dgDoadoras.ClearSelection()
+        Try
+            dgDoadoras.Rows(currentIndex).Selected = True
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
     Private Sub loadDesativados(Optional where As String = "")
@@ -64,10 +70,11 @@
     Private Sub btAtualizarDoadora_Click(sender As Object, e As EventArgs) Handles btAtualizarDoadora.Click
         If Not IsNothing(tbNome.Text) AndAlso tbNasc.Text.Length >= 10 Then
 
-            If m.SQLupdate("blh_cadastro", $"nome='{tbNome.Text.ToUpper}',obs='{tbOBS.Text.ToUpper}',dtnasc='{m.mysqlDateFormat(tbNasc.Text)}'", "id", dgDoadoras, 0, "", True, True, "SELECT id, nome, dtnasc, data_cadastro, obs FROM blh_cadastro WHERE ativo=1 ORDER BY nome", True) Then
+            If m.SQLupdate("blh_cadastro", $"nome='{tbNome.Text.ToUpper}',obs='{tbOBS.Text.ToUpper}',dtnasc='{m.mysqlDateFormat(tbNasc.Text)}'", "id", dgDoadoras, 0, "", True) Then
                 btAtualizarDoadora.Enabled = False
                 btExcluirDoadora.Enabled = False
                 btSalvarDoadora.Enabled = True
+                dgDoadoras.Rows(currentIndex).Selected = True
             End If
         Else
             MessageBox.Show("Preencha todos os campos obrigatórios")
@@ -109,7 +116,7 @@
     End Sub
 
     Private Sub dgDoadoras_CellEnter(sender As Object, e As DataGridViewCellEventArgs) Handles dgDoadoras.CellEnter
-        If dgDoadoras.SelectedRows.Count > 0 Then
+        If dgDoadoras.SelectedRows.Count > 0 Or currentIndex <> Nothing Then
             tbNome.Text = dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(1).Value.ToString
             tbNasc.Text = dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(2).Value.ToString
             tbOBS.Text = dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(4).Value.ToString
@@ -119,6 +126,9 @@
             btExcluirDoadora.Enabled = True
             btNovoParto.Enabled = True
             gbPartos.Enabled = True
+            currentIndex = dgDoadoras.CurrentRow.Index
+
+            MsgBox(currentIndex)
 
             blh.loadPartos(cbPartos, dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(0).Value)
             If cbPartos.Items.Count > 0 Then
@@ -132,7 +142,7 @@
             btExcluirDoadora.Enabled = False
             btNovoParto.Enabled = False
             btExcluirParto.Enabled = False
-            gbPartos.Enabled = False
+            ' gbPartos.Enabled = False
         End If
     End Sub
     Private Sub btExcluirParto_Click(sender As Object, e As EventArgs) Handles btExcluirParto.Click
@@ -152,7 +162,7 @@
             If tbNovoParto.Text.Length >= 10 Then
                 If m.SQLinsert("blh_partos", "data, id_doadora", "'" & m.mysqlDateFormat(tbNovoParto.Text) & "'," & idDoadora, True) Then
                     blh.loadPartos(cbPartos, idDoadora)
-                    loadDoadoras(dgDoadoras)
+                    'loadDoadoras(dgDoadoras)
                     tbNovoParto.Clear()
                 End If
             End If
@@ -178,7 +188,7 @@
             If m.doQuery($"UPDATE blh_cadastro SET ativo=1 WHERE id={dgDoadorasDesativadas.Rows(dgDoadorasDesativadas.CurrentRow.Index).Cells(0).Value}") Then
                 loadDoadoras(dgDoadoras)
                 loadDesativados()
-                dgDoadoras_CellEnter(Nothing, Nothing)
+                dgDoadoras_CellClick(sender, e)
             End If
         End If
     End Sub
