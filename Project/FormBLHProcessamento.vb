@@ -126,6 +126,11 @@ Public Class FormBLHProcessamento
         Dim apta_inapta As String = If(rbApta.Checked, 1, 0)
         Dim conforme As String = If(rbConforme.Checked, 1, 0)
 
+        If tbDataOrdenha.Text = "" Or tbVolume.Value = 0 Or cbTipoLeite.SelectedIndex = -1 Or cbOrigem.SelectedItem Is Nothing Or tbDataSorologia.Text = "" Or tbDataVencimento.Text = "" Or cbResultado.SelectedItem Is Nothing Or cbDoadoras.SelectedValue Is Nothing Or cbParto.SelectedValue Is Nothing Then
+            MsgBox("Preencha todos os campos obrigatórios.", MsgBoxStyle.Critical)
+            Return
+        End If
+
         If m.SQLinsert("blh_leite", "data_ordenha, volume, tipo_leite, origem, data_sorologia, vencimento_sorologia, resultado_sorologia, apta_inapta, conforme, vencimento_sup, problema_refrigera, embalagem, exames_vencidos, id_doadora, id_parto", "'" & m.mysqlDateFormat(tbDataOrdenha.Text) & "', " & tbVolume.Value & ", '" & cbTipoLeite.SelectedValue.ToString & "', '" & cbOrigem.SelectedItem & "','" & m.mysqlDateFormat(tbDataSorologia.Text) & "', '" & m.mysqlDateFormat(tbDataVencimento.Text) & "', '" & cbResultado.SelectedItem & "', " & apta_inapta & ", " & conforme & ", " & cbVencidos15dias.CheckState & ", " & cbRefrigeracao.CheckState & ", " & cbEmbalagem.CheckState & ", " & cbExamesVencidos.CheckState & ", " & cbDoadoras.SelectedValue & ", " & cbParto.SelectedValue, True) Then
             loadLeite()
         End If
@@ -193,13 +198,48 @@ Public Class FormBLHProcessamento
         End If
     End Sub
 
-    Private Sub btExcluirDoadora_Click(sender As Object, e As EventArgs) Handles btExcluirDoadora.Click
-        m.SQLdelete("blh_leite", "id", dgLeite, 0, True, True, queryLeite, True)
+    Private Sub btExcluirDoadora_Click(sender As Object, e As EventArgs) Handles btExcluirLeite.Click
+        If m.SQLdelete("blh_leite", "id", dgLeite, 0, True, True, queryLeite, True) Then
+            btExcluirLeite.Enabled = False
+        End If
     End Sub
     Private Sub tbBuscaDoadora_TextChanged(sender As Object, e As EventArgs) Handles tbBuscaDoadora.TextChanged
-
         If tbBuscaDoadora.Text.Length > 3 Then
             loadLeite($"WHERE blh_cadastro.nome LIKE '%{tbBuscaDoadora.Text}%'")
+        Else
+            loadLeite()
+        End If
+    End Sub
+    Private Sub tbBuscaDN_TextChanged(sender As Object, e As EventArgs) Handles tbBuscaDN.TextChanged
+        If tbBuscaDN.Text.Length >= 10 Then
+            loadLeite($"WHERE blh_cadastro.dtnasc ='{m.mysqlDateFormat(tbBuscaDN.Text)}'")
+        Else
+            loadLeite()
+        End If
+    End Sub
+    Private Sub btCancelar_Click(sender As Object, e As EventArgs) Handles btCancelar.Click
+        tbBuscaDoadora.Text = ""
+        tbBuscaDN.Text = ""
+        cbDoadoras.SelectedIndex = -1
+        cbParto.SelectedIndex = -1
+        tbDataOrdenha.Text = ""
+        tbVolume.Value = 0
+        cbTipoLeite.SelectedIndex = -1
+        cbOrigem.SelectedIndex = -1
+        tbDataSorologia.Text = ""
+        tbDataVencimento.Text = ""
+        cbResultado.SelectedIndex = -1
+        rbApta.Checked = True
+        rbConforme.Checked = True
+        gbMotivos.Enabled = False
+        cbDoadoras.Focus()
+    End Sub
+
+    Private Sub dgLeite_CellEnter(sender As Object, e As DataGridViewCellEventArgs) Handles dgLeite.CellEnter
+        If dgLeite.RowCount > 0 Then
+            btExcluirLeite.Enabled = True
+        Else
+            btExcluirLeite.Enabled = False
         End If
 
     End Sub

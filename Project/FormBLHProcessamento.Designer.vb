@@ -67,7 +67,7 @@ Partial Class FormBLHProcessamento
         Me.btCancelar = New System.Windows.Forms.Button()
         Me.Button4 = New System.Windows.Forms.Button()
         Me.btSalvarDoadora = New System.Windows.Forms.Button()
-        Me.btExcluirDoadora = New System.Windows.Forms.Button()
+        Me.btExcluirLeite = New System.Windows.Forms.Button()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -83,9 +83,9 @@ Partial Class FormBLHProcessamento
         Me.Label2.AutoSize = True
         Me.Label2.Location = New System.Drawing.Point(434, 15)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(75, 13)
+        Me.Label2.Size = New System.Drawing.Size(79, 13)
         Me.Label2.TabIndex = 4
-        Me.Label2.Text = "Data do parto "
+        Me.Label2.Text = "Data do parto* "
         '
         'Label6
         '
@@ -138,18 +138,18 @@ Partial Class FormBLHProcessamento
         Me.Label4.AutoSize = True
         Me.Label4.Location = New System.Drawing.Point(13, 61)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(78, 13)
+        Me.Label4.Size = New System.Drawing.Size(82, 13)
         Me.Label4.TabIndex = 17
-        Me.Label4.Text = "Data sorologia "
+        Me.Label4.Text = "Data sorologia* "
         '
         'Label3
         '
         Me.Label3.AutoSize = True
         Me.Label3.Location = New System.Drawing.Point(553, 16)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(40, 13)
+        Me.Label3.Size = New System.Drawing.Size(44, 13)
         Me.Label3.TabIndex = 15
-        Me.Label3.Text = "Origem"
+        Me.Label3.Text = "Origem*"
         '
         'cbOrigem
         '
@@ -165,9 +165,9 @@ Partial Class FormBLHProcessamento
         Me.Label1.AutoSize = True
         Me.Label1.Location = New System.Drawing.Point(13, 15)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(48, 13)
+        Me.Label1.Size = New System.Drawing.Size(52, 13)
         Me.Label1.TabIndex = 20
-        Me.Label1.Text = "Doadora"
+        Me.Label1.Text = "Doadora*"
         '
         'TabControl1
         '
@@ -417,9 +417,9 @@ Partial Class FormBLHProcessamento
         Me.Label9.AutoSize = True
         Me.Label9.Location = New System.Drawing.Point(13, 84)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(65, 13)
+        Me.Label9.Size = New System.Drawing.Size(69, 13)
         Me.Label9.TabIndex = 30
-        Me.Label9.Text = "Tipo do leite"
+        Me.Label9.Text = "Tipo do leite*"
         '
         'cbTipoLeite
         '
@@ -434,9 +434,9 @@ Partial Class FormBLHProcessamento
         Me.Label8.AutoSize = True
         Me.Label8.Location = New System.Drawing.Point(101, 43)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(42, 13)
+        Me.Label8.Size = New System.Drawing.Size(46, 13)
         Me.Label8.TabIndex = 28
-        Me.Label8.Text = "Volume"
+        Me.Label8.Text = "Volume*"
         '
         'tbVolume
         '
@@ -451,9 +451,9 @@ Partial Class FormBLHProcessamento
         Me.Label7.AutoSize = True
         Me.Label7.Location = New System.Drawing.Point(13, 43)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(72, 13)
+        Me.Label7.Size = New System.Drawing.Size(76, 13)
         Me.Label7.TabIndex = 26
-        Me.Label7.Text = "Data ordenha"
+        Me.Label7.Text = "Data ordenha*"
         '
         'tbDataOrdenha
         '
@@ -556,20 +556,20 @@ Partial Class FormBLHProcessamento
         Me.btSalvarDoadora.Text = "Salvar"
         Me.btSalvarDoadora.UseVisualStyleBackColor = False
         '
-        'btExcluirDoadora
+        'btExcluirLeite
         '
-        Me.btExcluirDoadora.BackColor = System.Drawing.Color.DarkRed
-        Me.btExcluirDoadora.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btExcluirDoadora.Enabled = False
-        Me.btExcluirDoadora.FlatAppearance.BorderSize = 0
-        Me.btExcluirDoadora.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btExcluirDoadora.ForeColor = System.Drawing.Color.White
-        Me.btExcluirDoadora.Location = New System.Drawing.Point(92, 525)
-        Me.btExcluirDoadora.Name = "btExcluirDoadora"
-        Me.btExcluirDoadora.Size = New System.Drawing.Size(75, 23)
-        Me.btExcluirDoadora.TabIndex = 28
-        Me.btExcluirDoadora.Text = "Excluir"
-        Me.btExcluirDoadora.UseVisualStyleBackColor = False
+        Me.btExcluirLeite.BackColor = System.Drawing.Color.DarkRed
+        Me.btExcluirLeite.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btExcluirLeite.Enabled = False
+        Me.btExcluirLeite.FlatAppearance.BorderSize = 0
+        Me.btExcluirLeite.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btExcluirLeite.ForeColor = System.Drawing.Color.White
+        Me.btExcluirLeite.Location = New System.Drawing.Point(92, 525)
+        Me.btExcluirLeite.Name = "btExcluirLeite"
+        Me.btExcluirLeite.Size = New System.Drawing.Size(75, 23)
+        Me.btExcluirLeite.TabIndex = 28
+        Me.btExcluirLeite.Text = "Excluir"
+        Me.btExcluirLeite.UseVisualStyleBackColor = False
         '
         'FormBLHProcessamento
         '
@@ -580,7 +580,7 @@ Partial Class FormBLHProcessamento
         Me.Controls.Add(Me.btCancelar)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.btSalvarDoadora)
-        Me.Controls.Add(Me.btExcluirDoadora)
+        Me.Controls.Add(Me.btExcluirLeite)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -638,7 +638,7 @@ Partial Class FormBLHProcessamento
     Friend WithEvents btCancelar As Button
     Friend WithEvents Button4 As Button
     Friend WithEvents btSalvarDoadora As Button
-    Friend WithEvents btExcluirDoadora As Button
+    Friend WithEvents btExcluirLeite As Button
     Friend WithEvents dgLeite As DataGridView
     Friend WithEvents GroupBox3 As GroupBox
     Friend WithEvents tbBuscaDoadora As TextBox

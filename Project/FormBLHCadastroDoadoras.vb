@@ -34,11 +34,6 @@
     Private Sub loadDoadoras(datagrid As DataGridView, Optional where As String = "")
         m.loadDataGrid($"SELECT id, nome, dtnasc, data_cadastro, obs FROM blh_cadastro WHERE ativo=1 {where} ORDER BY nome", datagrid, {False, True, True, False, False}, {"id", "Nome", "Nasc", "", ""}, {0, 230, 70, 0, 0}, DataGridViewAutoSizeColumnsMode.Fill, True)
         ToolStripStatusLabel1.Text = "Total de doadoras: " & datagrid.Rows.Count
-        Try
-            dgDoadoras.Rows(currentIndex).Selected = True
-        Catch ex As Exception
-
-        End Try
 
     End Sub
 
@@ -50,6 +45,7 @@
     Private Sub FormBLHCadastroDoadoras_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         loadDoadoras(dgDoadoras)
         loadDesativados()
+        dgDoadoras.ClearSelection()
     End Sub
     Private Sub tbBusca_TextChanged(sender As Object, e As EventArgs) Handles tbBusca.TextChanged
 
@@ -69,12 +65,23 @@
     End Sub
     Private Sub btAtualizarDoadora_Click(sender As Object, e As EventArgs) Handles btAtualizarDoadora.Click
         If Not IsNothing(tbNome.Text) AndAlso tbNasc.Text.Length >= 10 Then
-
+            currentIndex = dgDoadoras.CurrentRow.Index
             If m.SQLupdate("blh_cadastro", $"nome='{tbNome.Text.ToUpper}',obs='{tbOBS.Text.ToUpper}',dtnasc='{m.mysqlDateFormat(tbNasc.Text)}'", "id", dgDoadoras, 0, "", True) Then
                 btAtualizarDoadora.Enabled = False
                 btExcluirDoadora.Enabled = False
                 btSalvarDoadora.Enabled = True
-                dgDoadoras.Rows(currentIndex).Selected = True
+                'loadDoadoras(dgDoadoras)
+                Dim updated = m.getDataset($"Select id, nome, dtnasc, data_cadastro, obs FROM blh_cadastro WHERE ativo=1 And id={dgDoadoras.CurrentRow.Cells(0).Value}")
+                dgDoadoras.Rows(currentIndex).Cells(1).Value = updated.Rows(0).Item(1)
+                tbNome.Text = updated.Rows(0).Item(1)
+                dgDoadoras.Rows(currentIndex).Cells(2).Value = updated.Rows(0).Item(2)
+                tbNasc.Text = updated.Rows(0).Item(2)
+                tbDataCadastro.Text = updated.Rows(0).Item(3)
+                tbOBS.Text = updated.Rows(0).Item(4)
+
+                'dgDoadoras.Rows(currentIndex).Selected = True
+                onDatagridCellEnter()
+                tbNome.Focus()
             End If
         Else
             MessageBox.Show("Preencha todos os campos obrigatórios")
@@ -87,12 +94,13 @@
 
             If m.msgQuestion("Excluir Doadora?", "Atenção") Then
 
-                If m.doQuery($"UPDATE blh_cadastro SET ativo=0 WHERE id={dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(0).Value}") Then
+                If m.doQuery($"UPDATE blh_cadastro Set ativo=0 WHERE id={dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(0).Value}") Then
                     btAtualizarDoadora.Enabled = False
                     btExcluirDoadora.Enabled = False
                     btSalvarDoadora.Enabled = True
                     loadDoadoras(dgDoadoras)
                     loadDesativados()
+                    tbBusca.Focus()
                 End If
 
             End If
@@ -115,7 +123,7 @@
         gbPartos.Enabled = False
     End Sub
 
-    Private Sub dgDoadoras_CellEnter(sender As Object, e As DataGridViewCellEventArgs) Handles dgDoadoras.CellEnter
+    Private Sub onDatagridCellEnter()
         If dgDoadoras.SelectedRows.Count > 0 Or currentIndex <> Nothing Then
             tbNome.Text = dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(1).Value.ToString
             tbNasc.Text = dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(2).Value.ToString
@@ -126,9 +134,6 @@
             btExcluirDoadora.Enabled = True
             btNovoParto.Enabled = True
             gbPartos.Enabled = True
-            currentIndex = dgDoadoras.CurrentRow.Index
-
-            MsgBox(currentIndex)
 
             blh.loadPartos(cbPartos, dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(0).Value)
             If cbPartos.Items.Count > 0 Then
@@ -144,6 +149,10 @@
             btExcluirParto.Enabled = False
             ' gbPartos.Enabled = False
         End If
+    End Sub
+
+    Private Sub dgDoadoras_CellEnter(sender As Object, e As DataGridViewCellEventArgs) Handles dgDoadoras.CellEnter
+        onDatagridCellEnter()
     End Sub
     Private Sub btExcluirParto_Click(sender As Object, e As EventArgs) Handles btExcluirParto.Click
         If cbPartos.Items.Count > 0 Then
