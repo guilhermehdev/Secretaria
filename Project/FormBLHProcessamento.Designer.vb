@@ -68,6 +68,10 @@ Partial Class FormBLHProcessamento
         Me.Button4 = New System.Windows.Forms.Button()
         Me.btSalvarDoadora = New System.Windows.Forms.Button()
         Me.btExcluirLeite = New System.Windows.Forms.Button()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.tbDataIni = New System.Windows.Forms.MaskedTextBox()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.tbDataFin = New System.Windows.Forms.MaskedTextBox()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -76,6 +80,7 @@ Partial Class FormBLHProcessamento
         Me.gbMotivos.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         CType(Me.tbVolume, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage2.SuspendLayout()
         Me.SuspendLayout()
         '
         'Label2
@@ -507,6 +512,10 @@ Partial Class FormBLHProcessamento
         'TabPage2
         '
         Me.TabPage2.BackColor = System.Drawing.SystemColors.ButtonFace
+        Me.TabPage2.Controls.Add(Me.tbDataFin)
+        Me.TabPage2.Controls.Add(Me.Label13)
+        Me.TabPage2.Controls.Add(Me.tbDataIni)
+        Me.TabPage2.Controls.Add(Me.Label12)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
@@ -571,6 +580,42 @@ Partial Class FormBLHProcessamento
         Me.btExcluirLeite.Text = "Excluir"
         Me.btExcluirLeite.UseVisualStyleBackColor = False
         '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(16, 19)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(85, 13)
+        Me.Label12.TabIndex = 0
+        Me.Label12.Text = "Periodo ordenha"
+        '
+        'tbDataIni
+        '
+        Me.tbDataIni.Location = New System.Drawing.Point(19, 35)
+        Me.tbDataIni.Mask = "00/00/0000"
+        Me.tbDataIni.Name = "tbDataIni"
+        Me.tbDataIni.Size = New System.Drawing.Size(82, 20)
+        Me.tbDataIni.TabIndex = 26
+        Me.tbDataIni.ValidatingType = GetType(Date)
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(107, 38)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(13, 13)
+        Me.Label13.TabIndex = 27
+        Me.Label13.Text = "à"
+        '
+        'tbDataFin
+        '
+        Me.tbDataFin.Location = New System.Drawing.Point(126, 35)
+        Me.tbDataFin.Mask = "00/00/0000"
+        Me.tbDataFin.Name = "tbDataFin"
+        Me.tbDataFin.Size = New System.Drawing.Size(82, 20)
+        Me.tbDataFin.TabIndex = 28
+        Me.tbDataFin.ValidatingType = GetType(Date)
+        '
         'FormBLHProcessamento
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -600,6 +645,8 @@ Partial Class FormBLHProcessamento
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         CType(Me.tbVolume, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage2.ResumeLayout(False)
+        Me.TabPage2.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -645,4 +692,8 @@ Partial Class FormBLHProcessamento
     Friend WithEvents Label10 As Label
     Friend WithEvents tbBuscaDN As MaskedTextBox
     Friend WithEvents Label11 As Label
+    Friend WithEvents tbDataFin As MaskedTextBox
+    Friend WithEvents Label13 As Label
+    Friend WithEvents tbDataIni As MaskedTextBox
+    Friend WithEvents Label12 As Label
 End Class
