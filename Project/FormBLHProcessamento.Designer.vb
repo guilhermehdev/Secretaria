@@ -25,6 +25,9 @@ Partial Class FormBLHProcessamento
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormBLHProcessamento))
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
@@ -64,14 +67,17 @@ Partial Class FormBLHProcessamento
         Me.rbApta = New System.Windows.Forms.RadioButton()
         Me.rbInapta = New System.Windows.Forms.RadioButton()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.Label12 = New System.Windows.Forms.Label()
         Me.btCancelar = New System.Windows.Forms.Button()
         Me.Button4 = New System.Windows.Forms.Button()
         Me.btSalvarDoadora = New System.Windows.Forms.Button()
         Me.btExcluirLeite = New System.Windows.Forms.Button()
-        Me.Label12 = New System.Windows.Forms.Label()
-        Me.tbDataIni = New System.Windows.Forms.MaskedTextBox()
-        Me.Label13 = New System.Windows.Forms.Label()
-        Me.tbDataFin = New System.Windows.Forms.MaskedTextBox()
+        Me.dgSelecaoLeite = New System.Windows.Forms.DataGridView()
+        Me.tbDataIni = New System.Windows.Forms.DateTimePicker()
+        Me.tbDataFin = New System.Windows.Forms.DateTimePicker()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -81,6 +87,7 @@ Partial Class FormBLHProcessamento
         Me.GroupBox2.SuspendLayout()
         CType(Me.tbVolume, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage2.SuspendLayout()
+        CType(Me.dgSelecaoLeite, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label2
@@ -182,10 +189,10 @@ Partial Class FormBLHProcessamento
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.HotTrack = True
-        Me.TabControl1.Location = New System.Drawing.Point(12, 17)
+        Me.TabControl1.Location = New System.Drawing.Point(12, 7)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(805, 502)
+        Me.TabControl1.Size = New System.Drawing.Size(805, 534)
         Me.TabControl1.TabIndex = 22
         '
         'TabPage1
@@ -193,9 +200,12 @@ Partial Class FormBLHProcessamento
         Me.TabPage1.BackColor = System.Drawing.SystemColors.ButtonFace
         Me.TabPage1.Controls.Add(Me.GroupBox3)
         Me.TabPage1.Controls.Add(Me.dgLeite)
+        Me.TabPage1.Controls.Add(Me.btCancelar)
         Me.TabPage1.Controls.Add(Me.GroupBox1)
         Me.TabPage1.Controls.Add(Me.cbParto)
         Me.TabPage1.Controls.Add(Me.cbDoadoras)
+        Me.TabPage1.Controls.Add(Me.btSalvarDoadora)
+        Me.TabPage1.Controls.Add(Me.btExcluirLeite)
         Me.TabPage1.Controls.Add(Me.Label1)
         Me.TabPage1.Controls.Add(Me.Label2)
         Me.TabPage1.Controls.Add(Me.Label6)
@@ -211,7 +221,7 @@ Partial Class FormBLHProcessamento
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(797, 476)
+        Me.TabPage1.Size = New System.Drawing.Size(797, 508)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Cadastro"
         '
@@ -309,7 +319,7 @@ Partial Class FormBLHProcessamento
         Me.dgLeite.RowHeadersWidth = 4
         Me.dgLeite.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgLeite.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgLeite.Size = New System.Drawing.Size(788, 206)
+        Me.dgLeite.Size = New System.Drawing.Size(788, 209)
         Me.dgLeite.TabIndex = 32
         Me.dgLeite.TabStop = False
         '
@@ -512,16 +522,37 @@ Partial Class FormBLHProcessamento
         'TabPage2
         '
         Me.TabPage2.BackColor = System.Drawing.SystemColors.ButtonFace
+        Me.TabPage2.Controls.Add(Me.GroupBox4)
+        Me.TabPage2.Controls.Add(Me.Button1)
         Me.TabPage2.Controls.Add(Me.tbDataFin)
-        Me.TabPage2.Controls.Add(Me.Label13)
         Me.TabPage2.Controls.Add(Me.tbDataIni)
+        Me.TabPage2.Controls.Add(Me.dgSelecaoLeite)
+        Me.TabPage2.Controls.Add(Me.Label13)
         Me.TabPage2.Controls.Add(Me.Label12)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(797, 476)
+        Me.TabPage2.Size = New System.Drawing.Size(797, 508)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Seleção para pasteurização"
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(110, 35)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(13, 13)
+        Me.Label13.TabIndex = 27
+        Me.Label13.Text = "à"
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(3, 13)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(85, 13)
+        Me.Label12.TabIndex = 0
+        Me.Label12.Text = "Periodo ordenha"
         '
         'btCancelar
         '
@@ -530,7 +561,7 @@ Partial Class FormBLHProcessamento
         Me.btCancelar.FlatAppearance.BorderSize = 0
         Me.btCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btCancelar.ForeColor = System.Drawing.Color.White
-        Me.btCancelar.Location = New System.Drawing.Point(168, 525)
+        Me.btCancelar.Location = New System.Drawing.Point(156, 478)
         Me.btCancelar.Name = "btCancelar"
         Me.btCancelar.Size = New System.Drawing.Size(75, 23)
         Me.btCancelar.TabIndex = 30
@@ -544,7 +575,7 @@ Partial Class FormBLHProcessamento
         Me.Button4.FlatAppearance.BorderSize = 0
         Me.Button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Button4.ForeColor = System.Drawing.Color.White
-        Me.Button4.Location = New System.Drawing.Point(784, 525)
+        Me.Button4.Location = New System.Drawing.Point(784, 545)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(33, 23)
         Me.Button4.TabIndex = 29
@@ -558,7 +589,7 @@ Partial Class FormBLHProcessamento
         Me.btSalvarDoadora.FlatAppearance.BorderSize = 0
         Me.btSalvarDoadora.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btSalvarDoadora.ForeColor = System.Drawing.Color.White
-        Me.btSalvarDoadora.Location = New System.Drawing.Point(16, 525)
+        Me.btSalvarDoadora.Location = New System.Drawing.Point(4, 478)
         Me.btSalvarDoadora.Name = "btSalvarDoadora"
         Me.btSalvarDoadora.Size = New System.Drawing.Size(75, 23)
         Me.btSalvarDoadora.TabIndex = 26
@@ -573,59 +604,108 @@ Partial Class FormBLHProcessamento
         Me.btExcluirLeite.FlatAppearance.BorderSize = 0
         Me.btExcluirLeite.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btExcluirLeite.ForeColor = System.Drawing.Color.White
-        Me.btExcluirLeite.Location = New System.Drawing.Point(92, 525)
+        Me.btExcluirLeite.Location = New System.Drawing.Point(80, 478)
         Me.btExcluirLeite.Name = "btExcluirLeite"
         Me.btExcluirLeite.Size = New System.Drawing.Size(75, 23)
         Me.btExcluirLeite.TabIndex = 28
         Me.btExcluirLeite.Text = "Excluir"
         Me.btExcluirLeite.UseVisualStyleBackColor = False
         '
-        'Label12
+        'dgSelecaoLeite
         '
-        Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(16, 19)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(85, 13)
-        Me.Label12.TabIndex = 0
-        Me.Label12.Text = "Periodo ordenha"
+        Me.dgSelecaoLeite.AllowUserToAddRows = False
+        Me.dgSelecaoLeite.AllowUserToDeleteRows = False
+        Me.dgSelecaoLeite.AllowUserToOrderColumns = True
+        Me.dgSelecaoLeite.AllowUserToResizeRows = False
+        Me.dgSelecaoLeite.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.dgSelecaoLeite.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.dgSelecaoLeite.BackgroundColor = System.Drawing.Color.White
+        Me.dgSelecaoLeite.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.dgSelecaoLeite.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgSelecaoLeite.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
+        Me.dgSelecaoLeite.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgSelecaoLeite.DefaultCellStyle = DataGridViewCellStyle5
+        Me.dgSelecaoLeite.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
+        Me.dgSelecaoLeite.Location = New System.Drawing.Point(6, 55)
+        Me.dgSelecaoLeite.MultiSelect = False
+        Me.dgSelecaoLeite.Name = "dgSelecaoLeite"
+        Me.dgSelecaoLeite.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.ControlDark
+        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgSelecaoLeite.RowHeadersDefaultCellStyle = DataGridViewCellStyle6
+        Me.dgSelecaoLeite.RowHeadersWidth = 4
+        Me.dgSelecaoLeite.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+        Me.dgSelecaoLeite.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgSelecaoLeite.Size = New System.Drawing.Size(466, 422)
+        Me.dgSelecaoLeite.TabIndex = 2
         '
         'tbDataIni
         '
-        Me.tbDataIni.Location = New System.Drawing.Point(19, 35)
-        Me.tbDataIni.Mask = "00/00/0000"
+        Me.tbDataIni.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.tbDataIni.Location = New System.Drawing.Point(6, 29)
         Me.tbDataIni.Name = "tbDataIni"
-        Me.tbDataIni.Size = New System.Drawing.Size(82, 20)
-        Me.tbDataIni.TabIndex = 26
-        Me.tbDataIni.ValidatingType = GetType(Date)
-        '
-        'Label13
-        '
-        Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(107, 38)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(13, 13)
-        Me.Label13.TabIndex = 27
-        Me.Label13.Text = "à"
+        Me.tbDataIni.Size = New System.Drawing.Size(98, 20)
+        Me.tbDataIni.TabIndex = 0
         '
         'tbDataFin
         '
-        Me.tbDataFin.Location = New System.Drawing.Point(126, 35)
-        Me.tbDataFin.Mask = "00/00/0000"
+        Me.tbDataFin.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.tbDataFin.Location = New System.Drawing.Point(129, 29)
         Me.tbDataFin.Name = "tbDataFin"
-        Me.tbDataFin.Size = New System.Drawing.Size(82, 20)
-        Me.tbDataFin.TabIndex = 28
-        Me.tbDataFin.ValidatingType = GetType(Date)
+        Me.tbDataFin.Size = New System.Drawing.Size(98, 20)
+        Me.tbDataFin.TabIndex = 1
+        '
+        'Button1
+        '
+        Me.Button1.BackColor = System.Drawing.Color.ForestGreen
+        Me.Button1.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Button1.FlatAppearance.BorderSize = 0
+        Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button1.ForeColor = System.Drawing.Color.White
+        Me.Button1.Location = New System.Drawing.Point(6, 480)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(117, 23)
+        Me.Button1.TabIndex = 3
+        Me.Button1.Text = "Salvar selecionados"
+        Me.Button1.UseVisualStyleBackColor = False
+        '
+        'GroupBox4
+        '
+        Me.GroupBox4.Location = New System.Drawing.Point(478, 13)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Size = New System.Drawing.Size(313, 464)
+        Me.GroupBox4.TabIndex = 37
+        Me.GroupBox4.TabStop = False
+        Me.GroupBox4.Text = "Pasteurização"
         '
         'FormBLHProcessamento
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(829, 560)
+        Me.ClientSize = New System.Drawing.Size(829, 574)
         Me.Controls.Add(Me.Button4)
-        Me.Controls.Add(Me.btCancelar)
         Me.Controls.Add(Me.TabControl1)
-        Me.Controls.Add(Me.btSalvarDoadora)
-        Me.Controls.Add(Me.btExcluirLeite)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -647,6 +727,7 @@ Partial Class FormBLHProcessamento
         CType(Me.tbVolume, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage2.PerformLayout()
+        CType(Me.dgSelecaoLeite, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -692,8 +773,11 @@ Partial Class FormBLHProcessamento
     Friend WithEvents Label10 As Label
     Friend WithEvents tbBuscaDN As MaskedTextBox
     Friend WithEvents Label11 As Label
-    Friend WithEvents tbDataFin As MaskedTextBox
     Friend WithEvents Label13 As Label
-    Friend WithEvents tbDataIni As MaskedTextBox
     Friend WithEvents Label12 As Label
+    Friend WithEvents dgSelecaoLeite As DataGridView
+    Friend WithEvents tbDataFin As DateTimePicker
+    Friend WithEvents tbDataIni As DateTimePicker
+    Friend WithEvents Button1 As Button
+    Friend WithEvents GroupBox4 As GroupBox
 End Class

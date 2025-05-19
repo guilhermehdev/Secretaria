@@ -339,7 +339,7 @@ Public Class Main
                         End If
                     End If
                 Next
-
+                datagrid.ClearSelection()
                 Return dados
             Else
                 datagrid.DataSource = Nothing

@@ -54,10 +54,44 @@ Public Class FormBLHProcessamento
         Return "NÃO" ' fallback padrão se não for número nem SIM/NÃO
     End Function
 
-
     Private Sub loadLeite(Optional where As String = "")
         m.loadDataGrid(queryLeite & $" {where} ORDER BY id DESC", dgLeite, {False, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True}, {"ID", "Doadora", "Nasc", "Parto", "Ordenha", "Volume", "TL", "Origem", "Sorologia", "Vencimento", "Resultado", "Apta", "Conforme", "Vencimento > 15 dias", "Problema de refrigeracao", "Problema de Embalagem", "Exames vencidos"}, {0, 250, 70, 70, 70, 60, 30, 60, 70, 70, 60, 60, 60, 60, 60, 60, 60}, DataGridViewAutoSizeColumnsMode.None, True)
+    End Sub
+    Private Sub loadPasteurizacao(Optional criteria As String = "")
+        dgSelecaoLeite.Columns.Clear()
+        If dgSelecaoLeite.Columns("chck") IsNot Nothing Then
+            dgSelecaoLeite.Columns.Remove("chck")
+        End If
 
+        m.loadDataGrid($"SELECT blh_leite.id, blh_leite.data_ordenha AS data, blh_leite.tipo_leite AS tipo, blh_leite.origem, blh_cadastro.nome AS doadora, blh_leite.volume AS ml  
+            FROM blh_leite JOIN blh_cadastro ON blh_cadastro.id = blh_leite.id_doadora
+            WHERE blh_leite.conforme = 1 {criteria} ORDER BY DATA DESC, tipo, origem, doadora, ml", dgSelecaoLeite, {False, True, True, True, True, True}, {"", "Data", "TL", "Origem", "Doadora", "ML"}, {0, 70, 20, 70, 220, 50})
+
+        Dim chkCol As New DataGridViewCheckBoxColumn()
+        chkCol.HeaderText = "#"
+        chkCol.Name = "chck"
+        chkCol.Width = 30
+        dgSelecaoLeite.Columns.Insert(0, chkCol)
+
+        If dgSelecaoLeite.RowCount > 0 Then
+
+            dgSelecaoLeite.Columns(2).ReadOnly = True
+            dgSelecaoLeite.Columns(3).ReadOnly = True
+            dgSelecaoLeite.Columns(4).ReadOnly = True
+            dgSelecaoLeite.Columns(5).ReadOnly = True
+            dgSelecaoLeite.Columns(6).ReadOnly = True
+
+        End If
+    End Sub
+
+    Private Sub getCheckboxValue()
+        For Each row As DataGridViewRow In dgSelecaoLeite.Rows
+            If Convert.ToBoolean(row.Cells("chck").Value) = True Then
+                Dim id As String = row.Cells("Id").Value.ToString()
+                ' Use o ID como quiser
+                MsgBox("Selecionado: " & id)
+            End If
+        Next
     End Sub
 
     Private Sub FormBLHProcessamento_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -211,7 +245,7 @@ Public Class FormBLHProcessamento
         End If
     End Sub
     Private Sub tbBuscaDN_TextChanged(sender As Object, e As EventArgs) Handles tbBuscaDN.TextChanged
-        If tbBuscaDN.Text.Length >= 10 Then
+        If tbBuscaDN.Text <> "  /  /" Then
             loadLeite($"WHERE blh_cadastro.dtnasc ='{m.mysqlDateFormat(tbBuscaDN.Text)}'")
         Else
             loadLeite()
@@ -242,6 +276,26 @@ Public Class FormBLHProcessamento
             btExcluirLeite.Enabled = False
         End If
 
+    End Sub
+    Private Sub tbDataFin_ValueChanged(sender As Object, e As EventArgs) Handles tbDataFin.ValueChanged
+        If IsDate(tbDataFin.Value.Date) And IsDate(tbDataIni.Value) Then
+            loadPasteurizacao($"AND blh_leite.data_ordenha BETWEEN '{m.mysqlDateFormat(tbDataIni.Text)}' AND '{m.mysqlDateFormat(tbDataFin.Text)}'")
+        Else
+            MsgBox("Necessário data inicial e data final.", MsgBoxStyle.Critical)
+            tbDataIni.Focus()
+        End If
+    End Sub
+
+    Private Sub dgSelecaoLeite_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles dgSelecaoLeite.CellFormatting
+        If e.ColumnIndex = 6 Then
+            If Not IsDBNull(e.Value) AndAlso IsNumeric(e.Value) Then
+                e.Value = Format(CDec(e.Value), "N2")
+                e.FormattingApplied = True
+            End If
+        End If
+    End Sub
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        getCheckboxValue()
     End Sub
 
 End Class
