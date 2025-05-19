@@ -76,8 +76,12 @@ Partial Class FormBLHProcessamento
         Me.dgSelecaoLeite = New System.Windows.Forms.DataGridView()
         Me.tbDataIni = New System.Windows.Forms.DateTimePicker()
         Me.tbDataFin = New System.Windows.Forms.DateTimePicker()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.btSalvarSelecionados = New System.Windows.Forms.Button()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.tbDataPasteu = New System.Windows.Forms.DateTimePicker()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.FlowSelecionados = New System.Windows.Forms.FlowLayoutPanel()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -88,6 +92,8 @@ Partial Class FormBLHProcessamento
         CType(Me.tbVolume, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage2.SuspendLayout()
         CType(Me.dgSelecaoLeite, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox4.SuspendLayout()
+        Me.GroupBox5.SuspendLayout()
         Me.SuspendLayout()
         '
         'Label2
@@ -522,24 +528,19 @@ Partial Class FormBLHProcessamento
         'TabPage2
         '
         Me.TabPage2.BackColor = System.Drawing.SystemColors.ButtonFace
+        Me.TabPage2.Controls.Add(Me.GroupBox5)
         Me.TabPage2.Controls.Add(Me.GroupBox4)
-        Me.TabPage2.Controls.Add(Me.Button1)
-        Me.TabPage2.Controls.Add(Me.tbDataFin)
-        Me.TabPage2.Controls.Add(Me.tbDataIni)
-        Me.TabPage2.Controls.Add(Me.dgSelecaoLeite)
-        Me.TabPage2.Controls.Add(Me.Label13)
-        Me.TabPage2.Controls.Add(Me.Label12)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage2.Size = New System.Drawing.Size(797, 508)
         Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Seleção para pasteurização"
+        Me.TabPage2.Text = "Pasteurização"
         '
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(110, 35)
+        Me.Label13.Location = New System.Drawing.Point(113, 47)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(13, 13)
         Me.Label13.TabIndex = 27
@@ -548,7 +549,7 @@ Partial Class FormBLHProcessamento
         'Label12
         '
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(3, 13)
+        Me.Label12.Location = New System.Drawing.Point(6, 25)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(85, 13)
         Me.Label12.TabIndex = 0
@@ -642,7 +643,7 @@ Partial Class FormBLHProcessamento
         DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dgSelecaoLeite.DefaultCellStyle = DataGridViewCellStyle5
         Me.dgSelecaoLeite.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
-        Me.dgSelecaoLeite.Location = New System.Drawing.Point(6, 55)
+        Me.dgSelecaoLeite.Location = New System.Drawing.Point(9, 67)
         Me.dgSelecaoLeite.MultiSelect = False
         Me.dgSelecaoLeite.Name = "dgSelecaoLeite"
         Me.dgSelecaoLeite.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
@@ -657,13 +658,13 @@ Partial Class FormBLHProcessamento
         Me.dgSelecaoLeite.RowHeadersWidth = 4
         Me.dgSelecaoLeite.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgSelecaoLeite.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgSelecaoLeite.Size = New System.Drawing.Size(466, 422)
+        Me.dgSelecaoLeite.Size = New System.Drawing.Size(480, 422)
         Me.dgSelecaoLeite.TabIndex = 2
         '
         'tbDataIni
         '
         Me.tbDataIni.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.tbDataIni.Location = New System.Drawing.Point(6, 29)
+        Me.tbDataIni.Location = New System.Drawing.Point(9, 41)
         Me.tbDataIni.Name = "tbDataIni"
         Me.tbDataIni.Size = New System.Drawing.Size(98, 20)
         Me.tbDataIni.TabIndex = 0
@@ -671,33 +672,76 @@ Partial Class FormBLHProcessamento
         'tbDataFin
         '
         Me.tbDataFin.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.tbDataFin.Location = New System.Drawing.Point(129, 29)
+        Me.tbDataFin.Location = New System.Drawing.Point(132, 41)
         Me.tbDataFin.Name = "tbDataFin"
         Me.tbDataFin.Size = New System.Drawing.Size(98, 20)
         Me.tbDataFin.TabIndex = 1
         '
-        'Button1
+        'btSalvarSelecionados
         '
-        Me.Button1.BackColor = System.Drawing.Color.ForestGreen
-        Me.Button1.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Button1.FlatAppearance.BorderSize = 0
-        Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button1.ForeColor = System.Drawing.Color.White
-        Me.Button1.Location = New System.Drawing.Point(6, 480)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(117, 23)
-        Me.Button1.TabIndex = 3
-        Me.Button1.Text = "Salvar selecionados"
-        Me.Button1.UseVisualStyleBackColor = False
+        Me.btSalvarSelecionados.BackColor = System.Drawing.Color.ForestGreen
+        Me.btSalvarSelecionados.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btSalvarSelecionados.Enabled = False
+        Me.btSalvarSelecionados.FlatAppearance.BorderSize = 0
+        Me.btSalvarSelecionados.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btSalvarSelecionados.ForeColor = System.Drawing.Color.White
+        Me.btSalvarSelecionados.Location = New System.Drawing.Point(6, 460)
+        Me.btSalvarSelecionados.Name = "btSalvarSelecionados"
+        Me.btSalvarSelecionados.Size = New System.Drawing.Size(117, 23)
+        Me.btSalvarSelecionados.TabIndex = 3
+        Me.btSalvarSelecionados.Text = "Salvar pasteurização"
+        Me.btSalvarSelecionados.UseVisualStyleBackColor = False
         '
         'GroupBox4
         '
-        Me.GroupBox4.Location = New System.Drawing.Point(478, 13)
+        Me.GroupBox4.Controls.Add(Me.FlowSelecionados)
+        Me.GroupBox4.Controls.Add(Me.Label14)
+        Me.GroupBox4.Controls.Add(Me.tbDataPasteu)
+        Me.GroupBox4.Controls.Add(Me.btSalvarSelecionados)
+        Me.GroupBox4.Location = New System.Drawing.Point(507, 6)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(313, 464)
+        Me.GroupBox4.Size = New System.Drawing.Size(284, 489)
         Me.GroupBox4.TabIndex = 37
         Me.GroupBox4.TabStop = False
-        Me.GroupBox4.Text = "Pasteurização"
+        Me.GroupBox4.Text = "Detalhes da pasteurização"
+        '
+        'GroupBox5
+        '
+        Me.GroupBox5.Controls.Add(Me.Label12)
+        Me.GroupBox5.Controls.Add(Me.Label13)
+        Me.GroupBox5.Controls.Add(Me.dgSelecaoLeite)
+        Me.GroupBox5.Controls.Add(Me.tbDataFin)
+        Me.GroupBox5.Controls.Add(Me.tbDataIni)
+        Me.GroupBox5.Location = New System.Drawing.Point(6, 6)
+        Me.GroupBox5.Name = "GroupBox5"
+        Me.GroupBox5.Size = New System.Drawing.Size(495, 489)
+        Me.GroupBox5.TabIndex = 38
+        Me.GroupBox5.TabStop = False
+        Me.GroupBox5.Text = "Selecionar para pasteurização"
+        '
+        'tbDataPasteu
+        '
+        Me.tbDataPasteu.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.tbDataPasteu.Location = New System.Drawing.Point(11, 41)
+        Me.tbDataPasteu.Name = "tbDataPasteu"
+        Me.tbDataPasteu.Size = New System.Drawing.Size(99, 20)
+        Me.tbDataPasteu.TabIndex = 4
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Location = New System.Drawing.Point(8, 25)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(33, 13)
+        Me.Label14.TabIndex = 5
+        Me.Label14.Text = "Data "
+        '
+        'FlowSelecionados
+        '
+        Me.FlowSelecionados.Location = New System.Drawing.Point(11, 67)
+        Me.FlowSelecionados.Name = "FlowSelecionados"
+        Me.FlowSelecionados.Size = New System.Drawing.Size(267, 387)
+        Me.FlowSelecionados.TabIndex = 6
         '
         'FormBLHProcessamento
         '
@@ -726,8 +770,11 @@ Partial Class FormBLHProcessamento
         Me.GroupBox2.PerformLayout()
         CType(Me.tbVolume, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage2.ResumeLayout(False)
-        Me.TabPage2.PerformLayout()
         CType(Me.dgSelecaoLeite, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox4.ResumeLayout(False)
+        Me.GroupBox4.PerformLayout()
+        Me.GroupBox5.ResumeLayout(False)
+        Me.GroupBox5.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -778,6 +825,10 @@ Partial Class FormBLHProcessamento
     Friend WithEvents dgSelecaoLeite As DataGridView
     Friend WithEvents tbDataFin As DateTimePicker
     Friend WithEvents tbDataIni As DateTimePicker
-    Friend WithEvents Button1 As Button
+    Friend WithEvents btSalvarSelecionados As Button
     Friend WithEvents GroupBox4 As GroupBox
+    Friend WithEvents GroupBox5 As GroupBox
+    Friend WithEvents Label14 As Label
+    Friend WithEvents tbDataPasteu As DateTimePicker
+    Friend WithEvents FlowSelecionados As FlowLayoutPanel
 End Class

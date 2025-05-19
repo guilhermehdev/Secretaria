@@ -59,9 +59,6 @@ Public Class FormBLHProcessamento
     End Sub
     Private Sub loadPasteurizacao(Optional criteria As String = "")
         dgSelecaoLeite.Columns.Clear()
-        If dgSelecaoLeite.Columns("chck") IsNot Nothing Then
-            dgSelecaoLeite.Columns.Remove("chck")
-        End If
 
         m.loadDataGrid($"SELECT blh_leite.id, blh_leite.data_ordenha AS data, blh_leite.tipo_leite AS tipo, blh_leite.origem, blh_cadastro.nome AS doadora, blh_leite.volume AS ml  
             FROM blh_leite JOIN blh_cadastro ON blh_cadastro.id = blh_leite.id_doadora
@@ -74,13 +71,14 @@ Public Class FormBLHProcessamento
         dgSelecaoLeite.Columns.Insert(0, chkCol)
 
         If dgSelecaoLeite.RowCount > 0 Then
-
             dgSelecaoLeite.Columns(2).ReadOnly = True
             dgSelecaoLeite.Columns(3).ReadOnly = True
             dgSelecaoLeite.Columns(4).ReadOnly = True
             dgSelecaoLeite.Columns(5).ReadOnly = True
             dgSelecaoLeite.Columns(6).ReadOnly = True
-
+            btSalvarSelecionados.Enabled = True
+        Else
+            btSalvarSelecionados.Enabled = False
         End If
     End Sub
 
@@ -294,8 +292,87 @@ Public Class FormBLHProcessamento
             End If
         End If
     End Sub
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btSalvarSelecionados.Click
         getCheckboxValue()
+    End Sub
+
+    Private Sub dgSelecaoLeite_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs) Handles dgSelecaoLeite.CellValueChanged
+        If e.ColumnIndex = 0 Then ' Supondo que o checkbox esteja na coluna 0
+            Dim row = dgSelecaoLeite.Rows(e.RowIndex)
+            Dim marcado As Boolean = Convert.ToBoolean(row.Cells(0).Value)
+
+            If marcado Then
+                AdicionarPainel(row)
+            Else
+                RemoverPainelPorId(row.Cells("Id").Value.ToString())
+            End If
+        End If
+    End Sub
+
+    Private Sub AdicionarPainel(row As DataGridViewRow)
+        Dim id As String = row.Cells(1).Value.ToString()
+        Dim nome As String = row.Cells(5).Value.ToString()
+        Dim ml As String = row.Cells(6).Value.ToString()
+
+        ' Evita duplicar
+        If FlowSelecionados.Controls.ContainsKey("pnl_" & id) Then Exit Sub
+
+        Dim pnl As New Panel With {
+        .Name = "pnl_" & id,
+        .Size = New Size(250, 30),
+        .BackColor = Color.LightGray,
+        .Margin = New Padding(2)
+    }
+
+        Dim lbl As New Label With {
+        .Text = $"{nome} (ML: {ml})",
+        .AutoSize = False,
+        .TextAlign = ContentAlignment.MiddleLeft,
+        .Size = New Size(170, 30),
+        .Location = New Point(0, 0)
+    }
+
+        Dim btn As New Button With {
+        .Text = "X",
+        .Size = New Size(30, 30),
+        .Location = New Point(180, 0),
+        .Tag = id
+    }
+
+        AddHandler btn.Click, AddressOf RemoverPainel_Click
+
+        pnl.Controls.Add(lbl)
+        pnl.Controls.Add(btn)
+        FlowSelecionados.Controls.Add(pnl)
+    End Sub
+
+    Private Sub RemoverPainel_Click(sender As Object, e As EventArgs)
+        Dim btn = DirectCast(sender, Button)
+        Dim id As String = btn.Tag.ToString()
+        RemoverPainelPorId(id)
+
+        ' Desmarca checkbox na grid
+        For Each row As DataGridViewRow In dgSelecaoLeite.Rows
+            If row.Cells("Id").Value.ToString() = id Then
+                row.Cells(0).Value = False
+                Exit For
+            End If
+        Next
+    End Sub
+
+
+    Private Sub RemoverPainelPorId(id As String)
+        Dim nomePainel = "pnl_" & id
+        If FlowSelecionados.Controls.ContainsKey(nomePainel) Then
+            FlowSelecionados.Controls.RemoveByKey(nomePainel)
+        End If
+    End Sub
+
+
+    Private Sub dgSelecaoLeite_CurrentCellDirtyStateChanged(sender As Object, e As EventArgs) Handles dgSelecaoLeite.CurrentCellDirtyStateChanged
+        If dgSelecaoLeite.IsCurrentCellDirty Then
+            dgSelecaoLeite.CommitEdit(DataGridViewDataErrorContexts.Commit)
+        End If
     End Sub
 
 End Class
