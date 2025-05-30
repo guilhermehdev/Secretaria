@@ -23,7 +23,7 @@
     Private Sub btSalvarDoadora_Click(sender As Object, e As EventArgs) Handles btSalvarDoadora.Click
         Dim apta_inapta As String = If(rbApta.Checked, 1, 0)
         If Not IsNothing(tbNome.Text) Then
-            m.doQuery($"INSERT INTO blh_cadastro (nome, obs, dtnasc, apta_inapta) VALUES ('{tbNome.Text}','{tbOBS.Text}','{m.mysqlDateFormat(tbNasc.Text)}',{apta_inapta}", True)
+            m.doQuery($"INSERT INTO blh_cadastro (nome, obs, dtnasc, apta_inapta) VALUES ('{tbNome.Text.ToUpper}','{tbOBS.Text.ToUpper}','{m.mysqlDateFormat(tbNasc.Text)}',{apta_inapta})", True)
             MessageBox.Show("Salvo com sucesso!")
             loadDoadoras(dgDoadoras)
         Else
@@ -235,7 +235,7 @@
         tbBusca.Clear()
     End Sub
     Private Sub btSorologias_Click(sender As Object, e As EventArgs) Handles btSorologias.Click
-        FormBLHSorologias.id_doadora = dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(0).Value
+        FormBLHSorologias.id_doadora = dgDoadoras.SelectedRows.Item(0).Cells(0).Value
         FormBLHSorologias.ShowDialog()
     End Sub
 
