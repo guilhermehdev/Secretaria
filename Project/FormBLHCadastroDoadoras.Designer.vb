@@ -28,6 +28,10 @@ Partial Class FormBLHCadastroDoadoras
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormBLHCadastroDoadoras))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.tbOBS = New System.Windows.Forms.TextBox()
+        Me.rbApta = New System.Windows.Forms.RadioButton()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.rbInapta = New System.Windows.Forms.RadioButton()
         Me.tbNasc = New System.Windows.Forms.MaskedTextBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.gbPartos = New System.Windows.Forms.GroupBox()
@@ -40,8 +44,6 @@ Partial Class FormBLHCadastroDoadoras
         Me.Label2 = New System.Windows.Forms.Label()
         Me.btCancelar = New System.Windows.Forms.Button()
         Me.Button4 = New System.Windows.Forms.Button()
-        Me.tbOBS = New System.Windows.Forms.TextBox()
-        Me.Label7 = New System.Windows.Forms.Label()
         Me.btSalvarDoadora = New System.Windows.Forms.Button()
         Me.btAtualizarDoadora = New System.Windows.Forms.Button()
         Me.btExcluirDoadora = New System.Windows.Forms.Button()
@@ -65,6 +67,7 @@ Partial Class FormBLHCadastroDoadoras
         Me.Label9 = New System.Windows.Forms.Label()
         Me.tbBuscaDesativados = New System.Windows.Forms.TextBox()
         Me.dgDoadorasDesativadas = New System.Windows.Forms.DataGridView()
+        Me.btSorologias = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.gbPartos.SuspendLayout()
         CType(Me.dgDoadoras, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -79,10 +82,13 @@ Partial Class FormBLHCadastroDoadoras
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.btSorologias)
+        Me.GroupBox1.Controls.Add(Me.tbOBS)
+        Me.GroupBox1.Controls.Add(Me.rbApta)
+        Me.GroupBox1.Controls.Add(Me.Label7)
+        Me.GroupBox1.Controls.Add(Me.rbInapta)
         Me.GroupBox1.Controls.Add(Me.tbNasc)
         Me.GroupBox1.Controls.Add(Me.Label5)
-        Me.GroupBox1.Controls.Add(Me.tbOBS)
-        Me.GroupBox1.Controls.Add(Me.Label7)
         Me.GroupBox1.Controls.Add(Me.gbPartos)
         Me.GroupBox1.Controls.Add(Me.tbDataCadastro)
         Me.GroupBox1.Controls.Add(Me.Label2)
@@ -99,6 +105,45 @@ Partial Class FormBLHCadastroDoadoras
         Me.GroupBox1.TabIndex = 1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Dados da nova doadora"
+        '
+        'tbOBS
+        '
+        Me.tbOBS.Location = New System.Drawing.Point(9, 107)
+        Me.tbOBS.Multiline = True
+        Me.tbOBS.Name = "tbOBS"
+        Me.tbOBS.Size = New System.Drawing.Size(260, 62)
+        Me.tbOBS.TabIndex = 3
+        '
+        'rbApta
+        '
+        Me.rbApta.AutoSize = True
+        Me.rbApta.Checked = True
+        Me.rbApta.Location = New System.Drawing.Point(34, 70)
+        Me.rbApta.Name = "rbApta"
+        Me.rbApta.Size = New System.Drawing.Size(47, 17)
+        Me.rbApta.TabIndex = 31
+        Me.rbApta.TabStop = True
+        Me.rbApta.Text = "Apta"
+        Me.rbApta.UseVisualStyleBackColor = True
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(6, 91)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(29, 13)
+        Me.Label7.TabIndex = 12
+        Me.Label7.Text = "Obs."
+        '
+        'rbInapta
+        '
+        Me.rbInapta.AutoSize = True
+        Me.rbInapta.Location = New System.Drawing.Point(87, 70)
+        Me.rbInapta.Name = "rbInapta"
+        Me.rbInapta.Size = New System.Drawing.Size(55, 17)
+        Me.rbInapta.TabIndex = 32
+        Me.rbInapta.Text = "Inapta"
+        Me.rbInapta.UseVisualStyleBackColor = True
         '
         'tbNasc
         '
@@ -242,23 +287,6 @@ Partial Class FormBLHCadastroDoadoras
         Me.Button4.TabIndex = 8
         Me.Button4.Text = "Sair"
         Me.Button4.UseVisualStyleBackColor = False
-        '
-        'tbOBS
-        '
-        Me.tbOBS.Location = New System.Drawing.Point(9, 81)
-        Me.tbOBS.Multiline = True
-        Me.tbOBS.Name = "tbOBS"
-        Me.tbOBS.Size = New System.Drawing.Size(263, 92)
-        Me.tbOBS.TabIndex = 3
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(6, 68)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(29, 13)
-        Me.Label7.TabIndex = 12
-        Me.Label7.Text = "Obs."
         '
         'btSalvarDoadora
         '
@@ -562,6 +590,17 @@ Partial Class FormBLHCadastroDoadoras
         Me.dgDoadorasDesativadas.TabIndex = 2
         Me.dgDoadorasDesativadas.TabStop = False
         '
+        'btSorologias
+        '
+        Me.btSorologias.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btSorologias.Enabled = False
+        Me.btSorologias.Location = New System.Drawing.Point(168, 70)
+        Me.btSorologias.Name = "btSorologias"
+        Me.btSorologias.Size = New System.Drawing.Size(95, 23)
+        Me.btSorologias.TabIndex = 33
+        Me.btSorologias.Text = "Sorologias"
+        Me.btSorologias.UseVisualStyleBackColor = True
+        '
         'FormBLHCadastroDoadoras
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -634,4 +673,7 @@ Partial Class FormBLHCadastroDoadoras
     Friend WithEvents tbBuscaDesativados As TextBox
     Friend WithEvents dgDoadorasDesativadas As DataGridView
     Friend WithEvents btReativar As Button
+    Friend WithEvents rbApta As RadioButton
+    Friend WithEvents rbInapta As RadioButton
+    Friend WithEvents btSorologias As Button
 End Class

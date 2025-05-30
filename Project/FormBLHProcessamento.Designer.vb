@@ -30,12 +30,6 @@ Partial Class FormBLHProcessamento
         Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormBLHProcessamento))
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.cbResultado = New System.Windows.Forms.ComboBox()
-        Me.tbDataVencimento = New System.Windows.Forms.MaskedTextBox()
-        Me.Label5 = New System.Windows.Forms.Label()
-        Me.tbDataSorologia = New System.Windows.Forms.MaskedTextBox()
-        Me.Label4 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cbOrigem = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -47,6 +41,7 @@ Partial Class FormBLHProcessamento
         Me.tbBuscaDoadora = New System.Windows.Forms.TextBox()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.dgLeite = New System.Windows.Forms.DataGridView()
+        Me.btCancelar = New System.Windows.Forms.Button()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.gbMotivos = New System.Windows.Forms.GroupBox()
         Me.cbExamesVencidos = New System.Windows.Forms.CheckBox()
@@ -64,24 +59,21 @@ Partial Class FormBLHProcessamento
         Me.tbDataOrdenha = New System.Windows.Forms.MaskedTextBox()
         Me.cbParto = New System.Windows.Forms.ComboBox()
         Me.cbDoadoras = New System.Windows.Forms.ComboBox()
-        Me.rbApta = New System.Windows.Forms.RadioButton()
-        Me.rbInapta = New System.Windows.Forms.RadioButton()
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
-        Me.Label13 = New System.Windows.Forms.Label()
-        Me.Label12 = New System.Windows.Forms.Label()
-        Me.btCancelar = New System.Windows.Forms.Button()
-        Me.Button4 = New System.Windows.Forms.Button()
         Me.btSalvarDoadora = New System.Windows.Forms.Button()
         Me.btExcluirLeite = New System.Windows.Forms.Button()
-        Me.dgSelecaoLeite = New System.Windows.Forms.DataGridView()
-        Me.tbDataIni = New System.Windows.Forms.DateTimePicker()
-        Me.tbDataFin = New System.Windows.Forms.DateTimePicker()
-        Me.btSalvarSelecionados = New System.Windows.Forms.Button()
-        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
-        Me.tbDataPasteu = New System.Windows.Forms.DateTimePicker()
-        Me.Label14 = New System.Windows.Forms.Label()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.dgSelecaoLeite = New System.Windows.Forms.DataGridView()
+        Me.tbDataFin = New System.Windows.Forms.DateTimePicker()
+        Me.tbDataIni = New System.Windows.Forms.DateTimePicker()
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.FlowSelecionados = New System.Windows.Forms.FlowLayoutPanel()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.tbDataPasteu = New System.Windows.Forms.DateTimePicker()
+        Me.btSalvarSelecionados = New System.Windows.Forms.Button()
+        Me.Button4 = New System.Windows.Forms.Button()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -91,9 +83,9 @@ Partial Class FormBLHProcessamento
         Me.GroupBox2.SuspendLayout()
         CType(Me.tbVolume, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage2.SuspendLayout()
+        Me.GroupBox5.SuspendLayout()
         CType(Me.dgSelecaoLeite, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox4.SuspendLayout()
-        Me.GroupBox5.SuspendLayout()
         Me.SuspendLayout()
         '
         'Label2
@@ -104,61 +96,6 @@ Partial Class FormBLHProcessamento
         Me.Label2.Size = New System.Drawing.Size(79, 13)
         Me.Label2.TabIndex = 4
         Me.Label2.Text = "Data do parto* "
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(13, 145)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(58, 13)
-        Me.Label6.TabIndex = 19
-        Me.Label6.Text = "Resultado "
-        '
-        'cbResultado
-        '
-        Me.cbResultado.FormattingEnabled = True
-        Me.cbResultado.Items.AddRange(New Object() {"REGULAR", "VENCIDO"})
-        Me.cbResultado.Location = New System.Drawing.Point(16, 160)
-        Me.cbResultado.Name = "cbResultado"
-        Me.cbResultado.Size = New System.Drawing.Size(107, 21)
-        Me.cbResultado.TabIndex = 14
-        '
-        'tbDataVencimento
-        '
-        Me.tbDataVencimento.Location = New System.Drawing.Point(16, 119)
-        Me.tbDataVencimento.Mask = "00/00/0000"
-        Me.tbDataVencimento.Name = "tbDataVencimento"
-        Me.tbDataVencimento.ReadOnly = True
-        Me.tbDataVencimento.Size = New System.Drawing.Size(107, 20)
-        Me.tbDataVencimento.TabIndex = 16
-        Me.tbDataVencimento.ValidatingType = GetType(Date)
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(13, 104)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(66, 13)
-        Me.Label5.TabIndex = 18
-        Me.Label5.Text = "Vencimento "
-        '
-        'tbDataSorologia
-        '
-        Me.tbDataSorologia.Location = New System.Drawing.Point(16, 77)
-        Me.tbDataSorologia.Mask = "00/00/0000"
-        Me.tbDataSorologia.Name = "tbDataSorologia"
-        Me.tbDataSorologia.Size = New System.Drawing.Size(107, 20)
-        Me.tbDataSorologia.TabIndex = 13
-        Me.tbDataSorologia.ValidatingType = GetType(Date)
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(13, 61)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(82, 13)
-        Me.Label4.TabIndex = 17
-        Me.Label4.Text = "Data sorologia* "
         '
         'Label3
         '
@@ -214,16 +151,8 @@ Partial Class FormBLHProcessamento
         Me.TabPage1.Controls.Add(Me.btExcluirLeite)
         Me.TabPage1.Controls.Add(Me.Label1)
         Me.TabPage1.Controls.Add(Me.Label2)
-        Me.TabPage1.Controls.Add(Me.Label6)
         Me.TabPage1.Controls.Add(Me.cbOrigem)
-        Me.TabPage1.Controls.Add(Me.cbResultado)
-        Me.TabPage1.Controls.Add(Me.rbApta)
-        Me.TabPage1.Controls.Add(Me.rbInapta)
         Me.TabPage1.Controls.Add(Me.Label3)
-        Me.TabPage1.Controls.Add(Me.tbDataVencimento)
-        Me.TabPage1.Controls.Add(Me.Label4)
-        Me.TabPage1.Controls.Add(Me.Label5)
-        Me.TabPage1.Controls.Add(Me.tbDataSorologia)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
@@ -329,6 +258,20 @@ Partial Class FormBLHProcessamento
         Me.dgLeite.TabIndex = 32
         Me.dgLeite.TabStop = False
         '
+        'btCancelar
+        '
+        Me.btCancelar.BackColor = System.Drawing.Color.Chocolate
+        Me.btCancelar.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btCancelar.FlatAppearance.BorderSize = 0
+        Me.btCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btCancelar.ForeColor = System.Drawing.Color.White
+        Me.btCancelar.Location = New System.Drawing.Point(156, 478)
+        Me.btCancelar.Name = "btCancelar"
+        Me.btCancelar.Size = New System.Drawing.Size(75, 23)
+        Me.btCancelar.TabIndex = 30
+        Me.btCancelar.Text = "Cancelar"
+        Me.btCancelar.UseVisualStyleBackColor = False
+        '
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.gbMotivos)
@@ -339,9 +282,9 @@ Partial Class FormBLHProcessamento
         Me.GroupBox1.Controls.Add(Me.tbVolume)
         Me.GroupBox1.Controls.Add(Me.Label7)
         Me.GroupBox1.Controls.Add(Me.tbDataOrdenha)
-        Me.GroupBox1.Location = New System.Drawing.Point(129, 61)
+        Me.GroupBox1.Location = New System.Drawing.Point(16, 61)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(663, 151)
+        Me.GroupBox1.Size = New System.Drawing.Size(776, 151)
         Me.GroupBox1.TabIndex = 25
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Dados do leite"
@@ -503,86 +446,6 @@ Partial Class FormBLHProcessamento
         Me.cbDoadoras.Size = New System.Drawing.Size(417, 21)
         Me.cbDoadoras.TabIndex = 21
         '
-        'rbApta
-        '
-        Me.rbApta.AutoSize = True
-        Me.rbApta.Checked = True
-        Me.rbApta.Location = New System.Drawing.Point(16, 186)
-        Me.rbApta.Name = "rbApta"
-        Me.rbApta.Size = New System.Drawing.Size(47, 17)
-        Me.rbApta.TabIndex = 23
-        Me.rbApta.TabStop = True
-        Me.rbApta.Text = "Apta"
-        Me.rbApta.UseVisualStyleBackColor = True
-        '
-        'rbInapta
-        '
-        Me.rbInapta.AutoSize = True
-        Me.rbInapta.Location = New System.Drawing.Point(68, 186)
-        Me.rbInapta.Name = "rbInapta"
-        Me.rbInapta.Size = New System.Drawing.Size(55, 17)
-        Me.rbInapta.TabIndex = 24
-        Me.rbInapta.Text = "Inapta"
-        Me.rbInapta.UseVisualStyleBackColor = True
-        '
-        'TabPage2
-        '
-        Me.TabPage2.BackColor = System.Drawing.SystemColors.ButtonFace
-        Me.TabPage2.Controls.Add(Me.GroupBox5)
-        Me.TabPage2.Controls.Add(Me.GroupBox4)
-        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(797, 508)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Pasteurização"
-        '
-        'Label13
-        '
-        Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(113, 47)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(13, 13)
-        Me.Label13.TabIndex = 27
-        Me.Label13.Text = "à"
-        '
-        'Label12
-        '
-        Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(6, 25)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(85, 13)
-        Me.Label12.TabIndex = 0
-        Me.Label12.Text = "Periodo ordenha"
-        '
-        'btCancelar
-        '
-        Me.btCancelar.BackColor = System.Drawing.Color.Chocolate
-        Me.btCancelar.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btCancelar.FlatAppearance.BorderSize = 0
-        Me.btCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btCancelar.ForeColor = System.Drawing.Color.White
-        Me.btCancelar.Location = New System.Drawing.Point(156, 478)
-        Me.btCancelar.Name = "btCancelar"
-        Me.btCancelar.Size = New System.Drawing.Size(75, 23)
-        Me.btCancelar.TabIndex = 30
-        Me.btCancelar.Text = "Cancelar"
-        Me.btCancelar.UseVisualStyleBackColor = False
-        '
-        'Button4
-        '
-        Me.Button4.BackColor = System.Drawing.Color.Black
-        Me.Button4.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Button4.FlatAppearance.BorderSize = 0
-        Me.Button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button4.ForeColor = System.Drawing.Color.White
-        Me.Button4.Location = New System.Drawing.Point(784, 545)
-        Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(33, 23)
-        Me.Button4.TabIndex = 29
-        Me.Button4.Text = "Sair"
-        Me.Button4.UseVisualStyleBackColor = False
-        '
         'btSalvarDoadora
         '
         Me.btSalvarDoadora.BackColor = System.Drawing.Color.ForestGreen
@@ -611,6 +474,50 @@ Partial Class FormBLHProcessamento
         Me.btExcluirLeite.TabIndex = 28
         Me.btExcluirLeite.Text = "Excluir"
         Me.btExcluirLeite.UseVisualStyleBackColor = False
+        '
+        'TabPage2
+        '
+        Me.TabPage2.BackColor = System.Drawing.SystemColors.ButtonFace
+        Me.TabPage2.Controls.Add(Me.GroupBox5)
+        Me.TabPage2.Controls.Add(Me.GroupBox4)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage2.Size = New System.Drawing.Size(797, 508)
+        Me.TabPage2.TabIndex = 1
+        Me.TabPage2.Text = "Pasteurização"
+        '
+        'GroupBox5
+        '
+        Me.GroupBox5.Controls.Add(Me.Label12)
+        Me.GroupBox5.Controls.Add(Me.Label13)
+        Me.GroupBox5.Controls.Add(Me.dgSelecaoLeite)
+        Me.GroupBox5.Controls.Add(Me.tbDataFin)
+        Me.GroupBox5.Controls.Add(Me.tbDataIni)
+        Me.GroupBox5.Location = New System.Drawing.Point(6, 6)
+        Me.GroupBox5.Name = "GroupBox5"
+        Me.GroupBox5.Size = New System.Drawing.Size(495, 489)
+        Me.GroupBox5.TabIndex = 38
+        Me.GroupBox5.TabStop = False
+        Me.GroupBox5.Text = "Selecionar para pasteurização"
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(6, 25)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(85, 13)
+        Me.Label12.TabIndex = 0
+        Me.Label12.Text = "Periodo ordenha"
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(113, 47)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(13, 13)
+        Me.Label13.TabIndex = 27
+        Me.Label13.Text = "à"
         '
         'dgSelecaoLeite
         '
@@ -661,6 +568,14 @@ Partial Class FormBLHProcessamento
         Me.dgSelecaoLeite.Size = New System.Drawing.Size(480, 422)
         Me.dgSelecaoLeite.TabIndex = 2
         '
+        'tbDataFin
+        '
+        Me.tbDataFin.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.tbDataFin.Location = New System.Drawing.Point(132, 41)
+        Me.tbDataFin.Name = "tbDataFin"
+        Me.tbDataFin.Size = New System.Drawing.Size(98, 20)
+        Me.tbDataFin.TabIndex = 1
+        '
         'tbDataIni
         '
         Me.tbDataIni.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
@@ -669,13 +584,42 @@ Partial Class FormBLHProcessamento
         Me.tbDataIni.Size = New System.Drawing.Size(98, 20)
         Me.tbDataIni.TabIndex = 0
         '
-        'tbDataFin
+        'GroupBox4
         '
-        Me.tbDataFin.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.tbDataFin.Location = New System.Drawing.Point(132, 41)
-        Me.tbDataFin.Name = "tbDataFin"
-        Me.tbDataFin.Size = New System.Drawing.Size(98, 20)
-        Me.tbDataFin.TabIndex = 1
+        Me.GroupBox4.Controls.Add(Me.FlowSelecionados)
+        Me.GroupBox4.Controls.Add(Me.Label14)
+        Me.GroupBox4.Controls.Add(Me.tbDataPasteu)
+        Me.GroupBox4.Controls.Add(Me.btSalvarSelecionados)
+        Me.GroupBox4.Location = New System.Drawing.Point(507, 6)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Size = New System.Drawing.Size(284, 489)
+        Me.GroupBox4.TabIndex = 37
+        Me.GroupBox4.TabStop = False
+        Me.GroupBox4.Text = "Detalhes da pasteurização"
+        '
+        'FlowSelecionados
+        '
+        Me.FlowSelecionados.Location = New System.Drawing.Point(11, 67)
+        Me.FlowSelecionados.Name = "FlowSelecionados"
+        Me.FlowSelecionados.Size = New System.Drawing.Size(267, 387)
+        Me.FlowSelecionados.TabIndex = 6
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Location = New System.Drawing.Point(8, 25)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(33, 13)
+        Me.Label14.TabIndex = 5
+        Me.Label14.Text = "Data "
+        '
+        'tbDataPasteu
+        '
+        Me.tbDataPasteu.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.tbDataPasteu.Location = New System.Drawing.Point(11, 41)
+        Me.tbDataPasteu.Name = "tbDataPasteu"
+        Me.tbDataPasteu.Size = New System.Drawing.Size(99, 20)
+        Me.tbDataPasteu.TabIndex = 4
         '
         'btSalvarSelecionados
         '
@@ -692,56 +636,19 @@ Partial Class FormBLHProcessamento
         Me.btSalvarSelecionados.Text = "Salvar pasteurização"
         Me.btSalvarSelecionados.UseVisualStyleBackColor = False
         '
-        'GroupBox4
+        'Button4
         '
-        Me.GroupBox4.Controls.Add(Me.FlowSelecionados)
-        Me.GroupBox4.Controls.Add(Me.Label14)
-        Me.GroupBox4.Controls.Add(Me.tbDataPasteu)
-        Me.GroupBox4.Controls.Add(Me.btSalvarSelecionados)
-        Me.GroupBox4.Location = New System.Drawing.Point(507, 6)
-        Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(284, 489)
-        Me.GroupBox4.TabIndex = 37
-        Me.GroupBox4.TabStop = False
-        Me.GroupBox4.Text = "Detalhes da pasteurização"
-        '
-        'GroupBox5
-        '
-        Me.GroupBox5.Controls.Add(Me.Label12)
-        Me.GroupBox5.Controls.Add(Me.Label13)
-        Me.GroupBox5.Controls.Add(Me.dgSelecaoLeite)
-        Me.GroupBox5.Controls.Add(Me.tbDataFin)
-        Me.GroupBox5.Controls.Add(Me.tbDataIni)
-        Me.GroupBox5.Location = New System.Drawing.Point(6, 6)
-        Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(495, 489)
-        Me.GroupBox5.TabIndex = 38
-        Me.GroupBox5.TabStop = False
-        Me.GroupBox5.Text = "Selecionar para pasteurização"
-        '
-        'tbDataPasteu
-        '
-        Me.tbDataPasteu.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.tbDataPasteu.Location = New System.Drawing.Point(11, 41)
-        Me.tbDataPasteu.Name = "tbDataPasteu"
-        Me.tbDataPasteu.Size = New System.Drawing.Size(99, 20)
-        Me.tbDataPasteu.TabIndex = 4
-        '
-        'Label14
-        '
-        Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(8, 25)
-        Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(33, 13)
-        Me.Label14.TabIndex = 5
-        Me.Label14.Text = "Data "
-        '
-        'FlowSelecionados
-        '
-        Me.FlowSelecionados.Location = New System.Drawing.Point(11, 67)
-        Me.FlowSelecionados.Name = "FlowSelecionados"
-        Me.FlowSelecionados.Size = New System.Drawing.Size(267, 387)
-        Me.FlowSelecionados.TabIndex = 6
+        Me.Button4.BackColor = System.Drawing.Color.Black
+        Me.Button4.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Button4.FlatAppearance.BorderSize = 0
+        Me.Button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button4.ForeColor = System.Drawing.Color.White
+        Me.Button4.Location = New System.Drawing.Point(784, 545)
+        Me.Button4.Name = "Button4"
+        Me.Button4.Size = New System.Drawing.Size(33, 23)
+        Me.Button4.TabIndex = 29
+        Me.Button4.Text = "Sair"
+        Me.Button4.UseVisualStyleBackColor = False
         '
         'FormBLHProcessamento
         '
@@ -770,21 +677,15 @@ Partial Class FormBLHProcessamento
         Me.GroupBox2.PerformLayout()
         CType(Me.tbVolume, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage2.ResumeLayout(False)
+        Me.GroupBox5.ResumeLayout(False)
+        Me.GroupBox5.PerformLayout()
         CType(Me.dgSelecaoLeite, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
-        Me.GroupBox5.ResumeLayout(False)
-        Me.GroupBox5.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents Label2 As Label
-    Friend WithEvents Label6 As Label
-    Friend WithEvents cbResultado As ComboBox
-    Friend WithEvents tbDataVencimento As MaskedTextBox
-    Friend WithEvents Label5 As Label
-    Friend WithEvents tbDataSorologia As MaskedTextBox
-    Friend WithEvents Label4 As Label
     Friend WithEvents Label3 As Label
     Friend WithEvents cbOrigem As ComboBox
     Friend WithEvents Label1 As Label
@@ -793,8 +694,6 @@ Partial Class FormBLHProcessamento
     Friend WithEvents TabPage2 As TabPage
     Friend WithEvents cbDoadoras As ComboBox
     Friend WithEvents cbParto As ComboBox
-    Friend WithEvents rbInapta As RadioButton
-    Friend WithEvents rbApta As RadioButton
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents Label7 As Label
     Friend WithEvents tbDataOrdenha As MaskedTextBox

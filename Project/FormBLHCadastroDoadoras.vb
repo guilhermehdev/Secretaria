@@ -21,8 +21,9 @@
     End Function
 
     Private Sub btSalvarDoadora_Click(sender As Object, e As EventArgs) Handles btSalvarDoadora.Click
+        Dim apta_inapta As String = If(rbApta.Checked, 1, 0)
         If Not IsNothing(tbNome.Text) Then
-            m.doQuery("INSERT INTO blh_cadastro (nome, obs, dtnasc) VALUES ('" & tbNome.Text & "','" & tbOBS.Text & "','" & m.mysqlDateFormat(tbNasc.Text) & "')", True)
+            m.doQuery($"INSERT INTO blh_cadastro (nome, obs, dtnasc, apta_inapta) VALUES ('{tbNome.Text}','{tbOBS.Text}','{m.mysqlDateFormat(tbNasc.Text)}',{apta_inapta}", True)
             MessageBox.Show("Salvo com sucesso!")
             loadDoadoras(dgDoadoras)
         Else
@@ -32,8 +33,8 @@
     End Sub
 
     Private Sub loadDoadoras(datagrid As DataGridView, Optional where As String = "")
-        m.loadDataGrid($"SELECT id, nome, dtnasc, data_cadastro, obs FROM blh_cadastro WHERE ativo=1 {where} ORDER BY nome", datagrid, {False, True, True, False, False}, {"id", "Nome", "Nasc", "", ""}, {0, 230, 70, 0, 0}, DataGridViewAutoSizeColumnsMode.Fill, True)
-        ToolStripStatusLabel1.Text = "Total de doadoras: " & datagrid.Rows.Count
+        m.loadDataGrid($"Select id, nome, dtnasc, data_cadastro, obs FROM blh_cadastro WHERE ativo= 1 {where} ORDER BY nome", datagrid, {False, True, True, False, False}, {"id", "Nome", "Nasc", "", ""}, {0, 230, 70, 0, 0}, DataGridViewAutoSizeColumnsMode.Fill, True)
+        ToolStripStatusLabel1.Text = "Total de doadoras " & datagrid.Rows.Count
 
     End Sub
 
@@ -50,7 +51,7 @@
     Private Sub tbBusca_TextChanged(sender As Object, e As EventArgs) Handles tbBusca.TextChanged
 
         If tbBusca.Text.Length >= 3 Then
-            loadDoadoras(dgDoadoras, $"AND nome LIKE '%{tbBusca.Text}%'")
+            loadDoadoras(dgDoadoras, $"And nome Like '%{tbBusca.Text}%'")
         Else
             loadDoadoras(dgDoadoras)
         End If
@@ -113,6 +114,7 @@
         btSalvarDoadora.Enabled = True
         btExcluirDoadora.Enabled = False
         btNovoParto.Enabled = False
+        rbApta.Checked = True
         tbNome.Clear()
         tbOBS.Clear()
         tbNasc.Clear()
@@ -121,6 +123,7 @@
         tbNovoParto.Clear()
         tbNome.Focus()
         gbPartos.Enabled = False
+        btSorologias.Enabled = False
     End Sub
 
     Private Sub onDatagridCellEnter()
@@ -134,6 +137,7 @@
             btExcluirDoadora.Enabled = True
             btNovoParto.Enabled = True
             gbPartos.Enabled = True
+            btSorologias.Enabled = True
 
             blh.loadPartos(cbPartos, dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(0).Value)
             If cbPartos.Items.Count > 0 Then
@@ -229,6 +233,10 @@
     End Sub
     Private Sub tbBuscaDN_Enter(sender As Object, e As EventArgs) Handles tbBuscaDN.Enter
         tbBusca.Clear()
+    End Sub
+    Private Sub btSorologias_Click(sender As Object, e As EventArgs) Handles btSorologias.Click
+        FormBLHSorologias.id_doadora = dgDoadoras.Rows(dgDoadoras.CurrentRow.Index).Cells(0).Value
+        FormBLHSorologias.ShowDialog()
     End Sub
 
 End Class

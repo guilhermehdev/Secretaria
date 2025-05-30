@@ -110,26 +110,6 @@ Public Class FormBLHProcessamento
         dgLeite.ClearSelection()
     End Sub
 
-    Private Sub tbDataSorologia_TextChanged(sender As Object, e As EventArgs) Handles tbDataSorologia.TextChanged
-        If tbDataSorologia.Text.Length = 10 Then
-            Try
-                Dim dataDigitada As Date = Date.ParseExact(tbDataSorologia.Text, "dd/MM/yyyy", Nothing)
-                Dim dataSomada As Date = dataDigitada.AddMonths(6)
-                tbDataVencimento.Text = dataSomada.ToString("dd/MM/yyyy")
-
-                If dataSomada < Date.Now Then
-                    cbResultado.SelectedIndex = 1
-                Else
-                    cbResultado.SelectedIndex = 0
-                End If
-
-            Catch ex As Exception
-                MsgBox("Data inválida.", MsgBoxStyle.Critical)
-                tbDataVencimento.Text = ""
-            End Try
-        End If
-    End Sub
-
     Private Sub tbDataOrdenha_TextChanged(sender As Object, e As EventArgs) Handles tbDataOrdenha.TextChanged
         If tbDataOrdenha.Text.Length = 10 Then
             cbTipoLeite.SelectedIndex = tipoLeite()
@@ -155,15 +135,15 @@ Public Class FormBLHProcessamento
     End Sub
 
     Private Sub btSalvarDoadora_Click(sender As Object, e As EventArgs) Handles btSalvarDoadora.Click
-        Dim apta_inapta As String = If(rbApta.Checked, 1, 0)
+
         Dim conforme As String = If(rbConforme.Checked, 1, 0)
 
-        If tbDataOrdenha.Text = "" Or tbVolume.Value = 0 Or cbTipoLeite.SelectedIndex = -1 Or cbOrigem.SelectedItem Is Nothing Or tbDataSorologia.Text = "" Or tbDataVencimento.Text = "" Or cbResultado.SelectedItem Is Nothing Or cbDoadoras.SelectedValue Is Nothing Or cbParto.SelectedValue Is Nothing Then
+        If tbDataOrdenha.Text = "" Or tbVolume.Value = 0 Or cbTipoLeite.SelectedIndex = -1 Or cbOrigem.SelectedItem Is Nothing Or cbDoadoras.SelectedValue Is Nothing Or cbParto.SelectedValue Is Nothing Then
             MsgBox("Preencha todos os campos obrigatórios.", MsgBoxStyle.Critical)
             Return
         End If
 
-        If m.SQLinsert("blh_leite", "data_ordenha, volume, tipo_leite, origem, data_sorologia, vencimento_sorologia, resultado_sorologia, apta_inapta, conforme, vencimento_sup, problema_refrigera, embalagem, exames_vencidos, id_doadora, id_parto", "'" & m.mysqlDateFormat(tbDataOrdenha.Text) & "', " & tbVolume.Value & ", '" & cbTipoLeite.SelectedValue.ToString & "', '" & cbOrigem.SelectedItem & "','" & m.mysqlDateFormat(tbDataSorologia.Text) & "', '" & m.mysqlDateFormat(tbDataVencimento.Text) & "', '" & cbResultado.SelectedItem & "', " & apta_inapta & ", " & conforme & ", " & cbVencidos15dias.CheckState & ", " & cbRefrigeracao.CheckState & ", " & cbEmbalagem.CheckState & ", " & cbExamesVencidos.CheckState & ", " & cbDoadoras.SelectedValue & ", " & cbParto.SelectedValue, True) Then
+        If m.SQLinsert("blh_leite", "data_ordenha, volume, tipo_leite, origem, conforme, vencimento_sup, problema_refrigera, embalagem, exames_vencidos, id_doadora, id_parto", "'" & m.mysqlDateFormat(tbDataOrdenha.Text) & "', " & tbVolume.Value & ", '" & cbTipoLeite.SelectedValue.ToString & "', '" & cbOrigem.SelectedItem & "'," & conforme & ", " & cbVencidos15dias.CheckState & ", " & cbRefrigeracao.CheckState & ", " & cbEmbalagem.CheckState & ", " & cbExamesVencidos.CheckState & ", " & cbDoadoras.SelectedValue & ", " & cbParto.SelectedValue, True) Then
             loadLeite()
         End If
     End Sub
@@ -258,10 +238,6 @@ Public Class FormBLHProcessamento
         tbVolume.Value = 0
         cbTipoLeite.SelectedIndex = -1
         cbOrigem.SelectedIndex = -1
-        tbDataSorologia.Text = ""
-        tbDataVencimento.Text = ""
-        cbResultado.SelectedIndex = -1
-        rbApta.Checked = True
         rbConforme.Checked = True
         gbMotivos.Enabled = False
         cbDoadoras.Focus()
