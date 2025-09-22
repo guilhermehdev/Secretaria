@@ -439,9 +439,7 @@
     <Compile Include="FormAMEOCI.Designer.vb">
       <DependentUpon>FormAMEOCI.vb</DependentUpon>
     </Compile>
-    <Compile Include="FormAMEOCI.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FormAMEOCI.vb" />
     <Compile Include="FormBLHSorologias.Designer.vb">
       <DependentUpon>FormBLHSorologias.vb</DependentUpon>
     </Compile>
