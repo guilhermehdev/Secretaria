@@ -593,6 +593,9 @@ Public Class FormAMEmain
 
     End Sub
 
+    Private Sub CadastroToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CadastroToolStripMenuItem.Click
+        FormAMEOCI.Show()
+    End Sub
 End Class
 
 Public Class Consulta
