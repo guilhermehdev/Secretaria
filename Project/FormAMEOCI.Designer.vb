@@ -22,9 +22,9 @@ Partial Class FormAMEOCI
     'Não o modifique usando o editor de códigos.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.txtCompetencia = New System.Windows.Forms.TextBox()
         Me.txtNumApac = New System.Windows.Forms.TextBox()
         Me.txtApacAnterior = New System.Windows.Forms.TextBox()
@@ -83,6 +83,7 @@ Partial Class FormAMEOCI
         Me.CodProcedimento = New System.Windows.Forms.TextBox()
         Me.gridProcedimentos = New System.Windows.Forms.DataGridView()
         Me.btnGerarArquivo = New System.Windows.Forms.Button()
+        Me.txtCnsDiretor = New System.Windows.Forms.TextBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -151,6 +152,7 @@ Partial Class FormAMEOCI
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.txtCnsDiretor)
         Me.GroupBox1.Controls.Add(Me.txtCompetencia)
         Me.GroupBox1.Controls.Add(Me.cboTipoApac)
         Me.GroupBox1.Controls.Add(Me.txtNumApac)
@@ -171,7 +173,7 @@ Partial Class FormAMEOCI
         '
         Me.txtNomeDiretor.Location = New System.Drawing.Point(18, 77)
         Me.txtNomeDiretor.Name = "txtNomeDiretor"
-        Me.txtNomeDiretor.Size = New System.Drawing.Size(324, 20)
+        Me.txtNomeDiretor.Size = New System.Drawing.Size(249, 20)
         Me.txtNomeDiretor.TabIndex = 4
         '
         'GroupBox2
@@ -575,37 +577,37 @@ Partial Class FormAMEOCI
         Me.gridProcedimentos.BackgroundColor = System.Drawing.Color.White
         Me.gridProcedimentos.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.gridProcedimentos.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.gridProcedimentos.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.gridProcedimentos.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.gridProcedimentos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle5.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.SteelBlue
-        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.gridProcedimentos.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.SteelBlue
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.gridProcedimentos.DefaultCellStyle = DataGridViewCellStyle2
         Me.gridProcedimentos.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
         Me.gridProcedimentos.Location = New System.Drawing.Point(21, 99)
         Me.gridProcedimentos.MultiSelect = False
         Me.gridProcedimentos.Name = "gridProcedimentos"
         Me.gridProcedimentos.ReadOnly = True
         Me.gridProcedimentos.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
-        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.ControlDark
-        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.gridProcedimentos.RowHeadersDefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.ControlDark
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.gridProcedimentos.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
         Me.gridProcedimentos.RowHeadersWidth = 4
         Me.gridProcedimentos.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.gridProcedimentos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
@@ -621,6 +623,13 @@ Partial Class FormAMEOCI
         Me.btnGerarArquivo.TabIndex = 12
         Me.btnGerarArquivo.Text = "Gerar arquivo"
         Me.btnGerarArquivo.UseVisualStyleBackColor = True
+        '
+        'txtCnsDiretor
+        '
+        Me.txtCnsDiretor.Location = New System.Drawing.Point(273, 77)
+        Me.txtCnsDiretor.Name = "txtCnsDiretor"
+        Me.txtCnsDiretor.Size = New System.Drawing.Size(208, 20)
+        Me.txtCnsDiretor.TabIndex = 8
         '
         'FormAMEOCI
         '
@@ -705,4 +714,5 @@ Partial Class FormAMEOCI
     Friend WithEvents dtSolicitacao As DateTimePicker
     Friend WithEvents txtNomeAutorizador As TextBox
     Friend WithEvents txtCodOrgaoEmissor As TextBox
+    Friend WithEvents txtCnsDiretor As TextBox
 End Class

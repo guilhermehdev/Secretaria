@@ -7,28 +7,32 @@ Public Class FormAMEOCI
         Dim linhas As New List(Of String)
 
         ' ====================================================
-        ' HEADER (01)
+        ' HEADER (01) - Dados da Unidade
         ' ====================================================
         Dim header As String = ""
         header &= "01"
-        header &= Fmt(txtCompetencia.Text, 6, True)          ' AAAAMM
-        header &= Fmt(txtNumApac.Text, 13, True)             ' Número APAC
-        header &= Fmt(txtCNESSolicitante.Text, 7, True)      ' CNES Solicitante
-        header &= Fmt(txtCnesExecutante.Text, 7, True)       ' CNES Executante
-        header &= Fmt(txtNomeDiretor.Text, 30)               ' Nome Diretor
-        header &= Fmt(txtCnsAutorizador.Text, 15, True)      ' CNS Autorizador
-        ' ... completar com os outros campos obrigatórios
+        header &= Fmt(txtCompetencia.Text, 6, True)
+        header &= Fmt(txtNumApac.Text, 13, True)
+        header &= Fmt(txtCNESSolicitante.Text, 7, True)
+        header &= Fmt(txtCnesExecutante.Text, 7, True)
+        header &= Fmt(txtNomeDiretor.Text, 30)
+        header &= Fmt(txtCnsDiretor.Text, 15, True)
         linhas.Add(header)
 
         ' ====================================================
-        ' CORPO DA APAC (14) - Paciente
+        ' REGISTRO 14 - PACIENTE / ATENDIMENTO
         ' ====================================================
         Dim corpo As String = ""
-        corpo &= "14"
+        corpo &= "14"  ' Código do Registro
         corpo &= Fmt(txtCompetencia.Text, 6, True)
         corpo &= Fmt(txtNumApac.Text, 13, True)
-        corpo &= Fmt(txtCpfPaciente.Text.Replace(".", "").Replace("-", ""), 11, True)
-        corpo &= Fmt(txtCnsPaciente.Text, 15, True)
+        corpo &= Fmt(txtUF.Text, 2, True)
+        corpo &= Fmt(txtCnesExecutante.Text, 7, True)
+        corpo &= dtEmissao.Value.ToString("yyyyMMdd")
+        corpo &= dtValidadeIni.Value.ToString("yyyyMMdd")
+        corpo &= dtValidadeFim.Value.ToString("yyyyMMdd")
+        corpo &= Fmt(cboTipoAtendimento.SelectedValue.ToString(), 2, True)
+        corpo &= Fmt(cboTipoApac.SelectedValue.ToString(), 1, True)
         corpo &= Fmt(txtNomePaciente.Text, 30)
         corpo &= Fmt(txtNomeMae.Text, 30)
         corpo &= Fmt(txtEndereco.Text, 30)
@@ -38,51 +42,63 @@ Public Class FormAMEOCI
         corpo &= Fmt(txtMunicipioCod.Text, 7, True)
         corpo &= dtNascimento.Value.ToString("yyyyMMdd")
         corpo &= cboSexo.Text
-        corpo &= Fmt(cboRaca.SelectedValue.ToString(), 2, True)
-        corpo &= Fmt(txtEtnia.Text, 4, True)
-        corpo &= Fmt(txtTelefone.Text, 10)
-        corpo &= Fmt(txtEmail.Text, 40)
+        corpo &= Fmt(txtNomeMedico.Text, 30)
+        corpo &= Fmt(txtProcedimentoPrincipal.Text, 10, True)
+        corpo &= Fmt(cboMotivoSaida.SelectedValue.ToString(), 2, True)
 
-        ' Data de Alta/Óbito/Transferência (8 caracteres)
+        ' Data Alta/Óbito/Transferência
         If cboMotivoSaida.SelectedValue IsNot Nothing AndAlso cboMotivoSaida.SelectedValue.ToString() <> "00" Then
             corpo &= dtAltaObito.Value.ToString("yyyyMMdd")
         Else
             corpo &= "        " ' 8 espaços
         End If
 
-        ' Caráter do Atendimento (2 dígitos)
-        corpo &= Fmt(cboCaraterAtendimento.SelectedValue.ToString(), 2, True)
-
-        ' Médico Responsável
-        corpo &= Fmt(txtCnsMedicoSolicitante.Text, 15, True)
-        corpo &= Fmt(txtNomeMedicoSolicitante.Text, 30)
+        corpo &= Fmt(txtNomeDiretor.Text, 30)
+        corpo &= Fmt(txtCnsPaciente.Text, 15, True)
+        corpo &= Fmt(txtCnsMedico.Text, 15, True)
+        corpo &= Fmt(txtCnsDiretor.Text, 15, True)
+        corpo &= Fmt(txtCidPrincipal.Text, 4)
+        corpo &= Fmt(txtProntuario.Text, 10)
+        corpo &= Fmt(txtCNESSolicitante.Text, 7, True)
         corpo &= dtSolicitacao.Value.ToString("yyyyMMdd")
-
-        ' Autorizador
-        corpo &= Fmt(txtCnsAutorizador.Text, 15, True)
-        corpo &= Fmt(txtNomeAutorizador.Text, 30)
         corpo &= dtAutorizacao.Value.ToString("yyyyMMdd")
-        corpo &= Fmt(txtCodOrgaoEmissor.Text, 2, True)
+        corpo &= Fmt(txtOrgaoEmissor.Text, 10)
+        corpo &= Fmt(cboCaraterAtendimento.SelectedValue.ToString(), 2, True)
+        corpo &= Fmt(txtApacAnterior.Text, 13, True)
+        corpo &= Fmt(cboRaca.SelectedValue.ToString(), 2, True)
+        corpo &= Fmt(txtNomeResponsavel.Text, 30)
+        corpo &= Fmt(txtNacionalidade.Text, 3, True)
+        corpo &= Fmt(txtEtnia.Text, 4, True)
+        corpo &= Fmt(txtCodIBGENacionalidade.Text, 3, True)
+        corpo &= Fmt(txtBairro.Text, 30)
+        corpo &= Fmt(txtUFEndereco.Text, 2)
+        corpo &= Fmt(txtTelefone.Text, 9, True)
+        corpo &= Fmt(txtEmail.Text, 40)
+        corpo &= Fmt(txtCnsAutorizador.Text, 15, True)
+        corpo &= Fmt(txtCpfPaciente.Text.Replace(".", "").Replace("-", ""), 11, True)
+        corpo &= Fmt(txtIne.Text, 10, True)
+        corpo &= If(chkSituacaoRua.Checked, "S", "N")
 
         linhas.Add(corpo)
 
         ' ====================================================
-        ' PROCEDIMENTO PRINCIPAL (13)
+        ' REGISTRO 13 - PROCEDIMENTO PRINCIPAL
         ' ====================================================
         Dim procPrincipal As String = ""
         procPrincipal &= "13"
         procPrincipal &= Fmt(txtCompetencia.Text, 6, True)
         procPrincipal &= Fmt(txtNumApac.Text, 13, True)
         procPrincipal &= Fmt(txtProcedimentoPrincipal.Text, 10, True)
-        procPrincipal &= "225120" ' Exemplo de CBO fixo
-        procPrincipal &= "001"    ' Sequência
+        procPrincipal &= Fmt(txtCboPrincipal.Text, 6, True)   ' CBO
+        procPrincipal &= "001"                                ' Sequência
         procPrincipal &= Fmt(txtCidPrincipal.Text, 4)
         procPrincipal &= Fmt(txtCidSecundario.Text, 4)
-        procPrincipal &= Fmt(cboMotivoSaida.SelectedValue.ToString(), 2, True)
+        procPrincipal &= "00000000000000"                     ' CNPJ/Fornecedor (branco por padrão)
+        procPrincipal &= "          "                         ' Nota Fiscal (10 espaços)
         linhas.Add(procPrincipal)
 
         ' ====================================================
-        ' PROCEDIMENTOS SECUNDÁRIOS (13)
+        ' REGISTRO 13 - PROCEDIMENTOS SECUNDÁRIOS
         ' ====================================================
         For Each row As DataGridViewRow In gridProcedimentos.Rows
             If row.IsNewRow Then Continue For
@@ -91,19 +107,19 @@ Public Class FormAMEOCI
             procSec &= "13"
             procSec &= Fmt(txtCompetencia.Text, 6, True)
             procSec &= Fmt(txtNumApac.Text, 13, True)
-            procSec &= Fmt(row.Cells("CodProcedimento").Value.ToString(), 10, True)
-            procSec &= Fmt(row.Cells("CBO").Value.ToString(), 6, True)
-            procSec &= Fmt(row.Cells("Quantidade").Value.ToString(), 3, True)
-            procSec &= Fmt(row.Cells("CidPrincipal").Value.ToString(), 4)
-            procSec &= Fmt(row.Cells("CidSecundario").Value.ToString(), 4)
-            procSec &= Fmt(row.Cells("CnsExecutante").Value.ToString(), 15, True)
-            procSec &= Fmt(row.Cells("CnesTerceiro").Value.ToString(), 7, True)
-            procSec &= Fmt(row.Cells("NotaFiscal").Value.ToString(), 10)
+            procSec &= Fmt(row.Cells("CodProcedimento").Value?.ToString(), 10, True)
+            procSec &= Fmt(row.Cells("CBO").Value?.ToString(), 6, True)
+            procSec &= Fmt(row.Cells("Quantidade").Value?.ToString(), 3, True)
+            procSec &= Fmt(row.Cells("CidPrincipal").Value?.ToString(), 4)
+            procSec &= Fmt(row.Cells("CidSecundario").Value?.ToString(), 4)
+            procSec &= Fmt(row.Cells("CnsExecutante").Value?.ToString(), 15, True)
+            procSec &= Fmt(row.Cells("CnesTerceiro").Value?.ToString(), 7, True)
+            procSec &= Fmt(row.Cells("NotaFiscal").Value?.ToString(), 10)
             linhas.Add(procSec)
         Next
 
         ' ====================================================
-        ' GRAVA O ARQUIVO
+        ' GRAVAR ARQUIVO .SET
         ' ====================================================
         Using sfd As New SaveFileDialog
             sfd.Filter = "Arquivos APAC|*.SET"
@@ -113,7 +129,6 @@ Public Class FormAMEOCI
                 MessageBox.Show("Arquivo gerado em: " & sfd.FileName)
             End If
         End Using
-
     End Sub
 
     Private Sub btnAdicionarProcedimento_Click(sender As Object, e As EventArgs) Handles btnAdicionarProcedimento.Click
