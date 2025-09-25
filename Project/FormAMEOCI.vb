@@ -4,116 +4,92 @@ Imports System.Text
 Public Class FormAMEOCI
     Private Sub btnGerarArquivo_Click(sender As Object, e As EventArgs) Handles btnGerarArquivo.Click
         Try
+            Dim codigos As New List(Of String)
+            Dim quantidades As New List(Of Integer)
             Dim linhas As New List(Of String)
+            Dim dataGeracao As String = Date.Now.ToString("yyyyMMdd")
+            Dim dataProcessamento As String = Date.Now.ToString("yyyyMMdd")
+            Dim versao As String = "1.0".PadRight(15, " "c) ' Versão deve ter 15 caracteres
+
+            For Each row As DataGridViewRow In dgvProcedimentos.Rows
+                If Not row.IsNewRow Then
+                    codigos.Add(row.Cells("Codigo").Value.ToString())
+                    quantidades.Add(Convert.ToInt32(row.Cells("Quantidade").Value))
+                End If
+            Next
+
+            Dim campoControle As String = CalcularCampoControle(txtNumApac.Text, codigos, quantidades)
 
             ' ================= HEADER (Registro 01) =================
             Dim header As New StringBuilder()
-            header.Append("01") ' Código do registro
-            header.Append(Fmt("#APAC", 5)) ' Literal fixo
-            header.Append(Fmt(txtCompetencia.Text, 6, True)) ' Competência
-            header.Append(Fmt("1", 6, True)) ' Quantidade de APACs (ajuste se tiver mais de uma)
-
-            ' monta lista de códigos e quantidades para o campo de controle
-            Dim procCodes As New List(Of String)
-            Dim procQuantities As New List(Of Integer)
-            For Each row As DataGridViewRow In dgvProcedimentos.Rows
-                If row.IsNewRow Then Continue For
-                procCodes.Add(row.Cells("Codigo").Value.ToString())
-                procQuantities.Add(CInt(row.Cells("Quantidade").Value))
-            Next
-
-            Dim campoControle = ComputeControlField("0000000000001", procCodes, procQuantities)
-            header.Append(Fmt(campoControle, 4, True))
-
-            header.Append(Fmt(txtOrgaoOrigem.Text, 30))
-            header.Append(Fmt(txtSiglaOrigem.Text, 6))
-            header.Append(Fmt(txtCNPJ.Text.Replace(".", "").Replace("/", "").Replace("-", ""), 14, True))
-            header.Append(Fmt("DATASUS", 40))
-            header.Append("M")
-            header.Append(Date.Now.ToString("yyyyMMdd"))
-            header.Append(Fmt("VBAPP01", 15))
+            header.Append("01")                                   ' Indicador Header (2)
+            header.Append("APAC".PadRight(5, " "c))               ' Texto fixo APAC (5)
+            header.Append(txtCompetencia.Text.PadLeft(6, "0"c))   ' Competência AAAAMM (6)
+            header.Append(GetNextLoteNumber().PadLeft(6, "0"c))       ' Quantidade APACs gravadas (6)
+            header.Append(campoControle.PadLeft(4, "0"c)) ' Campo controle (4)
+            header.Append(Fmt(txtOrgaoOrigem.Text, 30))           ' Nome órgão origem (30)
+            header.Append(Fmt(txtSiglaOrgao.Text, 6))             ' Sigla órgão origem (6)
+            header.Append(txtCGC.Text.PadLeft(14, "0"c))          ' CGC/CNPJ (14)
+            header.Append(Fmt(txtOrgaoDestino.Text, 40))          ' Nome órgão destino (40)
+            header.Append(txtDestinoTipo.Text.PadRight(1, " "c))  ' Destino M/E (1)
+            header.Append(dataGeracao)   ' Campo data geração com 8 caracteres AAAAMMDD
+            header.Append(versao)        ' Campo versão com 15 caracteres, alinhado              ' Versão (15)
+            header.Append(vbCrLf)                                 ' Fim Header (2)
             linhas.Add(header.ToString())
 
-            ' ================= PACIENTE / REGISTRO 14 =================
-            Dim reg14 As New StringBuilder()
-            reg14.Append("14")
-            reg14.Append(Fmt(txtCompetencia.Text, 6, True))
-            reg14.Append(txtNumApac.Text) ' número da APAC (ajustar se for mais de uma)
-            If String.IsNullOrWhiteSpace(txtApacAnterior.Text) Then
-                reg14.Append("0000000000000") ' primeira APAC
-            Else
-                reg14.Append(Fmt(txtApacAnterior.Text, 13, True))
-            End If
-            reg14.Append(Fmt(txtIdade.Text, 2, True))
-            reg14.Append(Fmt(txtCNESSolicitante.Text, 7, True))
-            reg14.Append(Date.Now.ToString("yyyyMMdd")) ' Data autorização
-            reg14.Append(Date.Now.ToString("yyyyMMdd")) ' Data emissão
-            reg14.Append(Date.Now.AddMonths(1).ToString("yyyyMMdd")) ' Data validade
-            reg14.Append(Fmt("01", 2, True)) ' Tipo APAC
-            reg14.Append(Fmt("1", 1, True)) ' Sequência
-            reg14.Append(Fmt(txtNomePaciente.Text, 30))
-            reg14.Append(Fmt(txtNomeMae.Text, 30))
-            reg14.Append(Fmt(txtEndereco.Text, 30))
-            reg14.Append(Fmt(txtNumero.Text, 5, True))
-            reg14.Append(Fmt(txtComplemento.Text, 10))
-            reg14.Append(Fmt(txtCep.Text, 8, True))
-            reg14.Append(Fmt(txtMunicipioCod.Text, 7, True))
-            reg14.Append(Fmt(dtNascimento.Text.Replace("/", ""), 8, True))
-            reg14.Append(Fmt(cboSexo.Text, 1))
-            reg14.Append(Fmt(txtNomeMedicoSolicitante.Text, 30))
-            reg14.Append(Fmt(txtProcedimentoPrincipal.Text, 10, True))
-            reg14.Append(Fmt(cboMotivoSaida.SelectedValue.ToString(), 2, True))
+            ' ================= CORPO PRINCIPAL (Registro 14) =================
+            Dim corpo As New StringBuilder()
+            corpo.Append("14")                                    ' Identificador corpo APAC (2)
+            corpo.Append(txtCompetencia.Text.PadLeft(6, "0"c))    ' Competência AAAAMM (6)
+            corpo.Append(txtNumApac.Text.PadLeft(13, "0"c))       ' Nº da APAC (13)
+            corpo.Append(txtUf.Text.PadLeft(2, "0"c))         ' Código UF IBGE (2)
+            corpo.Append(txtCnesUnidade.Text.PadLeft(7, "0"c))    ' CNES Unidade Prestadora (7)
+            corpo.Append(dataProcessamento) ' Data processamento (8)
+            corpo.Append(dtValidadeIni.Value.ToString("yyyyMMdd"))   ' Data inicial validade (8)
+            corpo.Append(dtValidadeFim.Value.ToString("yyyyMMdd"))   ' Data final validade (8)
+            corpo.Append(txtTipoAtend.Text.PadLeft(2, "0"c))      ' Tipo de atendimento (2)
+            corpo.Append(txtTipoApac.Text.PadLeft(1, "0"c))       ' Tipo de APAC (1)
+            corpo.Append(Fmt(txtNomePaciente.Text, 30))           ' Nome paciente (30)
+            corpo.Append(Fmt(txtNomeMae.Text, 30))                ' Nome mãe paciente (30)
+            corpo.Append(Fmt(txtLogradouro.Text, 30))             ' Logradouro (30)
+            corpo.Append(txtNumero.Text.PadLeft(5, "0"c))         ' Número residência (5)
+            corpo.Append(txtCep.Text.PadLeft(8, "0"c))            ' CEP (8)
+            corpo.Append(txtMunIbge.Text.PadLeft(7, "0"c))        ' Município IBGE (7)
+            corpo.Append(dtNascimento.Value.ToString("yyyyMMdd"))  ' Data Nascimento (8)
+            corpo.Append(txtSexo.Text.PadRight(1, " "c))          ' Sexo M/F (1)
+            corpo.Append(Fmt(txtNomeMedico.Text, 30))             ' Nome médico responsável (30)
+            corpo.Append(txtCodProcedimento.Text.PadLeft(10, "0"c)) ' Procedimento principal (10)
+            corpo.Append(txtMotivoSaida.Text.PadLeft(2, "0"c))    ' Motivo saída (2)
+            corpo.Append(Fmt(txtNomeAutorizador.Text, 30))        ' Nome autorizador (30)
+            corpo.Append(txtCnsPaciente.Text.PadLeft(15, "0"c))   ' CNS paciente (15)
+            corpo.Append(txtNomeAutorizador.Text.PadLeft(15, "0"c))     ' CNS médico responsável (15)
+            corpo.Append(txtCnsAutorizador.Text.PadLeft(15, "0"c)) ' CNS autorizador (15)
+            corpo.Append(dtSolicitacao.Value.ToString("yyyyMMdd")) ' Data solicitação (8)
+            corpo.Append(dtAutorizacao.Value.ToString("yyyyMMdd")) ' Data autorização (8)
+            corpo.Append(txtCodEmissor.Text.PadLeft(10, "0"c))    ' Código emissor (10)
+            corpo.Append("01")  ' Caráter atendimento (2)
+            corpo.Append(txtRaca.Text.PadLeft(2, "0"c))           ' Raça/cor (2)
+            corpo.Append(Fmt(txtNomeRespPaciente.Text, 30))       ' Nome responsável paciente (30)
+            corpo.Append("10")  ' Código nacionalidade (3)
+            corpo.Append(vbCrLf)                                  ' Fim Corpo (2)
+            linhas.Add(corpo.ToString())
 
-            ' Data de Alta/Óbito/Transferência
-            If cboMotivoSaida.SelectedValue.ToString() <> "00" Then
-                reg14.Append(dtAltaObito.Value.ToString("yyyyMMdd"))
-            Else
-                reg14.Append("        ")
-            End If
-
-            reg14.Append(Fmt(txtNomeDiretor.Text, 30))
-            reg14.Append(Fmt(txtCnsPaciente.Text, 15, True))
-            reg14.Append(Fmt(txtCnsMedicoSolicitante.Text, 15, True))
-            reg14.Append(Fmt(txtCnsDiretor.Text, 15, True))
-            reg14.Append(Fmt(txtCidPrincipal.Text, 4))
-            reg14.Append(Fmt(txtTelefone.Text, 10, True))
-            reg14.Append(Fmt(txtCnesExecutante.Text, 7, True))
-            reg14.Append(dtValidadeIni.Value.ToString("yyyyMMdd")) ' Data início tratamento
-            reg14.Append(dtValidadeFim.Value.ToString("yyyyMMdd")) ' Data fim tratamento
-            reg14.Append(Fmt(txtCodOrgaoEmissor.Text, 10))
-            reg14.Append(Fmt("010", 2, True)) ' Nacionalidade (010 = Brasil)
-            reg14.Append(Fmt(txtCpfPaciente.Text, 11, True))
-            reg14.Append(Fmt("0000000000", 10))
-            reg14.Append(Fmt(txtBairro.Text, 30))
-            reg14.Append(Fmt(txtUF.Text, 2))
-            reg14.Append(Fmt("00000000000", 11, True))
-            reg14.Append(Fmt(txtEmail.Text, 50))
-            reg14.Append(Fmt("000000000000000", 15, True))
-            reg14.Append(Fmt("00000000000", 11, True))
-            reg14.Append(Fmt(txtCidSecundario.Text, 10))
-            reg14.Append(If(chkSituacaoRua.Checked, "S", "N"))
-            linhas.Add(reg14.ToString())
-
-            ' ================= PROCEDIMENTOS / REGISTRO 13 =================
+            ' ================= REGISTRO DE PROCEDIMENTOS (Registro 13) =================
             For Each row As DataGridViewRow In dgvProcedimentos.Rows
                 If row.IsNewRow Then Continue For
-
-                Dim reg13 As New StringBuilder()
-                reg13.Append("13")
-                reg13.Append(Fmt(txtCompetencia.Text, 6, True))
-                reg13.Append("0000000000001") ' número da APAC
-                reg13.Append(Fmt(row.Cells("Codigo").Value.ToString(), 10, True))
-                reg13.Append(Fmt(row.Cells("CBO").Value.ToString(), 6, True))
-                reg13.Append(Fmt(row.Cells("Quantidade").Value.ToString(), 3, True))
-                reg13.Append(Fmt(row.Cells("CIDPrincipal").Value.ToString(), 4))
-                reg13.Append(Fmt(row.Cells("CIDSecundario").Value.ToString(), 4))
-                reg13.Append(Fmt(row.Cells("Autorizacao").Value.ToString(), 15, True))
-                reg13.Append(Fmt(row.Cells("CNESExecutante").Value.ToString(), 7, True))
-                reg13.Append(Fmt(row.Cells("NotaFiscal").Value.ToString(), 10))
-                linhas.Add(reg13.ToString())
+                Dim proc As New StringBuilder()
+                proc.Append("13")                                       ' Identificador procedimento (2)
+                proc.Append(txtCompetencia.Text.PadLeft(6, "0"c))       ' Competência AAAAMM (6)
+                proc.Append(txtNumApac.Text.PadLeft(13, "0"c))          ' Nº da APAC (13)
+                proc.Append(row.Cells("Codigo").Value.ToString().PadLeft(10, "0"c))    ' Código procedimento (10)
+                proc.Append(row.Cells("CBO").Value.ToString().PadLeft(6, "0"c))        ' CBO (6)
+                proc.Append(row.Cells("Quantidade").Value.ToString().PadLeft(7, "0"c)) ' Quantidade procedimento (7)
+                proc.Append(row.Cells("CIDPrincipal").Value.ToString().PadRight(4, " "c)) ' CID Principal (4)
+                proc.Append(vbCrLf)                                     ' Fim Registro (2)
+                linhas.Add(proc.ToString())
             Next
 
-            ' ================= SALVAR ARQUIVO =================
+            ' Salvar arquivo
             Using sfd As New SaveFileDialog
                 sfd.Filter = "Arquivos APAC|*.SET"
                 sfd.FileName = "APAC_" & txtCompetencia.Text & ".SET"
@@ -122,11 +98,64 @@ Public Class FormAMEOCI
                     MessageBox.Show("Arquivo gerado com sucesso!", "APAC", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
             End Using
-
         Catch ex As Exception
             MessageBox.Show("Erro ao gerar arquivo: " & ex.Message)
         End Try
     End Sub
+
+    Public Function CalcularCampoControle(apacNumber As String, codigosProcedimento As List(Of String), quantidadesProcedimento As List(Of Integer)) As String
+        Dim total As Long = 0
+
+        ' Soma os dígitos dos códigos dos procedimentos
+        For Each codigo In codigosProcedimento
+            Dim apenasDigitos = New String(codigo.Where(Function(c) Char.IsDigit(c)).ToArray())
+            If apenasDigitos <> "" Then
+                total += CLng(apenasDigitos)
+            End If
+        Next
+
+        ' Soma as quantidades dos procedimentos
+        For Each qtd In quantidadesProcedimento
+            total += CLng(qtd)
+        Next
+
+        ' Soma os dígitos do número da APAC
+        Dim apacNumeros = New String(apacNumber.Where(Function(c) Char.IsDigit(c)).ToArray())
+        If apacNumeros <> "" Then
+            total += CLng(apacNumeros)
+        End If
+
+        ' Calcula o campo controle: (total Mod 1111) + 1111
+        Dim resto As Integer = CInt(total Mod 1111)
+        Dim campoControle As Integer = resto + 1111
+
+        ' Retorna com 4 dígitos, zeros à esquerda
+        Return campoControle.ToString().PadLeft(4, "0"c)
+    End Function
+
+
+    Private Function GetNextLoteNumber() As String
+        Dim filePath As String = Path.Combine(Application.StartupPath, "lote.txt")
+        Dim lastNumber As Long = 0
+
+        ' Lê último número, se existir
+        If File.Exists(filePath) Then
+            Dim content = File.ReadAllText(filePath).Trim()
+            If IsNumeric(content) Then
+                lastNumber = CLng(content)
+            End If
+        End If
+
+        ' Incrementa
+        Dim nextNumber As Long = lastNumber + 1
+
+        ' Salva de volta
+        File.WriteAllText(filePath, nextNumber.ToString())
+
+        ' Retorna formatado (13 dígitos, zeros à esquerda)
+        Return nextNumber.ToString().PadLeft(13, "0"c)
+    End Function
+
 
     Private Function ComputeControlField(apacNumber As String, procCodes As List(Of String), procQuantities As List(Of Integer)) As String
         Dim total As Long = 0
@@ -162,19 +191,13 @@ Public Class FormAMEOCI
         Dim cidSec As String = CidSecundario.Text
         Dim cnsExec As String = CnsExecutante.Text
 
-        ' Adiciona nova linha no grid
-        dgvProcedimentos.Rows.Add(cod, desc, cbo, qtd, cidPri, cidSec, "", "", "")
+        ' Adiciona nova linha no grid (com 8 colunas + 1 opcional de descrição)
+        dgvProcedimentos.Rows.Add(cod, cbo, qtd, cidPri, cidSec, "", cnsExec, "")
     End Sub
-
-
-    Private Function Fmt(valor As String, tamanho As Integer, Optional padLeft As Boolean = False) As String
+    Private Function Fmt(valor As String, tamanho As Integer) As String
         If valor Is Nothing Then valor = ""
         valor = valor.Trim()
-        If padLeft Then
-            Return valor.PadLeft(tamanho, "0"c).Substring(0, tamanho)
-        Else
-            Return valor.PadRight(tamanho, " "c).Substring(0, tamanho)
-        End If
+        Return valor.PadRight(tamanho, " "c).Substring(0, tamanho)
     End Function
 
     Private Sub btnRemoverProcedimento_Click(sender As Object, e As EventArgs) Handles btnRemoverProcedimento.Click
@@ -203,5 +226,61 @@ Public Class FormAMEOCI
         dgvProcedimentos.AllowUserToAddRows = True
         dgvProcedimentos.AllowUserToDeleteRows = True
         dgvProcedimentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
+
+        Dim racas As New Dictionary(Of String, String) From {
+            {"01", "BRANCA"},
+            {"02", "PRETA"},
+            {"03", "PARDA"},
+            {"04", "AMARELA"},
+            {"05", "INDIGENA"},
+            {"99", "SEM INFO"}
+        }
+
+        txtRaca.DataSource = New BindingSource(racas, Nothing)
+        txtRaca.DisplayMember = "Value"   ' O que aparece para o usuário
+        txtRaca.ValueMember = "Key"
+
+        Dim tipo As New Dictionary(Of String, String) From {
+            {"01", "INICIAL"},
+            {"02", "CONTINUIDADE"},
+            {"03", "UNICA"},
+            {"04", "ENCERRAMENTO"}
+        }
+
+        txtTipoApac.DataSource = New BindingSource(tipo, Nothing)
+        txtTipoApac.DisplayMember = "Value"   ' O que aparece para o usuário
+        txtTipoApac.ValueMember = "Key"
+        txtTipoApac.SelectedIndex = 2
+
+        Dim carater As New Dictionary(Of String, String) From {
+           {"01", "ELETIVO"},
+           {"02", "URGENCIA"},
+           {"03", "ACIDENTE NO LOCAL DE TRAB.OU A SERV.EMPR"},
+           {"04", "ACIDENTE NO TRAJETO PARA O TRABALHO"},
+           {"05", "OUTROS TIPOS DE ACIDENTE DE TRANSITO"},
+           {"06", "OUTROS TIPOS DE LESOES/ENV.POR AGENT.Q/F"}
+       }
+
+        txtTipoAtend.DataSource = New BindingSource(carater, Nothing)
+        txtTipoAtend.DisplayMember = "Value"   ' O que aparece para o usuário
+        txtTipoAtend.ValueMember = "Key"
+        txtTipoAtend.SelectedIndex = 0
+
+        Dim motivo As New Dictionary(Of String, String) From {
+            {"11", "ALTA CURADO"},
+            {"12", "ALTA MELHORADO"},
+            {"14", "ALTA A PEDIDO"},
+            {"15", "ALTA COM PREVISAO DE RETORNO P/ACOMP.PAC"},
+            {"16", "ALTA POR EVASAO"},
+            {"18", "ALTA POR OUTROS MOTIVOS"}
+        }
+
+        txtMotivoSaida.DataSource = New BindingSource(motivo, Nothing)
+        txtMotivoSaida.DisplayMember = "Value"   ' O que aparece para o usuário
+        txtMotivoSaida.ValueMember = "Key"
+        txtMotivoSaida.SelectedIndex = 1
+
     End Sub
+
+
 End Class
