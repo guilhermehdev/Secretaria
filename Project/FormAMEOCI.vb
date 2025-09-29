@@ -22,8 +22,8 @@ Public Class FormAMEOCI
 
             ' ================= HEADER (Registro 01) =================
             Dim header As New StringBuilder()
-            header.Append("01")                                   ' Indicador Header (2)
-            header.Append("APAC".PadRight(5, " "c))               ' Texto fixo APAC (5)
+            header.Append("01#")                                   ' Indicador Header (2)
+            header.Append("APAC")               ' Texto fixo APAC (5)
             header.Append(txtCompetencia.Text.PadLeft(6, "0"c))   ' Competência AAAAMM (6)
             header.Append(GetNextLoteNumber().PadLeft(6, "0"c))       ' Quantidade APACs gravadas (6)
             header.Append(campoControle.PadLeft(4, "0"c)) ' Campo controle (4)
@@ -33,8 +33,7 @@ Public Class FormAMEOCI
             header.Append(Fmt(txtOrgaoDestino.Text, 40))          ' Nome órgão destino (40)
             header.Append(txtDestinoTipo.Text.PadRight(1, " "c))  ' Destino M/E (1)
             header.Append(dataGeracao)   ' Campo data geração com 8 caracteres AAAAMMDD
-            header.Append(versao)        ' Campo versão com 15 caracteres, alinhado              ' Versão (15)
-            header.Append(vbCrLf)                                 ' Fim Header (2)
+            header.Append("Versao 03.16".PadRight(15, " "c))      ' Campo versão com 15 caracteres, 
             linhas.Add(header.ToString())
 
             ' ================= CORPO PRINCIPAL (Registro 14) =================
@@ -71,7 +70,6 @@ Public Class FormAMEOCI
             corpo.Append(txtRaca.Text.PadLeft(2, "0"c))           ' Raça/cor (2)
             corpo.Append(Fmt(txtNomeRespPaciente.Text, 30))       ' Nome responsável paciente (30)
             corpo.Append("10")  ' Código nacionalidade (3)
-            corpo.Append(vbCrLf)                                  ' Fim Corpo (2)
             linhas.Add(corpo.ToString())
 
             ' ================= REGISTRO DE PROCEDIMENTOS (Registro 13) =================
@@ -85,7 +83,6 @@ Public Class FormAMEOCI
                 proc.Append(row.Cells("CBO").Value.ToString().PadLeft(6, "0"c))        ' CBO (6)
                 proc.Append(row.Cells("Quantidade").Value.ToString().PadLeft(7, "0"c)) ' Quantidade procedimento (7)
                 proc.Append(row.Cells("CIDPrincipal").Value.ToString().PadRight(4, " "c)) ' CID Principal (4)
-                proc.Append(vbCrLf)                                     ' Fim Registro (2)
                 linhas.Add(proc.ToString())
             Next
 
