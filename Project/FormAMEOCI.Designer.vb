@@ -22,20 +22,18 @@ Partial Class FormAMEOCI
     'Não o modifique usando o editor de códigos.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle22 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle23 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle24 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.txtCompetencia = New System.Windows.Forms.TextBox()
         Me.txtNumApac = New System.Windows.Forms.TextBox()
         Me.txtApacAnterior = New System.Windows.Forms.TextBox()
-        Me.txtCnesUnidade = New System.Windows.Forms.TextBox()
+        Me.txtCnesSolicitante = New System.Windows.Forms.TextBox()
         Me.txtCnesExecutante = New System.Windows.Forms.TextBox()
         Me.dtValidadeIni = New System.Windows.Forms.DateTimePicker()
         Me.dtValidadeFim = New System.Windows.Forms.DateTimePicker()
         Me.txtTipoApac = New System.Windows.Forms.ComboBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.Label30 = New System.Windows.Forms.Label()
-        Me.txtUfIbge = New System.Windows.Forms.TextBox()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
@@ -78,25 +76,21 @@ Partial Class FormAMEOCI
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.dtAltaObito = New System.Windows.Forms.DateTimePicker()
         Me.txtMotivoSaida = New System.Windows.Forms.ComboBox()
-        Me.txtCodEmissor = New System.Windows.Forms.TextBox()
+        Me.txtGestor = New System.Windows.Forms.TextBox()
         Me.txtNomeAutorizador = New System.Windows.Forms.TextBox()
-        Me.dtSolicitacao = New System.Windows.Forms.DateTimePicker()
+        Me.dtEmissao = New System.Windows.Forms.DateTimePicker()
         Me.txtCidSecundario = New System.Windows.Forms.TextBox()
         Me.txtCidPrincipal = New System.Windows.Forms.TextBox()
         Me.txtTipoAtend = New System.Windows.Forms.ComboBox()
         Me.dtAutorizacao = New System.Windows.Forms.DateTimePicker()
         Me.txtCnsAutorizador = New System.Windows.Forms.TextBox()
         Me.txtNomeMedicoSolicitante = New System.Windows.Forms.TextBox()
-        Me.txtNomeMedico = New System.Windows.Forms.TextBox()
+        Me.txtCNSMedicoSolicitante = New System.Windows.Forms.TextBox()
         Me.txtCodProcedimento = New System.Windows.Forms.TextBox()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.btnRemoverProcedimento = New System.Windows.Forms.Button()
         Me.btnAdicionarProcedimento = New System.Windows.Forms.Button()
         Me.CnesTerceiro = New System.Windows.Forms.TextBox()
-        Me.CnsExecutante = New System.Windows.Forms.TextBox()
-        Me.CidSecundario = New System.Windows.Forms.TextBox()
-        Me.Descricao = New System.Windows.Forms.TextBox()
-        Me.CidPrincipal = New System.Windows.Forms.TextBox()
         Me.Quantidade = New System.Windows.Forms.TextBox()
         Me.CBOmed = New System.Windows.Forms.TextBox()
         Me.CodProcedimento = New System.Windows.Forms.TextBox()
@@ -106,7 +100,6 @@ Partial Class FormAMEOCI
         Me.txtOrgaoOrigem = New System.Windows.Forms.TextBox()
         Me.txtSiglaOrgao = New System.Windows.Forms.TextBox()
         Me.txtCGC = New System.Windows.Forms.TextBox()
-        Me.txtUf = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
@@ -125,6 +118,26 @@ Partial Class FormAMEOCI
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.cbTipoLogradouro = New System.Windows.Forms.ComboBox()
+        Me.txtUf = New System.Windows.Forms.ComboBox()
+        Me.Label30 = New System.Windows.Forms.Label()
+        Me.Label31 = New System.Windows.Forms.Label()
+        Me.Label32 = New System.Windows.Forms.Label()
+        Me.Label33 = New System.Windows.Forms.Label()
+        Me.Label34 = New System.Windows.Forms.Label()
+        Me.Label35 = New System.Windows.Forms.Label()
+        Me.Label36 = New System.Windows.Forms.Label()
+        Me.Label37 = New System.Windows.Forms.Label()
+        Me.Label38 = New System.Windows.Forms.Label()
+        Me.Label39 = New System.Windows.Forms.Label()
+        Me.Label40 = New System.Windows.Forms.Label()
+        Me.Label41 = New System.Windows.Forms.Label()
+        Me.Label42 = New System.Windows.Forms.Label()
+        Me.Label43 = New System.Windows.Forms.Label()
+        Me.Label44 = New System.Windows.Forms.Label()
+        Me.txtCNSMedicoExecutante = New System.Windows.Forms.TextBox()
+        Me.Label45 = New System.Windows.Forms.Label()
+        Me.Label46 = New System.Windows.Forms.Label()
+        Me.Label47 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -158,13 +171,13 @@ Partial Class FormAMEOCI
         Me.txtApacAnterior.Size = New System.Drawing.Size(100, 20)
         Me.txtApacAnterior.TabIndex = 2
         '
-        'txtCnesUnidade
+        'txtCnesSolicitante
         '
-        Me.txtCnesUnidade.Location = New System.Drawing.Point(225, 39)
-        Me.txtCnesUnidade.Name = "txtCnesUnidade"
-        Me.txtCnesUnidade.Size = New System.Drawing.Size(82, 20)
-        Me.txtCnesUnidade.TabIndex = 3
-        Me.txtCnesUnidade.Text = "7036892"
+        Me.txtCnesSolicitante.Location = New System.Drawing.Point(225, 39)
+        Me.txtCnesSolicitante.Name = "txtCnesSolicitante"
+        Me.txtCnesSolicitante.Size = New System.Drawing.Size(82, 20)
+        Me.txtCnesSolicitante.TabIndex = 3
+        Me.txtCnesSolicitante.Text = "7036892"
         '
         'txtCnesExecutante
         '
@@ -200,8 +213,6 @@ Partial Class FormAMEOCI
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.Label30)
-        Me.GroupBox1.Controls.Add(Me.txtUfIbge)
         Me.GroupBox1.Controls.Add(Me.Label9)
         Me.GroupBox1.Controls.Add(Me.Label8)
         Me.GroupBox1.Controls.Add(Me.Label6)
@@ -214,31 +225,14 @@ Partial Class FormAMEOCI
         Me.GroupBox1.Controls.Add(Me.txtNumApac)
         Me.GroupBox1.Controls.Add(Me.txtApacAnterior)
         Me.GroupBox1.Controls.Add(Me.dtValidadeIni)
-        Me.GroupBox1.Controls.Add(Me.txtCnesUnidade)
+        Me.GroupBox1.Controls.Add(Me.txtCnesSolicitante)
         Me.GroupBox1.Controls.Add(Me.txtCnesExecutante)
-        Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
+        Me.GroupBox1.Location = New System.Drawing.Point(12, 172)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(497, 107)
         Me.GroupBox1.TabIndex = 8
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Cabeçalho"
-        '
-        'Label30
-        '
-        Me.Label30.AutoSize = True
-        Me.Label30.Location = New System.Drawing.Point(222, 62)
-        Me.Label30.Name = "Label30"
-        Me.Label30.Size = New System.Drawing.Size(21, 13)
-        Me.Label30.TabIndex = 21
-        Me.Label30.Text = "UF"
-        '
-        'txtUfIbge
-        '
-        Me.txtUfIbge.Location = New System.Drawing.Point(225, 78)
-        Me.txtUfIbge.Name = "txtUfIbge"
-        Me.txtUfIbge.Size = New System.Drawing.Size(82, 20)
-        Me.txtUfIbge.TabIndex = 20
-        Me.txtUfIbge.Text = "35"
         '
         'Label9
         '
@@ -544,9 +538,9 @@ Partial Class FormAMEOCI
         '
         'txtMunicipioNome
         '
-        Me.txtMunicipioNome.Location = New System.Drawing.Point(89, 37)
+        Me.txtMunicipioNome.Location = New System.Drawing.Point(77, 37)
         Me.txtMunicipioNome.Name = "txtMunicipioNome"
-        Me.txtMunicipioNome.Size = New System.Drawing.Size(100, 20)
+        Me.txtMunicipioNome.Size = New System.Drawing.Size(77, 20)
         Me.txtMunicipioNome.TabIndex = 11
         Me.txtMunicipioNome.Text = "PERUIBE"
         '
@@ -554,67 +548,78 @@ Partial Class FormAMEOCI
         '
         Me.txtMunIbge.Location = New System.Drawing.Point(12, 37)
         Me.txtMunIbge.Name = "txtMunIbge"
-        Me.txtMunIbge.Size = New System.Drawing.Size(74, 20)
+        Me.txtMunIbge.Size = New System.Drawing.Size(59, 20)
         Me.txtMunIbge.TabIndex = 10
         Me.txtMunIbge.Text = "3537602"
         '
         'txtCep
         '
-        Me.txtCep.Location = New System.Drawing.Point(330, 65)
+        Me.txtCep.Location = New System.Drawing.Point(437, 65)
         Me.txtCep.Name = "txtCep"
-        Me.txtCep.Size = New System.Drawing.Size(100, 20)
+        Me.txtCep.Size = New System.Drawing.Size(54, 20)
         Me.txtCep.TabIndex = 9
         Me.txtCep.Text = "11771702"
         '
         'txtBairro
         '
-        Me.txtBairro.Location = New System.Drawing.Point(118, 65)
+        Me.txtBairro.Location = New System.Drawing.Point(77, 65)
         Me.txtBairro.Name = "txtBairro"
         Me.txtBairro.Size = New System.Drawing.Size(100, 20)
         Me.txtBairro.TabIndex = 8
-        Me.txtBairro.Text = "SOMAR"
+        Me.txtBairro.Text = "RUINAS"
         '
         'txtComplemento
         '
-        Me.txtComplemento.Location = New System.Drawing.Point(224, 65)
+        Me.txtComplemento.Location = New System.Drawing.Point(183, 65)
         Me.txtComplemento.Name = "txtComplemento"
-        Me.txtComplemento.Size = New System.Drawing.Size(100, 20)
+        Me.txtComplemento.Size = New System.Drawing.Size(248, 20)
         Me.txtComplemento.TabIndex = 7
         '
         'txtNumero
         '
         Me.txtNumero.Location = New System.Drawing.Point(12, 65)
         Me.txtNumero.Name = "txtNumero"
-        Me.txtNumero.Size = New System.Drawing.Size(100, 20)
+        Me.txtNumero.Size = New System.Drawing.Size(59, 20)
         Me.txtNumero.TabIndex = 6
-        Me.txtNumero.Text = "2153"
+        Me.txtNumero.Text = "28"
         '
         'txtLogradouro
         '
-        Me.txtLogradouro.Location = New System.Drawing.Point(304, 37)
+        Me.txtLogradouro.Location = New System.Drawing.Point(269, 37)
         Me.txtLogradouro.Name = "txtLogradouro"
-        Me.txtLogradouro.Size = New System.Drawing.Size(187, 20)
+        Me.txtLogradouro.Size = New System.Drawing.Size(222, 20)
         Me.txtLogradouro.TabIndex = 5
-        Me.txtLogradouro.Text = "5"
+        Me.txtLogradouro.Text = "JURUPIS"
         '
         'GroupBox3
         '
-        Me.GroupBox3.Controls.Add(Me.dtAltaObito)
-        Me.GroupBox3.Controls.Add(Me.txtMotivoSaida)
-        Me.GroupBox3.Controls.Add(Me.txtCodEmissor)
-        Me.GroupBox3.Controls.Add(Me.txtNomeAutorizador)
-        Me.GroupBox3.Controls.Add(Me.dtSolicitacao)
-        Me.GroupBox3.Controls.Add(Me.txtCidSecundario)
-        Me.GroupBox3.Controls.Add(Me.txtCidPrincipal)
+        Me.GroupBox3.Controls.Add(Me.Label47)
+        Me.GroupBox3.Controls.Add(Me.Label40)
+        Me.GroupBox3.Controls.Add(Me.Label39)
+        Me.GroupBox3.Controls.Add(Me.Label46)
+        Me.GroupBox3.Controls.Add(Me.Label34)
+        Me.GroupBox3.Controls.Add(Me.Label38)
+        Me.GroupBox3.Controls.Add(Me.Label37)
+        Me.GroupBox3.Controls.Add(Me.Label36)
+        Me.GroupBox3.Controls.Add(Me.Label35)
+        Me.GroupBox3.Controls.Add(Me.Label33)
         Me.GroupBox3.Controls.Add(Me.txtTipoAtend)
+        Me.GroupBox3.Controls.Add(Me.txtGestor)
+        Me.GroupBox3.Controls.Add(Me.Label32)
+        Me.GroupBox3.Controls.Add(Me.Label31)
+        Me.GroupBox3.Controls.Add(Me.dtAltaObito)
+        Me.GroupBox3.Controls.Add(Me.txtCidPrincipal)
+        Me.GroupBox3.Controls.Add(Me.txtCidSecundario)
+        Me.GroupBox3.Controls.Add(Me.txtMotivoSaida)
+        Me.GroupBox3.Controls.Add(Me.txtNomeAutorizador)
+        Me.GroupBox3.Controls.Add(Me.dtEmissao)
         Me.GroupBox3.Controls.Add(Me.dtAutorizacao)
         Me.GroupBox3.Controls.Add(Me.txtCnsAutorizador)
         Me.GroupBox3.Controls.Add(Me.txtNomeMedicoSolicitante)
-        Me.GroupBox3.Controls.Add(Me.txtNomeMedico)
-        Me.GroupBox3.Controls.Add(Me.txtCodProcedimento)
-        Me.GroupBox3.Location = New System.Drawing.Point(515, 15)
+        Me.GroupBox3.Controls.Add(Me.txtCNSMedicoSolicitante)
+        Me.GroupBox3.Location = New System.Drawing.Point(510, 257)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(455, 238)
+        Me.GroupBox3.Size = New System.Drawing.Size(529, 196)
         Me.GroupBox3.TabIndex = 10
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "OCI"
@@ -622,7 +627,7 @@ Partial Class FormAMEOCI
         'dtAltaObito
         '
         Me.dtAltaObito.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtAltaObito.Location = New System.Drawing.Point(149, 212)
+        Me.dtAltaObito.Location = New System.Drawing.Point(99, 46)
         Me.dtAltaObito.Name = "dtAltaObito"
         Me.dtAltaObito.Size = New System.Drawing.Size(99, 20)
         Me.dtAltaObito.TabIndex = 9
@@ -630,107 +635,114 @@ Partial Class FormAMEOCI
         'txtMotivoSaida
         '
         Me.txtMotivoSaida.FormattingEnabled = True
-        Me.txtMotivoSaida.Location = New System.Drawing.Point(21, 211)
+        Me.txtMotivoSaida.Location = New System.Drawing.Point(12, 46)
         Me.txtMotivoSaida.Name = "txtMotivoSaida"
-        Me.txtMotivoSaida.Size = New System.Drawing.Size(121, 21)
+        Me.txtMotivoSaida.Size = New System.Drawing.Size(81, 21)
         Me.txtMotivoSaida.TabIndex = 8
         '
-        'txtCodEmissor
+        'txtGestor
         '
-        Me.txtCodEmissor.Location = New System.Drawing.Point(21, 188)
-        Me.txtCodEmissor.Name = "txtCodEmissor"
-        Me.txtCodEmissor.Size = New System.Drawing.Size(149, 20)
-        Me.txtCodEmissor.TabIndex = 14
+        Me.txtGestor.Location = New System.Drawing.Point(12, 164)
+        Me.txtGestor.Name = "txtGestor"
+        Me.txtGestor.Size = New System.Drawing.Size(94, 20)
+        Me.txtGestor.TabIndex = 14
+        Me.txtGestor.Text = "M353760001"
         '
         'txtNomeAutorizador
         '
-        Me.txtNomeAutorizador.Location = New System.Drawing.Point(21, 136)
+        Me.txtNomeAutorizador.Location = New System.Drawing.Point(137, 125)
         Me.txtNomeAutorizador.Name = "txtNomeAutorizador"
-        Me.txtNomeAutorizador.Size = New System.Drawing.Size(264, 20)
+        Me.txtNomeAutorizador.Size = New System.Drawing.Size(292, 20)
         Me.txtNomeAutorizador.TabIndex = 13
         '
-        'dtSolicitacao
+        'dtEmissao
         '
-        Me.dtSolicitacao.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtSolicitacao.Location = New System.Drawing.Point(186, 32)
-        Me.dtSolicitacao.Name = "dtSolicitacao"
-        Me.dtSolicitacao.Size = New System.Drawing.Size(99, 20)
-        Me.dtSolicitacao.TabIndex = 12
+        Me.dtEmissao.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.dtEmissao.Location = New System.Drawing.Point(433, 87)
+        Me.dtEmissao.Name = "dtEmissao"
+        Me.dtEmissao.Size = New System.Drawing.Size(82, 20)
+        Me.dtEmissao.TabIndex = 12
         '
         'txtCidSecundario
         '
-        Me.txtCidSecundario.Location = New System.Drawing.Point(232, 162)
+        Me.txtCidSecundario.Location = New System.Drawing.Point(301, 46)
         Me.txtCidSecundario.Name = "txtCidSecundario"
-        Me.txtCidSecundario.Size = New System.Drawing.Size(100, 20)
+        Me.txtCidSecundario.Size = New System.Drawing.Size(105, 20)
         Me.txtCidSecundario.TabIndex = 11
         '
         'txtCidPrincipal
         '
-        Me.txtCidPrincipal.Location = New System.Drawing.Point(126, 162)
+        Me.txtCidPrincipal.Location = New System.Drawing.Point(204, 46)
         Me.txtCidPrincipal.Name = "txtCidPrincipal"
-        Me.txtCidPrincipal.Size = New System.Drawing.Size(100, 20)
+        Me.txtCidPrincipal.Size = New System.Drawing.Size(94, 20)
         Me.txtCidPrincipal.TabIndex = 10
+        Me.txtCidPrincipal.Text = "Z136"
         '
         'txtTipoAtend
         '
         Me.txtTipoAtend.FormattingEnabled = True
-        Me.txtTipoAtend.Location = New System.Drawing.Point(291, 32)
+        Me.txtTipoAtend.Location = New System.Drawing.Point(410, 45)
         Me.txtTipoAtend.Name = "txtTipoAtend"
-        Me.txtTipoAtend.Size = New System.Drawing.Size(149, 21)
+        Me.txtTipoAtend.Size = New System.Drawing.Size(105, 21)
         Me.txtTipoAtend.TabIndex = 7
         '
         'dtAutorizacao
         '
         Me.dtAutorizacao.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtAutorizacao.Location = New System.Drawing.Point(22, 163)
+        Me.dtAutorizacao.Location = New System.Drawing.Point(433, 125)
         Me.dtAutorizacao.Name = "dtAutorizacao"
-        Me.dtAutorizacao.Size = New System.Drawing.Size(99, 20)
+        Me.dtAutorizacao.Size = New System.Drawing.Size(82, 20)
         Me.dtAutorizacao.TabIndex = 6
         '
         'txtCnsAutorizador
         '
-        Me.txtCnsAutorizador.Location = New System.Drawing.Point(21, 110)
+        Me.txtCnsAutorizador.Location = New System.Drawing.Point(12, 125)
         Me.txtCnsAutorizador.Name = "txtCnsAutorizador"
-        Me.txtCnsAutorizador.Size = New System.Drawing.Size(264, 20)
+        Me.txtCnsAutorizador.Size = New System.Drawing.Size(119, 20)
         Me.txtCnsAutorizador.TabIndex = 3
         '
         'txtNomeMedicoSolicitante
         '
-        Me.txtNomeMedicoSolicitante.Location = New System.Drawing.Point(21, 84)
+        Me.txtNomeMedicoSolicitante.Location = New System.Drawing.Point(137, 87)
         Me.txtNomeMedicoSolicitante.Name = "txtNomeMedicoSolicitante"
-        Me.txtNomeMedicoSolicitante.Size = New System.Drawing.Size(264, 20)
+        Me.txtNomeMedicoSolicitante.Size = New System.Drawing.Size(292, 20)
         Me.txtNomeMedicoSolicitante.TabIndex = 2
         '
-        'txtNomeMedico
+        'txtCNSMedicoSolicitante
         '
-        Me.txtNomeMedico.Location = New System.Drawing.Point(21, 58)
-        Me.txtNomeMedico.Name = "txtNomeMedico"
-        Me.txtNomeMedico.Size = New System.Drawing.Size(264, 20)
-        Me.txtNomeMedico.TabIndex = 1
+        Me.txtCNSMedicoSolicitante.Location = New System.Drawing.Point(12, 87)
+        Me.txtCNSMedicoSolicitante.Name = "txtCNSMedicoSolicitante"
+        Me.txtCNSMedicoSolicitante.Size = New System.Drawing.Size(119, 20)
+        Me.txtCNSMedicoSolicitante.TabIndex = 1
         '
         'txtCodProcedimento
         '
-        Me.txtCodProcedimento.Location = New System.Drawing.Point(21, 32)
+        Me.txtCodProcedimento.Location = New System.Drawing.Point(12, 48)
         Me.txtCodProcedimento.Name = "txtCodProcedimento"
-        Me.txtCodProcedimento.Size = New System.Drawing.Size(159, 20)
+        Me.txtCodProcedimento.Size = New System.Drawing.Size(84, 20)
         Me.txtCodProcedimento.TabIndex = 0
+        Me.txtCodProcedimento.Text = "0902010026"
         '
         'GroupBox4
         '
+        Me.GroupBox4.Controls.Add(Me.Label45)
+        Me.GroupBox4.Controls.Add(Me.Label44)
+        Me.GroupBox4.Controls.Add(Me.txtCNSMedicoExecutante)
+        Me.GroupBox4.Controls.Add(Me.Label43)
+        Me.GroupBox4.Controls.Add(Me.Label42)
+        Me.GroupBox4.Controls.Add(Me.Label41)
         Me.GroupBox4.Controls.Add(Me.btnRemoverProcedimento)
         Me.GroupBox4.Controls.Add(Me.btnAdicionarProcedimento)
         Me.GroupBox4.Controls.Add(Me.CnesTerceiro)
-        Me.GroupBox4.Controls.Add(Me.CnsExecutante)
-        Me.GroupBox4.Controls.Add(Me.CidSecundario)
-        Me.GroupBox4.Controls.Add(Me.Descricao)
-        Me.GroupBox4.Controls.Add(Me.CidPrincipal)
         Me.GroupBox4.Controls.Add(Me.Quantidade)
         Me.GroupBox4.Controls.Add(Me.CBOmed)
         Me.GroupBox4.Controls.Add(Me.CodProcedimento)
         Me.GroupBox4.Controls.Add(Me.dgvProcedimentos)
-        Me.GroupBox4.Location = New System.Drawing.Point(515, 259)
+        Me.GroupBox4.Controls.Add(Me.Label30)
+        Me.GroupBox4.Controls.Add(Me.txtCodProcedimento)
+        Me.GroupBox4.Location = New System.Drawing.Point(510, 15)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(455, 243)
+        Me.GroupBox4.Size = New System.Drawing.Size(529, 243)
         Me.GroupBox4.TabIndex = 11
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Procedimentos secundários"
@@ -755,59 +767,34 @@ Partial Class FormAMEOCI
         '
         'CnesTerceiro
         '
-        Me.CnesTerceiro.Location = New System.Drawing.Point(304, 46)
+        Me.CnesTerceiro.Location = New System.Drawing.Point(406, 48)
         Me.CnesTerceiro.Name = "CnesTerceiro"
-        Me.CnesTerceiro.Size = New System.Drawing.Size(136, 20)
+        Me.CnesTerceiro.Size = New System.Drawing.Size(109, 20)
         Me.CnesTerceiro.TabIndex = 40
-        '
-        'CnsExecutante
-        '
-        Me.CnsExecutante.Location = New System.Drawing.Point(128, 46)
-        Me.CnsExecutante.Name = "CnsExecutante"
-        Me.CnsExecutante.Size = New System.Drawing.Size(170, 20)
-        Me.CnsExecutante.TabIndex = 39
-        '
-        'CidSecundario
-        '
-        Me.CidSecundario.Location = New System.Drawing.Point(22, 73)
-        Me.CidSecundario.Name = "CidSecundario"
-        Me.CidSecundario.Size = New System.Drawing.Size(100, 20)
-        Me.CidSecundario.TabIndex = 38
-        '
-        'Descricao
-        '
-        Me.Descricao.Location = New System.Drawing.Point(128, 20)
-        Me.Descricao.Name = "Descricao"
-        Me.Descricao.Size = New System.Drawing.Size(170, 20)
-        Me.Descricao.TabIndex = 34
-        '
-        'CidPrincipal
-        '
-        Me.CidPrincipal.Location = New System.Drawing.Point(21, 46)
-        Me.CidPrincipal.Name = "CidPrincipal"
-        Me.CidPrincipal.Size = New System.Drawing.Size(100, 20)
-        Me.CidPrincipal.TabIndex = 37
         '
         'Quantidade
         '
-        Me.Quantidade.Location = New System.Drawing.Point(304, 20)
+        Me.Quantidade.Location = New System.Drawing.Point(252, 48)
         Me.Quantidade.Name = "Quantidade"
         Me.Quantidade.Size = New System.Drawing.Size(30, 20)
         Me.Quantidade.TabIndex = 36
+        Me.Quantidade.Text = "1"
         '
         'CBOmed
         '
-        Me.CBOmed.Location = New System.Drawing.Point(340, 20)
+        Me.CBOmed.Location = New System.Drawing.Point(192, 48)
         Me.CBOmed.Name = "CBOmed"
-        Me.CBOmed.Size = New System.Drawing.Size(100, 20)
+        Me.CBOmed.Size = New System.Drawing.Size(54, 20)
         Me.CBOmed.TabIndex = 35
+        Me.CBOmed.Text = "225120"
         '
         'CodProcedimento
         '
-        Me.CodProcedimento.Location = New System.Drawing.Point(22, 20)
+        Me.CodProcedimento.Location = New System.Drawing.Point(102, 48)
         Me.CodProcedimento.Name = "CodProcedimento"
-        Me.CodProcedimento.Size = New System.Drawing.Size(100, 20)
+        Me.CodProcedimento.Size = New System.Drawing.Size(84, 20)
         Me.CodProcedimento.TabIndex = 33
+        Me.CodProcedimento.Text = "0301010072"
         '
         'dgvProcedimentos
         '
@@ -821,47 +808,47 @@ Partial Class FormAMEOCI
         Me.dgvProcedimentos.BackgroundColor = System.Drawing.Color.White
         Me.dgvProcedimentos.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvProcedimentos.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvProcedimentos.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle22.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle22.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle22.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle22.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle22.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvProcedimentos.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle22
         Me.dgvProcedimentos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.SteelBlue
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvProcedimentos.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle23.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle23.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle23.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle23.SelectionBackColor = System.Drawing.Color.SteelBlue
+        DataGridViewCellStyle23.SelectionForeColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvProcedimentos.DefaultCellStyle = DataGridViewCellStyle23
         Me.dgvProcedimentos.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
-        Me.dgvProcedimentos.Location = New System.Drawing.Point(21, 99)
+        Me.dgvProcedimentos.Location = New System.Drawing.Point(12, 73)
         Me.dgvProcedimentos.MultiSelect = False
         Me.dgvProcedimentos.Name = "dgvProcedimentos"
         Me.dgvProcedimentos.ReadOnly = True
         Me.dgvProcedimentos.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
-        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.ControlDark
-        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvProcedimentos.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle24.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle24.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+        DataGridViewCellStyle24.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle24.SelectionBackColor = System.Drawing.SystemColors.ControlDark
+        DataGridViewCellStyle24.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvProcedimentos.RowHeadersDefaultCellStyle = DataGridViewCellStyle24
         Me.dgvProcedimentos.RowHeadersWidth = 4
         Me.dgvProcedimentos.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgvProcedimentos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvProcedimentos.Size = New System.Drawing.Size(419, 100)
+        Me.dgvProcedimentos.Size = New System.Drawing.Size(503, 126)
         Me.dgvProcedimentos.TabIndex = 32
         Me.dgvProcedimentos.TabStop = False
         '
         'btnGerarArquivo
         '
-        Me.btnGerarArquivo.Location = New System.Drawing.Point(525, 519)
+        Me.btnGerarArquivo.Location = New System.Drawing.Point(521, 459)
         Me.btnGerarArquivo.Name = "btnGerarArquivo"
         Me.btnGerarArquivo.Size = New System.Drawing.Size(99, 23)
         Me.btnGerarArquivo.TabIndex = 12
@@ -901,14 +888,6 @@ Partial Class FormAMEOCI
         Me.txtCGC.TabIndex = 11
         Me.txtCGC.Text = "46.578.514/0001-20"
         '
-        'txtUf
-        '
-        Me.txtUf.Location = New System.Drawing.Point(83, 48)
-        Me.txtUf.Name = "txtUf"
-        Me.txtUf.Size = New System.Drawing.Size(45, 20)
-        Me.txtUf.TabIndex = 20
-        Me.txtUf.Text = "35"
-        '
         'Label1
         '
         Me.Label1.AutoSize = True
@@ -929,6 +908,7 @@ Partial Class FormAMEOCI
         '
         'GroupBox5
         '
+        Me.GroupBox5.Controls.Add(Me.txtUf)
         Me.GroupBox5.Controls.Add(Me.Label29)
         Me.GroupBox5.Controls.Add(Me.txtDestinoTipo)
         Me.GroupBox5.Controls.Add(Me.Label28)
@@ -945,11 +925,10 @@ Partial Class FormAMEOCI
         Me.GroupBox5.Controls.Add(Me.txtSiglaOrgao)
         Me.GroupBox5.Controls.Add(Me.Label7)
         Me.GroupBox5.Controls.Add(Me.Label1)
-        Me.GroupBox5.Controls.Add(Me.txtUf)
         Me.GroupBox5.Controls.Add(Me.txtOrgaoOrigem)
         Me.GroupBox5.Controls.Add(Me.txtCGC)
         Me.GroupBox5.Controls.Add(Me.txtCnsDiretor)
-        Me.GroupBox5.Location = New System.Drawing.Point(12, 125)
+        Me.GroupBox5.Location = New System.Drawing.Point(12, 15)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(497, 157)
         Me.GroupBox5.TabIndex = 22
@@ -1006,7 +985,7 @@ Partial Class FormAMEOCI
         Me.txtCPFDiretor.Name = "txtCPFDiretor"
         Me.txtCPFDiretor.Size = New System.Drawing.Size(113, 20)
         Me.txtCPFDiretor.TabIndex = 27
-        Me.txtCPFDiretor.Text = "214.311.718-32"
+        Me.txtCPFDiretor.Text = "21431171832"
         '
         'Label14
         '
@@ -1020,7 +999,7 @@ Partial Class FormAMEOCI
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(439, 35)
+        Me.Label13.Location = New System.Drawing.Point(439, 32)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(30, 13)
         Me.Label13.TabIndex = 25
@@ -1082,7 +1061,7 @@ Partial Class FormAMEOCI
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(630, 519)
+        Me.Button1.Location = New System.Drawing.Point(917, 459)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(122, 23)
         Me.Button1.TabIndex = 25
@@ -1092,16 +1071,194 @@ Partial Class FormAMEOCI
         'cbTipoLogradouro
         '
         Me.cbTipoLogradouro.FormattingEnabled = True
-        Me.cbTipoLogradouro.Location = New System.Drawing.Point(194, 37)
+        Me.cbTipoLogradouro.Location = New System.Drawing.Point(158, 37)
         Me.cbTipoLogradouro.Name = "cbTipoLogradouro"
         Me.cbTipoLogradouro.Size = New System.Drawing.Size(105, 21)
         Me.cbTipoLogradouro.TabIndex = 24
+        '
+        'txtUf
+        '
+        Me.txtUf.FormattingEnabled = True
+        Me.txtUf.Location = New System.Drawing.Point(83, 48)
+        Me.txtUf.Name = "txtUf"
+        Me.txtUf.Size = New System.Drawing.Size(44, 21)
+        Me.txtUf.TabIndex = 33
+        '
+        'Label30
+        '
+        Me.Label30.AutoSize = True
+        Me.Label30.Location = New System.Drawing.Point(8, 32)
+        Me.Label30.Name = "Label30"
+        Me.Label30.Size = New System.Drawing.Size(84, 13)
+        Me.Label30.TabIndex = 15
+        Me.Label30.Text = "Proced Principal"
+        '
+        'Label31
+        '
+        Me.Label31.AutoSize = True
+        Me.Label31.Location = New System.Drawing.Point(9, 73)
+        Me.Label31.Name = "Label31"
+        Me.Label31.Size = New System.Drawing.Size(117, 13)
+        Me.Label31.TabIndex = 16
+        Me.Label31.Text = "CNS Médico solicitante"
+        '
+        'Label32
+        '
+        Me.Label32.AutoSize = True
+        Me.Label32.Location = New System.Drawing.Point(135, 74)
+        Me.Label32.Name = "Label32"
+        Me.Label32.Size = New System.Drawing.Size(92, 13)
+        Me.Label32.TabIndex = 17
+        Me.Label32.Text = "Médico solicitante"
+        '
+        'Label33
+        '
+        Me.Label33.AutoSize = True
+        Me.Label33.Location = New System.Drawing.Point(432, 73)
+        Me.Label33.Name = "Label33"
+        Me.Label33.Size = New System.Drawing.Size(83, 13)
+        Me.Label33.TabIndex = 18
+        Me.Label33.Text = "Data solicitação"
+        '
+        'Label34
+        '
+        Me.Label34.AutoSize = True
+        Me.Label34.Location = New System.Drawing.Point(407, 29)
+        Me.Label34.Name = "Label34"
+        Me.Label34.Size = New System.Drawing.Size(102, 13)
+        Me.Label34.TabIndex = 19
+        Me.Label34.Text = "Carater atendimento"
+        '
+        'Label35
+        '
+        Me.Label35.AutoSize = True
+        Me.Label35.Location = New System.Drawing.Point(9, 30)
+        Me.Label35.Name = "Label35"
+        Me.Label35.Size = New System.Drawing.Size(69, 13)
+        Me.Label35.TabIndex = 20
+        Me.Label35.Text = "Motivo saída"
+        '
+        'Label36
+        '
+        Me.Label36.AutoSize = True
+        Me.Label36.Location = New System.Drawing.Point(96, 30)
+        Me.Label36.Name = "Label36"
+        Me.Label36.Size = New System.Drawing.Size(81, 13)
+        Me.Label36.TabIndex = 21
+        Me.Label36.Text = "Data Alta/Óbito"
+        '
+        'Label37
+        '
+        Me.Label37.AutoSize = True
+        Me.Label37.Location = New System.Drawing.Point(9, 111)
+        Me.Label37.Name = "Label37"
+        Me.Label37.Size = New System.Drawing.Size(122, 13)
+        Me.Label37.TabIndex = 22
+        Me.Label37.Text = "CNS Médico autorizador"
+        '
+        'Label38
+        '
+        Me.Label38.AutoSize = True
+        Me.Label38.Location = New System.Drawing.Point(135, 111)
+        Me.Label38.Name = "Label38"
+        Me.Label38.Size = New System.Drawing.Size(97, 13)
+        Me.Label38.TabIndex = 23
+        Me.Label38.Text = "Médico autorizador"
+        '
+        'Label39
+        '
+        Me.Label39.AutoSize = True
+        Me.Label39.Location = New System.Drawing.Point(430, 111)
+        Me.Label39.Name = "Label39"
+        Me.Label39.Size = New System.Drawing.Size(88, 13)
+        Me.Label39.TabIndex = 24
+        Me.Label39.Text = "Data autorização"
+        '
+        'Label40
+        '
+        Me.Label40.AutoSize = True
+        Me.Label40.Location = New System.Drawing.Point(9, 148)
+        Me.Label40.Name = "Label40"
+        Me.Label40.Size = New System.Drawing.Size(97, 13)
+        Me.Label40.TabIndex = 25
+        Me.Label40.Text = "Cod Orgao Emissor"
+        '
+        'Label41
+        '
+        Me.Label41.AutoSize = True
+        Me.Label41.Location = New System.Drawing.Point(99, 32)
+        Me.Label41.Name = "Label41"
+        Me.Label41.Size = New System.Drawing.Size(94, 13)
+        Me.Label41.TabIndex = 43
+        Me.Label41.Text = "Procedimento Sec"
+        '
+        'Label42
+        '
+        Me.Label42.AutoSize = True
+        Me.Label42.Location = New System.Drawing.Point(190, 32)
+        Me.Label42.Name = "Label42"
+        Me.Label42.Size = New System.Drawing.Size(29, 13)
+        Me.Label42.TabIndex = 44
+        Me.Label42.Text = "CBO"
+        '
+        'Label43
+        '
+        Me.Label43.AutoSize = True
+        Me.Label43.Location = New System.Drawing.Point(250, 32)
+        Me.Label43.Name = "Label43"
+        Me.Label43.Size = New System.Drawing.Size(24, 13)
+        Me.Label43.TabIndex = 45
+        Me.Label43.Text = "Qtd"
+        '
+        'Label44
+        '
+        Me.Label44.AutoSize = True
+        Me.Label44.Location = New System.Drawing.Point(283, 32)
+        Me.Label44.Name = "Label44"
+        Me.Label44.Size = New System.Drawing.Size(123, 13)
+        Me.Label44.TabIndex = 47
+        Me.Label44.Text = "CNS Médico executante"
+        '
+        'txtCNSMedicoExecutante
+        '
+        Me.txtCNSMedicoExecutante.Location = New System.Drawing.Point(286, 48)
+        Me.txtCNSMedicoExecutante.Name = "txtCNSMedicoExecutante"
+        Me.txtCNSMedicoExecutante.Size = New System.Drawing.Size(114, 20)
+        Me.txtCNSMedicoExecutante.TabIndex = 46
+        Me.txtCNSMedicoExecutante.Text = "700008504199406"
+        '
+        'Label45
+        '
+        Me.Label45.AutoSize = True
+        Me.Label45.Location = New System.Drawing.Point(403, 32)
+        Me.Label45.Name = "Label45"
+        Me.Label45.Size = New System.Drawing.Size(83, 13)
+        Me.Label45.TabIndex = 48
+        Me.Label45.Text = "CNES Terceiros"
+        '
+        'Label46
+        '
+        Me.Label46.AutoSize = True
+        Me.Label46.Location = New System.Drawing.Point(201, 30)
+        Me.Label46.Name = "Label46"
+        Me.Label46.Size = New System.Drawing.Size(68, 13)
+        Me.Label46.TabIndex = 26
+        Me.Label46.Text = "CID Principal"
+        '
+        'Label47
+        '
+        Me.Label47.AutoSize = True
+        Me.Label47.Location = New System.Drawing.Point(298, 30)
+        Me.Label47.Name = "Label47"
+        Me.Label47.Size = New System.Drawing.Size(82, 13)
+        Me.Label47.TabIndex = 27
+        Me.Label47.Text = "CID Secundario"
         '
         'FormAMEOCI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(983, 590)
+        Me.ClientSize = New System.Drawing.Size(1055, 590)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.GroupBox6)
         Me.Controls.Add(Me.GroupBox5)
@@ -1132,7 +1289,7 @@ Partial Class FormAMEOCI
     Friend WithEvents txtCompetencia As TextBox
     Friend WithEvents txtNumApac As TextBox
     Friend WithEvents txtApacAnterior As TextBox
-    Friend WithEvents txtCnesUnidade As TextBox
+    Friend WithEvents txtCnesSolicitante As TextBox
     Friend WithEvents txtCnesExecutante As TextBox
     Friend WithEvents dtValidadeIni As DateTimePicker
     Friend WithEvents dtValidadeFim As DateTimePicker
@@ -1165,7 +1322,7 @@ Partial Class FormAMEOCI
     Friend WithEvents txtNomeDiretor As TextBox
     Friend WithEvents txtCnsAutorizador As TextBox
     Friend WithEvents txtNomeMedicoSolicitante As TextBox
-    Friend WithEvents txtNomeMedico As TextBox
+    Friend WithEvents txtCNSMedicoSolicitante As TextBox
     Friend WithEvents txtCodProcedimento As TextBox
     Friend WithEvents txtProntuario As TextBox
     Friend WithEvents txtCidSecundario As TextBox
@@ -1176,21 +1333,16 @@ Partial Class FormAMEOCI
     Friend WithEvents btnRemoverProcedimento As Button
     Friend WithEvents btnAdicionarProcedimento As Button
     Friend WithEvents CnesTerceiro As TextBox
-    Friend WithEvents CnsExecutante As TextBox
-    Friend WithEvents CidSecundario As TextBox
-    Friend WithEvents CidPrincipal As TextBox
     Friend WithEvents Quantidade As TextBox
     Friend WithEvents CBOmed As TextBox
-    Friend WithEvents Descricao As TextBox
     Friend WithEvents btnGerarArquivo As Button
-    Friend WithEvents dtSolicitacao As DateTimePicker
+    Friend WithEvents dtEmissao As DateTimePicker
     Friend WithEvents txtNomeAutorizador As TextBox
-    Friend WithEvents txtCodEmissor As TextBox
+    Friend WithEvents txtGestor As TextBox
     Friend WithEvents txtCnsDiretor As TextBox
     Friend WithEvents txtOrgaoOrigem As TextBox
     Friend WithEvents txtSiglaOrgao As TextBox
     Friend WithEvents txtCGC As TextBox
-    Friend WithEvents txtUf As TextBox
     Friend WithEvents Label1 As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents Label3 As Label
@@ -1225,8 +1377,26 @@ Partial Class FormAMEOCI
     Friend WithEvents txtOrgaoDestino As TextBox
     Friend WithEvents Label29 As Label
     Friend WithEvents txtDestinoTipo As ComboBox
-    Friend WithEvents Label30 As Label
-    Friend WithEvents txtUfIbge As TextBox
     Friend WithEvents Button1 As Button
     Friend WithEvents cbTipoLogradouro As ComboBox
+    Friend WithEvents txtUf As ComboBox
+    Friend WithEvents Label34 As Label
+    Friend WithEvents Label33 As Label
+    Friend WithEvents Label32 As Label
+    Friend WithEvents Label31 As Label
+    Friend WithEvents Label30 As Label
+    Friend WithEvents Label36 As Label
+    Friend WithEvents Label35 As Label
+    Friend WithEvents Label39 As Label
+    Friend WithEvents Label38 As Label
+    Friend WithEvents Label37 As Label
+    Friend WithEvents Label40 As Label
+    Friend WithEvents Label41 As Label
+    Friend WithEvents Label43 As Label
+    Friend WithEvents Label42 As Label
+    Friend WithEvents Label44 As Label
+    Friend WithEvents txtCNSMedicoExecutante As TextBox
+    Friend WithEvents Label45 As Label
+    Friend WithEvents Label47 As Label
+    Friend WithEvents Label46 As Label
 End Class
