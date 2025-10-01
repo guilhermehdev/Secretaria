@@ -127,7 +127,7 @@ Public Class FormAMEOCI
             ' Salvar arquivo
             Using sfd As New SaveFileDialog
                 sfd.Filter = "Arquivos APAC|*.SET"
-                sfd.FileName = "APAC_" & txtCompetencia.Text & ".SET"
+                sfd.FileName = "AP" & txtCompetencia.Text & ".SET"
                 If sfd.ShowDialog() = DialogResult.OK Then
                     File.WriteAllLines(sfd.FileName, linhas, Encoding.GetEncoding("iso-8859-1"))
                     MessageBox.Show("Arquivo gerado com sucesso!", "APAC", MessageBoxButtons.OK, MessageBoxIcon.Information)
