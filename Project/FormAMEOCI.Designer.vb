@@ -22,9 +22,9 @@ Partial Class FormAMEOCI
     'Não o modifique usando o editor de códigos.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.txtCompetencia = New System.Windows.Forms.TextBox()
         Me.txtNumApac = New System.Windows.Forms.TextBox()
         Me.txtApacAnterior = New System.Windows.Forms.TextBox()
@@ -34,6 +34,8 @@ Partial Class FormAMEOCI
         Me.dtValidadeFim = New System.Windows.Forms.DateTimePicker()
         Me.txtTipoApac = New System.Windows.Forms.ComboBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label30 = New System.Windows.Forms.Label()
+        Me.txtUfIbge = New System.Windows.Forms.TextBox()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
@@ -108,6 +110,10 @@ Partial Class FormAMEOCI
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.Label29 = New System.Windows.Forms.Label()
+        Me.txtDestinoTipo = New System.Windows.Forms.ComboBox()
+        Me.Label28 = New System.Windows.Forms.Label()
+        Me.txtOrgaoDestino = New System.Windows.Forms.TextBox()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.txtCPFDiretor = New System.Windows.Forms.TextBox()
         Me.Label14 = New System.Windows.Forms.Label()
@@ -117,13 +123,8 @@ Partial Class FormAMEOCI
         Me.Label10 = New System.Windows.Forms.Label()
         Me.Label19 = New System.Windows.Forms.Label()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
-        Me.Label28 = New System.Windows.Forms.Label()
-        Me.txtOrgaoDestino = New System.Windows.Forms.TextBox()
-        Me.txtDestinoTipo = New System.Windows.Forms.ComboBox()
-        Me.Label29 = New System.Windows.Forms.Label()
-        Me.txtUfIbge = New System.Windows.Forms.TextBox()
-        Me.Label30 = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
+        Me.cbTipoLogradouro = New System.Windows.Forms.ComboBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -139,6 +140,7 @@ Partial Class FormAMEOCI
         Me.txtCompetencia.Name = "txtCompetencia"
         Me.txtCompetencia.Size = New System.Drawing.Size(64, 20)
         Me.txtCompetencia.TabIndex = 0
+        Me.txtCompetencia.Text = "09/2025"
         '
         'txtNumApac
         '
@@ -147,6 +149,7 @@ Partial Class FormAMEOCI
         Me.txtNumApac.Name = "txtNumApac"
         Me.txtNumApac.Size = New System.Drawing.Size(100, 20)
         Me.txtNumApac.TabIndex = 1
+        Me.txtNumApac.Text = "1122244455661"
         '
         'txtApacAnterior
         '
@@ -174,7 +177,7 @@ Partial Class FormAMEOCI
         'dtValidadeIni
         '
         Me.dtValidadeIni.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtValidadeIni.Location = New System.Drawing.Point(13, 78)
+        Me.dtValidadeIni.Location = New System.Drawing.Point(14, 79)
         Me.dtValidadeIni.Name = "dtValidadeIni"
         Me.dtValidadeIni.Size = New System.Drawing.Size(99, 20)
         Me.dtValidadeIni.TabIndex = 5
@@ -182,7 +185,7 @@ Partial Class FormAMEOCI
         'dtValidadeFim
         '
         Me.dtValidadeFim.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtValidadeFim.Location = New System.Drawing.Point(120, 78)
+        Me.dtValidadeFim.Location = New System.Drawing.Point(121, 79)
         Me.dtValidadeFim.Name = "dtValidadeFim"
         Me.dtValidadeFim.Size = New System.Drawing.Size(99, 20)
         Me.dtValidadeFim.TabIndex = 6
@@ -219,6 +222,23 @@ Partial Class FormAMEOCI
         Me.GroupBox1.TabIndex = 8
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Cabeçalho"
+        '
+        'Label30
+        '
+        Me.Label30.AutoSize = True
+        Me.Label30.Location = New System.Drawing.Point(222, 62)
+        Me.Label30.Name = "Label30"
+        Me.Label30.Size = New System.Drawing.Size(21, 13)
+        Me.Label30.TabIndex = 21
+        Me.Label30.Text = "UF"
+        '
+        'txtUfIbge
+        '
+        Me.txtUfIbge.Location = New System.Drawing.Point(225, 78)
+        Me.txtUfIbge.Name = "txtUfIbge"
+        Me.txtUfIbge.Size = New System.Drawing.Size(82, 20)
+        Me.txtUfIbge.TabIndex = 20
+        Me.txtUfIbge.Text = "35"
         '
         'Label9
         '
@@ -285,11 +305,12 @@ Partial Class FormAMEOCI
         '
         'txtNomeDiretor
         '
+        Me.txtNomeDiretor.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
         Me.txtNomeDiretor.Location = New System.Drawing.Point(256, 87)
         Me.txtNomeDiretor.Name = "txtNomeDiretor"
         Me.txtNomeDiretor.Size = New System.Drawing.Size(235, 20)
         Me.txtNomeDiretor.TabIndex = 4
-        Me.txtNomeDiretor.Text = "Debora Cristiane de Almeida"
+        Me.txtNomeDiretor.Text = "DEBORA CRISTIANE DE ALMEIDA"
         '
         'GroupBox2
         '
@@ -439,7 +460,6 @@ Partial Class FormAMEOCI
         'txtRaca
         '
         Me.txtRaca.FormattingEnabled = True
-        Me.txtRaca.Items.AddRange(New Object() {"BRANCA", "PRETA", "PARDA", "AMARELA", "INDIGENA"})
         Me.txtRaca.Location = New System.Drawing.Point(304, 120)
         Me.txtRaca.Name = "txtRaca"
         Me.txtRaca.Size = New System.Drawing.Size(80, 21)
@@ -474,31 +494,37 @@ Partial Class FormAMEOCI
         'dtNascimento
         '
         Me.dtNascimento.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtNascimento.Location = New System.Drawing.Point(409, 42)
+        Me.dtNascimento.Location = New System.Drawing.Point(410, 43)
         Me.dtNascimento.Name = "dtNascimento"
         Me.dtNascimento.Size = New System.Drawing.Size(82, 20)
         Me.dtNascimento.TabIndex = 12
         '
         'txtNomeRespPaciente
         '
+        Me.txtNomeRespPaciente.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
         Me.txtNomeRespPaciente.Location = New System.Drawing.Point(13, 120)
         Me.txtNomeRespPaciente.Name = "txtNomeRespPaciente"
         Me.txtNomeRespPaciente.Size = New System.Drawing.Size(250, 20)
         Me.txtNomeRespPaciente.TabIndex = 4
+        Me.txtNomeRespPaciente.Text = "GUILHERME"
         '
         'txtNomeMae
         '
+        Me.txtNomeMae.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
         Me.txtNomeMae.Location = New System.Drawing.Point(268, 81)
         Me.txtNomeMae.Name = "txtNomeMae"
         Me.txtNomeMae.Size = New System.Drawing.Size(223, 20)
         Me.txtNomeMae.TabIndex = 3
+        Me.txtNomeMae.Text = "MARLENE MOLINA"
         '
         'txtNomePaciente
         '
+        Me.txtNomePaciente.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
         Me.txtNomePaciente.Location = New System.Drawing.Point(14, 81)
         Me.txtNomePaciente.Name = "txtNomePaciente"
         Me.txtNomePaciente.Size = New System.Drawing.Size(249, 20)
         Me.txtNomePaciente.TabIndex = 2
+        Me.txtNomePaciente.Text = "GUILHERME H SANTOS"
         '
         'txtCnsPaciente
         '
@@ -506,6 +532,7 @@ Partial Class FormAMEOCI
         Me.txtCnsPaciente.Name = "txtCnsPaciente"
         Me.txtCnsPaciente.Size = New System.Drawing.Size(142, 20)
         Me.txtCnsPaciente.TabIndex = 1
+        Me.txtCnsPaciente.Text = "000111122223333"
         '
         'txtCpfPaciente
         '
@@ -513,6 +540,7 @@ Partial Class FormAMEOCI
         Me.txtCpfPaciente.Name = "txtCpfPaciente"
         Me.txtCpfPaciente.Size = New System.Drawing.Size(143, 20)
         Me.txtCpfPaciente.TabIndex = 0
+        Me.txtCpfPaciente.Text = "33183026864"
         '
         'txtMunicipioNome
         '
@@ -532,21 +560,23 @@ Partial Class FormAMEOCI
         '
         'txtCep
         '
-        Me.txtCep.Location = New System.Drawing.Point(357, 74)
+        Me.txtCep.Location = New System.Drawing.Point(330, 65)
         Me.txtCep.Name = "txtCep"
         Me.txtCep.Size = New System.Drawing.Size(100, 20)
         Me.txtCep.TabIndex = 9
+        Me.txtCep.Text = "11771702"
         '
         'txtBairro
         '
-        Me.txtBairro.Location = New System.Drawing.Point(125, 63)
+        Me.txtBairro.Location = New System.Drawing.Point(118, 65)
         Me.txtBairro.Name = "txtBairro"
         Me.txtBairro.Size = New System.Drawing.Size(100, 20)
         Me.txtBairro.TabIndex = 8
+        Me.txtBairro.Text = "SOMAR"
         '
         'txtComplemento
         '
-        Me.txtComplemento.Location = New System.Drawing.Point(240, 74)
+        Me.txtComplemento.Location = New System.Drawing.Point(224, 65)
         Me.txtComplemento.Name = "txtComplemento"
         Me.txtComplemento.Size = New System.Drawing.Size(100, 20)
         Me.txtComplemento.TabIndex = 7
@@ -557,13 +587,15 @@ Partial Class FormAMEOCI
         Me.txtNumero.Name = "txtNumero"
         Me.txtNumero.Size = New System.Drawing.Size(100, 20)
         Me.txtNumero.TabIndex = 6
+        Me.txtNumero.Text = "2153"
         '
         'txtLogradouro
         '
-        Me.txtLogradouro.Location = New System.Drawing.Point(195, 37)
+        Me.txtLogradouro.Location = New System.Drawing.Point(304, 37)
         Me.txtLogradouro.Name = "txtLogradouro"
-        Me.txtLogradouro.Size = New System.Drawing.Size(296, 20)
+        Me.txtLogradouro.Size = New System.Drawing.Size(187, 20)
         Me.txtLogradouro.TabIndex = 5
+        Me.txtLogradouro.Text = "5"
         '
         'GroupBox3
         '
@@ -590,7 +622,7 @@ Partial Class FormAMEOCI
         'dtAltaObito
         '
         Me.dtAltaObito.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtAltaObito.Location = New System.Drawing.Point(148, 211)
+        Me.dtAltaObito.Location = New System.Drawing.Point(149, 212)
         Me.dtAltaObito.Name = "dtAltaObito"
         Me.dtAltaObito.Size = New System.Drawing.Size(99, 20)
         Me.dtAltaObito.TabIndex = 9
@@ -642,7 +674,7 @@ Partial Class FormAMEOCI
         'txtTipoAtend
         '
         Me.txtTipoAtend.FormattingEnabled = True
-        Me.txtTipoAtend.Location = New System.Drawing.Point(291, 31)
+        Me.txtTipoAtend.Location = New System.Drawing.Point(291, 32)
         Me.txtTipoAtend.Name = "txtTipoAtend"
         Me.txtTipoAtend.Size = New System.Drawing.Size(149, 21)
         Me.txtTipoAtend.TabIndex = 7
@@ -650,7 +682,7 @@ Partial Class FormAMEOCI
         'dtAutorizacao
         '
         Me.dtAutorizacao.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtAutorizacao.Location = New System.Drawing.Point(21, 162)
+        Me.dtAutorizacao.Location = New System.Drawing.Point(22, 163)
         Me.dtAutorizacao.Name = "dtAutorizacao"
         Me.dtAutorizacao.Size = New System.Drawing.Size(99, 20)
         Me.dtAutorizacao.TabIndex = 6
@@ -789,37 +821,37 @@ Partial Class FormAMEOCI
         Me.dgvProcedimentos.BackgroundColor = System.Drawing.Color.White
         Me.dgvProcedimentos.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvProcedimentos.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
-        DataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle16.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvProcedimentos.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle16
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvProcedimentos.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvProcedimentos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle17.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle17.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle17.SelectionBackColor = System.Drawing.Color.SteelBlue
-        DataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvProcedimentos.DefaultCellStyle = DataGridViewCellStyle17
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.SteelBlue
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvProcedimentos.DefaultCellStyle = DataGridViewCellStyle2
         Me.dgvProcedimentos.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
         Me.dgvProcedimentos.Location = New System.Drawing.Point(21, 99)
         Me.dgvProcedimentos.MultiSelect = False
         Me.dgvProcedimentos.Name = "dgvProcedimentos"
         Me.dgvProcedimentos.ReadOnly = True
         Me.dgvProcedimentos.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
-        DataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle18.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
-        DataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.ControlDark
-        DataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvProcedimentos.RowHeadersDefaultCellStyle = DataGridViewCellStyle18
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.ControlDark
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvProcedimentos.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvProcedimentos.RowHeadersWidth = 4
         Me.dgvProcedimentos.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgvProcedimentos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
@@ -846,6 +878,7 @@ Partial Class FormAMEOCI
         '
         'txtOrgaoOrigem
         '
+        Me.txtOrgaoOrigem.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
         Me.txtOrgaoOrigem.Location = New System.Drawing.Point(134, 48)
         Me.txtOrgaoOrigem.Name = "txtOrgaoOrigem"
         Me.txtOrgaoOrigem.Size = New System.Drawing.Size(302, 20)
@@ -874,7 +907,7 @@ Partial Class FormAMEOCI
         Me.txtUf.Name = "txtUf"
         Me.txtUf.Size = New System.Drawing.Size(45, 20)
         Me.txtUf.TabIndex = 20
-        Me.txtUf.Text = "SP"
+        Me.txtUf.Text = "35"
         '
         'Label1
         '
@@ -922,6 +955,41 @@ Partial Class FormAMEOCI
         Me.GroupBox5.TabIndex = 22
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Orgão responsável pela informação"
+        '
+        'Label29
+        '
+        Me.Label29.AutoSize = True
+        Me.Label29.Location = New System.Drawing.Point(443, 110)
+        Me.Label29.Name = "Label29"
+        Me.Label29.Size = New System.Drawing.Size(28, 13)
+        Me.Label29.TabIndex = 32
+        Me.Label29.Text = "Tipo"
+        '
+        'txtDestinoTipo
+        '
+        Me.txtDestinoTipo.FormattingEnabled = True
+        Me.txtDestinoTipo.Items.AddRange(New Object() {"M", "E"})
+        Me.txtDestinoTipo.Location = New System.Drawing.Point(446, 124)
+        Me.txtDestinoTipo.Name = "txtDestinoTipo"
+        Me.txtDestinoTipo.Size = New System.Drawing.Size(45, 21)
+        Me.txtDestinoTipo.TabIndex = 31
+        '
+        'Label28
+        '
+        Me.Label28.AutoSize = True
+        Me.Label28.Location = New System.Drawing.Point(132, 110)
+        Me.Label28.Name = "Label28"
+        Me.Label28.Size = New System.Drawing.Size(73, 13)
+        Me.Label28.TabIndex = 30
+        Me.Label28.Text = "Orgão destino"
+        '
+        'txtOrgaoDestino
+        '
+        Me.txtOrgaoDestino.Location = New System.Drawing.Point(134, 125)
+        Me.txtOrgaoDestino.Name = "txtOrgaoDestino"
+        Me.txtOrgaoDestino.Size = New System.Drawing.Size(306, 20)
+        Me.txtOrgaoDestino.TabIndex = 29
+        Me.txtOrgaoDestino.Text = "SECRETARIA DE SAUDE DE PERUIBE"
         '
         'Label15
         '
@@ -996,6 +1064,7 @@ Partial Class FormAMEOCI
         '
         'GroupBox6
         '
+        Me.GroupBox6.Controls.Add(Me.cbTipoLogradouro)
         Me.GroupBox6.Controls.Add(Me.txtMunIbge)
         Me.GroupBox6.Controls.Add(Me.Label19)
         Me.GroupBox6.Controls.Add(Me.txtLogradouro)
@@ -1011,57 +1080,6 @@ Partial Class FormAMEOCI
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Endereço"
         '
-        'Label28
-        '
-        Me.Label28.AutoSize = True
-        Me.Label28.Location = New System.Drawing.Point(132, 110)
-        Me.Label28.Name = "Label28"
-        Me.Label28.Size = New System.Drawing.Size(73, 13)
-        Me.Label28.TabIndex = 30
-        Me.Label28.Text = "Orgão destino"
-        '
-        'txtOrgaoDestino
-        '
-        Me.txtOrgaoDestino.Location = New System.Drawing.Point(134, 125)
-        Me.txtOrgaoDestino.Name = "txtOrgaoDestino"
-        Me.txtOrgaoDestino.Size = New System.Drawing.Size(306, 20)
-        Me.txtOrgaoDestino.TabIndex = 29
-        Me.txtOrgaoDestino.Text = "SECRETARIA DE SAUDE DE PERUIBE"
-        '
-        'txtDestinoTipo
-        '
-        Me.txtDestinoTipo.FormattingEnabled = True
-        Me.txtDestinoTipo.Items.AddRange(New Object() {"M", "E"})
-        Me.txtDestinoTipo.Location = New System.Drawing.Point(446, 124)
-        Me.txtDestinoTipo.Name = "txtDestinoTipo"
-        Me.txtDestinoTipo.Size = New System.Drawing.Size(45, 21)
-        Me.txtDestinoTipo.TabIndex = 31
-        '
-        'Label29
-        '
-        Me.Label29.AutoSize = True
-        Me.Label29.Location = New System.Drawing.Point(443, 110)
-        Me.Label29.Name = "Label29"
-        Me.Label29.Size = New System.Drawing.Size(28, 13)
-        Me.Label29.TabIndex = 32
-        Me.Label29.Text = "Tipo"
-        '
-        'txtUfIbge
-        '
-        Me.txtUfIbge.Location = New System.Drawing.Point(225, 78)
-        Me.txtUfIbge.Name = "txtUfIbge"
-        Me.txtUfIbge.Size = New System.Drawing.Size(82, 20)
-        Me.txtUfIbge.TabIndex = 20
-        '
-        'Label30
-        '
-        Me.Label30.AutoSize = True
-        Me.Label30.Location = New System.Drawing.Point(222, 62)
-        Me.Label30.Name = "Label30"
-        Me.Label30.Size = New System.Drawing.Size(21, 13)
-        Me.Label30.TabIndex = 21
-        Me.Label30.Text = "UF"
-        '
         'Button1
         '
         Me.Button1.Location = New System.Drawing.Point(630, 519)
@@ -1070,6 +1088,14 @@ Partial Class FormAMEOCI
         Me.Button1.TabIndex = 25
         Me.Button1.Text = "Gerar numeros APAC"
         Me.Button1.UseVisualStyleBackColor = True
+        '
+        'cbTipoLogradouro
+        '
+        Me.cbTipoLogradouro.FormattingEnabled = True
+        Me.cbTipoLogradouro.Location = New System.Drawing.Point(194, 37)
+        Me.cbTipoLogradouro.Name = "cbTipoLogradouro"
+        Me.cbTipoLogradouro.Size = New System.Drawing.Size(105, 21)
+        Me.cbTipoLogradouro.TabIndex = 24
         '
         'FormAMEOCI
         '
@@ -1202,4 +1228,5 @@ Partial Class FormAMEOCI
     Friend WithEvents Label30 As Label
     Friend WithEvents txtUfIbge As TextBox
     Friend WithEvents Button1 As Button
+    Friend WithEvents cbTipoLogradouro As ComboBox
 End Class

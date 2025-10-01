@@ -19,17 +19,24 @@ Public Class FormAMEOCI
             Next
 
             Dim campoControle As String = CalcularCampoControle(txtNumApac.Text, codigos, quantidades)
+            Dim competenciaFormatada As String = ""
+            If txtCompetencia.Text.Contains("/") Then
+                Dim partes() As String = txtCompetencia.Text.Split("/")
+                competenciaFormatada = partes(1) & partes(0).PadLeft(2, "0"c)
+            Else
+                competenciaFormatada = txtCompetencia.Text
+            End If
 
             ' ================= HEADER (Registro 01) =================
             Dim header As New StringBuilder()
             header.Append("01#")                                   ' Indicador Header (2)
             header.Append("APAC")               ' Texto fixo APAC (5)
-            header.Append(txtCompetencia.Text.PadLeft(6, "0"c))   ' Competência AAAAMM (6)
-            header.Append(GetNextLoteNumber().PadLeft(6, "0"c))       ' Quantidade APACs gravadas (6)
-            header.Append(campoControle.PadLeft(4, "0"c)) ' Campo controle (4)
+            header.Append(competenciaFormatada)   ' Competência AAAAMM (6)
+            header.Append(GetNextLoteNumber().PadLeft(6, "0"c))   ' Quantidade APACs gravadas (6)
+            header.Append(campoControle.PadLeft(4, "0"c))         ' Campo controle (4)
             header.Append(Fmt(txtOrgaoOrigem.Text, 30))           ' Nome órgão origem (30)
             header.Append(Fmt(txtSiglaOrgao.Text, 6))             ' Sigla órgão origem (6)
-            header.Append(txtCGC.Text.PadLeft(14, "0"c))          ' CGC/CNPJ (14)
+            header.Append(txtCGC.Text.Replace(".", "").Replace("/", "").Replace("-", "").PadLeft(14, "0"c))
             header.Append(Fmt(txtOrgaoDestino.Text, 40))          ' Nome órgão destino (40)
             header.Append(txtDestinoTipo.Text.PadRight(1, " "c))  ' Destino M/E (1)
             header.Append(dataGeracao)   ' Campo data geração com 8 caracteres AAAAMMDD
@@ -39,15 +46,16 @@ Public Class FormAMEOCI
             ' ================= CORPO PRINCIPAL (Registro 14) =================
             Dim corpo As New StringBuilder()
             corpo.Append("14")                                    ' Identificador corpo APAC (2)
-            corpo.Append(txtCompetencia.Text.PadLeft(6, "0"c))    ' Competência AAAAMM (6)
+            corpo.Append(competenciaFormatada)    ' Competência AAAAMM (6)
             corpo.Append(txtNumApac.Text.PadLeft(13, "0"c))       ' Nº da APAC (13)
-            corpo.Append(txtUf.Text.PadLeft(2, "0"c))         ' Código UF IBGE (2)
-            corpo.Append(txtCnesUnidade.Text.PadLeft(7, "0"c))    ' CNES Unidade Prestadora (7)
+            corpo.Append(txtUf.Text.PadLeft(2, "0"c))
+            corpo.Append(txtCnesUnidade.Text.PadLeft(7, "0"c))  ' CNES Solicitante (7)' Código UF IBGE (2)
+            corpo.Append(txtCnesExecutante.Text.PadLeft(7, "0"c))    ' CNES Unidade Prestadora (7)
             corpo.Append(dataProcessamento) ' Data processamento (8)
             corpo.Append(dtValidadeIni.Value.ToString("yyyyMMdd"))   ' Data inicial validade (8)
             corpo.Append(dtValidadeFim.Value.ToString("yyyyMMdd"))   ' Data final validade (8)
-            corpo.Append(txtTipoAtend.Text.PadLeft(2, "0"c))      ' Tipo de atendimento (2)
-            corpo.Append(txtTipoApac.Text.PadLeft(1, "0"c))       ' Tipo de APAC (1)
+            corpo.Append(txtTipoAtend.SelectedValue.PadLeft(2, "0"c))      ' Tipo de atendimento (2)
+            corpo.Append(txtTipoApac.SelectedValue.PadLeft(1, "0"c))       ' Tipo de APAC (1)
             corpo.Append(Fmt(txtNomePaciente.Text, 30))           ' Nome paciente (30)
             corpo.Append(Fmt(txtNomeMae.Text, 30))                ' Nome mãe paciente (30)
             corpo.Append(Fmt(txtLogradouro.Text, 30))             ' Logradouro (30)
@@ -58,7 +66,7 @@ Public Class FormAMEOCI
             corpo.Append(txtSexo.Text.PadRight(1, " "c))          ' Sexo M/F (1)
             corpo.Append(Fmt(txtNomeMedico.Text, 30))             ' Nome médico responsável (30)
             corpo.Append(txtCodProcedimento.Text.PadLeft(10, "0"c)) ' Procedimento principal (10)
-            corpo.Append(txtMotivoSaida.Text.PadLeft(2, "0"c))    ' Motivo saída (2)
+            corpo.Append(txtMotivoSaida.SelectedValue.PadLeft(2, "0"c))    ' Motivo saída (2)
             corpo.Append(Fmt(txtNomeAutorizador.Text, 30))        ' Nome autorizador (30)
             corpo.Append(txtCnsPaciente.Text.PadLeft(15, "0"c))   ' CNS paciente (15)
             corpo.Append(txtNomeAutorizador.Text.PadLeft(15, "0"c))     ' CNS médico responsável (15)
@@ -67,7 +75,7 @@ Public Class FormAMEOCI
             corpo.Append(dtAutorizacao.Value.ToString("yyyyMMdd")) ' Data autorização (8)
             corpo.Append(txtCodEmissor.Text.PadLeft(10, "0"c))    ' Código emissor (10)
             corpo.Append("01")  ' Caráter atendimento (2)
-            corpo.Append(txtRaca.Text.PadLeft(2, "0"c))           ' Raça/cor (2)
+            corpo.Append(txtRaca.SelectedValue.PadLeft(2, "0"c))           ' Raça/cor (2)
             corpo.Append(Fmt(txtNomeRespPaciente.Text, 30))       ' Nome responsável paciente (30)
             corpo.Append("10")  ' Código nacionalidade (3)
             linhas.Add(corpo.ToString())
@@ -224,6 +232,19 @@ Public Class FormAMEOCI
         dgvProcedimentos.AllowUserToDeleteRows = True
         dgvProcedimentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
 
+        txtDestinoTipo.SelectedIndex = 0
+
+        Dim tipoLogra As New Dictionary(Of String, String) From {
+            {"081", "RUA"},
+            {"08", "AVENIDA"}
+        }
+
+        cbTipoLogradouro.DataSource = New BindingSource(tipoLogra, Nothing)
+        cbTipoLogradouro.DisplayMember = "Value"   ' O que aparece para o usuário
+        cbTipoLogradouro.ValueMember = "Key"
+        cbTipoLogradouro.SelectedIndex = 0
+
+
         Dim racas As New Dictionary(Of String, String) From {
             {"01", "BRANCA"},
             {"02", "PRETA"},
@@ -249,7 +270,7 @@ Public Class FormAMEOCI
         txtTipoApac.ValueMember = "Key"
         txtTipoApac.SelectedIndex = 2
 
-        Dim carater As New Dictionary(Of String, String) From {
+        Dim tipoAtend As New Dictionary(Of String, String) From {
            {"01", "ELETIVO"},
            {"02", "URGENCIA"},
            {"03", "ACIDENTE NO LOCAL DE TRAB.OU A SERV.EMPR"},
@@ -258,7 +279,7 @@ Public Class FormAMEOCI
            {"06", "OUTROS TIPOS DE LESOES/ENV.POR AGENT.Q/F"}
        }
 
-        txtTipoAtend.DataSource = New BindingSource(carater, Nothing)
+        txtTipoAtend.DataSource = New BindingSource(tipoAtend, Nothing)
         txtTipoAtend.DisplayMember = "Value"   ' O que aparece para o usuário
         txtTipoAtend.ValueMember = "Key"
         txtTipoAtend.SelectedIndex = 0
