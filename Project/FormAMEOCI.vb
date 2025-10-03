@@ -19,7 +19,7 @@ Public Class FormAMEOCI
                 End If
             Next
 
-            Dim campoControle As String = CalcularCampoControle(txtNumApac.Text, codigos, quantidades)
+            ' Dim campoControle As String = CalcularCampoControle(txtNumApac.Text, codigos, quantidades)
             Dim competenciaFormatada As String = ""
             If txtCompetencia.Text.Contains("/") Then
                 Dim partes() As String = txtCompetencia.Text.Split("/")
@@ -30,79 +30,238 @@ Public Class FormAMEOCI
 
             ' ================= HEADER (Registro 01) =================
             Dim header As New StringBuilder()
-            header.Append("01#")                                   ' Indicador Header (2)
-            header.Append("APAC")               ' Texto fixo APAC (5)
-            header.Append(competenciaFormatada)   ' Competência AAAAMM (6)
-            header.Append(GetNextLoteNumber().PadLeft(6, "0"c))   ' Quantidade APACs gravadas (6)
-            header.Append(campoControle.PadLeft(4, "0"c))         ' Campo controle (4)
-            header.Append(Fmt(txtOrgaoOrigem.Text, 30))           ' Nome órgão origem (30)
-            header.Append(Fmt(txtSiglaOrgao.Text, 6))             ' Sigla órgão origem (6)
-            header.Append(txtCGC.Text.Replace(".", "").Replace("/", "").Replace("-", "").PadLeft(14, "0"c))
-            header.Append(Fmt(txtOrgaoDestino.Text, 40))          ' Nome órgão destino (40)
-            header.Append(txtDestinoTipo.Text.PadRight(1, " "c))  ' Destino M/E (1)
-            header.Append(dataGeracao)   ' Campo data geração com 8 caracteres AAAAMMDD
-            header.Append("Versao 03.16".PadRight(15, " "c))      ' Campo versão com 15 caracteres, 
+            header.Append("01#APAC")                                     ' Identificação
+            header.Append(competenciaFormatada)                          ' Competência (AAAAMM)
+
+            Dim qtdApacs As Integer = 1 ' se for 1 APAC, ajuste se for mais
+            header.Append(qtdApacs.ToString().PadLeft(6, "0"c))          ' Quantidade de APACs (6)
+
+            Dim campoControle As String = CalcularCampoControle(txtNumApac.Text, codigos, quantidades)
+            header.Append(campoControle.PadLeft(4, "0"c))                 ' Campo controle (4)
+
+            header.Append(Fmt(txtOrgaoOrigem.Text, 30))                  ' Nome órgão origem (30)
+            header.Append(Fmt(txtSiglaOrgao.Text, 6))                    ' Sigla (6)
+            header.Append(txtCGC.Text.Replace(".", "").Replace("/", "").Replace("-", "").PadLeft(14, "0"c)) ' CNPJ
+            header.Append(Fmt(txtOrgaoDestino.Text, 40))                 ' Nome órgão destino (40)
+            header.Append(txtDestinoTipo.Text.PadRight(1, " "c))         ' Tipo órgão destino M/E
+
+            ' Aqui precisa usar a DATA DA COMPETÊNCIA, não a data de hoje
+            Dim dataCompetencia As String = competenciaFormatada & "20"  ' AAAAMM + "20" (ajuste pro dia correto do mês)
+            header.Append(dataCompetencia)
+
+            header.Append("Versao 03.16".PadRight(15, " "c))             ' Versão
             linhas.Add(header.ToString())
 
-            ' ================= CORPO PRINCIPAL (Registro 14) =================
-            Dim r14 As New StringBuilder()
-            r14.Append("14")                                    ' Identificador corpo APAC (2)
-            r14.Append(competenciaFormatada)    ' Competência AAAAMM (6)
-            r14.Append(txtNumApac.Text.PadLeft(13, "0"c))       ' Nº da APAC (13)
-            r14.Append(txtUf.SelectedValue.PadLeft(2, "0"c))
-            r14.Append(txtCnesSolicitante.Text.PadLeft(7, "0"c))  ' CNES Solicitante (7)' Código UF IBGE (2)
-            ' corpo.Append(txtCnesExecutante.Text.PadLeft(7, "0"c))    ' CNES Unidade Prestadora (7)
-            r14.Append(dtAutorizacao.Value.ToString("yyyyMMdd")) ' Data processamento (8)
-            r14.Append(dtEmissao.Value.ToString("yyyyMMdd"))
-            ' r14.Append(dtValidadeIni.Value.ToString("yyyyMMdd"))   ' Data inicial validade (8)
-            r14.Append(dtValidadeFim.Value.ToString("yyyyMMdd"))   ' Data final validade (8)
-            ' corpo.Append(txtTipoAtend.SelectedValue.PadLeft(2, "0"c))      ' Tipo de atendimento (2)
-            r14.Append(txtTipoApac.SelectedValue.PadLeft(1, "0"c))       ' Tipo de APAC (1)
-            r14.Append("1") ' sequência
-            r14.Append(Fmt(txtNomePaciente.Text, 30))           ' Nome paciente (30)
-            r14.Append(Fmt(txtNomeMae.Text, 30))                ' Nome mãe paciente (30)
-            r14.Append(Fmt(txtLogradouro.Text, 30))             ' Logradouro (30)
-            r14.Append(txtNumero.Text.PadLeft(5, "0"c))
-            r14.Append(Fmt(txtComplemento.Text, 10))
-            r14.Append(txtCep.Text.PadLeft(8, "0"c))            ' CEP (8)
-            r14.Append(txtMunIbge.Text.PadLeft(7, "0"c))        ' Município IBGE (7)
-            r14.Append(dtNascimento.Value.ToString("yyyyMMdd"))  ' Data Nascimento (8)
-            r14.Append(txtSexo.Text.PadRight(1, " "c))
-            r14.Append(Fmt(txtNomeMedicoSolicitante.Text, 30))             ' Nome médico responsável (30)
-            r14.Append(txtCodProcedimento.Text.PadLeft(10, "0"c)) ' Procedimento principal (10)
-            r14.Append(txtMotivoSaida.SelectedValue.PadLeft(2, "0"c))  ' Motivo saída (2)
 
-            ' Alta/óbito/transf
+            ' ================= CORPO PRINCIPAL (Registro 14) =================
+            'Dim r14 As New StringBuilder()
+            'r14.Append("14")                                    ' Identificador corpo APAC (2)
+            'r14.Append(competenciaFormatada)    ' Competência AAAAMM (6)
+            'r14.Append(txtNumApac.Text.PadLeft(13, "0"c))       ' Nº da APAC (13)
+            'r14.Append(txtUf.SelectedValue.PadLeft(2, "0"c))
+            'r14.Append(txtCnesSolicitante.Text.PadLeft(7, "0"c))  ' CNES Solicitante (7)' Código UF IBGE (2)
+            '' corpo.Append(txtCnesExecutante.Text.PadLeft(7, "0"c))    ' CNES Unidade Prestadora (7)
+            'r14.Append(dtAutorizacao.Value.ToString("yyyyMMdd")) ' Data processamento (8)
+            'r14.Append(dtEmissao.Value.ToString("yyyyMMdd"))
+            '' r14.Append(dtValidadeIni.Value.ToString("yyyyMMdd"))   ' Data inicial validade (8)
+            'r14.Append(dtValidadeFim.Value.ToString("yyyyMMdd"))   ' Data final validade (8)
+            '' corpo.Append(txtTipoAtend.SelectedValue.PadLeft(2, "0"c))      ' Tipo de atendimento (2)
+            'r14.Append(txtTipoApac.SelectedValue.PadLeft(1, "0"c))       ' Tipo de APAC (1)
+            'r14.Append("1") ' sequência
+            'r14.Append(Fmt(txtNomePaciente.Text, 30))           ' Nome paciente (30)
+            'r14.Append(Fmt(txtNomeMae.Text, 30))                ' Nome mãe paciente (30)
+            'r14.Append(Fmt(txtLogradouro.Text, 30))             ' Logradouro (30)
+            'r14.Append(txtNumero.Text.PadLeft(5, "0"c))
+            'r14.Append(Fmt(txtComplemento.Text, 10))
+            'r14.Append(txtCep.Text.PadLeft(8, "0"c))            ' CEP (8)
+            'r14.Append(txtMunIbge.Text.PadLeft(7, "0"c))        ' Município IBGE (7)
+            'r14.Append(dtNascimento.Value.ToString("yyyyMMdd"))  ' Data Nascimento (8)
+            'r14.Append(txtSexo.Text.PadRight(1, " "c))
+            'r14.Append(Fmt(txtNomeMedicoSolicitante.Text, 30))             ' Nome médico responsável (30)
+            'r14.Append(txtCodProcedimento.Text.PadLeft(10, "0"c)) ' Procedimento principal (10)
+            'r14.Append(txtMotivoSaida.SelectedValue.PadLeft(2, "0"c))  ' Motivo saída (2)
+
+            '' Alta/óbito/transf
+            'If txtMotivoSaida.SelectedValue.ToString() <> "00" Then
+            '    r14.Append(dtAltaObito.Value.ToString("yyyyMMdd"))
+            'Else
+            '    r14.Append("        ")
+            'End If
+
+            'r14.Append(Fmt(txtNomeDiretor.Text, 30))
+            'r14.Append(txtCnsPaciente.Text.PadLeft(15, "0"c))   ' CNS paciente (15)
+            'r14.Append(txtCNSMedicoSolicitante.Text.PadLeft(15, "0"c))
+            'r14.Append(txtCnsDiretor.Text.PadLeft(15, "0"c))
+            'r14.Append(txtCPFDiretor.Text.Replace(".", "").Replace("-", "").PadLeft(11, "0"c))
+            'r14.Append(txtCidPrincipal.Text.PadRight(4, " "c))
+            'r14.Append(txtTelefone.Text.PadLeft(10, "0"c))
+            'r14.Append(txtCnesExecutante.Text.PadLeft(7, "0"c))
+            'r14.Append(dtValidadeIni.Value.ToString("yyyyMMdd"))
+            'r14.Append(dtValidadeFim.Value.ToString("yyyyMMdd"))
+            'r14.Append(Fmt(txtGestor.Text, 10))
+            'r14.Append(txtTipoAtend.SelectedValue.ToString().PadLeft(2, "0"c))
+            'r14.Append(txtRaca.SelectedValue.ToString().PadLeft(2, "0"c))
+            'r14.Append(Fmt(txtNomeRespPaciente.Text, 30))
+            'r14.Append("10")  ' Código nacionalidade (3)
+            'r14.Append("0000000000")
+            'r14.Append(Fmt(txtBairro.Text, 30))
+            'r14.Append(txtUf.SelectedValue.PadRight(2, " "c))
+            'r14.Append("00000000000")  ' Telefone Responsável
+            'r14.Append(Fmt(txtEmail.Text, 50))
+            'r14.Append("000000000000000") ' CNS Responsável
+            'r14.Append("00000000000")  ' CPF Responsável
+            'r14.Append("000000000000000") ' CNS Acompanhante
+            'r14.Append(If(chkSituacaoRua.Checked, "S", "N"))
+            'linhas.Add(r14.ToString())
+
+            Dim r14 As New StringBuilder()
+
+            ' 01. Tipo registro
+            r14.Append("14")                                  ' 2
+
+            ' 02. Competência
+            r14.Append(competenciaFormatada)                  ' 6 (AAAAMM)
+
+            ' 03. Nº da APAC
+            r14.Append(txtNumApac.Text.PadLeft(13, "0"c))     ' 13
+
+            ' 05. UF
+            r14.Append(txtUf.SelectedValue.PadRight(2, " "c))
+
+            ' 06. CNES Solicitante
+            r14.Append(txtCnesExecutante.Text.PadLeft(7, "0"c)) ' 7
+
+            ' 08. Data autorização
+            r14.Append(Date.Now.ToString("yyyyMMdd")) ' 8
+
+            ' 09. Data emissão
+            r14.Append(dtValidadeIni.Value.ToString("yyyyMMdd"))     ' 8
+
+            ' 10. Data validade
+            r14.Append(dtValidadeFim.Value.ToString("yyyyMMdd")) ' 8
+
+            r14.Append("00")      ' Tipo de atendimento (2)
+
+            ' 11. Tipo APAC
+            r14.Append(txtTipoApac.SelectedValue.ToString())
+
+            ' 13. Nome paciente
+            r14.Append(Fmt(txtNomePaciente.Text, 30))           ' 30
+
+            ' 14. Nome mãe
+            r14.Append(Fmt(txtNomeMae.Text, 30))                ' 30
+
+            ' 15. Logradouro
+            r14.Append(Fmt(txtLogradouro.Text, 30))             ' 30
+
+            ' 16. Número residência
+            r14.Append(txtNumero.Text.PadRight(5, " "c))          ' 5
+
+            ' 17. Complemento
+            If txtComplemento.Text.Length > 0 Then
+                r14.Append(txtComplemento.Text.PadRight(10, " "c))
+            Else
+                r14.Append("          ")
+            End If
+
+            ' 18. CEP
+            r14.Append(txtCep.Text.PadRight(8, " "c))            ' 8
+
+            ' 19. Município IBGE
+            r14.Append(txtMunIbge.Text.PadLeft(7, "0"c))        ' 7
+
+            ' 20. Data nascimento
+            r14.Append(dtNascimento.Value.ToString("yyyyMMdd")) ' 8
+
+            ' 21. Sexo
+            r14.Append(txtSexo.Text.PadRight(1, " "c))          ' 1
+
+            ' 22. Nome médico solicitante
+            r14.Append(Fmt(txtNomeMedicoSolicitante.Text, 30))             ' 30
+
+            ' 23. Procedimento principal
+            r14.Append(txtCodProcedimento.Text.PadLeft(10, "0"c)) ' 10
+
+            ' 24. Motivo saída
+            r14.Append(txtMotivoSaida.SelectedValue.ToString().PadLeft(2, "0"c)) ' 2
+
+            ' 25. Data alta/óbito/transf
             If txtMotivoSaida.SelectedValue.ToString() <> "00" Then
                 r14.Append(dtAltaObito.Value.ToString("yyyyMMdd"))
             Else
                 r14.Append("        ")
+            End If                                              ' 8
+
+            ' 26. Nome MEDICO AUTORIZADOR
+            r14.Append(Fmt(txtNomeAutorizador.Text, 30))            ' 30
+
+            ' 27. CNS paciente
+            If txtCnsPaciente.Text.Length > 0 Then
+                r14.Append(txtCnsPaciente.Text.PadLeft(15, "0"c))   ' 15
+            Else
+                r14.Append("               ")
             End If
 
-            r14.Append(Fmt(txtNomeDiretor.Text, 30))
-            r14.Append(txtCnsPaciente.Text.PadLeft(15, "0"c))   ' CNS paciente (15)
-            r14.Append(txtCNSMedicoSolicitante.Text.PadLeft(15, "0"c))
-            r14.Append(txtCnsDiretor.Text.PadLeft(15, "0"c))
-            r14.Append(txtCPFDiretor.Text.Replace(".", "").Replace("-", "").PadLeft(11, "0"c))
-            r14.Append(txtCidPrincipal.Text.PadRight(4, " "c))
-            r14.Append(txtTelefone.Text.PadLeft(10, "0"c))
-            r14.Append(txtCnesExecutante.Text.PadLeft(7, "0"c))
-            r14.Append(dtValidadeIni.Value.ToString("yyyyMMdd"))
-            r14.Append(dtValidadeFim.Value.ToString("yyyyMMdd"))
+            ' 28. CNS médico solicitante
+            r14.Append(txtCNSMedicoSolicitante.Text.PadLeft(15, "0"c)) ' 15
+
+            ' 29. CNS diretor
+            r14.Append(txtCnsAutorizador.Text.PadLeft(15, "0"c))    ' 15
+
+            r14.Append("    ")
+
+            If txtProntuario.Text <> "" Then
+                r14.Append(txtProntuario.Text.PadRight(10, " "c))
+            Else
+                r14.Append(Fmt("", 10))
+            End If
+
+            r14.Append(txtCnesSolicitante.Text.PadLeft(7, "0"c))
+
+            r14.Append(dtEmissao.Value.ToString("yyyyMMdd"))
+
+            r14.Append(dtAutorizacao.Value.ToString("yyyyMMdd"))
+
             r14.Append(Fmt(txtGestor.Text, 10))
-            r14.Append(txtTipoAtend.SelectedValue.ToString().PadLeft(2, "0"c))
+
+            r14.Append(txtTipoAtend.SelectedValue.PadLeft(2, "0"c))      ' Tipo de atendimento (2)
+
+            If String.IsNullOrWhiteSpace(txtApacAnterior.Text) Then
+                r14.Append("0000000000000")
+            Else
+                r14.Append(txtApacAnterior.Text.PadLeft(13, "0"c))
+            End If
+
             r14.Append(txtRaca.SelectedValue.ToString().PadLeft(2, "0"c))
+
             r14.Append(Fmt(txtNomeRespPaciente.Text, 30))
-            r14.Append("10")  ' Código nacionalidade (3)
-            r14.Append("0000000000")
-            r14.Append(Fmt(txtBairro.Text, 30))
-            r14.Append(txtUf.SelectedValue.PadRight(2, " "c))
-            r14.Append("00000000000")  ' Telefone Responsável
-            r14.Append(Fmt(txtEmail.Text, 50))
-            r14.Append("000000000000000") ' CNS Responsável
-            r14.Append("00000000000")  ' CPF Responsável
-            r14.Append("000000000000000") ' CNS Acompanhante
+
+            r14.Append("010")
+
+            If txtRaca.SelectedValue.ToString() = "05" Then
+                r14.Append("    ")
+            Else
+                r14.Append("    ")
+            End If
+
+            r14.Append(cbTipoLogradouro.SelectedValue.PadLeft(3, "0"c))
+
+            r14.Append(txtBairro.Text.PadRight(30, " "c))
+
+            r14.Append(txtDDD.Text.PadLeft(2, " "c))
+
+            r14.Append(txtTelefone.Text.PadLeft(9, " "c))
+
+            r14.Append(txtEmail.Text.PadRight(40, " "c))
+
+            r14.Append(txtCNSMedicoExecutante.Text.PadLeft(15, "0"c))
+
+            r14.Append(txtCpfPaciente.Text.PadLeft(11, "0"c))
+
+            r14.Append(txtEquipe.Text.PadLeft(10, "0"c))
+
             r14.Append(If(chkSituacaoRua.Checked, "S", "N"))
+
             linhas.Add(r14.ToString())
 
             ' ========== REGISTRO 13 (Procedimentos) ==========
@@ -118,9 +277,6 @@ Public Class FormAMEOCI
                 r13.Append(row.Cells("Quantidade").Value.ToString().PadLeft(3, "0"c))
                 r13.Append(row.Cells("CIDPrincipal").Value.ToString().PadRight(4, " "c))
                 r13.Append(row.Cells("CIDSecundario").Value.ToString().PadRight(4, " "c))
-                r13.Append(New String(" "c, 15))
-                r13.Append(row.Cells("CNESExecutante").Value.ToString().PadLeft(7, "0"c))
-                r13.Append(New String(" "c, 10))
                 linhas.Add(r13.ToString())
             Next
 
@@ -169,27 +325,11 @@ Public Class FormAMEOCI
     End Function
 
 
-    Private Function GetNextLoteNumber() As String
-        Dim filePath As String = Path.Combine(Application.StartupPath, "lote.txt")
-        Dim lastNumber As Long = 0
-
-        ' Lê último número, se existir
-        If File.Exists(filePath) Then
-            Dim content = File.ReadAllText(filePath).Trim()
-            If IsNumeric(content) Then
-                lastNumber = CLng(content)
-            End If
-        End If
-
-        ' Incrementa
-        Dim nextNumber As Long = lastNumber + 1
-
-        ' Salva de volta
-        File.WriteAllText(filePath, nextNumber.ToString())
-
-        ' Retorna formatado (13 dígitos, zeros à esquerda)
-        Return nextNumber.ToString().PadLeft(13, "0"c)
+    Private Function GetNextLoteNumber(qtdApacs As Integer) As String
+        ' Retorna a quantidade de APACs do lote com 6 dígitos
+        Return qtdApacs.ToString().PadLeft(6, "0"c)
     End Function
+
 
 
     Private Function ComputeControlField(apacNumber As String, procCodes As List(Of String), procQuantities As List(Of Integer)) As String
@@ -223,11 +363,11 @@ Public Class FormAMEOCI
         Dim qtd As String = Quantidade.Text.Trim()
         Dim cidPri As String = txtCidPrincipal.Text.Trim()
         Dim cidSec As String = txtCidSecundario.Text.Trim()
-        Dim cnsExec As String = txtCNSMedicoExecutante.Text.Trim()
+
 
 
         ' Adiciona a linha com todas as colunas necessárias
-        dgvProcedimentos.Rows.Add(cod, cbo, qtd, cidPri, cidSec, cnsExec)
+        dgvProcedimentos.Rows.Add(cod, cbo, qtd, cidPri, cidSec)
     End Sub
     Private Function Fmt(valor As String, tamanho As Integer) As String
         If valor Is Nothing Then valor = ""
@@ -255,7 +395,6 @@ Public Class FormAMEOCI
         dgvProcedimentos.Columns.Add("Quantidade", "Qtd")
         dgvProcedimentos.Columns.Add("CIDPrincipal", "CID Principal")
         dgvProcedimentos.Columns.Add("CIDSecundario", "CID Secundário")
-        dgvProcedimentos.Columns.Add("CNESExecutante", "CNS Exec.")
 
         dgvProcedimentos.AllowUserToAddRows = True
         dgvProcedimentos.AllowUserToDeleteRows = True
@@ -290,10 +429,10 @@ Public Class FormAMEOCI
         txtRaca.ValueMember = "Key"
 
         Dim tipo As New Dictionary(Of String, String) From {
-            {"01", "INICIAL"},
-            {"02", "CONTINUIDADE"},
-            {"03", "UNICA"},
-            {"04", "ENCERRAMENTO"}
+            {"1", "INICIAL"},
+            {"2", "CONTINUIDADE"},
+            {"3", "UNICA"},
+            {"4", "ENCERRAMENTO"}
         }
 
         txtTipoApac.DataSource = New BindingSource(tipo, Nothing)
