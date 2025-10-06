@@ -258,7 +258,7 @@ Public Class FormAMEOCI
 
             r14.Append(txtCpfPaciente.Text.PadLeft(11, "0"c))
 
-            r14.Append(txtEquipe.Text.PadLeft(10, "0"c))
+            r14.Append(txtEquipe.Text.PadLeft(10, " "c))
 
             r14.Append(If(chkSituacaoRua.Checked, "S", "N"))
 
