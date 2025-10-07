@@ -180,7 +180,7 @@ Public Class FormAMEOCI
             r14.Append(Fmt(txtNomeMedicoSolicitante.Text, 30))             ' 30
 
             ' 23. Procedimento principal
-            r14.Append(txtCodProcedimento.Text.PadLeft(10, "0"c)) ' 10
+            r14.Append(txtProcedimentoPrincipal.Text.PadLeft(10, "0"c)) ' 10
 
             ' 24. Motivo saída
             r14.Append(txtMotivoSaida.SelectedValue.ToString().PadLeft(2, "0"c)) ' 2
@@ -264,19 +264,35 @@ Public Class FormAMEOCI
 
             linhas.Add(r14.ToString())
 
+            Dim r06 As New StringBuilder()
+            r06.Append("06")
+            r06.Append(competenciaFormatada)
+            r06.Append(txtNumApac.Text.PadLeft(13, "0"c))
+            r06.Append(txtCidPrincipal.Text.PadRight(5, " "c)) ' os últimos 5 caracteres do código (ex.: Z136)
+            linhas.Add(r06.ToString())
+
+            Dim r13 As New StringBuilder()
+            r13.Append("13")
+            r13.Append(competenciaFormatada)
+            r13.Append(txtNumApac.Text.PadLeft(13, "0"c))
+            r13.Append(txtProcedimentoPrincipal.Text.PadLeft(10, "0"c))
+            r13.Append(CBOmed.Text.PadLeft(6, "0"c))
+            r13.Append("0000001".PadLeft(7, "0"c))
+            r13.Append(vbCrLf)
+            linhas.Add(r13.ToString())
+
             ' ========== REGISTRO 13 (Procedimentos) ==========
             For Each row As DataGridViewRow In dgvProcedimentos.Rows
                 If row.IsNewRow Then Continue For
 
-                Dim r13 As New StringBuilder()
                 r13.Append("13")
                 r13.Append(competenciaFormatada)
                 r13.Append(txtNumApac.Text.PadLeft(13, "0"c))
                 r13.Append(row.Cells("Codigo").Value.ToString().PadLeft(10, "0"c))
                 r13.Append(row.Cells("CBO").Value.ToString().PadLeft(6, "0"c))
-                r13.Append(row.Cells("Quantidade").Value.ToString().PadLeft(3, "0"c))
-                r13.Append(row.Cells("CIDPrincipal").Value.ToString().PadRight(4, " "c))
-                r13.Append(row.Cells("CIDSecundario").Value.ToString().PadRight(4, " "c))
+                r13.Append(row.Cells("Quantidade").Value.ToString().PadLeft(7, "0"c))
+                'r13.Append(row.Cells("CIDPrincipal").Value.ToString().PadRight(4, " "c))
+                'r13.Append(row.Cells("CIDSecundario").Value.ToString().PadRight(4, " "c))
                 linhas.Add(r13.ToString())
             Next
 
@@ -292,6 +308,17 @@ Public Class FormAMEOCI
         Catch ex As Exception
             MessageBox.Show("Erro ao gerar arquivo: " & ex.Message)
         End Try
+    End Sub
+    Private Sub btnAdicionarProcedimento_Click(sender As Object, e As EventArgs) Handles btnAdicionarProcedimento.Click
+        Dim cod As String = CodProcedimento.Text.Trim()
+        If String.IsNullOrWhiteSpace(cod) Then Exit Sub
+
+        Dim cbo As String = CBOmed.Text.Trim()
+        Dim qtd As String = Quantidade.Text.Trim()
+        Dim cidPri As String = txtCidPrincipal.Text.Trim()
+        Dim cidSec As String = txtCidSecundario.Text.Trim()
+        ' Adiciona a linha com todas as colunas necessárias
+        dgvProcedimentos.Rows.Add(cod, cbo, qtd, cidPri, cidSec)
     End Sub
 
     Public Function CalcularCampoControle(apacNumber As String, codigosProcedimento As List(Of String), quantidadesProcedimento As List(Of Integer)) As String
@@ -354,21 +381,6 @@ Public Class FormAMEOCI
         Return campo.ToString().PadLeft(4, "0"c)
     End Function
 
-
-    Private Sub btnAdicionarProcedimento_Click(sender As Object, e As EventArgs) Handles btnAdicionarProcedimento.Click
-        Dim cod As String = CodProcedimento.Text.Trim()
-        If String.IsNullOrWhiteSpace(cod) Then Exit Sub
-
-        Dim cbo As String = CBOmed.Text.Trim()
-        Dim qtd As String = Quantidade.Text.Trim()
-        Dim cidPri As String = txtCidPrincipal.Text.Trim()
-        Dim cidSec As String = txtCidSecundario.Text.Trim()
-
-
-
-        ' Adiciona a linha com todas as colunas necessárias
-        dgvProcedimentos.Rows.Add(cod, cbo, qtd, cidPri, cidSec)
-    End Sub
     Private Function Fmt(valor As String, tamanho As Integer) As String
         If valor Is Nothing Then valor = ""
         valor = valor.Trim()
