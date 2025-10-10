@@ -268,7 +268,10 @@ Public Class FormAMEOCI
             r06.Append("06")
             r06.Append(competenciaFormatada)
             r06.Append(txtNumApac.Text.PadLeft(13, "0"c))
-            r06.Append(txtCidPrincipal.Text.PadRight(5, " "c)) ' os últimos 5 caracteres do código (ex.: Z136)
+            r06.Append(txtCidPrincipal.Text.PadRight(4, " "c))
+            If txtCidSecundario.Text.Length > 0 Then
+                r06.Append(txtCidSecundario.Text.PadRight(4, " "c))
+            End If
             linhas.Add(r06.ToString())
 
             Dim r13 As New StringBuilder()
@@ -293,6 +296,7 @@ Public Class FormAMEOCI
                 r13.Append(row.Cells("Quantidade").Value.ToString().PadLeft(7, "0"c))
                 'r13.Append(row.Cells("CIDPrincipal").Value.ToString().PadRight(4, " "c))
                 'r13.Append(row.Cells("CIDSecundario").Value.ToString().PadRight(4, " "c))
+                r13.Append(vbCrLf)
                 linhas.Add(r13.ToString())
             Next
 
