@@ -22,9 +22,9 @@ Partial Class FormAMEOCI
     'Não o modifique usando o editor de códigos.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.txtCompetencia = New System.Windows.Forms.TextBox()
         Me.txtNumApac = New System.Windows.Forms.TextBox()
         Me.txtApacAnterior = New System.Windows.Forms.TextBox()
@@ -86,14 +86,11 @@ Partial Class FormAMEOCI
         Me.txtCnsAutorizador = New System.Windows.Forms.TextBox()
         Me.txtNomeMedicoSolicitante = New System.Windows.Forms.TextBox()
         Me.txtCNSMedicoSolicitante = New System.Windows.Forms.TextBox()
-        Me.txtProcedimentoPrincipal = New System.Windows.Forms.TextBox()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.btnRemoverProcedimento = New System.Windows.Forms.Button()
         Me.btnAdicionarProcedimento = New System.Windows.Forms.Button()
         Me.CnesTerceiro = New System.Windows.Forms.TextBox()
         Me.Quantidade = New System.Windows.Forms.TextBox()
-        Me.CBOmed = New System.Windows.Forms.TextBox()
-        Me.CodProcedimento = New System.Windows.Forms.TextBox()
         Me.dgvProcedimentos = New System.Windows.Forms.DataGridView()
         Me.btnGerarArquivo = New System.Windows.Forms.Button()
         Me.txtCnsDiretor = New System.Windows.Forms.TextBox()
@@ -143,6 +140,9 @@ Partial Class FormAMEOCI
         Me.Label49 = New System.Windows.Forms.Label()
         Me.txtEquipe = New System.Windows.Forms.TextBox()
         Me.Label50 = New System.Windows.Forms.Label()
+        Me.CodProcedimento = New System.Windows.Forms.ComboBox()
+        Me.txtProcedimentoPrincipal = New System.Windows.Forms.ComboBox()
+        Me.CBOmed = New System.Windows.Forms.ComboBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -496,7 +496,7 @@ Partial Class FormAMEOCI
         'dtNascimento
         '
         Me.dtNascimento.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtNascimento.Location = New System.Drawing.Point(410, 43)
+        Me.dtNascimento.Location = New System.Drawing.Point(409, 42)
         Me.dtNascimento.Name = "dtNascimento"
         Me.dtNascimento.Size = New System.Drawing.Size(82, 20)
         Me.dtNascimento.TabIndex = 12
@@ -629,9 +629,9 @@ Partial Class FormAMEOCI
         Me.GroupBox3.Controls.Add(Me.txtCnsAutorizador)
         Me.GroupBox3.Controls.Add(Me.txtNomeMedicoSolicitante)
         Me.GroupBox3.Controls.Add(Me.txtCNSMedicoSolicitante)
-        Me.GroupBox3.Location = New System.Drawing.Point(510, 257)
+        Me.GroupBox3.Location = New System.Drawing.Point(509, 211)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(529, 285)
+        Me.GroupBox3.Size = New System.Drawing.Size(529, 192)
         Me.GroupBox3.TabIndex = 10
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "OCI"
@@ -731,16 +731,11 @@ Partial Class FormAMEOCI
         Me.txtCNSMedicoSolicitante.TabIndex = 1
         Me.txtCNSMedicoSolicitante.Text = "708104803893410"
         '
-        'txtProcedimentoPrincipal
-        '
-        Me.txtProcedimentoPrincipal.Location = New System.Drawing.Point(12, 48)
-        Me.txtProcedimentoPrincipal.Name = "txtProcedimentoPrincipal"
-        Me.txtProcedimentoPrincipal.Size = New System.Drawing.Size(84, 20)
-        Me.txtProcedimentoPrincipal.TabIndex = 0
-        Me.txtProcedimentoPrincipal.Text = "0902010026"
-        '
         'GroupBox4
         '
+        Me.GroupBox4.Controls.Add(Me.CBOmed)
+        Me.GroupBox4.Controls.Add(Me.txtProcedimentoPrincipal)
+        Me.GroupBox4.Controls.Add(Me.CodProcedimento)
         Me.GroupBox4.Controls.Add(Me.Label45)
         Me.GroupBox4.Controls.Add(Me.Label44)
         Me.GroupBox4.Controls.Add(Me.txtCNSMedicoExecutante)
@@ -751,21 +746,18 @@ Partial Class FormAMEOCI
         Me.GroupBox4.Controls.Add(Me.btnAdicionarProcedimento)
         Me.GroupBox4.Controls.Add(Me.CnesTerceiro)
         Me.GroupBox4.Controls.Add(Me.Quantidade)
-        Me.GroupBox4.Controls.Add(Me.CBOmed)
-        Me.GroupBox4.Controls.Add(Me.CodProcedimento)
         Me.GroupBox4.Controls.Add(Me.dgvProcedimentos)
         Me.GroupBox4.Controls.Add(Me.Label30)
-        Me.GroupBox4.Controls.Add(Me.txtProcedimentoPrincipal)
         Me.GroupBox4.Location = New System.Drawing.Point(510, 15)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(529, 243)
+        Me.GroupBox4.Size = New System.Drawing.Size(529, 196)
         Me.GroupBox4.TabIndex = 11
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Procedimentos secundários"
         '
         'btnRemoverProcedimento
         '
-        Me.btnRemoverProcedimento.Location = New System.Drawing.Point(102, 205)
+        Me.btnRemoverProcedimento.Location = New System.Drawing.Point(440, 161)
         Me.btnRemoverProcedimento.Name = "btnRemoverProcedimento"
         Me.btnRemoverProcedimento.Size = New System.Drawing.Size(75, 23)
         Me.btnRemoverProcedimento.TabIndex = 42
@@ -774,7 +766,7 @@ Partial Class FormAMEOCI
         '
         'btnAdicionarProcedimento
         '
-        Me.btnAdicionarProcedimento.Location = New System.Drawing.Point(21, 205)
+        Me.btnAdicionarProcedimento.Location = New System.Drawing.Point(363, 161)
         Me.btnAdicionarProcedimento.Name = "btnAdicionarProcedimento"
         Me.btnAdicionarProcedimento.Size = New System.Drawing.Size(75, 23)
         Me.btnAdicionarProcedimento.TabIndex = 41
@@ -783,34 +775,18 @@ Partial Class FormAMEOCI
         '
         'CnesTerceiro
         '
-        Me.CnesTerceiro.Location = New System.Drawing.Point(406, 48)
+        Me.CnesTerceiro.Location = New System.Drawing.Point(277, 163)
         Me.CnesTerceiro.Name = "CnesTerceiro"
-        Me.CnesTerceiro.Size = New System.Drawing.Size(109, 20)
+        Me.CnesTerceiro.Size = New System.Drawing.Size(80, 20)
         Me.CnesTerceiro.TabIndex = 40
         '
         'Quantidade
         '
-        Me.Quantidade.Location = New System.Drawing.Point(252, 48)
+        Me.Quantidade.Location = New System.Drawing.Point(11, 163)
         Me.Quantidade.Name = "Quantidade"
-        Me.Quantidade.Size = New System.Drawing.Size(30, 20)
+        Me.Quantidade.Size = New System.Drawing.Size(22, 20)
         Me.Quantidade.TabIndex = 36
         Me.Quantidade.Text = "1"
-        '
-        'CBOmed
-        '
-        Me.CBOmed.Location = New System.Drawing.Point(192, 48)
-        Me.CBOmed.Name = "CBOmed"
-        Me.CBOmed.Size = New System.Drawing.Size(54, 20)
-        Me.CBOmed.TabIndex = 35
-        Me.CBOmed.Text = "225120"
-        '
-        'CodProcedimento
-        '
-        Me.CodProcedimento.Location = New System.Drawing.Point(102, 48)
-        Me.CodProcedimento.Name = "CodProcedimento"
-        Me.CodProcedimento.Size = New System.Drawing.Size(84, 20)
-        Me.CodProcedimento.TabIndex = 33
-        Me.CodProcedimento.Text = "0301010072"
         '
         'dgvProcedimentos
         '
@@ -824,41 +800,41 @@ Partial Class FormAMEOCI
         Me.dgvProcedimentos.BackgroundColor = System.Drawing.Color.White
         Me.dgvProcedimentos.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvProcedimentos.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
-        DataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle16.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvProcedimentos.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle16
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle7.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvProcedimentos.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle7
         Me.dgvProcedimentos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle17.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle17.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle17.SelectionBackColor = System.Drawing.Color.SteelBlue
-        DataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvProcedimentos.DefaultCellStyle = DataGridViewCellStyle17
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle8.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.SteelBlue
+        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvProcedimentos.DefaultCellStyle = DataGridViewCellStyle8
         Me.dgvProcedimentos.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
-        Me.dgvProcedimentos.Location = New System.Drawing.Point(12, 73)
+        Me.dgvProcedimentos.Location = New System.Drawing.Point(224, 19)
         Me.dgvProcedimentos.MultiSelect = False
         Me.dgvProcedimentos.Name = "dgvProcedimentos"
         Me.dgvProcedimentos.ReadOnly = True
         Me.dgvProcedimentos.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
-        DataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle18.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
-        DataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.ControlDark
-        DataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvProcedimentos.RowHeadersDefaultCellStyle = DataGridViewCellStyle18
+        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+        DataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.ControlDark
+        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvProcedimentos.RowHeadersDefaultCellStyle = DataGridViewCellStyle9
         Me.dgvProcedimentos.RowHeadersWidth = 4
         Me.dgvProcedimentos.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgvProcedimentos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvProcedimentos.Size = New System.Drawing.Size(503, 126)
+        Me.dgvProcedimentos.Size = New System.Drawing.Size(291, 126)
         Me.dgvProcedimentos.TabIndex = 32
         Me.dgvProcedimentos.TabStop = False
         '
@@ -1203,7 +1179,7 @@ Partial Class FormAMEOCI
         'Label41
         '
         Me.Label41.AutoSize = True
-        Me.Label41.Location = New System.Drawing.Point(99, 32)
+        Me.Label41.Location = New System.Drawing.Point(8, 71)
         Me.Label41.Name = "Label41"
         Me.Label41.Size = New System.Drawing.Size(94, 13)
         Me.Label41.TabIndex = 43
@@ -1212,7 +1188,7 @@ Partial Class FormAMEOCI
         'Label42
         '
         Me.Label42.AutoSize = True
-        Me.Label42.Location = New System.Drawing.Point(190, 32)
+        Me.Label42.Location = New System.Drawing.Point(9, 110)
         Me.Label42.Name = "Label42"
         Me.Label42.Size = New System.Drawing.Size(29, 13)
         Me.Label42.TabIndex = 44
@@ -1221,7 +1197,7 @@ Partial Class FormAMEOCI
         'Label43
         '
         Me.Label43.AutoSize = True
-        Me.Label43.Location = New System.Drawing.Point(250, 32)
+        Me.Label43.Location = New System.Drawing.Point(9, 148)
         Me.Label43.Name = "Label43"
         Me.Label43.Size = New System.Drawing.Size(24, 13)
         Me.Label43.TabIndex = 45
@@ -1230,24 +1206,24 @@ Partial Class FormAMEOCI
         'Label44
         '
         Me.Label44.AutoSize = True
-        Me.Label44.Location = New System.Drawing.Point(283, 32)
+        Me.Label44.Location = New System.Drawing.Point(34, 148)
         Me.Label44.Name = "Label44"
-        Me.Label44.Size = New System.Drawing.Size(123, 13)
+        Me.Label44.Size = New System.Drawing.Size(85, 13)
         Me.Label44.TabIndex = 47
-        Me.Label44.Text = "CNS Médico executante"
+        Me.Label44.Text = "CNS executante"
         '
         'txtCNSMedicoExecutante
         '
-        Me.txtCNSMedicoExecutante.Location = New System.Drawing.Point(286, 48)
+        Me.txtCNSMedicoExecutante.Location = New System.Drawing.Point(36, 163)
         Me.txtCNSMedicoExecutante.Name = "txtCNSMedicoExecutante"
-        Me.txtCNSMedicoExecutante.Size = New System.Drawing.Size(114, 20)
+        Me.txtCNSMedicoExecutante.Size = New System.Drawing.Size(236, 20)
         Me.txtCNSMedicoExecutante.TabIndex = 46
         Me.txtCNSMedicoExecutante.Text = "700008504199406"
         '
         'Label45
         '
         Me.Label45.AutoSize = True
-        Me.Label45.Location = New System.Drawing.Point(403, 32)
+        Me.Label45.Location = New System.Drawing.Point(274, 148)
         Me.Label45.Name = "Label45"
         Me.Label45.Size = New System.Drawing.Size(83, 13)
         Me.Label45.TabIndex = 48
@@ -1312,6 +1288,30 @@ Partial Class FormAMEOCI
         Me.Label50.Size = New System.Drawing.Size(40, 13)
         Me.Label50.TabIndex = 29
         Me.Label50.Text = "Equipe"
+        '
+        'CodProcedimento
+        '
+        Me.CodProcedimento.FormattingEnabled = True
+        Me.CodProcedimento.Location = New System.Drawing.Point(11, 86)
+        Me.CodProcedimento.Name = "CodProcedimento"
+        Me.CodProcedimento.Size = New System.Drawing.Size(207, 21)
+        Me.CodProcedimento.TabIndex = 49
+        '
+        'txtProcedimentoPrincipal
+        '
+        Me.txtProcedimentoPrincipal.FormattingEnabled = True
+        Me.txtProcedimentoPrincipal.Location = New System.Drawing.Point(11, 47)
+        Me.txtProcedimentoPrincipal.Name = "txtProcedimentoPrincipal"
+        Me.txtProcedimentoPrincipal.Size = New System.Drawing.Size(207, 21)
+        Me.txtProcedimentoPrincipal.TabIndex = 50
+        '
+        'CBOmed
+        '
+        Me.CBOmed.FormattingEnabled = True
+        Me.CBOmed.Location = New System.Drawing.Point(11, 124)
+        Me.CBOmed.Name = "CBOmed"
+        Me.CBOmed.Size = New System.Drawing.Size(207, 21)
+        Me.CBOmed.TabIndex = 51
         '
         'FormAMEOCI
         '
@@ -1382,18 +1382,15 @@ Partial Class FormAMEOCI
     Friend WithEvents txtCnsAutorizador As TextBox
     Friend WithEvents txtNomeMedicoSolicitante As TextBox
     Friend WithEvents txtCNSMedicoSolicitante As TextBox
-    Friend WithEvents txtProcedimentoPrincipal As TextBox
     Friend WithEvents txtProntuario As TextBox
     Friend WithEvents txtCidSecundario As TextBox
     Friend WithEvents txtCidPrincipal As TextBox
     Friend WithEvents GroupBox4 As GroupBox
     Friend WithEvents dgvProcedimentos As DataGridView
-    Friend WithEvents CodProcedimento As TextBox
     Friend WithEvents btnRemoverProcedimento As Button
     Friend WithEvents btnAdicionarProcedimento As Button
     Friend WithEvents CnesTerceiro As TextBox
     Friend WithEvents Quantidade As TextBox
-    Friend WithEvents CBOmed As TextBox
     Friend WithEvents btnGerarArquivo As Button
     Friend WithEvents dtEmissao As DateTimePicker
     Friend WithEvents txtNomeAutorizador As TextBox
@@ -1463,4 +1460,7 @@ Partial Class FormAMEOCI
     Friend WithEvents txtDDD As TextBox
     Friend WithEvents txtEquipe As TextBox
     Friend WithEvents Label50 As Label
+    Friend WithEvents CodProcedimento As ComboBox
+    Friend WithEvents txtProcedimentoPrincipal As ComboBox
+    Friend WithEvents CBOmed As ComboBox
 End Class
