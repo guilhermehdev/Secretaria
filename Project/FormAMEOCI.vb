@@ -52,68 +52,6 @@ Public Class FormAMEOCI
             header.Append("Versao 03.16".PadRight(15, " "c))             ' Versão
             linhas.Add(header.ToString())
 
-
-            ' ================= CORPO PRINCIPAL (Registro 14) =================
-            'Dim r14 As New StringBuilder()
-            'r14.Append("14")                                    ' Identificador corpo APAC (2)
-            'r14.Append(competenciaFormatada)    ' Competência AAAAMM (6)
-            'r14.Append(txtNumApac.Text.PadLeft(13, "0"c))       ' Nº da APAC (13)
-            'r14.Append(txtUf.SelectedValue.PadLeft(2, "0"c))
-            'r14.Append(txtCnesSolicitante.Text.PadLeft(7, "0"c))  ' CNES Solicitante (7)' Código UF IBGE (2)
-            '' corpo.Append(txtCnesExecutante.Text.PadLeft(7, "0"c))    ' CNES Unidade Prestadora (7)
-            'r14.Append(dtAutorizacao.Value.ToString("yyyyMMdd")) ' Data processamento (8)
-            'r14.Append(dtEmissao.Value.ToString("yyyyMMdd"))
-            '' r14.Append(dtValidadeIni.Value.ToString("yyyyMMdd"))   ' Data inicial validade (8)
-            'r14.Append(dtValidadeFim.Value.ToString("yyyyMMdd"))   ' Data final validade (8)
-            '' corpo.Append(txtTipoAtend.SelectedValue.PadLeft(2, "0"c))      ' Tipo de atendimento (2)
-            'r14.Append(txtTipoApac.SelectedValue.PadLeft(1, "0"c))       ' Tipo de APAC (1)
-            'r14.Append("1") ' sequência
-            'r14.Append(Fmt(txtNomePaciente.Text, 30))           ' Nome paciente (30)
-            'r14.Append(Fmt(txtNomeMae.Text, 30))                ' Nome mãe paciente (30)
-            'r14.Append(Fmt(txtLogradouro.Text, 30))             ' Logradouro (30)
-            'r14.Append(txtNumero.Text.PadLeft(5, "0"c))
-            'r14.Append(Fmt(txtComplemento.Text, 10))
-            'r14.Append(txtCep.Text.PadLeft(8, "0"c))            ' CEP (8)
-            'r14.Append(txtMunIbge.Text.PadLeft(7, "0"c))        ' Município IBGE (7)
-            'r14.Append(dtNascimento.Value.ToString("yyyyMMdd"))  ' Data Nascimento (8)
-            'r14.Append(txtSexo.Text.PadRight(1, " "c))
-            'r14.Append(Fmt(txtNomeMedicoSolicitante.Text, 30))             ' Nome médico responsável (30)
-            'r14.Append(txtCodProcedimento.Text.PadLeft(10, "0"c)) ' Procedimento principal (10)
-            'r14.Append(txtMotivoSaida.SelectedValue.PadLeft(2, "0"c))  ' Motivo saída (2)
-
-            '' Alta/óbito/transf
-            'If txtMotivoSaida.SelectedValue.ToString() <> "00" Then
-            '    r14.Append(dtAltaObito.Value.ToString("yyyyMMdd"))
-            'Else
-            '    r14.Append("        ")
-            'End If
-
-            'r14.Append(Fmt(txtNomeDiretor.Text, 30))
-            'r14.Append(txtCnsPaciente.Text.PadLeft(15, "0"c))   ' CNS paciente (15)
-            'r14.Append(txtCNSMedicoSolicitante.Text.PadLeft(15, "0"c))
-            'r14.Append(txtCnsDiretor.Text.PadLeft(15, "0"c))
-            'r14.Append(txtCPFDiretor.Text.Replace(".", "").Replace("-", "").PadLeft(11, "0"c))
-            'r14.Append(txtCidPrincipal.Text.PadRight(4, " "c))
-            'r14.Append(txtTelefone.Text.PadLeft(10, "0"c))
-            'r14.Append(txtCnesExecutante.Text.PadLeft(7, "0"c))
-            'r14.Append(dtValidadeIni.Value.ToString("yyyyMMdd"))
-            'r14.Append(dtValidadeFim.Value.ToString("yyyyMMdd"))
-            'r14.Append(Fmt(txtGestor.Text, 10))
-            'r14.Append(txtTipoAtend.SelectedValue.ToString().PadLeft(2, "0"c))
-            'r14.Append(txtRaca.SelectedValue.ToString().PadLeft(2, "0"c))
-            'r14.Append(Fmt(txtNomeRespPaciente.Text, 30))
-            'r14.Append("10")  ' Código nacionalidade (3)
-            'r14.Append("0000000000")
-            'r14.Append(Fmt(txtBairro.Text, 30))
-            'r14.Append(txtUf.SelectedValue.PadRight(2, " "c))
-            'r14.Append("00000000000")  ' Telefone Responsável
-            'r14.Append(Fmt(txtEmail.Text, 50))
-            'r14.Append("000000000000000") ' CNS Responsável
-            'r14.Append("00000000000")  ' CPF Responsável
-            'r14.Append("000000000000000") ' CNS Acompanhante
-            'r14.Append(If(chkSituacaoRua.Checked, "S", "N"))
-            'linhas.Add(r14.ToString())
-
             Dim r14 As New StringBuilder()
 
             ' 01. Tipo registro
@@ -180,7 +118,7 @@ Public Class FormAMEOCI
             r14.Append(Fmt(txtNomeMedicoSolicitante.Text, 30))             ' 30
 
             ' 23. Procedimento principal
-            r14.Append(txtProcedimentoPrincipal.Text.PadLeft(10, "0"c)) ' 10
+            r14.Append(txtProcedimentoPrincipal.SelectedValue.PadLeft(10, "0"c)) ' 10
 
             ' 24. Motivo saída
             r14.Append(txtMotivoSaida.SelectedValue.ToString().PadLeft(2, "0"c)) ' 2
@@ -278,8 +216,8 @@ Public Class FormAMEOCI
             r13.Append("13")
             r13.Append(competenciaFormatada)
             r13.Append(txtNumApac.Text.PadLeft(13, "0"c))
-            r13.Append(txtProcedimentoPrincipal.Text.PadLeft(10, "0"c))
-            r13.Append(CBOmed.Text.PadLeft(6, "0"c))
+            r13.Append(txtProcedimentoPrincipal.SelectedValue.PadLeft(10, "0"c))
+            r13.Append(CBOmed.SelectedValue.PadLeft(6, "0"c))
             r13.Append("0000001".PadLeft(7, "0"c))
             r13.Append(vbCrLf)
             linhas.Add(r13.ToString())
@@ -294,15 +232,13 @@ Public Class FormAMEOCI
                 r13.Append(row.Cells("Codigo").Value.ToString().PadLeft(10, "0"c))
                 r13.Append(row.Cells("CBO").Value.ToString().PadLeft(6, "0"c))
                 r13.Append(row.Cells("Quantidade").Value.ToString().PadLeft(7, "0"c))
-                'r13.Append(row.Cells("CIDPrincipal").Value.ToString().PadRight(4, " "c))
-                'r13.Append(row.Cells("CIDSecundario").Value.ToString().PadRight(4, " "c))
                 r13.Append(vbCrLf)
                 linhas.Add(r13.ToString())
             Next
 
             ' Salvar arquivo
             Using sfd As New SaveFileDialog
-                sfd.Filter = "Arquivos APAC|*.SET"
+                sfd.Filter = "Arquivos APAC|*.*"
                 sfd.FileName = "AP" & txtCompetencia.Text & ".SET"
                 If sfd.ShowDialog() = DialogResult.OK Then
                     File.WriteAllLines(sfd.FileName, linhas, Encoding.GetEncoding("iso-8859-1"))
@@ -313,16 +249,81 @@ Public Class FormAMEOCI
             MessageBox.Show("Erro ao gerar arquivo: " & ex.Message)
         End Try
     End Sub
+
+    Private Sub txtProcedimentoPrincipal_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles txtProcedimentoPrincipal.SelectionChangeCommitted
+        Dim procedSec As New Dictionary(Of String, String)
+        Dim cbo As New Dictionary(Of String, String)
+
+        dgvProcedimentos.Rows.Clear()
+
+        If txtProcedimentoPrincipal.SelectedValue = "0904010015" Then
+            procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
+            procedSec.Add("0211070041", "0211070041 - Audiometria tonal limiar (via aérea/óssea)")
+            cbo.Add("225275", "225275 - Médico Otorrinolaringologista")
+            dgvProcedimentos.Rows.Add("0301010072", "225275", "1")
+            dgvProcedimentos.Rows.Add("0211070041", "225275", "1")
+
+        ElseIf txtProcedimentoPrincipal.SelectedValue = "0902010026" Then
+            procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
+            procedSec.Add("0211020036", "0211020036 - Eletrocardiograma (ECG)")
+            cbo.Add("225120", "225120 - Médico Cardiologista")
+            dgvProcedimentos.Rows.Add("0301010072", "225120", "1")
+            dgvProcedimentos.Rows.Add("0211020036", "225120", "1")
+
+        ElseIf txtProcedimentoPrincipal.SelectedValue = "0902010018" Then
+            procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
+            procedSec.Add("0211020036", "0211020036 - Eletrocardiograma (ECG)")
+            cbo.Add("225120", "225120 - Médico Cardiologista")
+            dgvProcedimentos.Rows.Add("0301010072", "225120", "1")
+            dgvProcedimentos.Rows.Add("0211020036", "225120", "1")
+
+        ElseIf txtProcedimentoPrincipal.SelectedValue = "0905010035" Then
+            procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
+            procedSec.Add("0211060020", "0211060020 - Biomicroscopia de fundo de olho")
+            procedSec.Add("0211060127", "0211060127 - Mapeamento de retina")
+            procedSec.Add("0211060259", "0211060259 - Tonometria")
+            cbo.Add("225265", "225265 - Médico Oftalmologista")
+            dgvProcedimentos.Rows.Add("0301010072", "225265", "1")
+            dgvProcedimentos.Rows.Add("0211060020", "225265", "1")
+            dgvProcedimentos.Rows.Add("0211060127", "225265", "1")
+            dgvProcedimentos.Rows.Add("0211060259", "225265", "1")
+
+        ElseIf txtProcedimentoPrincipal.SelectedValue = "0903010011" Then
+            procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
+            cbo.Add("225270", "225270 - Médico ortopedista e traumatologista")
+            dgvProcedimentos.Rows.Add("0301010072", "225270", "1")
+
+        ElseIf txtProcedimentoPrincipal.SelectedValue = "0904010031" Then
+            procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
+            procedSec.Add("0209040025", "0209040025 - Laringoscopia")
+            procedSec.Add("0209040041", "0209040041 - Videolaringoscopia")
+            cbo.Add("225275", "225275 - Médico Otorrinolaringologista")
+            dgvProcedimentos.Rows.Add("0301010072", "225275", "1")
+            dgvProcedimentos.Rows.Add("0209040025", "225275", "1")
+            dgvProcedimentos.Rows.Add("0209040041", "225275", "1")
+
+        End If
+
+        CodProcedimento.DataSource = New BindingSource(procedSec, Nothing)
+        CodProcedimento.DisplayMember = "Value"   ' O que aparece para o usuário
+        CodProcedimento.ValueMember = "Key"
+        CodProcedimento.SelectedIndex = 0
+
+        CBOmed.DataSource = New BindingSource(cbo, Nothing)
+        CBOmed.DisplayMember = "Value"   ' O que aparece para o usuário
+        CBOmed.ValueMember = "Key"
+        CBOmed.SelectedIndex = 0
+
+    End Sub
     Private Sub btnAdicionarProcedimento_Click(sender As Object, e As EventArgs) Handles btnAdicionarProcedimento.Click
-        Dim cod As String = CodProcedimento.Text.Trim()
+        Dim cod As String = CodProcedimento.SelectedValue.Trim()
         If String.IsNullOrWhiteSpace(cod) Then Exit Sub
 
-        Dim cbo As String = CBOmed.Text.Trim()
+        Dim cbo As String = CBOmed.SelectedValue.Trim()
         Dim qtd As String = Quantidade.Text.Trim()
-        Dim cidPri As String = txtCidPrincipal.Text.Trim()
-        Dim cidSec As String = txtCidSecundario.Text.Trim()
+
         ' Adiciona a linha com todas as colunas necessárias
-        dgvProcedimentos.Rows.Add(cod, cbo, qtd, cidPri, cidSec)
+        dgvProcedimentos.Rows.Add(cod, cbo, qtd)
     End Sub
 
     Public Function CalcularCampoControle(apacNumber As String, codigosProcedimento As List(Of String), quantidadesProcedimento As List(Of Integer)) As String
@@ -406,11 +407,9 @@ Public Class FormAMEOCI
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         dgvProcedimentos.Columns.Clear()
 
-        dgvProcedimentos.Columns.Add("Codigo", "Código Procedimento")
+        dgvProcedimentos.Columns.Add("Codigo", "Procedimento")
         dgvProcedimentos.Columns.Add("CBO", "CBO")
         dgvProcedimentos.Columns.Add("Quantidade", "Qtd")
-        dgvProcedimentos.Columns.Add("CIDPrincipal", "CID Principal")
-        dgvProcedimentos.Columns.Add("CIDSecundario", "CID Secundário")
 
         dgvProcedimentos.AllowUserToAddRows = True
         dgvProcedimentos.AllowUserToDeleteRows = True
@@ -419,6 +418,20 @@ Public Class FormAMEOCI
         txtDestinoTipo.SelectedIndex = 0
         txtSexo.SelectedIndex = 0
 
+
+        Dim cbProcedPrincipal As New Dictionary(Of String, String) From {
+            {"0904010015", "0904010015 - OCI Avaliação inicial diagnóstica de deficit auditivo"},
+            {"0902010026", "0902010026 - OCI Avaliação Cardiológica"},
+            {"0902010018", "0902010018 - OCI Avaliação de risco cirúrgico"},
+            {"0905010035", "0905010035 - OCI Avaliação inicial em oftalmologia"},
+            {"0903010011", "0903010011 - OCI Avaliação disgnóstica em ortopedia com recursos de raio-x"},
+            {"0904010031", "0904010031 - OCI Avaliação disgnóstica de nasofaringe e orofaringe"}
+        }
+
+        txtProcedimentoPrincipal.DataSource = New BindingSource(cbProcedPrincipal, Nothing)
+        txtProcedimentoPrincipal.DisplayMember = "Value"   ' O que aparece para o usuário
+        txtProcedimentoPrincipal.ValueMember = "Key"
+        txtProcedimentoPrincipal.SelectedIndex = -1
 
         Dim tipoLogra As New Dictionary(Of String, String) From {
             {"081", "RUA"},
