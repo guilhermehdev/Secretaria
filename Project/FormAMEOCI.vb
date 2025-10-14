@@ -212,34 +212,36 @@ Public Class FormAMEOCI
             End If
             linhas.Add(r06.ToString())
 
-            Dim r13 As New StringBuilder()
-            r13.Append("13")
-            r13.Append(competenciaFormatada)
-            r13.Append(txtNumApac.Text.PadLeft(13, "0"c))
-            r13.Append(txtProcedimentoPrincipal.SelectedValue.PadLeft(10, "0"c))
-            r13.Append(CBOmed.SelectedValue.PadLeft(6, "0"c))
-            r13.Append("0000001".PadLeft(7, "0"c))
-            r13.Append(vbCrLf)
-            linhas.Add(r13.ToString())
+            ' ========== REGISTRO 13 PRINCIPAL ==========
+            Dim r13Principal As New StringBuilder()
+            r13Principal.Append("13")
+            r13Principal.Append(competenciaFormatada)
+            r13Principal.Append(txtNumApac.Text.PadLeft(13, "0"c))
+            r13Principal.Append(txtProcedimentoPrincipal.SelectedValue.PadLeft(10, "0"c))
+            r13Principal.Append(CBOmed.SelectedValue.PadLeft(6, "0"c))
+            r13Principal.Append("0000001") ' quantidade = 1 (7 dígitos)
+            linhas.Add(r13Principal.ToString()) ' NÃO põe vbCrLf aqui
 
-            ' ========== REGISTRO 13 (Procedimentos) ==========
-            For Each row As DataGridViewRow In dgvProcedimentos.Rows
-                If row.IsNewRow Then Continue For
+            ' ========== REGISTRO 13 SECUNDÁRIOS ==========
+            For i = 0 To dgvProcedimentos.RowCount - 1
+                If dgvProcedimentos.Rows(i).IsNewRow Then Continue For
+
+                Dim r13 As New StringBuilder() ' novo builder a cada linha
 
                 r13.Append("13")
                 r13.Append(competenciaFormatada)
                 r13.Append(txtNumApac.Text.PadLeft(13, "0"c))
-                r13.Append(row.Cells("Codigo").Value.ToString().PadLeft(10, "0"c))
-                r13.Append(row.Cells("CBO").Value.ToString().PadLeft(6, "0"c))
-                r13.Append(row.Cells("Quantidade").Value.ToString().PadLeft(7, "0"c))
-                r13.Append(vbCrLf)
+                r13.Append(dgvProcedimentos.Rows(i).Cells(0).Value.ToString().PadLeft(10, "0"c)) ' código procedimento
+                r13.Append(dgvProcedimentos.Rows(i).Cells(1).Value.ToString().PadLeft(6, "0"c)) ' CBO
+                r13.Append(dgvProcedimentos.Rows(i).Cells(2).Value.ToString().PadLeft(7, "0"c)) ' quantidade
+
                 linhas.Add(r13.ToString())
             Next
 
             ' Salvar arquivo
             Using sfd As New SaveFileDialog
                 sfd.Filter = "Arquivos APAC|*.*"
-                sfd.FileName = "AP" & txtCompetencia.Text & ".SET"
+                sfd.FileName = "AP" & txtCompetencia.Text.Replace("/", "-") & ".SET"
                 If sfd.ShowDialog() = DialogResult.OK Then
                     File.WriteAllLines(sfd.FileName, linhas, Encoding.GetEncoding("iso-8859-1"))
                     MessageBox.Show("Arquivo gerado com sucesso!", "APAC", MessageBoxButtons.OK, MessageBoxIcon.Information)
