@@ -192,7 +192,7 @@ Public Class FormAMEOCI
 
             r14.Append(txtEmail.Text.PadRight(40, " "c))
 
-            r14.Append(txtCNSMedicoExecutante.Text.PadLeft(15, "0"c))
+            r14.Append(txtCNSMedicoExecutante.SelectedValue.PadLeft(15, "0"c))
 
             r14.Append(txtCpfPaciente.Text.PadLeft(11, "0"c))
 
@@ -220,6 +220,7 @@ Public Class FormAMEOCI
             r13Principal.Append(txtProcedimentoPrincipal.SelectedValue.PadLeft(10, "0"c))
             r13Principal.Append(CBOmed.SelectedValue.PadLeft(6, "0"c))
             r13Principal.Append("0000001") ' quantidade = 1 (7 dígitos)
+            r13Principal.Append(vbCrLf)
             linhas.Add(r13Principal.ToString()) ' NÃO põe vbCrLf aqui
 
             ' ========== REGISTRO 13 SECUNDÁRIOS ==========
@@ -234,7 +235,7 @@ Public Class FormAMEOCI
                 r13.Append(dgvProcedimentos.Rows(i).Cells(0).Value.ToString().PadLeft(10, "0"c)) ' código procedimento
                 r13.Append(dgvProcedimentos.Rows(i).Cells(1).Value.ToString().PadLeft(6, "0"c)) ' CBO
                 r13.Append(dgvProcedimentos.Rows(i).Cells(2).Value.ToString().PadLeft(7, "0"c)) ' quantidade
-
+                r13.Append(vbCrLf)
                 linhas.Add(r13.ToString())
             Next
 
@@ -316,6 +317,8 @@ Public Class FormAMEOCI
         CBOmed.ValueMember = "Key"
         CBOmed.SelectedIndex = 0
 
+        getServersSUS()
+
     End Sub
     Private Sub btnAdicionarProcedimento_Click(sender As Object, e As EventArgs) Handles btnAdicionarProcedimento.Click
         Dim cod As String = CodProcedimento.SelectedValue.Trim()
@@ -358,13 +361,10 @@ Public Class FormAMEOCI
         Return campoControle.ToString().PadLeft(4, "0"c)
     End Function
 
-
     Private Function GetNextLoteNumber(qtdApacs As Integer) As String
         ' Retorna a quantidade de APACs do lote com 6 dígitos
         Return qtdApacs.ToString().PadLeft(6, "0"c)
     End Function
-
-
 
     Private Function ComputeControlField(apacNumber As String, procCodes As List(Of String), procQuantities As List(Of Integer)) As String
         Dim total As Long = 0
@@ -404,6 +404,13 @@ Public Class FormAMEOCI
         Else
             MessageBox.Show("Selecione um procedimento para remover.")
         End If
+    End Sub
+
+    Private Sub getServersSUS()
+        Dim main As New FormAMEmain
+
+        main.loadComboBox($"SELECT SUS, nome FROM servidores WHERE cbo ='{CBOmed.SelectedValue}'", txtCNSMedicoExecutante, "nome", "SUS", True)
+
     End Sub
 
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load

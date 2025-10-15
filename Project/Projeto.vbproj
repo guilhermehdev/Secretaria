@@ -436,6 +436,12 @@
   <ItemGroup>
     <Compile Include="BackupMySQL.vb" />
     <Compile Include="BLH.vb" />
+    <Compile Include="FormAMEbd.Designer.vb">
+      <DependentUpon>FormAMEbd.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormAMEbd.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormAMEOCI.Designer.vb">
       <DependentUpon>FormAMEOCI.vb</DependentUpon>
     </Compile>
@@ -632,6 +638,9 @@
     <Compile Include="XML.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FormAMEbd.resx">
+      <DependentUpon>FormAMEbd.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormAMEOCI.resx">
       <DependentUpon>FormAMEOCI.vb</DependentUpon>
     </EmbeddedResource>

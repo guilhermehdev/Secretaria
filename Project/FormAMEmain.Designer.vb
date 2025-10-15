@@ -39,6 +39,8 @@ Partial Class FormAMEmain
         Me.GCASPPToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OCIToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CadastroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ConfiguraçõesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.BaseDeDadosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.dgAME, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -164,7 +166,7 @@ Partial Class FormAMEmain
         '
         'MenuStrip1
         '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ImportarPDFToolStripMenuItem, Me.OCIToolStripMenuItem})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ImportarPDFToolStripMenuItem, Me.OCIToolStripMenuItem, Me.ConfiguraçõesToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Size = New System.Drawing.Size(1028, 24)
@@ -194,8 +196,21 @@ Partial Class FormAMEmain
         'CadastroToolStripMenuItem
         '
         Me.CadastroToolStripMenuItem.Name = "CadastroToolStripMenuItem"
-        Me.CadastroToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.CadastroToolStripMenuItem.Size = New System.Drawing.Size(121, 22)
         Me.CadastroToolStripMenuItem.Text = "Cadastro"
+        '
+        'ConfiguraçõesToolStripMenuItem
+        '
+        Me.ConfiguraçõesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BaseDeDadosToolStripMenuItem})
+        Me.ConfiguraçõesToolStripMenuItem.Name = "ConfiguraçõesToolStripMenuItem"
+        Me.ConfiguraçõesToolStripMenuItem.Size = New System.Drawing.Size(96, 20)
+        Me.ConfiguraçõesToolStripMenuItem.Text = "Configurações"
+        '
+        'BaseDeDadosToolStripMenuItem
+        '
+        Me.BaseDeDadosToolStripMenuItem.Name = "BaseDeDadosToolStripMenuItem"
+        Me.BaseDeDadosToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.BaseDeDadosToolStripMenuItem.Text = "Base de dados"
         '
         'FormAMEmain
         '
@@ -238,4 +253,6 @@ Partial Class FormAMEmain
     Friend WithEvents GCASPPToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents OCIToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CadastroToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ConfiguraçõesToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents BaseDeDadosToolStripMenuItem As ToolStripMenuItem
 End Class

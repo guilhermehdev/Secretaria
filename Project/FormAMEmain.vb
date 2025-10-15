@@ -1,10 +1,11 @@
-﻿Imports iTextSharp.text.pdf
-Imports iTextSharp.text.pdf.parser
-Imports System.Text.RegularExpressions
-Imports Newtonsoft.Json
-Imports System.Collections.Generic
+﻿Imports System.Collections.Generic
 Imports System.Data
 Imports System.Text
+Imports System.Text.RegularExpressions
+Imports iTextSharp.text.pdf
+Imports iTextSharp.text.pdf.parser
+Imports MySql.Data.MySqlClient
+Imports Newtonsoft.Json
 
 
 Public Class FormAMEmain
@@ -13,6 +14,9 @@ Public Class FormAMEmain
     Dim pdfPath As String
     Private tabelaConsultas As DataTable
     Private tabelaConsultasFiltradas As DataTable
+    Public vconexao As MySqlConnection
+    Public Sql As String
+    Dim main As New Main
     Public Function ExtrairConsultas() As List(Of Consulta)
         Dim consultas As New List(Of Consulta)()
 
@@ -596,6 +600,85 @@ Public Class FormAMEmain
     Private Sub CadastroToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CadastroToolStripMenuItem.Click
         FormAMEOCI.Show()
     End Sub
+
+    Private Sub BaseDeDadosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles BaseDeDadosToolStripMenuItem.Click
+        FormAMEbd.Show()
+    End Sub
+    Private Sub connection(ByVal conectar As Boolean)
+
+        If conectar Then
+            Try
+                vconexao = New MySqlConnection
+                vconexao.ConnectionString = "server=" & My.Settings.serverAME & "; user=" & My.Settings.userAME & "; password=" & My.Settings.passwordAME & "; database=" & My.Settings.databaseAME
+                vconexao.Open()
+            Catch ex As Exception
+                MsgBox("Não foi possível realizar a conexão com o servidor!" & vbCrLf & vbCrLf & "Erro: " & ex.Message, MsgBoxStyle.Information)
+                FormSystemConnSettings.ShowDialog()
+            End Try
+
+        Else
+            vconexao.Close()
+        End If
+    End Sub
+
+    Private Function doQuery(ByVal sql As String, Optional ByVal errorMsg As Boolean = False) 'insert/update/delete
+        Try
+            connection(True)
+            Dim command As New MySqlCommand
+            command.Connection = vconexao
+            command.CommandText = sql
+            command.ExecuteNonQuery()
+            Return True
+        Catch ex As Exception
+            If errorMsg Then
+                MsgBox($"{ex}{vbCrLf}{sql}")
+            End If
+            Throw
+        Finally
+            connection(False)
+        End Try
+    End Function
+
+    Private Function getDataset(ByVal sql As String, Optional ByVal errorMsg As Boolean = False) As DataTable
+        Dim dspesquisa As New DataTable
+        Try
+            connection(True)
+            Dim objcomando As New MySqlCommand(sql, vconexao)
+            Dim dsadapter As New MySqlDataAdapter
+            dsadapter.SelectCommand = objcomando
+            dsadapter.Fill(dspesquisa)
+        Catch ex As Exception
+            If errorMsg Then
+                MsgBox(ex)
+            End If
+        Finally
+            connection(False)
+        End Try
+
+        Return dspesquisa
+
+    End Function
+
+    Public Function loadComboBox(ByVal sql As String, ByVal cbox As ComboBox, ByVal field2Show As String, ByVal fieldValue As String, Optional ByVal errorMsg As Boolean = False)
+        Dim dados As New DataTable
+
+        Try
+            dados = getDataset(sql, errorMsg)
+            If dados.Rows.Count > 0 Then
+                cbox.DataSource = dados
+                cbox.DisplayMember = field2Show
+                cbox.ValueMember = fieldValue
+            End If
+
+            Return dados
+        Catch ex As Exception
+
+        End Try
+
+        Return False
+
+    End Function
+
 End Class
 
 Public Class Consulta
