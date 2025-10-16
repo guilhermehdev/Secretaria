@@ -448,6 +448,12 @@
     <Compile Include="FormAMEOCI.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormAMEOCIControleCompetencia.Designer.vb">
+      <DependentUpon>FormAMEOCIControleCompetencia.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormAMEOCIControleCompetencia.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormBLHSorologias.Designer.vb">
       <DependentUpon>FormBLHSorologias.vb</DependentUpon>
     </Compile>
@@ -643,6 +649,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormAMEOCI.resx">
       <DependentUpon>FormAMEOCI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAMEOCIControleCompetencia.resx">
+      <DependentUpon>FormAMEOCIControleCompetencia.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormBLHSorologias.resx">
       <DependentUpon>FormBLHSorologias.vb</DependentUpon>

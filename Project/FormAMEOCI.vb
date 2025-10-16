@@ -21,13 +21,7 @@ Public Class FormAMEOCI
             Next
 
             ' Dim campoControle As String = CalcularCampoControle(txtNumApac.Text, codigos, quantidades)
-            Dim competenciaFormatada As String = ""
-            If txtCompetencia.Text.Contains("/") Then
-                Dim partes() As String = txtCompetencia.Text.Split("/")
-                competenciaFormatada = partes(1) & partes(0).PadLeft(2, "0"c)
-            Else
-                competenciaFormatada = txtCompetencia.Text
-            End If
+            Dim competenciaFormatada As String = My.Settings.OCIcompetencia
 
             ' Caminho fixo do arquivo principal
             Dim filePath As String = Path.Combine("C:\APAC\IMPORTA", "AP" & competenciaFormatada & ".SET")
@@ -43,13 +37,19 @@ Public Class FormAMEOCI
                 header.Append(qtdApacs.ToString().PadLeft(6, "0"c))          ' Quantidade de APACs (6)
 
                 Dim campoControle As String = CalcularCampoControle(txtNumApac.Text, codigos, quantidades)
-                header.Append(campoControle.PadLeft(4, "0"c))                 ' Campo controle (4)
+                header.Append(campoControle.PadLeft(4, "0"c))
 
-                header.Append(Fmt(txtOrgaoOrigem.Text, 30))                  ' Nome órgão origem (30)
-                header.Append(Fmt(txtSiglaOrgao.Text, 6))                    ' Sigla (6)
-                header.Append(txtCGC.Text.Replace(".", "").Replace("/", "").Replace("-", "").PadLeft(14, "0"c)) ' CNPJ
-                header.Append(Fmt(txtOrgaoDestino.Text, 40))                 ' Nome órgão destino (40)
-                header.Append(txtDestinoTipo.Text.PadRight(1, " "c))         ' Tipo órgão destino M/E
+                header.Append(Fmt(My.Settings.OCInomeUnidade, 30))                  ' Nome órgão origem (30)
+                header.Append(Fmt(My.Settings.OCIsigla, 6))                    ' Sigla (6)
+                header.Append(My.Settings.OCIcnpj.Replace(".", "").Replace("/", "").Replace("-", "").PadLeft(14, "0"c)) ' 
+                header.Append(Fmt(My.Settings.OCIorgaoDestino, 40))                 ' Nome órgão destino (40)
+                header.Append(My.Settings.OCItipo.PadRight(1, " "c))         ' Tipo órgão destino M/E' Campo controle (4)
+
+                'header.Append(Fmt(txtOrgaoOrigem.Text, 30))                  ' Nome órgão origem (30)
+                'header.Append(Fmt(txtSiglaOrgao.Text, 6))                    ' Sigla (6)
+                'header.Append(txtCGC.Text.Replace(".", "").Replace("/", "").Replace("-", "").PadLeft(14, "0"c)) ' CNPJ
+                'header.Append(Fmt(txtOrgaoDestino.Text, 40))                 ' Nome órgão destino (40)
+                'header.Append(txtDestinoTipo.Text.PadRight(1, " "c))         ' Tipo órgão destino M/E
 
                 ' Aqui precisa usar a DATA DA COMPETÊNCIA, não a data de hoje
                 Dim dataCompetencia As String = competenciaFormatada & "20"  ' AAAAMM + "20" (ajuste pro dia correto do mês)
@@ -73,7 +73,7 @@ Public Class FormAMEOCI
             r14.Append(txtNumApac.Text.PadLeft(13, "0"c))     ' 13
 
             ' 05. UF
-            r14.Append(txtUf.SelectedValue.PadRight(2, " "c))
+            r14.Append(My.Settings.OCIuf.PadRight(2, " "c))
 
             ' 06. CNES Solicitante
             r14.Append(txtCnesExecutante.Text.PadLeft(7, "0"c)) ' 7
@@ -434,7 +434,6 @@ Public Class FormAMEOCI
         dgvProcedimentos.AllowUserToDeleteRows = True
         dgvProcedimentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
 
-        txtDestinoTipo.SelectedIndex = 0
         txtSexo.SelectedIndex = 0
 
 
@@ -516,15 +515,6 @@ Public Class FormAMEOCI
         txtMotivoSaida.ValueMember = "Key"
         txtMotivoSaida.SelectedIndex = 1
 
-        Dim uf As New Dictionary(Of String, String) From {
-            {"35", "SP"}
-        }
-
-        txtUf.DataSource = New BindingSource(uf, Nothing)
-        txtUf.DisplayMember = "Value"   ' O que aparece para o usuário
-        txtUf.ValueMember = "Key"
-        txtUf.SelectedIndex = 0
-
     End Sub
 
     ' Gera a lista de números de APAC a partir de um intervalo autorizado
@@ -597,7 +587,8 @@ Public Class FormAMEOCI
     End Sub
 
     Private Function chkMonthEXT()
-        Select Case txtCompetencia.Text.Substring(0, 2)
+
+        Select Case My.Settings.OCIcompetencia.Substring(4, 2)
             Case "01"
                 Return ".JAN"
             Case "02"
@@ -637,12 +628,12 @@ Public Class FormAMEOCI
 
         Dim fileAPAC As String
 
-        If txtCompetencia.Text.Contains("/") Then
-            Dim partes() As String = txtCompetencia.Text.Split("/")
-            fileAPAC = "AP" & partes(1) & partes(0).PadLeft(2, "0"c) & chkMonthEXT()
-        Else
-            fileAPAC = "AP" & txtCompetencia.Text & chkMonthEXT()
-        End If
+        'If txtCompetencia.Text.Contains("/") Then
+        '    Dim partes() As String = txtCompetencia.Text.Split("/")
+        '    fileAPAC = "AP" & partes(1) & partes(0).PadLeft(2, "0"c) & chkMonthEXT()
+        'Else
+        fileAPAC = "AP" & My.Settings.OCIcompetencia & chkMonthEXT()
+        'End If
 
         Dim filePath As String = Path.Combine(pastaDestino, fileAPAC)
 
@@ -655,7 +646,7 @@ Public Class FormAMEOCI
         ' Pergunta onde salvar a cópia/exportação
         Dim saveDialog As New SaveFileDialog()
         saveDialog.Title = "Exportar arquivo APAC"
-        saveDialog.Filter = "Arquivos APAC (*.*)|*.*|Todos os arquivos (*.*)|*.*"
+        saveDialog.Filter = $"Arquivos APAC (*{chkMonthEXT()})|*{chkMonthEXT()}|Todos os arquivos (*{chkMonthEXT()})|*{chkMonthEXT()}"
         saveDialog.FileName = fileAPAC
 
         If saveDialog.ShowDialog() = DialogResult.OK Then
@@ -665,5 +656,8 @@ Public Class FormAMEOCI
 
     End Sub
 
+    Private Sub ControleDeCompetênciaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ControleDeCompetênciaToolStripMenuItem.Click
+        FormAMEOCIControleCompetencia.ShowDialog()
 
+    End Sub
 End Class

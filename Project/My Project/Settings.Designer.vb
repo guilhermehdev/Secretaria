@@ -281,6 +281,126 @@ Namespace My
                 Me("serverAME") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property OCIcompetencia() As String
+            Get
+                Return CType(Me("OCIcompetencia"),String)
+            End Get
+            Set
+                Me("OCIcompetencia") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property OCIuf() As String
+            Get
+                Return CType(Me("OCIuf"),String)
+            End Get
+            Set
+                Me("OCIuf") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property OCInomeUnidade() As String
+            Get
+                Return CType(Me("OCInomeUnidade"),String)
+            End Get
+            Set
+                Me("OCInomeUnidade") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property OCIsigla() As String
+            Get
+                Return CType(Me("OCIsigla"),String)
+            End Get
+            Set
+                Me("OCIsigla") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property OCIcnpj() As String
+            Get
+                Return CType(Me("OCIcnpj"),String)
+            End Get
+            Set
+                Me("OCIcnpj") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property OCIcnsDiretor() As String
+            Get
+                Return CType(Me("OCIcnsDiretor"),String)
+            End Get
+            Set
+                Me("OCIcnsDiretor") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property OCIdiretor() As String
+            Get
+                Return CType(Me("OCIdiretor"),String)
+            End Get
+            Set
+                Me("OCIdiretor") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property OCIcpfDiretor() As String
+            Get
+                Return CType(Me("OCIcpfDiretor"),String)
+            End Get
+            Set
+                Me("OCIcpfDiretor") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property OCIorgaoDestino() As String
+            Get
+                Return CType(Me("OCIorgaoDestino"),String)
+            End Get
+            Set
+                Me("OCIorgaoDestino") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property OCItipo() As String
+            Get
+                Return CType(Me("OCItipo"),String)
+            End Get
+            Set
+                Me("OCItipo") = value
+            End Set
+        End Property
     End Class
 End Namespace
 
