@@ -3,11 +3,12 @@ Imports System.Security.Principal
 Imports System.Text
 
 Public Class FormAMEOCI
+    Private linhas As New List(Of String)
     Private Sub btnGerarArquivo_Click(sender As Object, e As EventArgs) Handles btnGerarArquivo.Click
         Try
             Dim codigos As New List(Of String)
             Dim quantidades As New List(Of Integer)
-            Dim linhas As New List(Of String)
+            'Dim linhas As New List(Of String)
             Dim dataGeracao As String = Date.Now.ToString("yyyyMMdd")
             Dim dataProcessamento As String = Date.Now.ToString("yyyyMMdd")
             Dim versao As String = "1.0".PadRight(15, " "c) ' Versão deve ter 15 caracteres
@@ -28,29 +29,37 @@ Public Class FormAMEOCI
                 competenciaFormatada = txtCompetencia.Text
             End If
 
-            ' ================= HEADER (Registro 01) =================
-            Dim header As New StringBuilder()
-            header.Append("01#APAC")                                     ' Identificação
-            header.Append(competenciaFormatada)                          ' Competência (AAAAMM)
+            ' Caminho fixo do arquivo principal
+            Dim filePath As String = Path.Combine("C:\APAC\IMPORTA", "AP" & competenciaFormatada & ".SET")
 
-            Dim qtdApacs As Integer = 1 ' se for 1 APAC, ajuste se for mais
-            header.Append(qtdApacs.ToString().PadLeft(6, "0"c))          ' Quantidade de APACs (6)
+            ' Se o arquivo ainda não existir, cria com o header
+            If Not File.Exists(filePath) OrElse New FileInfo(filePath).Length = 0 Then
+                ' ================= HEADER (Registro 01) =================
+                Dim header As New StringBuilder()
+                header.Append("01#APAC")                                     ' Identificação
+                header.Append(competenciaFormatada)                          ' Competência (AAAAMM)
 
-            Dim campoControle As String = CalcularCampoControle(txtNumApac.Text, codigos, quantidades)
-            header.Append(campoControle.PadLeft(4, "0"c))                 ' Campo controle (4)
+                Dim qtdApacs As Integer = 1 ' se for 1 APAC, ajuste se for mais
+                header.Append(qtdApacs.ToString().PadLeft(6, "0"c))          ' Quantidade de APACs (6)
 
-            header.Append(Fmt(txtOrgaoOrigem.Text, 30))                  ' Nome órgão origem (30)
-            header.Append(Fmt(txtSiglaOrgao.Text, 6))                    ' Sigla (6)
-            header.Append(txtCGC.Text.Replace(".", "").Replace("/", "").Replace("-", "").PadLeft(14, "0"c)) ' CNPJ
-            header.Append(Fmt(txtOrgaoDestino.Text, 40))                 ' Nome órgão destino (40)
-            header.Append(txtDestinoTipo.Text.PadRight(1, " "c))         ' Tipo órgão destino M/E
+                Dim campoControle As String = CalcularCampoControle(txtNumApac.Text, codigos, quantidades)
+                header.Append(campoControle.PadLeft(4, "0"c))                 ' Campo controle (4)
 
-            ' Aqui precisa usar a DATA DA COMPETÊNCIA, não a data de hoje
-            Dim dataCompetencia As String = competenciaFormatada & "20"  ' AAAAMM + "20" (ajuste pro dia correto do mês)
-            header.Append(dataCompetencia)
+                header.Append(Fmt(txtOrgaoOrigem.Text, 30))                  ' Nome órgão origem (30)
+                header.Append(Fmt(txtSiglaOrgao.Text, 6))                    ' Sigla (6)
+                header.Append(txtCGC.Text.Replace(".", "").Replace("/", "").Replace("-", "").PadLeft(14, "0"c)) ' CNPJ
+                header.Append(Fmt(txtOrgaoDestino.Text, 40))                 ' Nome órgão destino (40)
+                header.Append(txtDestinoTipo.Text.PadRight(1, " "c))         ' Tipo órgão destino M/E
 
-            header.Append("Versao 03.16".PadRight(15, " "c))             ' Versão
-            linhas.Add(header.ToString())
+                ' Aqui precisa usar a DATA DA COMPETÊNCIA, não a data de hoje
+                Dim dataCompetencia As String = competenciaFormatada & "20"  ' AAAAMM + "20" (ajuste pro dia correto do mês)
+                header.Append(dataCompetencia)
+
+                header.Append("Versao 03.16".PadRight(15, " "c))             ' Versão
+                'linhas.Add(header.ToString())
+                File.AppendAllText(filePath, header.ToString() & Chr(13) & Chr(10), Encoding.GetEncoding("iso-8859-1"))
+
+            End If
 
             Dim r14 As New StringBuilder()
 
@@ -200,7 +209,8 @@ Public Class FormAMEOCI
 
             r14.Append(If(chkSituacaoRua.Checked, "S", "N"))
 
-            linhas.Add(r14.ToString())
+            'linhas.Add(r14.ToString())
+            File.AppendAllText(filePath, r14.ToString() & Chr(13) & Chr(10), Encoding.GetEncoding("iso-8859-1"))
 
             Dim r06 As New StringBuilder()
             r06.Append("06")
@@ -210,7 +220,8 @@ Public Class FormAMEOCI
             If txtCidSecundario.Text.Length > 0 Then
                 r06.Append(txtCidSecundario.Text.PadRight(4, " "c))
             End If
-            linhas.Add(r06.ToString())
+            'linhas.Add(r06.ToString())
+            File.AppendAllText(filePath, r06.ToString() & Chr(13) & Chr(10), Encoding.GetEncoding("iso-8859-1"))
 
             ' ========== REGISTRO 13 PRINCIPAL ==========
             Dim r13Principal As New StringBuilder()
@@ -220,8 +231,8 @@ Public Class FormAMEOCI
             r13Principal.Append(txtProcedimentoPrincipal.SelectedValue.PadLeft(10, "0"c))
             r13Principal.Append(CBOmed.SelectedValue.PadLeft(6, "0"c))
             r13Principal.Append("0000001") ' quantidade = 1 (7 dígitos)
-            r13Principal.Append(vbCrLf)
-            linhas.Add(r13Principal.ToString()) ' NÃO põe vbCrLf aqui
+            r13Principal.Append(New String(" "c, 53))
+            'linhas.Add(r13Principal.ToString()) ' NÃO põe vbCrLf aqui
 
             ' ========== REGISTRO 13 SECUNDÁRIOS ==========
             For i = 0 To dgvProcedimentos.RowCount - 1
@@ -235,22 +246,21 @@ Public Class FormAMEOCI
                 r13.Append(dgvProcedimentos.Rows(i).Cells(0).Value.ToString().PadLeft(10, "0"c)) ' código procedimento
                 r13.Append(dgvProcedimentos.Rows(i).Cells(1).Value.ToString().PadLeft(6, "0"c)) ' CBO
                 r13.Append(dgvProcedimentos.Rows(i).Cells(2).Value.ToString().PadLeft(7, "0"c)) ' quantidade
-                r13.Append(vbCrLf)
-                linhas.Add(r13.ToString())
+                r13.Append(New String(" "c, 53))
+                'linhas.Add(r13.ToString())
+                File.AppendAllText(filePath, r13.ToString() & Chr(13) & Chr(10), Encoding.GetEncoding("iso-8859-1"))
             Next
 
-            ' Salvar arquivo
-            Using sfd As New SaveFileDialog
-                sfd.Filter = "Arquivos APAC|*.*"
-                sfd.FileName = "AP" & txtCompetencia.Text.Replace("/", "-") & ".SET"
-                If sfd.ShowDialog() = DialogResult.OK Then
-                    File.WriteAllLines(sfd.FileName, linhas, Encoding.GetEncoding("iso-8859-1"))
-                    MessageBox.Show("Arquivo gerado com sucesso!", "APAC", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                End If
-            End Using
+
+            ' Grava automaticamente no arquivo .SET
+            'File.AppendAllText(filePath, String.Join(vbCrLf, linhas) & vbCrLf, Encoding.GetEncoding("iso-8859-1"))
+            MessageBox.Show("APAC adicionada e salva no arquivo com sucesso!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+
         Catch ex As Exception
             MessageBox.Show("Erro ao gerar arquivo: " & ex.Message)
         End Try
+
     End Sub
 
     Private Sub txtProcedimentoPrincipal_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles txtProcedimentoPrincipal.SelectionChangeCommitted
@@ -585,5 +595,16 @@ Public Class FormAMEOCI
             Debug.WriteLine(n)
         Next
     End Sub
+    Private Sub btAddAPAC_Click(sender As Object, e As EventArgs) Handles btAddAPAC.Click
+        Using sfd As New SaveFileDialog
+            sfd.Filter = "Arquivos APAC|*.*"
+            sfd.FileName = "AP" & txtCompetencia.Text.Replace("/", "-") & ".SET"
+            If sfd.ShowDialog() = DialogResult.OK Then
+                File.WriteAllLines(sfd.FileName, linhas, Encoding.GetEncoding("iso-8859-1"))
+                MessageBox.Show("Arquivo gerado com sucesso!", "APAC", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            End If
+        End Using
+    End Sub
+
 
 End Class
