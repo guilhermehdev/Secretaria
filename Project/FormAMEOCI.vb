@@ -594,5 +594,16 @@ Public Class FormAMEOCI
     Private Sub NúmerosAPACToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NúmerosAPACToolStripMenuItem.Click
         FormAMEOCINumAPAC.ShowDialog()
     End Sub
+    Private Sub txtCep_Leave(sender As Object, e As EventArgs) Handles txtCep.Leave
+        Dim CEP As New CEP()
+        Dim cod As String = txtCep.Text.Trim()
+        Dim resultado = CEP.BuscarEnderecoPorCEP(cod)
 
+        If resultado IsNot Nothing Then
+            txtLogradouro.Text = resultado.logradouro
+            txtBairro.Text = resultado.bairro
+        Else
+            MsgBox("CEP não encontrado ou erro na consulta.")
+        End If
+    End Sub
 End Class
