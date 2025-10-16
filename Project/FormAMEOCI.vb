@@ -595,15 +595,74 @@ Public Class FormAMEOCI
             Debug.WriteLine(n)
         Next
     End Sub
+
+    Private Function chkMonthEXT()
+        Select Case txtCompetencia.Text.Substring(0, 2)
+            Case "01"
+                Return ".JAN"
+            Case "02"
+                Return ".FEV"
+            Case "03"
+                Return ".MAR"
+            Case "04"
+                Return ".ABR"
+            Case "05"
+                Return ".MAI"
+            Case "06"
+                Return ".JUN"
+            Case "07"
+                Return ".JUL"
+            Case "08"
+                Return ".AGO"
+            Case "09"
+                Return ".SET"
+            Case "10"
+                Return ".OUT"
+            Case "11"
+                Return ".NOV"
+            Case "12"
+                Return ".DEZ"
+            Case Else
+                Return ""
+        End Select
+
+    End Function
+
     Private Sub btAddAPAC_Click(sender As Object, e As EventArgs) Handles btAddAPAC.Click
-        Using sfd As New SaveFileDialog
-            sfd.Filter = "Arquivos APAC|*.*"
-            sfd.FileName = "AP" & txtCompetencia.Text.Replace("/", "-") & ".SET"
-            If sfd.ShowDialog() = DialogResult.OK Then
-                File.WriteAllLines(sfd.FileName, linhas, Encoding.GetEncoding("iso-8859-1"))
-                MessageBox.Show("Arquivo gerado com sucesso!", "APAC", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            End If
-        End Using
+        ' Caminho padrão
+        Dim pastaDestino As String = "C:\APAC\IMPORTA"
+        If Not Directory.Exists(pastaDestino) Then
+            Directory.CreateDirectory(pastaDestino)
+        End If
+
+        Dim fileAPAC As String
+
+        If txtCompetencia.Text.Contains("/") Then
+            Dim partes() As String = txtCompetencia.Text.Split("/")
+            fileAPAC = "AP" & partes(1) & partes(0).PadLeft(2, "0"c) & chkMonthEXT()
+        Else
+            fileAPAC = "AP" & txtCompetencia.Text & chkMonthEXT()
+        End If
+
+        Dim filePath As String = Path.Combine(pastaDestino, fileAPAC)
+
+        ' Verifica se o arquivo existe
+        If Not File.Exists(filePath) Then
+            MessageBox.Show("Nenhuma APAC foi adicionada ainda.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Exit Sub
+        End If
+
+        ' Pergunta onde salvar a cópia/exportação
+        Dim saveDialog As New SaveFileDialog()
+        saveDialog.Title = "Exportar arquivo APAC"
+        saveDialog.Filter = "Arquivos APAC (*.*)|*.*|Todos os arquivos (*.*)|*.*"
+        saveDialog.FileName = fileAPAC
+
+        If saveDialog.ShowDialog() = DialogResult.OK Then
+            File.Copy(filePath, saveDialog.FileName, True)
+            MessageBox.Show("Arquivo exportado com sucesso!" & vbCrLf & saveDialog.FileName, "Exportação concluída", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        End If
+
     End Sub
 
 
