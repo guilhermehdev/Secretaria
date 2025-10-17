@@ -89,22 +89,16 @@ Partial Class FormAMEOCI
         Me.btnGerarArquivo = New System.Windows.Forms.Button()
         Me.Label34 = New System.Windows.Forms.Label()
         Me.Label38 = New System.Windows.Forms.Label()
-        Me.Label37 = New System.Windows.Forms.Label()
         Me.Label36 = New System.Windows.Forms.Label()
         Me.Label35 = New System.Windows.Forms.Label()
         Me.Label33 = New System.Windows.Forms.Label()
         Me.txtTipoAtend = New System.Windows.Forms.ComboBox()
         Me.txtGestor = New System.Windows.Forms.TextBox()
-        Me.Label32 = New System.Windows.Forms.Label()
         Me.Label31 = New System.Windows.Forms.Label()
         Me.dtAltaObito = New System.Windows.Forms.DateTimePicker()
         Me.txtMotivoSaida = New System.Windows.Forms.ComboBox()
-        Me.txtNomeAutorizador = New System.Windows.Forms.TextBox()
         Me.dtEmissao = New System.Windows.Forms.DateTimePicker()
         Me.dtAutorizacao = New System.Windows.Forms.DateTimePicker()
-        Me.txtCnsAutorizador = New System.Windows.Forms.TextBox()
-        Me.txtNomeMedicoSolicitante = New System.Windows.Forms.TextBox()
-        Me.txtCNSMedicoSolicitante = New System.Windows.Forms.TextBox()
         Me.Label47 = New System.Windows.Forms.Label()
         Me.Label46 = New System.Windows.Forms.Label()
         Me.txtCidPrincipal = New System.Windows.Forms.TextBox()
@@ -131,6 +125,8 @@ Partial Class FormAMEOCI
         Me.NúmerosAPACToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.txtNumApac = New System.Windows.Forms.TextBox()
         Me.dtNascimento = New System.Windows.Forms.MaskedTextBox()
+        Me.txtNomeMedicoSolicitante = New System.Windows.Forms.ComboBox()
+        Me.txtNomeAutorizador = New System.Windows.Forms.ComboBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -664,6 +660,8 @@ Partial Class FormAMEOCI
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.txtNomeAutorizador)
+        Me.GroupBox3.Controls.Add(Me.txtNomeMedicoSolicitante)
         Me.GroupBox3.Controls.Add(Me.btAddAPAC)
         Me.GroupBox3.Controls.Add(Me.Label50)
         Me.GroupBox3.Controls.Add(Me.txtEquipe)
@@ -672,22 +670,16 @@ Partial Class FormAMEOCI
         Me.GroupBox3.Controls.Add(Me.btnGerarArquivo)
         Me.GroupBox3.Controls.Add(Me.Label34)
         Me.GroupBox3.Controls.Add(Me.Label38)
-        Me.GroupBox3.Controls.Add(Me.Label37)
         Me.GroupBox3.Controls.Add(Me.Label36)
         Me.GroupBox3.Controls.Add(Me.Label35)
         Me.GroupBox3.Controls.Add(Me.Label33)
         Me.GroupBox3.Controls.Add(Me.txtTipoAtend)
         Me.GroupBox3.Controls.Add(Me.txtGestor)
-        Me.GroupBox3.Controls.Add(Me.Label32)
         Me.GroupBox3.Controls.Add(Me.Label31)
         Me.GroupBox3.Controls.Add(Me.dtAltaObito)
         Me.GroupBox3.Controls.Add(Me.txtMotivoSaida)
-        Me.GroupBox3.Controls.Add(Me.txtNomeAutorizador)
         Me.GroupBox3.Controls.Add(Me.dtEmissao)
         Me.GroupBox3.Controls.Add(Me.dtAutorizacao)
-        Me.GroupBox3.Controls.Add(Me.txtCnsAutorizador)
-        Me.GroupBox3.Controls.Add(Me.txtNomeMedicoSolicitante)
-        Me.GroupBox3.Controls.Add(Me.txtCNSMedicoSolicitante)
         Me.GroupBox3.Location = New System.Drawing.Point(514, 276)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(529, 203)
@@ -759,20 +751,11 @@ Partial Class FormAMEOCI
         'Label38
         '
         Me.Label38.AutoSize = True
-        Me.Label38.Location = New System.Drawing.Point(135, 111)
+        Me.Label38.Location = New System.Drawing.Point(9, 111)
         Me.Label38.Name = "Label38"
         Me.Label38.Size = New System.Drawing.Size(97, 13)
         Me.Label38.TabIndex = 23
         Me.Label38.Text = "Médico autorizador"
-        '
-        'Label37
-        '
-        Me.Label37.AutoSize = True
-        Me.Label37.Location = New System.Drawing.Point(9, 111)
-        Me.Label37.Name = "Label37"
-        Me.Label37.Size = New System.Drawing.Size(122, 13)
-        Me.Label37.TabIndex = 22
-        Me.Label37.Text = "CNS Médico autorizador"
         '
         'Label36
         '
@@ -795,7 +778,7 @@ Partial Class FormAMEOCI
         'Label33
         '
         Me.Label33.AutoSize = True
-        Me.Label33.Location = New System.Drawing.Point(432, 73)
+        Me.Label33.Location = New System.Drawing.Point(430, 73)
         Me.Label33.Name = "Label33"
         Me.Label33.Size = New System.Drawing.Size(83, 13)
         Me.Label33.TabIndex = 18
@@ -817,23 +800,14 @@ Partial Class FormAMEOCI
         Me.txtGestor.TabIndex = 14
         Me.txtGestor.Text = "M353760001"
         '
-        'Label32
-        '
-        Me.Label32.AutoSize = True
-        Me.Label32.Location = New System.Drawing.Point(135, 74)
-        Me.Label32.Name = "Label32"
-        Me.Label32.Size = New System.Drawing.Size(92, 13)
-        Me.Label32.TabIndex = 17
-        Me.Label32.Text = "Médico solicitante"
-        '
         'Label31
         '
         Me.Label31.AutoSize = True
         Me.Label31.Location = New System.Drawing.Point(9, 73)
         Me.Label31.Name = "Label31"
-        Me.Label31.Size = New System.Drawing.Size(117, 13)
+        Me.Label31.Size = New System.Drawing.Size(92, 13)
         Me.Label31.TabIndex = 16
-        Me.Label31.Text = "CNS Médico solicitante"
+        Me.Label31.Text = "Médico solicitante"
         '
         'dtAltaObito
         '
@@ -851,14 +825,6 @@ Partial Class FormAMEOCI
         Me.txtMotivoSaida.Size = New System.Drawing.Size(195, 21)
         Me.txtMotivoSaida.TabIndex = 8
         '
-        'txtNomeAutorizador
-        '
-        Me.txtNomeAutorizador.Location = New System.Drawing.Point(137, 125)
-        Me.txtNomeAutorizador.Name = "txtNomeAutorizador"
-        Me.txtNomeAutorizador.Size = New System.Drawing.Size(292, 20)
-        Me.txtNomeAutorizador.TabIndex = 13
-        Me.txtNomeAutorizador.Text = "MARCIO COLOMBARA"
-        '
         'dtEmissao
         '
         Me.dtEmissao.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
@@ -875,34 +841,10 @@ Partial Class FormAMEOCI
         Me.dtAutorizacao.Size = New System.Drawing.Size(82, 20)
         Me.dtAutorizacao.TabIndex = 6
         '
-        'txtCnsAutorizador
-        '
-        Me.txtCnsAutorizador.Location = New System.Drawing.Point(12, 125)
-        Me.txtCnsAutorizador.Name = "txtCnsAutorizador"
-        Me.txtCnsAutorizador.Size = New System.Drawing.Size(119, 20)
-        Me.txtCnsAutorizador.TabIndex = 3
-        Me.txtCnsAutorizador.Text = "980016285745043"
-        '
-        'txtNomeMedicoSolicitante
-        '
-        Me.txtNomeMedicoSolicitante.Location = New System.Drawing.Point(137, 87)
-        Me.txtNomeMedicoSolicitante.Name = "txtNomeMedicoSolicitante"
-        Me.txtNomeMedicoSolicitante.Size = New System.Drawing.Size(292, 20)
-        Me.txtNomeMedicoSolicitante.TabIndex = 2
-        Me.txtNomeMedicoSolicitante.Text = "MEDICO SOLICITANTE DA SILVA"
-        '
-        'txtCNSMedicoSolicitante
-        '
-        Me.txtCNSMedicoSolicitante.Location = New System.Drawing.Point(12, 87)
-        Me.txtCNSMedicoSolicitante.Name = "txtCNSMedicoSolicitante"
-        Me.txtCNSMedicoSolicitante.Size = New System.Drawing.Size(119, 20)
-        Me.txtCNSMedicoSolicitante.TabIndex = 1
-        Me.txtCNSMedicoSolicitante.Text = "708104803893410"
-        '
         'Label47
         '
         Me.Label47.AutoSize = True
-        Me.Label47.Location = New System.Drawing.Point(418, 68)
+        Me.Label47.Location = New System.Drawing.Point(336, 68)
         Me.Label47.Name = "Label47"
         Me.Label47.Size = New System.Drawing.Size(82, 13)
         Me.Label47.TabIndex = 27
@@ -911,7 +853,7 @@ Partial Class FormAMEOCI
         'Label46
         '
         Me.Label46.AutoSize = True
-        Me.Label46.Location = New System.Drawing.Point(418, 26)
+        Me.Label46.Location = New System.Drawing.Point(336, 26)
         Me.Label46.Name = "Label46"
         Me.Label46.Size = New System.Drawing.Size(68, 13)
         Me.Label46.TabIndex = 26
@@ -919,17 +861,16 @@ Partial Class FormAMEOCI
         '
         'txtCidPrincipal
         '
-        Me.txtCidPrincipal.Location = New System.Drawing.Point(421, 42)
+        Me.txtCidPrincipal.Location = New System.Drawing.Point(339, 42)
         Me.txtCidPrincipal.Name = "txtCidPrincipal"
-        Me.txtCidPrincipal.Size = New System.Drawing.Size(93, 20)
+        Me.txtCidPrincipal.Size = New System.Drawing.Size(176, 20)
         Me.txtCidPrincipal.TabIndex = 10
-        Me.txtCidPrincipal.Text = "Z136"
         '
         'txtCidSecundario
         '
-        Me.txtCidSecundario.Location = New System.Drawing.Point(421, 84)
+        Me.txtCidSecundario.Location = New System.Drawing.Point(339, 84)
         Me.txtCidSecundario.Name = "txtCidSecundario"
-        Me.txtCidSecundario.Size = New System.Drawing.Size(93, 20)
+        Me.txtCidSecundario.Size = New System.Drawing.Size(176, 20)
         Me.txtCidSecundario.TabIndex = 11
         '
         'GroupBox4
@@ -981,7 +922,7 @@ Partial Class FormAMEOCI
         Me.txtProcedimentoPrincipal.FormattingEnabled = True
         Me.txtProcedimentoPrincipal.Location = New System.Drawing.Point(14, 42)
         Me.txtProcedimentoPrincipal.Name = "txtProcedimentoPrincipal"
-        Me.txtProcedimentoPrincipal.Size = New System.Drawing.Size(403, 21)
+        Me.txtProcedimentoPrincipal.Size = New System.Drawing.Size(319, 21)
         Me.txtProcedimentoPrincipal.TabIndex = 50
         '
         'CodProcedimento
@@ -989,7 +930,7 @@ Partial Class FormAMEOCI
         Me.CodProcedimento.FormattingEnabled = True
         Me.CodProcedimento.Location = New System.Drawing.Point(14, 84)
         Me.CodProcedimento.Name = "CodProcedimento"
-        Me.CodProcedimento.Size = New System.Drawing.Size(403, 21)
+        Me.CodProcedimento.Size = New System.Drawing.Size(319, 21)
         Me.CodProcedimento.TabIndex = 49
         '
         'Label45
@@ -1116,7 +1057,7 @@ Partial Class FormAMEOCI
         Me.dgvProcedimentos.RowHeadersWidth = 4
         Me.dgvProcedimentos.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgvProcedimentos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvProcedimentos.Size = New System.Drawing.Size(290, 117)
+        Me.dgvProcedimentos.Size = New System.Drawing.Size(291, 117)
         Me.dgvProcedimentos.TabIndex = 32
         Me.dgvProcedimentos.TabStop = False
         '
@@ -1173,6 +1114,22 @@ Partial Class FormAMEOCI
         Me.dtNascimento.Size = New System.Drawing.Size(82, 20)
         Me.dtNascimento.TabIndex = 34
         Me.dtNascimento.ValidatingType = GetType(Date)
+        '
+        'txtNomeMedicoSolicitante
+        '
+        Me.txtNomeMedicoSolicitante.FormattingEnabled = True
+        Me.txtNomeMedicoSolicitante.Location = New System.Drawing.Point(12, 86)
+        Me.txtNomeMedicoSolicitante.Name = "txtNomeMedicoSolicitante"
+        Me.txtNomeMedicoSolicitante.Size = New System.Drawing.Size(415, 21)
+        Me.txtNomeMedicoSolicitante.TabIndex = 30
+        '
+        'txtNomeAutorizador
+        '
+        Me.txtNomeAutorizador.FormattingEnabled = True
+        Me.txtNomeAutorizador.Location = New System.Drawing.Point(12, 125)
+        Me.txtNomeAutorizador.Name = "txtNomeAutorizador"
+        Me.txtNomeAutorizador.Size = New System.Drawing.Size(415, 21)
+        Me.txtNomeAutorizador.TabIndex = 31
         '
         'FormAMEOCI
         '
@@ -1235,9 +1192,6 @@ Partial Class FormAMEOCI
     Friend WithEvents txtMotivoSaida As ComboBox
     Friend WithEvents txtTipoAtend As ComboBox
     Friend WithEvents dtAutorizacao As DateTimePicker
-    Friend WithEvents txtCnsAutorizador As TextBox
-    Friend WithEvents txtNomeMedicoSolicitante As TextBox
-    Friend WithEvents txtCNSMedicoSolicitante As TextBox
     Friend WithEvents txtProntuario As TextBox
     Friend WithEvents txtCidSecundario As TextBox
     Friend WithEvents txtCidPrincipal As TextBox
@@ -1249,7 +1203,6 @@ Partial Class FormAMEOCI
     Friend WithEvents Quantidade As TextBox
     Friend WithEvents btnGerarArquivo As Button
     Friend WithEvents dtEmissao As DateTimePicker
-    Friend WithEvents txtNomeAutorizador As TextBox
     Friend WithEvents txtGestor As TextBox
     Friend WithEvents Label2 As Label
     Friend WithEvents Label3 As Label
@@ -1274,14 +1227,12 @@ Partial Class FormAMEOCI
     Friend WithEvents cbTipoLogradouro As ComboBox
     Friend WithEvents Label34 As Label
     Friend WithEvents Label33 As Label
-    Friend WithEvents Label32 As Label
     Friend WithEvents Label31 As Label
     Friend WithEvents Label30 As Label
     Friend WithEvents Label36 As Label
     Friend WithEvents Label35 As Label
     Friend WithEvents Label39 As Label
     Friend WithEvents Label38 As Label
-    Friend WithEvents Label37 As Label
     Friend WithEvents Label40 As Label
     Friend WithEvents Label41 As Label
     Friend WithEvents Label43 As Label
@@ -1311,4 +1262,6 @@ Partial Class FormAMEOCI
     Friend WithEvents NúmerosAPACToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents txtNumApac As TextBox
     Friend WithEvents dtNascimento As MaskedTextBox
+    Friend WithEvents txtNomeMedicoSolicitante As ComboBox
+    Friend WithEvents txtNomeAutorizador As ComboBox
 End Class

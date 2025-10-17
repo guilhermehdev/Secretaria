@@ -150,10 +150,10 @@ Public Class FormAMEOCI
             End If
 
             ' 28. CNS médico solicitante
-            r14.Append(txtCNSMedicoSolicitante.Text.PadLeft(15, "0"c)) ' 15
+            r14.Append(txtNomeMedicoSolicitante.SelectedValue.PadLeft(15, "0"c)) ' 15
 
             ' 29. CNS diretor
-            r14.Append(txtCnsAutorizador.Text.PadLeft(15, "0"c))    ' 15
+            r14.Append(txtNomeAutorizador.SelectedValue.PadLeft(15, "0"c))    ' 15
 
             r14.Append("    ")
 
@@ -418,8 +418,16 @@ Public Class FormAMEOCI
 
     Private Sub getServersSUS()
         Dim main As New FormAMEmain
+        Dim comboList As New List(Of ComboBox) From {
+            txtCNSMedicoExecutante,
+            txtNomeMedicoSolicitante
+        }
 
-        main.loadComboBox($"SELECT SUS, nome FROM servidores WHERE cbo ='{CBOmed.SelectedValue}'", txtCNSMedicoExecutante, "nome", "SUS", True)
+        For Each cb As ComboBox In comboList
+            main.loadComboBox($"SELECT SUS, nome FROM servidores WHERE cbo ='{CBOmed.SelectedValue}'", cb, "nome", "SUS", True)
+        Next
+
+        main.loadComboBox($"SELECT SUS, nome FROM servidores WHERE oci_autorizador=1", txtNomeAutorizador, "nome", "SUS", True)
 
     End Sub
 
