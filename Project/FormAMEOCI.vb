@@ -606,4 +606,11 @@ Public Class FormAMEOCI
             MsgBox("CEP não encontrado ou erro na consulta.")
         End If
     End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Dim cepaberto As New CepAberto()
+
+        cepaberto.getPeruibe()
+
+    End Sub
 End Class

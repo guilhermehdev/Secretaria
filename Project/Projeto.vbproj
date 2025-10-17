@@ -438,6 +438,7 @@
     <Compile Include="BackupMySQL.vb" />
     <Compile Include="BLH.vb" />
     <Compile Include="CEP.vb" />
+    <Compile Include="CepAberto.vb" />
     <Compile Include="FormAMEbd.Designer.vb">
       <DependentUpon>FormAMEbd.vb</DependentUpon>
     </Compile>
