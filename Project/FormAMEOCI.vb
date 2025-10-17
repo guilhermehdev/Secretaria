@@ -118,7 +118,7 @@ Public Class FormAMEOCI
             r14.Append(txtMunIbge.Text.PadLeft(7, "0"c))        ' 7
 
             ' 20. Data nascimento
-            r14.Append(dtNascimento.Value.ToString("yyyyMMdd")) ' 8
+            r14.Append(dtNascimento.Text.ToString("yyyyMMdd")) ' 8
 
             ' 21. Sexo
             r14.Append(txtSexo.Text.PadRight(1, " "c))          ' 1
@@ -424,6 +424,45 @@ Public Class FormAMEOCI
     End Sub
 
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim novoMes As Integer
+        ' 1. Converter a string para um número inteiro
+
+        If Integer.TryParse(My.Settings.OCIcompetencia.Substring(4, 2), novoMes) Then
+
+            ' O TryParse foi bem-sucedido e a variável novoMes agora contém o valor numérico (1 a 12)
+
+            ' Pega a data atual do DateTimePicker
+            Dim dataAtual As Date = dtValidadeIni.Value
+
+            ' Pega o Ano e o Dia da data atual
+            Dim anoAtual As Integer = dataAtual.Year
+            Dim diaAtual As Integer = dataAtual.Day
+
+            Try
+                ' 2. Criar uma nova data com o Novo Mês, mas mantendo o Ano e o Dia atuais
+                dtValidadeIni.Value = New Date(anoAtual, novoMes, diaAtual)
+
+            Catch ex As ArgumentOutOfRangeException
+
+                ' Este erro ocorre se o dia atual for inválido no novo mês.
+                ' Exemplo: Tentar colocar o dia 31 em um mês que só tem 30 dias (como Abril, Junho, Setembro, Novembro).
+
+                ' Solução Comum: Ajustar para o último dia válido do novo mês.
+                Dim ultimoDiaDoMes As Integer = Date.DaysInMonth(anoAtual, novoMes)
+                dtValidadeIni.Value = New Date(anoAtual, novoMes, ultimoDiaDoMes)
+
+                ' (Opcional) Mostrar uma mensagem de aviso
+                MessageBox.Show($"O dia {diaAtual} não existe no mês {novoMes}. A data foi ajustada para o dia {ultimoDiaDoMes}.", "Ajuste de Data", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+            End Try
+
+        Else
+            ' (Opcional) Tratamento de erro se a string não puder ser convertida
+            MessageBox.Show("A string do mês não é um número válido (01-12).", "Erro de Conversão", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
+
+        dtValidadeFim.Value = dtValidadeIni.Value.AddMonths(1)
+
         dgvProcedimentos.Columns.Clear()
 
         dgvProcedimentos.Columns.Add("Codigo", "Procedimento")
@@ -435,7 +474,6 @@ Public Class FormAMEOCI
         dgvProcedimentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
 
         txtSexo.SelectedIndex = 0
-
 
         Dim cbProcedPrincipal As New Dictionary(Of String, String) From {
             {"0904010015", "0904010015 - OCI Avaliação inicial diagnóstica de deficit auditivo"},
@@ -607,10 +645,5 @@ Public Class FormAMEOCI
         End If
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Dim cepaberto As New CepAberto()
 
-        cepaberto.getPeruibe()
-
-    End Sub
 End Class

@@ -25,7 +25,6 @@ Partial Class FormAMEOCI
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Me.txtNumApac = New System.Windows.Forms.TextBox()
         Me.txtApacAnterior = New System.Windows.Forms.TextBox()
         Me.txtCnesSolicitante = New System.Windows.Forms.TextBox()
         Me.txtCnesExecutante = New System.Windows.Forms.TextBox()
@@ -76,7 +75,6 @@ Partial Class FormAMEOCI
         Me.txtProntuario = New System.Windows.Forms.TextBox()
         Me.txtSexo = New System.Windows.Forms.ComboBox()
         Me.chkSituacaoRua = New System.Windows.Forms.CheckBox()
-        Me.dtNascimento = New System.Windows.Forms.DateTimePicker()
         Me.txtNomeRespPaciente = New System.Windows.Forms.TextBox()
         Me.txtNomeMae = New System.Windows.Forms.TextBox()
         Me.txtNomePaciente = New System.Windows.Forms.TextBox()
@@ -131,7 +129,8 @@ Partial Class FormAMEOCI
         Me.ConfiguraçõesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ControleDeCompetênciaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.NúmerosAPACToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.txtNumApac = New System.Windows.Forms.TextBox()
+        Me.dtNascimento = New System.Windows.Forms.MaskedTextBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -140,15 +139,6 @@ Partial Class FormAMEOCI
         CType(Me.dgvProcedimentos, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'txtNumApac
-        '
-        Me.txtNumApac.Location = New System.Drawing.Point(13, 39)
-        Me.txtNumApac.MaxLength = 13
-        Me.txtNumApac.Name = "txtNumApac"
-        Me.txtNumApac.Size = New System.Drawing.Size(100, 20)
-        Me.txtNumApac.TabIndex = 1
-        Me.txtNumApac.Text = "1122244455661"
         '
         'txtApacAnterior
         '
@@ -285,6 +275,7 @@ Partial Class FormAMEOCI
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.dtNascimento)
         Me.GroupBox2.Controls.Add(Me.Label49)
         Me.GroupBox2.Controls.Add(Me.txtDDD)
         Me.GroupBox2.Controls.Add(Me.GroupBox6)
@@ -305,7 +296,6 @@ Partial Class FormAMEOCI
         Me.GroupBox2.Controls.Add(Me.txtProntuario)
         Me.GroupBox2.Controls.Add(Me.txtSexo)
         Me.GroupBox2.Controls.Add(Me.chkSituacaoRua)
-        Me.GroupBox2.Controls.Add(Me.dtNascimento)
         Me.GroupBox2.Controls.Add(Me.txtNomeRespPaciente)
         Me.GroupBox2.Controls.Add(Me.txtNomeMae)
         Me.GroupBox2.Controls.Add(Me.txtNomePaciente)
@@ -445,7 +435,6 @@ Partial Class FormAMEOCI
         Me.txtNumero.Name = "txtNumero"
         Me.txtNumero.Size = New System.Drawing.Size(43, 20)
         Me.txtNumero.TabIndex = 6
-        Me.txtNumero.Text = "28"
         '
         'cbTipoLogradouro
         '
@@ -462,7 +451,6 @@ Partial Class FormAMEOCI
         Me.txtLogradouro.Name = "txtLogradouro"
         Me.txtLogradouro.Size = New System.Drawing.Size(280, 20)
         Me.txtLogradouro.TabIndex = 5
-        Me.txtLogradouro.Text = "JURUPIS"
         '
         'txtMunicipioNome
         '
@@ -479,7 +467,6 @@ Partial Class FormAMEOCI
         Me.txtBairro.Name = "txtBairro"
         Me.txtBairro.Size = New System.Drawing.Size(138, 20)
         Me.txtBairro.TabIndex = 8
-        Me.txtBairro.Text = "RUINAS"
         '
         'txtCep
         '
@@ -488,7 +475,6 @@ Partial Class FormAMEOCI
         Me.txtCep.Name = "txtCep"
         Me.txtCep.Size = New System.Drawing.Size(59, 20)
         Me.txtCep.TabIndex = 9
-        Me.txtCep.Text = "11771702"
         '
         'Label27
         '
@@ -567,7 +553,6 @@ Partial Class FormAMEOCI
         Me.txtTelefone.Name = "txtTelefone"
         Me.txtTelefone.Size = New System.Drawing.Size(134, 20)
         Me.txtTelefone.TabIndex = 16
-        Me.txtTelefone.Text = "997830079"
         '
         'Label20
         '
@@ -639,15 +624,6 @@ Partial Class FormAMEOCI
         Me.chkSituacaoRua.Text = "Situação de rua?"
         Me.chkSituacaoRua.UseVisualStyleBackColor = True
         '
-        'dtNascimento
-        '
-        Me.dtNascimento.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtNascimento.Location = New System.Drawing.Point(409, 39)
-        Me.dtNascimento.Name = "dtNascimento"
-        Me.dtNascimento.Size = New System.Drawing.Size(82, 20)
-        Me.dtNascimento.TabIndex = 12
-        Me.dtNascimento.Value = New Date(1980, 6, 18, 0, 0, 0, 0)
-        '
         'txtNomeRespPaciente
         '
         Me.txtNomeRespPaciente.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
@@ -655,7 +631,6 @@ Partial Class FormAMEOCI
         Me.txtNomeRespPaciente.Name = "txtNomeRespPaciente"
         Me.txtNomeRespPaciente.Size = New System.Drawing.Size(250, 20)
         Me.txtNomeRespPaciente.TabIndex = 4
-        Me.txtNomeRespPaciente.Text = "GUILHERME"
         '
         'txtNomeMae
         '
@@ -664,7 +639,6 @@ Partial Class FormAMEOCI
         Me.txtNomeMae.Name = "txtNomeMae"
         Me.txtNomeMae.Size = New System.Drawing.Size(223, 20)
         Me.txtNomeMae.TabIndex = 3
-        Me.txtNomeMae.Text = "MARLENE MOLINA"
         '
         'txtNomePaciente
         '
@@ -673,7 +647,6 @@ Partial Class FormAMEOCI
         Me.txtNomePaciente.Name = "txtNomePaciente"
         Me.txtNomePaciente.Size = New System.Drawing.Size(249, 20)
         Me.txtNomePaciente.TabIndex = 2
-        Me.txtNomePaciente.Text = "GUILHERME H SANTOS"
         '
         'txtCnsPaciente
         '
@@ -688,7 +661,6 @@ Partial Class FormAMEOCI
         Me.txtCpfPaciente.Name = "txtCpfPaciente"
         Me.txtCpfPaciente.Size = New System.Drawing.Size(143, 20)
         Me.txtCpfPaciente.TabIndex = 0
-        Me.txtCpfPaciente.Text = "33183026864"
         '
         'GroupBox3
         '
@@ -1185,21 +1157,28 @@ Partial Class FormAMEOCI
         Me.NúmerosAPACToolStripMenuItem.Size = New System.Drawing.Size(208, 22)
         Me.NúmerosAPACToolStripMenuItem.Text = "Números APAC"
         '
-        'Button1
+        'txtNumApac
         '
-        Me.Button1.Location = New System.Drawing.Point(325, 12)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 28
-        Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.txtNumApac.Location = New System.Drawing.Point(13, 39)
+        Me.txtNumApac.MaxLength = 13
+        Me.txtNumApac.Name = "txtNumApac"
+        Me.txtNumApac.Size = New System.Drawing.Size(100, 20)
+        Me.txtNumApac.TabIndex = 1
+        '
+        'dtNascimento
+        '
+        Me.dtNascimento.Location = New System.Drawing.Point(409, 39)
+        Me.dtNascimento.Mask = "00/00/0000"
+        Me.dtNascimento.Name = "dtNascimento"
+        Me.dtNascimento.Size = New System.Drawing.Size(82, 20)
+        Me.dtNascimento.TabIndex = 34
+        Me.dtNascimento.ValidatingType = GetType(Date)
         '
         'FormAMEOCI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1055, 501)
-        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.GroupBox4)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.GroupBox2)
@@ -1226,7 +1205,6 @@ Partial Class FormAMEOCI
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents txtNumApac As TextBox
     Friend WithEvents txtApacAnterior As TextBox
     Friend WithEvents txtCnesSolicitante As TextBox
     Friend WithEvents txtCnesExecutante As TextBox
@@ -1251,7 +1229,6 @@ Partial Class FormAMEOCI
     Friend WithEvents txtTelefone As TextBox
     Friend WithEvents txtRaca As ComboBox
     Friend WithEvents txtSexo As ComboBox
-    Friend WithEvents dtNascimento As DateTimePicker
     Friend WithEvents txtMunicipioNome As TextBox
     Friend WithEvents GroupBox3 As GroupBox
     Friend WithEvents dtAltaObito As DateTimePicker
@@ -1332,5 +1309,6 @@ Partial Class FormAMEOCI
     Friend WithEvents Label7 As Label
     Friend WithEvents Label1 As Label
     Friend WithEvents NúmerosAPACToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents Button1 As Button
+    Friend WithEvents txtNumApac As TextBox
+    Friend WithEvents dtNascimento As MaskedTextBox
 End Class
