@@ -354,24 +354,143 @@ Public Class Endereco
     Public Property Bairro As String
 
     Public Function ExtrairCEPsDoTXT(caminhoArquivo As String) As List(Of Endereco)
+        '    Dim lista As New List(Of Endereco)
+        '    Dim rgxCep As New Regex("\d{5}-\d{3}")
+
+        '    ' Dicionário de abreviações → forma completa
+        '    Dim tipos As New Dictionary(Of String, String)(StringComparer.OrdinalIgnoreCase) From {
+        '    {"r", "Rua"}, {"rua", "Rua"},
+        '    {"av", "Avenida"}, {"avenida", "Avenida"},
+        '    {"pç", "Praça"}, {"pr", "Praça"},
+        '    {"al", "Alameda"}, {"rod", "Rodovia"},
+        '    {"est", "Estrada"}, {"tr", "Travessa"},
+        '    {"r ped", "Rua Pde."},
+        '    {"r prof", "Rua Prof."},
+        '    {"r dr", "Rua Dr."},
+        '    {"r dep", "Rua Deputado"},
+        '    {"r cel", "Rua Coronel"},
+        '    {"vl", "Vila"},
+        '    {"vla", "Viela"}
+        '}
+
+        '    For Each linha In File.ReadAllLines(caminhoArquivo)
+        '        linha = linha.Trim()
+        '        If String.IsNullOrWhiteSpace(linha) Then Continue For
+
+        '        Dim m As Match = rgxCep.Match(linha)
+        '        If Not m.Success Then Continue For
+
+        '        Dim cep As String = m.Value
+        '        Dim semCep As String = linha.Replace(cep, "").Trim()
+
+        '        Dim partes() As String = semCep.Split(New String() {" - "}, StringSplitOptions.None)
+        '        If partes.Length < 3 Then Continue For
+
+        '        Dim logradouro As String = ""
+        '        Dim tipoAbrev As String = ""
+        '        Dim bairro As String = ""
+
+        '        Select Case partes.Length
+        '            Case 3
+        '                ' Formato normal: logradouro - tipo - bairro
+        '                logradouro = partes(0).Trim()
+        '                tipoAbrev = partes(1).Trim().ToLower()
+        '                bairro = partes(2).Trim()
+
+        '            Case 4
+        '                ' Formato com complemento: logradouro - complemento - tipo - bairro
+        '                logradouro = $"{partes(0).Trim()} {partes(1).Trim()}"
+        '                tipoAbrev = partes(2).Trim().ToLower()
+        '                bairro = partes(3).Trim()
+
+        '            Case Else
+        '                ' Linhas fora do padrão, ignora
+        '                Continue For
+        '        End Select
+
+        '        ' Substitui abreviação
+        '        Dim tipoCompleto As String = If(tipos.ContainsKey(tipoAbrev), tipos(tipoAbrev), tipoAbrev)
+        '        Dim logradouroCompleto As String = $"{tipoCompleto} {logradouro}"
+        '        ' Inverter se contiver vírgula (ex: "Anchieta, Padre" → "Padre Anchieta")
+        '        If logradouroCompleto.Contains(",") Then
+        '            Dim partesNome() As String = logradouroCompleto.Split(","c)
+        '            If partesNome.Length = 2 Then
+        '                logradouroCompleto = $"{partesNome(1).Trim()} {partesNome(0).Trim()}"
+        '            End If
+        '        End If
+
+        '        ' Corrige tipo de logradouro posicionado no final (ex: "Doutor lado ímpar Rua Osvaldo Marçal")
+        '        Dim tiposList = {"rua", "avenida", "travessa", "estrada", "rodovia", "praça", "alameda", "viela", "vila"}
+
+        '        For Each tipo In tiposList
+        '            Dim padrao As String = $"(\b[Dd]outor|\b[Pp]adre|\b[Pp]rofessor|\b[Dd]ep|\b[Cc]oronel|\b[Ss]anto|\b[Ss]anta).*?\b{tipo}\b"
+
+        '            If Regex.IsMatch(logradouroCompleto, padrao, RegexOptions.IgnoreCase) Then
+        '                ' extrai "Rua" ou "Avenida" e move pro início
+        '                Dim tipoEncontrado As Match = Regex.Match(logradouroCompleto, "\b(" & String.Join("|", tiposList) & ")\b", RegexOptions.IgnoreCase)
+        '                If tipoEncontrado.Success Then
+        '                    Dim tipoStr As String = tipoEncontrado.Value
+        '                    logradouroCompleto = $"{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(tipoStr)} {Regex.Replace(logradouroCompleto, tipoStr, "", RegexOptions.IgnoreCase).Trim()}"
+        '                End If
+        '                Exit For
+        '            End If
+        '        Next
+
+        '        Dim prefixos = {"da", "do", "de", "das", "dos"}
+        '        For Each pfx In prefixos
+        '            For Each tipo In tipos.Values
+        '                Dim padrao As String = $"^{pfx}\s+{tipo}\b"
+        '                If Regex.IsMatch(logradouroCompleto, padrao, RegexOptions.IgnoreCase) Then
+        '                    logradouroCompleto = Regex.Replace(logradouroCompleto, $"^{pfx}\s+", "", RegexOptions.IgnoreCase).Trim()
+        '                    Exit For
+        '                End If
+        '            Next
+        '        Next
+
+        '        ' Corrige abreviações de bairro
+        '        bairro = bairro.Replace("Jd", "Jardim").Replace("Vl", "Vila").Replace("Etn", "Estancia").Replace("Baln", "Balneario").Replace("Balneárioeária", "Balnearia").Replace("Cid", "Cidade").Replace("Lot", "Loteamento").Replace("Prq", "Parque").Replace("Qta", "Quinta").Replace("Sit", "Sitio").Replace("Chs", "Chacaras").Trim()
+
+        '        lista.Add(New Endereco With {
+        '        .CEP = cep,
+        '        .Logradouro = logradouroCompleto,
+        '        .Bairro = bairro
+        '    })
+        '    Next
+
+        '    Return lista
+
         Dim lista As New List(Of Endereco)
         Dim rgxCep As New Regex("\d{5}-\d{3}")
+        Dim textInfo As TextInfo = CultureInfo.GetCultureInfo("pt-BR").TextInfo
 
         ' Dicionário de abreviações → forma completa
         Dim tipos As New Dictionary(Of String, String)(StringComparer.OrdinalIgnoreCase) From {
-        {"r", "Rua"}, {"rua", "Rua"},
-        {"av", "Avenida"}, {"avenida", "Avenida"},
-        {"pç", "Praça"}, {"pr", "Praça"},
-        {"al", "Alameda"}, {"rod", "Rodovia"},
-        {"est", "Estrada"}, {"tr", "Travessa"},
-        {"r ped", "Rua Padre"},
-        {"r prof", "Rua Professor"},
-        {"r dr", "Rua Doutor"},
-        {"r dep", "Rua Deputado"},
-        {"r cel", "Rua Coronel"},
-        {"vl", "Vila"},
-        {"vla", "Viela"}
-    }
+            {"r", "Rua"}, {"rua", "Rua"},
+            {"av", "Avenida"}, {"avenida", "Avenida"},
+            {"pç", "Praça"}, {"pr", "Praça"},
+            {"al", "Alameda"}, {"rod", "Rodovia"},
+            {"est", "Estrada"}, {"tr", "Travessa"},
+            {"r ped", "Rua Pde."},
+            {"r prof", "Rua Prof."},
+            {"r dr", "Rua Dr."},
+            {"r dep", "Rua Deputado"},
+            {"r cel", "Rua Coronel"},
+            {"vl", "Vila"},
+            {"vla", "Viela"},
+            {"tv", "Travessa"}
+        }
+
+        ' Lista de tipos de logradouro
+        Dim tiposList = {"rua", "avenida", "travessa", "estrada", "rodovia", "praça", "alameda", "viela", "vila"}
+
+        ' Prefixos indevidos
+        Dim prefixos = {"da", "do", "de", "das", "dos"}
+
+        ' Títulos/honoríficos reconhecidos
+        Dim titulos = {"Vereador", "Dona", "Comandante", "General", "Jornalista", "Almirante", "Presidente",
+                       "São", "Santa", "Dom", "Governador", "Ministro", "Marechal", "Major", "Tenente",
+                       "Visconde", "Barão", "Conselheiro", "Cardeal", "Comendador", "Capitão", "Ecologista",
+                       "Engenheiro", "Madre", "Maestro", "Papa"}
 
         For Each linha In File.ReadAllLines(caminhoArquivo)
             linha = linha.Trim()
@@ -392,68 +511,111 @@ Public Class Endereco
 
             Select Case partes.Length
                 Case 3
-                    ' Formato normal: logradouro - tipo - bairro
                     logradouro = partes(0).Trim()
                     tipoAbrev = partes(1).Trim().ToLower()
                     bairro = partes(2).Trim()
-
                 Case 4
-                    ' Formato com complemento: logradouro - complemento - tipo - bairro
                     logradouro = $"{partes(0).Trim()} {partes(1).Trim()}"
                     tipoAbrev = partes(2).Trim().ToLower()
                     bairro = partes(3).Trim()
-
                 Case Else
-                    ' Linhas fora do padrão, ignora
                     Continue For
             End Select
 
-            ' Substitui abreviação
-            Dim tipoCompleto As String = If(tipos.ContainsKey(tipoAbrev), tipos(tipoAbrev), tipoAbrev)
-            Dim logradouroCompleto As String = $"{tipoCompleto} {logradouro}"
-            ' Inverter se contiver vírgula (ex: "Anchieta, Padre" → "Padre Anchieta")
-            If logradouroCompleto.Contains(",") Then
-                Dim partesNome() As String = logradouroCompleto.Split(","c)
+            ' Substitui abreviação do tipo
+            Dim tipoCompleto As String = If(tipos.ContainsKey(tipoAbrev), tipos(tipoAbrev), textInfo.ToTitleCase(tipoAbrev))
+
+            ' Corrige vírgulas ("Anchieta, Padre" → "Padre Anchieta")
+            If logradouro.Contains(",") Then
+                Dim partesNome() As String = logradouro.Split(","c)
                 If partesNome.Length = 2 Then
-                    logradouroCompleto = $"{partesNome(1).Trim()} {partesNome(0).Trim()}"
+                    logradouro = $"{partesNome(1).Trim()} {partesNome(0).Trim()}"
                 End If
             End If
 
-            ' Corrige tipo de logradouro posicionado no final (ex: "Doutor lado ímpar Rua Osvaldo Marçal")
-            Dim tiposList = {"rua", "avenida", "travessa", "estrada", "rodovia", "praça", "alameda", "viela", "vila"}
+            ' Extrai e remove complementos (lado par/ímpar, até XXXX, particular)
+            Dim complementos As New List(Of String)
+            Dim mLado = Regex.Match(logradouro, "\bLADO\s+(PAR|ÍMPAR|IMPAR)\b", RegexOptions.IgnoreCase)
+            If mLado.Success Then
+                complementos.Add(textInfo.ToTitleCase(mLado.Value.ToLower()))
+                logradouro = Regex.Replace(logradouro, Regex.Escape(mLado.Value), "", RegexOptions.IgnoreCase).Trim()
+            End If
 
+            Dim mAte = Regex.Match(logradouro, "\bATÉ\s+\d+(?:/\d+)?\b", RegexOptions.IgnoreCase)
+            If mAte.Success Then
+                complementos.Add(textInfo.ToTitleCase(mAte.Value.ToLower()))
+                logradouro = Regex.Replace(logradouro, Regex.Escape(mAte.Value), "", RegexOptions.IgnoreCase).Trim()
+            End If
+
+            Dim mPart = Regex.Match(logradouro, "\b(PARTICULAR|PART)\b", RegexOptions.IgnoreCase)
+            If mPart.Success Then
+                complementos.Add("Particular")
+                logradouro = Regex.Replace(logradouro, "\b(PARTICULAR|PART)\b", "", RegexOptions.IgnoreCase).Trim()
+            End If
+
+            ' Corrige tipo deslocado (ex: "Doutor ... Rua Osvaldo" → "Rua Doutor Osvaldo")
             For Each tipo In tiposList
-                Dim padrao As String = $"(\b[Dd]outor|\b[Pp]adre|\b[Pp]rofessor|\b[Dd]ep|\b[Cc]oronel).*?\b{tipo}\b"
-                If Regex.IsMatch(logradouroCompleto, padrao, RegexOptions.IgnoreCase) Then
-                    ' extrai "Rua" ou "Avenida" e move pro início
-                    Dim tipoEncontrado As Match = Regex.Match(logradouroCompleto, "\b(" & String.Join("|", tiposList) & ")\b", RegexOptions.IgnoreCase)
-                    If tipoEncontrado.Success Then
-                        Dim tipoStr As String = tipoEncontrado.Value
-                        logradouroCompleto = $"{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(tipoStr)} {Regex.Replace(logradouroCompleto, tipoStr, "", RegexOptions.IgnoreCase).Trim()}"
-                    End If
+                Dim padrao As String = $"(\b[Dd]outor|\b[Pp]adre|\b[Pp]rofessor|\b[Dd]ep|\b[Cc]oronel|\b[Ss]anto|\b[Ss]anta).*?\b{tipo}\b"
+                If Regex.IsMatch(logradouro, padrao, RegexOptions.IgnoreCase) Then
+                    logradouro = Regex.Replace(logradouro, "\b(" & String.Join("|", tiposList) & ")\b", "", RegexOptions.IgnoreCase)
                     Exit For
                 End If
             Next
 
-            Dim prefixos = {"da", "do", "de", "das", "dos"}
+            ' Remove prefixos indevidos (da, de, do...)
             For Each pfx In prefixos
                 For Each tipo In tipos.Values
                     Dim padrao As String = $"^{pfx}\s+{tipo}\b"
-                    If Regex.IsMatch(logradouroCompleto, padrao, RegexOptions.IgnoreCase) Then
-                        logradouroCompleto = Regex.Replace(logradouroCompleto, $"^{pfx}\s+", "", RegexOptions.IgnoreCase).Trim()
+                    If Regex.IsMatch(logradouro, padrao, RegexOptions.IgnoreCase) Then
+                        logradouro = Regex.Replace(logradouro, $"^{pfx}\s+", "", RegexOptions.IgnoreCase).Trim()
                         Exit For
                     End If
                 Next
             Next
 
-            ' Corrige abreviações de bairro
-            bairro = bairro.Replace("Jd", "Jardim").Replace("Vl", "Vila").Replace("Etn", "Estancia").Replace("Baln", "Balneário").Trim()
+            ' Remove tipos duplicados dentro do logradouro
+            For Each tipo In tipos.Values
+                logradouro = Regex.Replace(logradouro, "\b" & tipo & "\b", "", RegexOptions.IgnoreCase).Trim()
+            Next
 
+            ' Aplica título no início, se existir
+            For Each t In titulos
+                If logradouro.StartsWith(t, StringComparison.OrdinalIgnoreCase) Then
+                    logradouro = $"{t} {logradouro.Substring(t.Length).Trim()}"
+                    Exit For
+                End If
+            Next
+
+            ' Monta logradouro final
+            Dim logradouroFinal As String = $"{tipoCompleto} {logradouro}".Trim()
+
+            ' Adiciona complementos (se houver)
+            If complementos.Count > 0 Then
+                logradouroFinal &= " (" & String.Join("; ", complementos) & ")"
+            End If
+
+            ' Corrige abreviações de bairro
+            bairro = bairro _
+                .Replace("Jd", "Jardim") _
+                .Replace("Vl", "Vila") _
+                .Replace("Etn", "Estancia") _
+                .Replace("Baln", "Balneario") _
+                .Replace("Cid", "Cidade") _
+                .Replace("Lot", "Loteamento") _
+                .Replace("Prq", "Parque") _
+                .Replace("Qta", "Quinta") _
+                .Replace("Sit", "Sitio") _
+                .Replace("Chs", "Chacaras") _
+                .Replace("Rcr", "Recreio") _
+                .Replace("Res", "Residencial") _
+                .Trim()
+
+            ' Adiciona à lista em UPPER
             lista.Add(New Endereco With {
-            .CEP = cep,
-            .Logradouro = logradouroCompleto,
-            .Bairro = bairro
-        })
+                .CEP = cep.ToUpper(),
+                .Logradouro = logradouroFinal.ToUpper(),
+                .Bairro = bairro.ToUpper()
+            })
         Next
 
         Return lista
@@ -464,9 +626,9 @@ Public Class Endereco
 
             For Each item In lista
                 Dim p As New Dictionary(Of String, Object) From {
-                     {"@logradouro", item.Logradouro},
+                     {"@logradouro", item.Logradouro.ToUpper()},
                      {"@cep", item.CEP},
-                     {"@bairro", item.Bairro}
+                     {"@bairro", item.Bairro.ToUpper()}
                  }
                 FormAMEmain.doQuery("INSERT INTO ceps_peruibe (cep, logradouro, bairro) VALUES (@cep, @logradouro, @bairro)", p)
             Next

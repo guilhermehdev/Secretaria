@@ -433,133 +433,139 @@ Public Class FormAMEOCI
 
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim novoMes As Integer
-        ' 1. Converter a string para um número inteiro
 
-        If Integer.TryParse(My.Settings.OCIcompetencia.Substring(4, 2), novoMes) Then
+        Try
+            ' 1. Converter a string para um número inteiro
 
-            ' O TryParse foi bem-sucedido e a variável novoMes agora contém o valor numérico (1 a 12)
+            If Integer.TryParse(My.Settings.OCIcompetencia.Substring(4, 2), novoMes) Then
 
-            ' Pega a data atual do DateTimePicker
-            Dim dataAtual As Date = dtValidadeIni.Value
+                ' O TryParse foi bem-sucedido e a variável novoMes agora contém o valor numérico (1 a 12)
 
-            ' Pega o Ano e o Dia da data atual
-            Dim anoAtual As Integer = dataAtual.Year
-            Dim diaAtual As Integer = dataAtual.Day
+                ' Pega a data atual do DateTimePicker
+                Dim dataAtual As Date = dtValidadeIni.Value
 
-            Try
-                ' 2. Criar uma nova data com o Novo Mês, mas mantendo o Ano e o Dia atuais
-                dtValidadeIni.Value = New Date(anoAtual, novoMes, diaAtual)
+                ' Pega o Ano e o Dia da data atual
+                Dim anoAtual As Integer = dataAtual.Year
+                Dim diaAtual As Integer = dataAtual.Day
 
-            Catch ex As ArgumentOutOfRangeException
+                Try
+                    ' 2. Criar uma nova data com o Novo Mês, mas mantendo o Ano e o Dia atuais
+                    dtValidadeIni.Value = New Date(anoAtual, novoMes, diaAtual)
 
-                ' Este erro ocorre se o dia atual for inválido no novo mês.
-                ' Exemplo: Tentar colocar o dia 31 em um mês que só tem 30 dias (como Abril, Junho, Setembro, Novembro).
+                Catch ex As ArgumentOutOfRangeException
 
-                ' Solução Comum: Ajustar para o último dia válido do novo mês.
-                Dim ultimoDiaDoMes As Integer = Date.DaysInMonth(anoAtual, novoMes)
-                dtValidadeIni.Value = New Date(anoAtual, novoMes, ultimoDiaDoMes)
+                    ' Este erro ocorre se o dia atual for inválido no novo mês.
+                    ' Exemplo: Tentar colocar o dia 31 em um mês que só tem 30 dias (como Abril, Junho, Setembro, Novembro).
 
-                ' (Opcional) Mostrar uma mensagem de aviso
-                MessageBox.Show($"O dia {diaAtual} não existe no mês {novoMes}. A data foi ajustada para o dia {ultimoDiaDoMes}.", "Ajuste de Data", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    ' Solução Comum: Ajustar para o último dia válido do novo mês.
+                    Dim ultimoDiaDoMes As Integer = Date.DaysInMonth(anoAtual, novoMes)
+                    dtValidadeIni.Value = New Date(anoAtual, novoMes, ultimoDiaDoMes)
 
-            End Try
+                    ' (Opcional) Mostrar uma mensagem de aviso
+                    MessageBox.Show($"O dia {diaAtual} não existe no mês {novoMes}. A data foi ajustada para o dia {ultimoDiaDoMes}.", "Ajuste de Data", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
-        Else
-            ' (Opcional) Tratamento de erro se a string não puder ser convertida
-            MessageBox.Show("A string do mês não é um número válido (01-12).", "Erro de Conversão", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End If
+                End Try
 
-        dtValidadeFim.Value = dtValidadeIni.Value.AddMonths(1)
+            Else
+                ' (Opcional) Tratamento de erro se a string não puder ser convertida
+                MessageBox.Show("A string do mês não é um número válido (01-12).", "Erro de Conversão", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End If
 
-        dgvProcedimentos.Columns.Clear()
+            dtValidadeFim.Value = dtValidadeIni.Value.AddMonths(1)
 
-        dgvProcedimentos.Columns.Add("Codigo", "Procedimento")
-        dgvProcedimentos.Columns.Add("CBO", "CBO")
-        dgvProcedimentos.Columns.Add("Quantidade", "Qtd")
+            dgvProcedimentos.Columns.Clear()
 
-        dgvProcedimentos.AllowUserToAddRows = True
-        dgvProcedimentos.AllowUserToDeleteRows = True
-        dgvProcedimentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
+            dgvProcedimentos.Columns.Add("Codigo", "Procedimento")
+            dgvProcedimentos.Columns.Add("CBO", "CBO")
+            dgvProcedimentos.Columns.Add("Quantidade", "Qtd")
 
-        txtSexo.SelectedIndex = 0
+            dgvProcedimentos.AllowUserToAddRows = True
+            dgvProcedimentos.AllowUserToDeleteRows = True
+            dgvProcedimentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
 
-        Dim cbProcedPrincipal As New Dictionary(Of String, String) From {
-            {"0904010015", "0904010015 - OCI Avaliação inicial diagnóstica de deficit auditivo"},
-            {"0902010026", "0902010026 - OCI Avaliação Cardiológica"},
-            {"0902010018", "0902010018 - OCI Avaliação de risco cirúrgico"},
-            {"0905010035", "0905010035 - OCI Avaliação inicial em oftalmologia"},
-            {"0903010011", "0903010011 - OCI Avaliação disgnóstica em ortopedia com recursos de raio-x"},
-            {"0904010031", "0904010031 - OCI Avaliação disgnóstica de nasofaringe e orofaringe"}
-        }
+            txtSexo.SelectedIndex = 0
 
-        txtProcedimentoPrincipal.DataSource = New BindingSource(cbProcedPrincipal, Nothing)
-        txtProcedimentoPrincipal.DisplayMember = "Value"   ' O que aparece para o usuário
-        txtProcedimentoPrincipal.ValueMember = "Key"
-        txtProcedimentoPrincipal.SelectedIndex = -1
+            Dim cbProcedPrincipal As New Dictionary(Of String, String) From {
+                {"0904010015", "0904010015 - OCI Avaliação inicial diagnóstica de deficit auditivo"},
+                {"0902010026", "0902010026 - OCI Avaliação Cardiológica"},
+                {"0902010018", "0902010018 - OCI Avaliação de risco cirúrgico"},
+                {"0905010035", "0905010035 - OCI Avaliação inicial em oftalmologia"},
+                {"0903010011", "0903010011 - OCI Avaliação disgnóstica em ortopedia com recursos de raio-x"},
+                {"0904010031", "0904010031 - OCI Avaliação disgnóstica de nasofaringe e orofaringe"}
+            }
 
-        Dim tipoLogra As New Dictionary(Of String, String) From {
-            {"081", "RUA"},
-            {"08", "AVENIDA"}
-        }
+            txtProcedimentoPrincipal.DataSource = New BindingSource(cbProcedPrincipal, Nothing)
+            txtProcedimentoPrincipal.DisplayMember = "Value"   ' O que aparece para o usuário
+            txtProcedimentoPrincipal.ValueMember = "Key"
+            txtProcedimentoPrincipal.SelectedIndex = -1
 
-        cbTipoLogradouro.DataSource = New BindingSource(tipoLogra, Nothing)
-        cbTipoLogradouro.DisplayMember = "Value"   ' O que aparece para o usuário
-        cbTipoLogradouro.ValueMember = "Key"
-        cbTipoLogradouro.SelectedIndex = 0
+            Dim tipoLogra As New Dictionary(Of String, String) From {
+                {"081", "RUA"},
+                {"08", "AVENIDA"}
+            }
+
+            cbTipoLogradouro.DataSource = New BindingSource(tipoLogra, Nothing)
+            cbTipoLogradouro.DisplayMember = "Value"   ' O que aparece para o usuário
+            cbTipoLogradouro.ValueMember = "Key"
+            cbTipoLogradouro.SelectedIndex = 0
 
 
-        Dim racas As New Dictionary(Of String, String) From {
-            {"01", "BRANCA"},
-            {"02", "PRETA"},
-            {"03", "PARDA"},
-            {"04", "AMARELA"},
-            {"05", "INDIGENA"},
-            {"99", "SEM INFO"}
-        }
+            Dim racas As New Dictionary(Of String, String) From {
+                {"01", "BRANCA"},
+                {"02", "PRETA"},
+                {"03", "PARDA"},
+                {"04", "AMARELA"},
+                {"05", "INDIGENA"},
+                {"99", "SEM INFO"}
+            }
 
-        txtRaca.DataSource = New BindingSource(racas, Nothing)
-        txtRaca.DisplayMember = "Value"   ' O que aparece para o usuário
-        txtRaca.ValueMember = "Key"
+            txtRaca.DataSource = New BindingSource(racas, Nothing)
+            txtRaca.DisplayMember = "Value"   ' O que aparece para o usuário
+            txtRaca.ValueMember = "Key"
 
-        Dim tipo As New Dictionary(Of String, String) From {
-            {"1", "INICIAL"},
-            {"2", "CONTINUIDADE"},
-            {"3", "UNICA"},
-            {"4", "ENCERRAMENTO"}
-        }
+            Dim tipo As New Dictionary(Of String, String) From {
+                {"1", "INICIAL"},
+                {"2", "CONTINUIDADE"},
+                {"3", "UNICA"},
+                {"4", "ENCERRAMENTO"}
+            }
 
-        txtTipoApac.DataSource = New BindingSource(tipo, Nothing)
-        txtTipoApac.DisplayMember = "Value"   ' O que aparece para o usuário
-        txtTipoApac.ValueMember = "Key"
-        txtTipoApac.SelectedIndex = 2
+            txtTipoApac.DataSource = New BindingSource(tipo, Nothing)
+            txtTipoApac.DisplayMember = "Value"   ' O que aparece para o usuário
+            txtTipoApac.ValueMember = "Key"
+            txtTipoApac.SelectedIndex = 2
 
-        Dim tipoAtend As New Dictionary(Of String, String) From {
-           {"01", "ELETIVO"},
-           {"02", "URGENCIA"},
-           {"03", "ACIDENTE NO LOCAL DE TRAB.OU A SERV.EMPR"},
-           {"04", "ACIDENTE NO TRAJETO PARA O TRABALHO"},
-           {"05", "OUTROS TIPOS DE ACIDENTE DE TRANSITO"},
-           {"06", "OUTROS TIPOS DE LESOES/ENV.POR AGENT.Q/F"}
-       }
+            Dim tipoAtend As New Dictionary(Of String, String) From {
+               {"01", "ELETIVO"},
+               {"02", "URGENCIA"},
+               {"03", "ACIDENTE NO LOCAL DE TRAB.OU A SERV.EMPR"},
+               {"04", "ACIDENTE NO TRAJETO PARA O TRABALHO"},
+               {"05", "OUTROS TIPOS DE ACIDENTE DE TRANSITO"},
+               {"06", "OUTROS TIPOS DE LESOES/ENV.POR AGENT.Q/F"}
+           }
 
-        txtTipoAtend.DataSource = New BindingSource(tipoAtend, Nothing)
-        txtTipoAtend.DisplayMember = "Value"   ' O que aparece para o usuário
-        txtTipoAtend.ValueMember = "Key"
-        txtTipoAtend.SelectedIndex = 0
+            txtTipoAtend.DataSource = New BindingSource(tipoAtend, Nothing)
+            txtTipoAtend.DisplayMember = "Value"   ' O que aparece para o usuário
+            txtTipoAtend.ValueMember = "Key"
+            txtTipoAtend.SelectedIndex = 0
 
-        Dim motivo As New Dictionary(Of String, String) From {
-            {"11", "ALTA CURADO"},
-            {"12", "ALTA MELHORADO"},
-            {"14", "ALTA A PEDIDO"},
-            {"15", "ALTA COM PREVISAO DE RETORNO P/ACOMP.PAC"},
-            {"16", "ALTA POR EVASAO"},
-            {"18", "ALTA POR OUTROS MOTIVOS"}
-        }
+            Dim motivo As New Dictionary(Of String, String) From {
+                {"11", "ALTA CURADO"},
+                {"12", "ALTA MELHORADO"},
+                {"14", "ALTA A PEDIDO"},
+                {"15", "ALTA COM PREVISAO DE RETORNO P/ACOMP.PAC"},
+                {"16", "ALTA POR EVASAO"},
+                {"18", "ALTA POR OUTROS MOTIVOS"}
+            }
 
-        txtMotivoSaida.DataSource = New BindingSource(motivo, Nothing)
-        txtMotivoSaida.DisplayMember = "Value"   ' O que aparece para o usuário
-        txtMotivoSaida.ValueMember = "Key"
-        txtMotivoSaida.SelectedIndex = 1
+            txtMotivoSaida.DataSource = New BindingSource(motivo, Nothing)
+            txtMotivoSaida.DisplayMember = "Value"   ' O que aparece para o usuário
+            txtMotivoSaida.ValueMember = "Key"
+            txtMotivoSaida.SelectedIndex = 1
+
+        Catch ex As Exception
+            FormAMEOCIControleCompetencia.ShowDialog()
+        End Try
 
     End Sub
 
@@ -655,7 +661,7 @@ Public Class FormAMEOCI
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim pdf As New Endereco
-        Dim lista = pdf.ExtrairCEPsDoTXT("D:\Desktop\CEPS.txt")
+        Dim lista = pdf.ExtrairCEPsDoTXT("E:\Desktop\CEPS.txt")
 
         pdf.SalvarCEPsNoMySQL(lista)
 
