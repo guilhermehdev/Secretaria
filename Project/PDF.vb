@@ -1,13 +1,17 @@
-﻿Imports System.Text
+﻿Imports System.Data
+Imports System.Globalization
+Imports System.IO
+Imports System.Text
 Imports System.Text.RegularExpressions
 Imports iTextSharp.text.pdf
 Imports iTextSharp.text.pdf.parser
-Imports System.Data
-Imports System.IO
+Imports MySql.Data.MySqlClient
 
 Public Class PDF
     Dim pdfPath As String = Application.StartupPath & "/PDF/PROFISSIONAIS.pdf"
     Dim xml As New XML
+    Public vconexao As MySqlConnection
+    Public Sql As String
 
     Public Sub importPDFManifest(dialog As OpenFileDialog, multiselect As Boolean)
         Dim pdfFiles As New List(Of String)()
@@ -340,6 +344,139 @@ Public Class PDF
         Return resultado
 
     End Function
-    '--------------------------------------------------------------------------------------------------
+
+
+End Class
+
+Public Class Endereco
+    Public Property Logradouro As String
+    Public Property CEP As String
+    Public Property Bairro As String
+
+    Public Function ExtrairCEPsDoTXT(caminhoArquivo As String) As List(Of Endereco)
+        Dim lista As New List(Of Endereco)
+        Dim rgxCep As New Regex("\d{5}-\d{3}")
+
+        ' Dicionário de abreviações → forma completa
+        Dim tipos As New Dictionary(Of String, String)(StringComparer.OrdinalIgnoreCase) From {
+        {"r", "Rua"}, {"rua", "Rua"},
+        {"av", "Avenida"}, {"avenida", "Avenida"},
+        {"pç", "Praça"}, {"pr", "Praça"},
+        {"al", "Alameda"}, {"rod", "Rodovia"},
+        {"est", "Estrada"}, {"tr", "Travessa"},
+        {"r ped", "Rua Padre"},
+        {"r prof", "Rua Professor"},
+        {"r dr", "Rua Doutor"},
+        {"r dep", "Rua Deputado"},
+        {"r cel", "Rua Coronel"},
+        {"vl", "Vila"},
+        {"vla", "Viela"}
+    }
+
+        For Each linha In File.ReadAllLines(caminhoArquivo)
+            linha = linha.Trim()
+            If String.IsNullOrWhiteSpace(linha) Then Continue For
+
+            Dim m As Match = rgxCep.Match(linha)
+            If Not m.Success Then Continue For
+
+            Dim cep As String = m.Value
+            Dim semCep As String = linha.Replace(cep, "").Trim()
+
+            Dim partes() As String = semCep.Split(New String() {" - "}, StringSplitOptions.None)
+            If partes.Length < 3 Then Continue For
+
+            Dim logradouro As String = ""
+            Dim tipoAbrev As String = ""
+            Dim bairro As String = ""
+
+            Select Case partes.Length
+                Case 3
+                    ' Formato normal: logradouro - tipo - bairro
+                    logradouro = partes(0).Trim()
+                    tipoAbrev = partes(1).Trim().ToLower()
+                    bairro = partes(2).Trim()
+
+                Case 4
+                    ' Formato com complemento: logradouro - complemento - tipo - bairro
+                    logradouro = $"{partes(0).Trim()} {partes(1).Trim()}"
+                    tipoAbrev = partes(2).Trim().ToLower()
+                    bairro = partes(3).Trim()
+
+                Case Else
+                    ' Linhas fora do padrão, ignora
+                    Continue For
+            End Select
+
+            ' Substitui abreviação
+            Dim tipoCompleto As String = If(tipos.ContainsKey(tipoAbrev), tipos(tipoAbrev), tipoAbrev)
+            Dim logradouroCompleto As String = $"{tipoCompleto} {logradouro}"
+            ' Inverter se contiver vírgula (ex: "Anchieta, Padre" → "Padre Anchieta")
+            If logradouroCompleto.Contains(",") Then
+                Dim partesNome() As String = logradouroCompleto.Split(","c)
+                If partesNome.Length = 2 Then
+                    logradouroCompleto = $"{partesNome(1).Trim()} {partesNome(0).Trim()}"
+                End If
+            End If
+
+            ' Corrige tipo de logradouro posicionado no final (ex: "Doutor lado ímpar Rua Osvaldo Marçal")
+            Dim tiposList = {"rua", "avenida", "travessa", "estrada", "rodovia", "praça", "alameda", "viela", "vila"}
+
+            For Each tipo In tiposList
+                Dim padrao As String = $"(\b[Dd]outor|\b[Pp]adre|\b[Pp]rofessor|\b[Dd]ep|\b[Cc]oronel).*?\b{tipo}\b"
+                If Regex.IsMatch(logradouroCompleto, padrao, RegexOptions.IgnoreCase) Then
+                    ' extrai "Rua" ou "Avenida" e move pro início
+                    Dim tipoEncontrado As Match = Regex.Match(logradouroCompleto, "\b(" & String.Join("|", tiposList) & ")\b", RegexOptions.IgnoreCase)
+                    If tipoEncontrado.Success Then
+                        Dim tipoStr As String = tipoEncontrado.Value
+                        logradouroCompleto = $"{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(tipoStr)} {Regex.Replace(logradouroCompleto, tipoStr, "", RegexOptions.IgnoreCase).Trim()}"
+                    End If
+                    Exit For
+                End If
+            Next
+
+            Dim prefixos = {"da", "do", "de", "das", "dos"}
+            For Each pfx In prefixos
+                For Each tipo In tipos.Values
+                    Dim padrao As String = $"^{pfx}\s+{tipo}\b"
+                    If Regex.IsMatch(logradouroCompleto, padrao, RegexOptions.IgnoreCase) Then
+                        logradouroCompleto = Regex.Replace(logradouroCompleto, $"^{pfx}\s+", "", RegexOptions.IgnoreCase).Trim()
+                        Exit For
+                    End If
+                Next
+            Next
+
+            ' Corrige abreviações de bairro
+            bairro = bairro.Replace("Jd", "Jardim").Replace("Vl", "Vila").Replace("Etn", "Estancia").Replace("Baln", "Balneário").Trim()
+
+            lista.Add(New Endereco With {
+            .CEP = cep,
+            .Logradouro = logradouroCompleto,
+            .Bairro = bairro
+        })
+        Next
+
+        Return lista
+    End Function
+
+    Public Sub SalvarCEPsNoMySQL(lista As List(Of Endereco))
+        Try
+
+            For Each item In lista
+                Dim p As New Dictionary(Of String, Object) From {
+                     {"@logradouro", item.Logradouro},
+                     {"@cep", item.CEP},
+                     {"@bairro", item.Bairro}
+                 }
+                FormAMEmain.doQuery("INSERT INTO ceps_peruibe (cep, logradouro, bairro) VALUES (@cep, @logradouro, @bairro)", p)
+            Next
+
+            MessageBox.Show($"Foram importados {lista.Count} registros com sucesso!", "Importação concluída", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+        Catch ex As Exception
+            Debug.WriteLine("Erro ao salvar no banco: " & ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
 
 End Class

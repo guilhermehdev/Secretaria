@@ -209,7 +209,7 @@ Partial Class FormAMEmain
         'BaseDeDadosToolStripMenuItem
         '
         Me.BaseDeDadosToolStripMenuItem.Name = "BaseDeDadosToolStripMenuItem"
-        Me.BaseDeDadosToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.BaseDeDadosToolStripMenuItem.Size = New System.Drawing.Size(149, 22)
         Me.BaseDeDadosToolStripMenuItem.Text = "Base de dados"
         '
         'FormAMEmain

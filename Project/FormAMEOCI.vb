@@ -653,5 +653,12 @@ Public Class FormAMEOCI
         End If
     End Sub
 
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Dim pdf As New Endereco
+        Dim lista = pdf.ExtrairCEPsDoTXT("D:\Desktop\CEPS.txt")
+
+        pdf.SalvarCEPsNoMySQL(lista)
+
+    End Sub
 
 End Class
