@@ -649,11 +649,16 @@ Public Class FormAMEOCI
     Private Sub txtCep_Leave(sender As Object, e As EventArgs) Handles txtCep.Leave
         Dim CEP As New CEP()
         Dim cod As String = txtCep.Text.Trim()
-        Dim resultado = CEP.BuscarEnderecoPorCEP(cod)
+        Dim resultado As DataTable = CEP.getAddress(cod)
+
+        Dim tipo = resultado.Rows(0).Item(2).ToString
+        Dim logra = resultado.Rows(0).Item(3).ToString
+        Dim bairro = resultado.Rows(0).Item(4).ToString
 
         If resultado IsNot Nothing Then
-            txtLogradouro.Text = resultado.logradouro
-            txtBairro.Text = resultado.bairro
+            cbTipoLogradouro.SelectedText = tipo
+            txtLogradouro.Text = logra
+            txtBairro.Text = bairro
         Else
             MsgBox("CEP não encontrado ou erro na consulta.")
         End If
@@ -661,7 +666,7 @@ Public Class FormAMEOCI
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim pdf As New Endereco
-        Dim lista = pdf.ExtrairCEPsDoTXT("E:\Desktop\CEPS.txt")
+        Dim lista = pdf.ExtrairCEPsDoTXT("D:\Desktop\CEPS.txt")
 
         pdf.SalvarCEPsNoMySQL(lista)
 

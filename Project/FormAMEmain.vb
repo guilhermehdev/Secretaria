@@ -659,7 +659,7 @@ Public Class FormAMEmain
     '    End Try
     'End Function
 
-    Private Function getDataset(ByVal sql As String, Optional ByVal errorMsg As Boolean = False) As DataTable
+    Public Function getDataset(ByVal sql As String, Optional ByVal errorMsg As Boolean = False) As DataTable
         Dim dspesquisa As New DataTable
         Try
             connection(True)
