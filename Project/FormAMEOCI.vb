@@ -501,7 +501,12 @@ Public Class FormAMEOCI
 
             Dim tipoLogra As New Dictionary(Of String, String) From {
                 {"081", "RUA"},
-                {"08", "AVENIDA"}
+                {"008", "AVENIDA"},
+                {"031", "ESTRADA"},
+                {"004", "ALAMEDA"},
+                {"065", "PRAÇA"},
+                {"105", "VIELA"},
+                {"095", "SETOR"}
             }
 
             cbTipoLogradouro.DataSource = New BindingSource(tipoLogra, Nothing)
@@ -646,17 +651,24 @@ Public Class FormAMEOCI
     Private Sub NúmerosAPACToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NúmerosAPACToolStripMenuItem.Click
         FormAMEOCINumAPAC.ShowDialog()
     End Sub
-    Private Sub txtCep_Leave(sender As Object, e As EventArgs) Handles txtCep.Leave
+    Private Sub cep(param As String)
         Dim CEP As New CEP()
-        Dim cod As String = txtCep.Text.Trim()
-        Dim resultado As DataTable = CEP.getAddress(cod)
+        Dim resultado As DataTable = CEP.getAddress(param)
 
         Dim tipo = resultado.Rows(0).Item(2).ToString
         Dim logra = resultado.Rows(0).Item(3).ToString
         Dim bairro = resultado.Rows(0).Item(4).ToString
 
         If resultado IsNot Nothing Then
-            cbTipoLogradouro.SelectedText = tipo
+
+            Dim foundItem = CType(cbTipoLogradouro.DataSource, BindingSource) _
+        .Cast(Of KeyValuePair(Of String, String))() _
+        .FirstOrDefault(Function(x) x.Value.Equals(tipo, StringComparison.OrdinalIgnoreCase))
+
+            If foundItem.Key IsNot Nothing Then
+                cbTipoLogradouro.SelectedValue = foundItem.Key
+            End If
+
             txtLogradouro.Text = logra
             txtBairro.Text = bairro
         Else
@@ -664,12 +676,138 @@ Public Class FormAMEOCI
         End If
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Dim pdf As New Endereco
-        Dim lista = pdf.ExtrairCEPsDoTXT("D:\Desktop\CEPS.txt")
-
-        pdf.SalvarCEPsNoMySQL(lista)
+    Private Sub txtCep_Leave(sender As Object, e As EventArgs) Handles txtCep.Leave
+        cep(txtCep.Text.Trim())
+    End Sub
+    Private Sub txtCep_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCep.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            cep(txtCep.Text.Trim())
+        End If
 
     End Sub
+    Private Sub formatGrid()
+        dgvSugestoes.Width = 650
+        dgvSugestoes.Height = 150
+        dgvSugestoes.BringToFront()
+        dgvSugestoes.Visible = True
+        dgvSugestoes.Location = New Point(24, 235)
+
+        ' Oculta o ID (se existir)
+        If dgvSugestoes.Columns.Contains("id") Then
+            dgvSugestoes.Columns("id").Visible = False
+        End If
+
+        ' Ajusta os headers
+        If dgvSugestoes.Columns.Contains("cep") Then dgvSugestoes.Columns("cep").HeaderText = "CEP"
+        If dgvSugestoes.Columns.Contains("tipo") Then dgvSugestoes.Columns("tipo").HeaderText = "Tipo"
+        If dgvSugestoes.Columns.Contains("logradouro") Then dgvSugestoes.Columns("logradouro").HeaderText = "Logradouro"
+        If dgvSugestoes.Columns.Contains("bairro") Then dgvSugestoes.Columns("bairro").HeaderText = "Bairro"
+
+        ' Ajusta larguras
+        If dgvSugestoes.Columns.Contains("cep") Then dgvSugestoes.Columns("cep").Width = 80
+        If dgvSugestoes.Columns.Contains("tipo") Then dgvSugestoes.Columns("tipo").Width = 70
+        If dgvSugestoes.Columns.Contains("logradouro") Then dgvSugestoes.Columns("logradouro").Width = 300
+        If dgvSugestoes.Columns.Contains("bairro") Then dgvSugestoes.Columns("bairro").Width = 200
+
+        ' Aparência geral
+        dgvSugestoes.ColumnHeadersDefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+        dgvSugestoes.DefaultCellStyle.Font = New Font("Segoe UI", 9)
+        dgvSugestoes.DefaultCellStyle.SelectionBackColor = Color.LightSteelBlue
+        dgvSugestoes.DefaultCellStyle.SelectionForeColor = Color.Black
+        dgvSugestoes.RowHeadersVisible = False
+        dgvSugestoes.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None
+        dgvSugestoes.AllowUserToResizeRows = False
+        dgvSugestoes.AllowUserToResizeColumns = False
+    End Sub
+
+    Private Sub txtLogradouro_TextChanged(sender As Object, e As EventArgs) Handles txtLogradouro.TextChanged
+        Try
+            Dim texto = txtLogradouro.Text.Trim()
+            If texto.Length < 3 Then
+                dgvSugestoes.Visible = False
+                Exit Sub
+            End If
+
+            ' Busca no banco (usa sua função existente)
+            Dim cepObj As New CEP()
+            Dim resultado As DataTable = cepObj.getAddress("", texto, "")
+
+            If resultado Is Nothing OrElse resultado.Rows.Count = 0 Then
+                dgvSugestoes.Visible = False
+                Exit Sub
+            End If
+
+            ' Configura grid
+            dgvSugestoes.DataSource = resultado
+            formatGrid()
+
+        Catch ex As Exception
+            Debug.WriteLine("Erro ao carregar sugestões: " & ex.Message)
+        End Try
+    End Sub
+
+    Private Sub dgvSugestoes_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvSugestoes.CellDoubleClick
+        If e.RowIndex < 0 Then Exit Sub
+
+        Dim linha As DataGridViewRow = dgvSugestoes.Rows(e.RowIndex)
+
+        Dim tipo = linha.Cells("tipo").Value.ToString()
+        Dim logra = linha.Cells("logradouro").Value.ToString()
+        Dim bairro = linha.Cells("bairro").Value.ToString()
+        Dim cep = linha.Cells("cep").Value.ToString()
+
+        ' Preenche os campos
+        txtCep.Text = cep
+        txtLogradouro.Text = logra
+        txtBairro.Text = bairro
+
+        ' Seleciona tipo no ComboBox
+        Dim foundItem = CType(cbTipoLogradouro.DataSource, BindingSource) _
+            .Cast(Of KeyValuePair(Of String, String))() _
+            .FirstOrDefault(Function(x) x.Value.Equals(tipo, StringComparison.OrdinalIgnoreCase))
+
+        If foundItem.Key IsNot Nothing Then
+            cbTipoLogradouro.SelectedValue = foundItem.Key
+        End If
+
+        dgvSugestoes.Visible = False
+    End Sub
+    Private Sub txtLogradouro_KeyDown(sender As Object, e As KeyEventArgs) Handles txtLogradouro.KeyDown
+        If e.KeyCode = Keys.Escape Then dgvSugestoes.Visible = False
+    End Sub
+    Private Sub txtBairro_TextChanged(sender As Object, e As EventArgs) Handles txtBairro.TextChanged
+        Try
+            Dim texto = txtBairro.Text.Trim()
+            If texto.Length < 1 Then
+                dgvSugestoes.Visible = False
+                Exit Sub
+            End If
+
+            ' Busca no banco (usa sua função existente)
+            Dim cepObj As New CEP()
+            Dim resultado As DataTable = cepObj.getAddress("", "", texto)
+
+            If resultado Is Nothing OrElse resultado.Rows.Count = 0 Then
+                dgvSugestoes.Visible = False
+                Exit Sub
+            End If
+
+            ' Configura grid
+            dgvSugestoes.DataSource = resultado
+            formatGrid()
+
+        Catch ex As Exception
+            Debug.WriteLine("Erro ao carregar sugestões: " & ex.Message)
+        End Try
+    End Sub
+
+
+    'Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    '    Dim pdf As New Endereco
+    '    Dim lista = pdf.ExtrairCEPsDoTXT("D:\Desktop\CEPS.txt")
+
+    '    pdf.SalvarCEPsNoMySQL(lista)
+
+    'End Sub
 
 End Class
