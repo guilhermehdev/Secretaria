@@ -112,7 +112,7 @@ Public Class FormAMEOCI
             End If
 
             ' 18. CEP
-            r14.Append(txtCep.Text.PadRight(8, " "c))            ' 8
+            r14.Append(txtCep.Text.Replace("-", "").PadRight(8, " "c))            ' 8
 
             ' 19. Município IBGE
             r14.Append(txtMunIbge.Text.PadLeft(7, "0"c))        ' 7
@@ -771,6 +771,8 @@ Public Class FormAMEOCI
         End If
 
         dgvSugestoes.Visible = False
+        txtNumero.Focus()
+
     End Sub
     Private Sub txtLogradouro_KeyDown(sender As Object, e As KeyEventArgs) Handles txtLogradouro.KeyDown
         If e.KeyCode = Keys.Escape Then dgvSugestoes.Visible = False
