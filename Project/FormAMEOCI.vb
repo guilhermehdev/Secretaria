@@ -93,16 +93,16 @@ Public Class FormAMEOCI
             r14.Append(txtTipoApac.SelectedValue.ToString())
 
             ' 13. Nome paciente
-            r14.Append(Fmt(txtNomePaciente.Text, 30))           ' 30
+            r14.Append(Fmt(txtNomePaciente.Text, 30))
 
             ' 14. Nome mãe
-            r14.Append(Fmt(txtNomeMae.Text, 30))                ' 30
+            r14.Append(Fmt(txtNomeMae.Text, 30))
 
             ' 15. Logradouro
-            r14.Append(Fmt(txtLogradouro.Text, 30))             ' 30
+            r14.Append(Fmt(txtLogradouro.Text, 30))
 
             ' 16. Número residência
-            r14.Append(txtNumero.Text.PadRight(5, " "c))          ' 5
+            r14.Append(txtNumero.Text.PadRight(5, " "c))
 
             ' 17. Complemento
             If txtComplemento.Text.Length > 0 Then
@@ -112,7 +112,7 @@ Public Class FormAMEOCI
             End If
 
             ' 18. CEP
-            r14.Append(txtCep.Text.Replace("-", "").PadRight(8, " "c))            ' 8
+            r14.Append(txtCep.Text.Replace("-", "").PadRight(8, " "c))
 
             ' 19. Município IBGE
             r14.Append(txtMunIbge.Text.PadLeft(7, "0"c))        ' 7
@@ -801,6 +801,9 @@ Public Class FormAMEOCI
         Catch ex As Exception
             Debug.WriteLine("Erro ao carregar sugestões: " & ex.Message)
         End Try
+    End Sub
+    Private Sub txtBairro_KeyDown(sender As Object, e As KeyEventArgs) Handles txtBairro.KeyDown
+        If e.KeyCode = Keys.Escape Then dgvSugestoes.Visible = False
     End Sub
 
 
