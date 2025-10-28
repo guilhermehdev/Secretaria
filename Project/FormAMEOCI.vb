@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports System.Security.Principal
 Imports System.Text
+Imports System.Web
 
 Public Class FormAMEOCI
     Private linhas As New List(Of String)
@@ -216,9 +217,9 @@ Public Class FormAMEOCI
             r06.Append("06")
             r06.Append(competenciaFormatada)
             r06.Append(txtNumApac.Text.PadLeft(13, "0"c))
-            r06.Append(txtCidPrincipal.Text.PadRight(4, " "c))
-            If txtCidSecundario.Text.Length > 0 Then
-                r06.Append(txtCidSecundario.Text.PadRight(4, " "c))
+            r06.Append(txtCidPrincipal.SelectedValue.PadRight(4, " "c))
+            If txtCidSecundario.SelectedIndex >= 0 Then
+                r06.Append(txtCidSecundario.SelectedValue.PadRight(4, " "c))
             End If
             'linhas.Add(r06.ToString())
             File.AppendAllText(filePath, r06.ToString() & Chr(13) & Chr(10), Encoding.GetEncoding("iso-8859-1"))
@@ -328,6 +329,13 @@ Public Class FormAMEOCI
         CBOmed.SelectedIndex = 0
 
         getServersSUS()
+        Dim queryCID As String = $"SELECT cid.cid,cid.descricao FROM cid 
+        JOIN cod_oci_principal ON cid.id_oci_principal = cod_oci_principal.id
+        WHERE cod_oci_principal.cod ='{txtProcedimentoPrincipal.SelectedValue}'"
+        FormAMEmain.loadComboBox(queryCID, txtCidPrincipal, "descricao", "cid")
+        FormAMEmain.loadComboBox(queryCID, txtCidSecundario, "descricao", "cid")
+
+        txtCidSecundario.SelectedIndex = -1
 
     End Sub
     Private Sub btnAdicionarProcedimento_Click(sender As Object, e As EventArgs) Handles btnAdicionarProcedimento.Click
@@ -430,6 +438,24 @@ Public Class FormAMEOCI
         main.loadComboBox($"SELECT SUS, nome FROM servidores WHERE oci_autorizador=1", txtNomeAutorizador, "nome", "SUS", True)
 
     End Sub
+
+    Private Function getPacientes(Optional ByVal cpf As String = Nothing, Optional nome As String = Nothing, Optional dtnasc As String = Nothing)
+        Dim data As DataTable = Nothing
+        Dim query As String = "SELECT pacientes.*, ceps_peruibe.cep AS CEP,ceps_peruibe.tipo,ceps_peruibe.logradouro,ceps_peruibe.bairro
+          FROM pacientes
+          JOIN ceps_peruibe ON pacientes.id_logradouro = ceps_peruibe.id "
+
+        If cpf IsNot Nothing Then
+            data = FormAMEmain.getDataset(query & $" WHERE pacientes.cpf ={cpf}")
+        ElseIf nome IsNot Nothing Then
+            data = FormAMEmain.getDataset(query & $" WHERE pacientes.nome LIKE '%{nome}%'")
+        ElseIf dtnasc IsNot Nothing Then
+            data = FormAMEmain.getDataset(query & $" WHERE pacientes.dtnasc ='{dtnasc}'")
+        End If
+
+        Return data
+
+    End Function
 
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim novoMes As Integer
@@ -804,6 +830,19 @@ Public Class FormAMEOCI
     End Sub
     Private Sub txtBairro_KeyDown(sender As Object, e As KeyEventArgs) Handles txtBairro.KeyDown
         If e.KeyCode = Keys.Escape Then dgvSugestoes.Visible = False
+    End Sub
+    Private Sub txtCpfPaciente_TextChanged(sender As Object, e As EventArgs) Handles txtCpfPaciente.TextChanged
+        Dim result As DataTable
+        Try
+            result = getPacientes(txtCpfPaciente.Text.Trim())
+
+            If result.Rows.Count > 0 Then
+                txtNomePaciente.Text = result.Rows(0).Item("nome").ToString
+            End If
+
+        Catch ex As Exception
+
+        End Try
     End Sub
 
 
