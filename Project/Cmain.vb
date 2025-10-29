@@ -799,6 +799,37 @@ Public Class Main
         End If
     End Sub
 
+    Public Function CalcularIdade(ByVal dataTexto As String) As Integer
+        Dim formatos() As String = {
+        "dd/MM/yyyy HH:mm:ss",
+        "dd/MM/yyyy",
+        "MM/dd/yyyy HH:mm:ss",
+        "MM/dd/yyyy",
+        "yyyy-MM-dd HH:mm:ss",
+        "yyyy-MM-dd"
+    }
+        Dim dataNascimento As Date
+
+        If Not Date.TryParseExact(dataTexto,
+                              formatos,
+                              Globalization.CultureInfo.InvariantCulture,
+                              Globalization.DateTimeStyles.None,
+                              dataNascimento) Then
+            Throw New ArgumentException("Data inválida!")
+        End If
+
+        Dim hoje As Date = Date.Today
+        Dim idade As Integer = hoje.Year - dataNascimento.Year
+
+        If (hoje.Month < dataNascimento.Month) OrElse
+       (hoje.Month = dataNascimento.Month AndAlso hoje.Day < dataNascimento.Day) Then
+            idade -= 1
+        End If
+
+        Return idade
+    End Function
+
+
 End Class
 
 

@@ -2,9 +2,12 @@
 Imports System.Security.Principal
 Imports System.Text
 Imports System.Web
+Imports Mysqlx.XDevAPI.Common
 
 Public Class FormAMEOCI
     Private linhas As New List(Of String)
+    Dim m As New Main
+    Dim result As DataTable
     Private Sub btnGerarArquivo_Click(sender As Object, e As EventArgs) Handles btnGerarArquivo.Click
         Try
             Dim codigos As New List(Of String)
@@ -426,31 +429,37 @@ Public Class FormAMEOCI
 
     Private Sub getServersSUS()
         Dim main As New FormAMEmain
-        Dim comboList As New List(Of ComboBox) From {
+        Dim comboList As New List(Of System.Windows.Forms.ComboBox) From {
             txtCNSMedicoExecutante,
             txtNomeMedicoSolicitante
         }
 
-        For Each cb As ComboBox In comboList
-            main.loadComboBox($"SELECT SUS, nome FROM servidores WHERE cbo ='{CBOmed.SelectedValue}'", cb, "nome", "SUS", True)
+        For Each cbb As ComboBox In comboList
+            main.loadComboBox($"SELECT SUS, nome FROM servidores WHERE cbo ='{CBOmed.SelectedValue}'", cbb, "nome", "SUS", True)
         Next
 
         main.loadComboBox($"SELECT SUS, nome FROM servidores WHERE oci_autorizador=1", txtNomeAutorizador, "nome", "SUS", True)
 
     End Sub
 
-    Private Function getPacientes(Optional ByVal cpf As String = Nothing, Optional nome As String = Nothing, Optional dtnasc As String = Nothing)
+    Private Function getPacientes(Optional ByVal cpf As String = Nothing, Optional nome As String = Nothing, Optional dtnasc As String = Nothing, Optional id As Integer = 0)
         Dim data As DataTable = Nothing
         Dim query As String = "SELECT pacientes.*, ceps_peruibe.cep AS CEP,ceps_peruibe.tipo,ceps_peruibe.logradouro,ceps_peruibe.bairro
           FROM pacientes
           JOIN ceps_peruibe ON pacientes.id_logradouro = ceps_peruibe.id "
 
         If cpf IsNot Nothing Then
-            data = FormAMEmain.getDataset(query & $" WHERE pacientes.cpf ={cpf}")
+            data = FormAMEmain.getDataset(query & $" WHERE pacientes.cpf ='{cpf}'")
+
         ElseIf nome IsNot Nothing Then
             data = FormAMEmain.getDataset(query & $" WHERE pacientes.nome LIKE '%{nome}%'")
+
         ElseIf dtnasc IsNot Nothing Then
+
             data = FormAMEmain.getDataset(query & $" WHERE pacientes.dtnasc ='{dtnasc}'")
+        ElseIf id > 0 Then
+
+            data = FormAMEmain.getDataset(query & $" WHERE pacientes.id ={id}")
         End If
 
         Return data
@@ -594,6 +603,9 @@ Public Class FormAMEOCI
             txtMotivoSaida.ValueMember = "Key"
             txtMotivoSaida.SelectedIndex = 1
 
+            FormAMEmain.loadComboBox("SELECT id, nome FROM pacientes WHERE id > 1 ORDER BY nome", txtNomePaciente, "nome", "id")
+            txtNomePaciente.Text = ""
+
         Catch ex As Exception
             FormAMEOCIControleCompetencia.ShowDialog()
         End Try
@@ -688,8 +700,8 @@ Public Class FormAMEOCI
         If resultado IsNot Nothing Then
 
             Dim foundItem = CType(cbTipoLogradouro.DataSource, BindingSource) _
-        .Cast(Of KeyValuePair(Of String, String))() _
-        .FirstOrDefault(Function(x) x.Value.Equals(tipo, StringComparison.OrdinalIgnoreCase))
+            .Cast(Of KeyValuePair(Of String, String))() _
+            .FirstOrDefault(Function(x) x.Value.Equals(tipo, StringComparison.OrdinalIgnoreCase))
 
             If foundItem.Key IsNot Nothing Then
                 cbTipoLogradouro.SelectedValue = foundItem.Key
@@ -704,12 +716,13 @@ Public Class FormAMEOCI
 
     Private Sub txtCep_Leave(sender As Object, e As EventArgs) Handles txtCep.Leave
         cep(txtCep.Text.Trim())
+        dgvSugestoes.Visible = False
     End Sub
     Private Sub txtCep_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCep.KeyDown
         If e.KeyCode = Keys.Enter Then
             cep(txtCep.Text.Trim())
+            dgvSugestoes.Visible = False
         End If
-
     End Sub
     Private Sub formatGrid()
         dgvSugestoes.Width = 650
@@ -832,19 +845,111 @@ Public Class FormAMEOCI
         If e.KeyCode = Keys.Escape Then dgvSugestoes.Visible = False
     End Sub
     Private Sub txtCpfPaciente_TextChanged(sender As Object, e As EventArgs) Handles txtCpfPaciente.TextChanged
-        Dim result As DataTable
+
         Try
-            result = getPacientes(txtCpfPaciente.Text.Trim())
+            Dim result As DataTable = getPacientes(txtCpfPaciente.Text.Trim())
+            resultPacientes(result)
+
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub txtCep_TextChanged(sender As Object, e As EventArgs) Handles txtCep.TextChanged
+        If txtCep.Text.Length = 9 Then
+            cep(txtCep.Text.Trim())
+            dgvSugestoes.Visible = False
+        End If
+    End Sub
+
+    'Private Sub cboPaciente_DropDownClosed(sender As Object, e As EventArgs) Handles txtNomePaciente.DropDownClosed
+    '    If txtNomePaciente.SelectedIndex >= 0 Then
+    '        result = getPacientes(Nothing, Nothing, Nothing, txtNomePaciente.SelectedValue)
+    '    End If
+    'End Sub
+
+    Private Sub txtNomePaciente_SelectedIndexChanged(sender As Object, e As EventArgs) Handles txtNomePaciente.SelectedIndexChanged
+        Try
+            result = getPacientes(Nothing, Nothing, Nothing, txtNomePaciente.SelectedValue)
+            resultPacientes(result)
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    ' nível de classe:
+    Private _upperLock As Boolean = False
+
+    Private Sub cbo_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtNomePaciente.KeyPress
+        ' já sobe letras na digitação (evita mexer em Text)
+        If Char.IsLetter(e.KeyChar) Then e.KeyChar = Char.ToUpper(e.KeyChar)
+    End Sub
+
+    Private Sub cbo_TextChanged(sender As Object, e As EventArgs) Handles txtNomePaciente.TextChanged
+        If _upperLock Then Return
+        Dim cb = DirectCast(sender, ComboBox)
+        Dim txt = cb.Text
+        Dim upper = txt.ToUpper()
+
+        If txt <> upper Then
+            _upperLock = True
+            Dim pos = cb.SelectionStart
+            cb.Text = upper
+            ' protege o cursor mesmo se o texto encurtar
+            cb.SelectionStart = Math.Min(pos, cb.Text.Length)
+            _upperLock = False
+        End If
+    End Sub
+
+    Private Sub txtNomePaciente_KeyUp(sender As Object, e As KeyEventArgs) Handles txtNomePaciente.KeyUp
+        If e.KeyCode = Keys.Up OrElse e.KeyCode = Keys.Down Then
+            If txtNomePaciente.SelectedIndex >= 0 Then
+                txtNomePaciente.SelectionLength = 0
+                result = getPacientes(Nothing, Nothing, Nothing, txtNomePaciente.SelectedValue)
+                resultPacientes(result)
+            End If
+        End If
+    End Sub
+
+    Private Sub resultPacientes(result As DataTable)
+        Try
 
             If result.Rows.Count > 0 Then
-                txtNomePaciente.Text = result.Rows(0).Item("nome").ToString
+                ' txtNomePaciente.Text = result.Rows(0).Item("nome").ToString
+                If result.Rows(0).Item("id_logradouro") <> 0 Then
+                    txtCep.Text = result.Rows(0).Item("cep").ToString
+                    txtNumero.Text = result.Rows(0).Item("numero").ToString
+                    txtComplemento.Text = result.Rows(0).Item("complemento").ToString
+                Else
+                    txtCep.Text = ""
+                    txtNumero.Text = ""
+                    txtComplemento.Text = ""
+                    txtLogradouro.Text = ""
+                    txtBairro.Text = ""
+                End If
+
+                dtNascimento.Text = result.Rows(0).Item("dtnasc").ToString
+                txtNomeMae.Text = result.Rows(0).Item("mae").ToString
+                If m.CalcularIdade(result.Rows(0).Item("dtnasc").ToString) >= 18 Then
+                    txtNomeRespPaciente.Text = result.Rows(0).Item("nome").ToString
+                Else
+                    txtNomeRespPaciente.Text = ""
+                End If
+
+                If result.Rows(0).Item("tel").ToString.Length >= 13 Then
+                    Dim ddd = result.Rows(0).Item("tel").ToString.Substring(1, 2)
+                    txtDDD.Text = ddd
+                    Dim tel = result.Rows(0).Item("tel").ToString.Substring(4, 10)
+                    txtTelefone.Text = tel
+                End If
+
             End If
 
         Catch ex As Exception
 
         End Try
     End Sub
-
 
     'Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
     '    Dim pdf As New Endereco
