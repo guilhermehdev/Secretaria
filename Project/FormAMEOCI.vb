@@ -9,6 +9,62 @@ Public Class FormAMEOCI
     Dim m As New Main
     Dim result As DataTable
     Private Sub btnGerarArquivo_Click(sender As Object, e As EventArgs) Handles btnGerarArquivo.Click
+        If txtNumApac.Text = "" Then
+            MessageBox.Show("Informe o número da APAC.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txtNumApac.Focus()
+            Exit Sub
+        End If
+        If txtCpfPaciente.Text = "" Then
+            MessageBox.Show("Informe o CPF do paciente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txtCpfPaciente.Focus()
+            Exit Sub
+        End If
+        If dtNascimento.Text = "" Then
+            MessageBox.Show("Informe a data de nascimento do paciente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            dtNascimento.Focus()
+            Exit Sub
+        End If
+        If txtNomePaciente.Text = "" Then
+            MessageBox.Show("Informe o nome do paciente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txtNomePaciente.Focus()
+            Exit Sub
+        End If
+        If txtNomeMae.Text = "" Then
+            MessageBox.Show("Informe o nome da mãe do paciente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txtNomeMae.Focus()
+            Exit Sub
+        End If
+        If txtNomeRespPaciente.Text = "" Then
+            MessageBox.Show("Informe o nome do responsavel pelo paciente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txtNomeRespPaciente.Focus()
+            Exit Sub
+        End If
+        If txtDDD.Text = "" Then
+            MessageBox.Show("Informe o DDD.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txtDDD.Focus()
+            Exit Sub
+        End If
+        If txtTelefone.Text = "" Then
+            MessageBox.Show("Informe o numero.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txtTelefone.Focus()
+            Exit Sub
+        End If
+        If txtCep.Text.Length < 9 Then
+            MessageBox.Show("Informe o CEP.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txtCep.Focus()
+            Exit Sub
+        End If
+        If txtNumero.Text = "" Then
+            MessageBox.Show("Informe o Número.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txtNumero.Focus()
+            Exit Sub
+        End If
+        If txtProcedimentoPrincipal.SelectedIndex < 0 Then
+            MessageBox.Show("Selecione o procedimento principal.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txtNumero.Focus()
+            Exit Sub
+        End If
+
         Try
             Dim codigos As New List(Of String)
             Dim quantidades As New List(Of Integer)
@@ -289,6 +345,7 @@ Public Class FormAMEOCI
         txtBairro.Clear()
         txtComplemento.Clear()
         txtNumApac.Clear()
+        txtNumApac.Focus()
 
     End Sub
 
@@ -953,13 +1010,13 @@ Public Class FormAMEOCI
     End Sub
     Private Sub chkResponsavel()
         Try
-            If m.CalcularIdade(dtNascimento.Text) >= 18 Then
-                txtNomeRespPaciente.Text = txtNomePaciente.Text
+            If m.CalcularIdade(CDate(dtNascimento.Text)) >= 18 Then
+                txtNomeRespPaciente.Text = txtNomePaciente.Text.ToString
             Else
                 txtNomeRespPaciente.Text = ""
             End If
         Catch ex As Exception
-
+            ' MsgBox(ex.Message)
         End Try
     End Sub
 
@@ -985,6 +1042,10 @@ Public Class FormAMEOCI
                 ' MsgBox(ex.Message)
             End Try
         End If
+    End Sub
+
+    Private Sub txtCNSMedicoExecutante_SelectedIndexChanged(sender As Object, e As EventArgs) Handles txtCNSMedicoExecutante.SelectedIndexChanged
+        txtNomeMedicoSolicitante.SelectedIndex = txtCNSMedicoExecutante.SelectedIndex
     End Sub
 
 End Class
