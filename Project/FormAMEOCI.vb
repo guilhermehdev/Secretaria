@@ -232,7 +232,6 @@ Public Class FormAMEOCI
             r13Principal.Append("13")
             r13Principal.Append(competenciaFormatada)
             r13Principal.Append(txtNumApac.Text.PadLeft(13, "0"c))
-            MsgBox(txtProcedimentoPrincipal.SelectedValue)
             r13Principal.Append(txtProcedimentoPrincipal.SelectedValue.PadLeft(10, "0"c))
             r13Principal.Append(CBOmed.SelectedValue.PadLeft(6, "0"c))
             r13Principal.Append("0000001") ' quantidade = 1 (7 dígitos)
@@ -289,8 +288,7 @@ Public Class FormAMEOCI
         txtNumero.Clear()
         txtBairro.Clear()
         txtComplemento.Clear()
-
-
+        txtNumApac.Clear()
 
     End Sub
 
@@ -984,7 +982,7 @@ Public Class FormAMEOCI
                 End If
 
             Catch ex As Exception
-                MsgBox(ex.Message)
+                ' MsgBox(ex.Message)
             End Try
         End If
     End Sub
