@@ -28,7 +28,7 @@ Public Class FormAMEOCI
             Dim competenciaFormatada As String = My.Settings.OCIcompetencia
 
             ' Caminho fixo do arquivo principal
-            Dim filePath As String = Path.Combine("C:\APAC\IMPORTA", "AP" & competenciaFormatada & ".SET")
+            Dim filePath As String = Path.Combine("C:\APAC\IMPORTA", "AP" & competenciaFormatada & chkMonthEXT())
 
             ' Se o arquivo ainda não existir, cria com o header
             If Not File.Exists(filePath) OrElse New FileInfo(filePath).Length = 0 Then
@@ -122,7 +122,7 @@ Public Class FormAMEOCI
             r14.Append(txtMunIbge.Text.PadLeft(7, "0"c))        ' 7
 
             ' 20. Data nascimento
-            r14.Append(dtNascimento.Text.ToString("yyyyMMdd")) ' 8
+            r14.Append(Format(CDate(dtNascimento.Text).ToString("yyyyMMdd"))) ' 8
 
             ' 21. Sexo
             r14.Append(txtSexo.Text.PadRight(1, " "c))          ' 1
@@ -232,12 +232,13 @@ Public Class FormAMEOCI
             r13Principal.Append("13")
             r13Principal.Append(competenciaFormatada)
             r13Principal.Append(txtNumApac.Text.PadLeft(13, "0"c))
+            MsgBox(txtProcedimentoPrincipal.SelectedValue)
             r13Principal.Append(txtProcedimentoPrincipal.SelectedValue.PadLeft(10, "0"c))
             r13Principal.Append(CBOmed.SelectedValue.PadLeft(6, "0"c))
             r13Principal.Append("0000001") ' quantidade = 1 (7 dígitos)
             r13Principal.Append(New String(" "c, 53))
             'linhas.Add(r13Principal.ToString()) ' NÃO põe vbCrLf aqui
-
+            File.AppendAllText(filePath, r13Principal.ToString() & Chr(13) & Chr(10), Encoding.GetEncoding("iso-8859-1"))
             ' ========== REGISTRO 13 SECUNDÁRIOS ==========
             For i = 0 To dgvProcedimentos.RowCount - 1
                 If dgvProcedimentos.Rows(i).IsNewRow Then Continue For
@@ -260,10 +261,36 @@ Public Class FormAMEOCI
             'File.AppendAllText(filePath, String.Join(vbCrLf, linhas) & vbCrLf, Encoding.GetEncoding("iso-8859-1"))
             MessageBox.Show("APAC adicionada e salva no arquivo com sucesso!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
+            clearFields()
 
         Catch ex As Exception
             MessageBox.Show("Erro ao gerar arquivo: " & ex.Message)
         End Try
+
+    End Sub
+
+    Private Sub clearFields()
+        txtCpfPaciente.Clear()
+        txtCnsPaciente.Clear()
+        txtProntuario.Clear()
+        dtNascimento.Clear()
+        txtSexo.SelectedIndex = 0
+        txtNomePaciente.Text = ""
+        txtNomeMae.Clear()
+        txtNomeRespPaciente.Clear()
+        txtRaca.SelectedIndex = 0
+        chkSituacaoRua.Checked = False
+        txtEmail.Clear()
+        txtDDD.Clear()
+        txtTelefone.Clear()
+        txtCep.Clear()
+        cbTipoLogradouro.SelectedIndex = 0
+        txtLogradouro.Clear()
+        txtNumero.Clear()
+        txtBairro.Clear()
+        txtComplemento.Clear()
+
+
 
     End Sub
 
@@ -506,8 +533,6 @@ Public Class FormAMEOCI
                 MessageBox.Show("A string do mês não é um número válido (01-12).", "Erro de Conversão", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End If
 
-            dtValidadeFim.Value = dtValidadeIni.Value.AddMonths(1)
-
             dgvProcedimentos.Columns.Clear()
 
             dgvProcedimentos.Columns.Add("Codigo", "Procedimento")
@@ -690,28 +715,35 @@ Public Class FormAMEOCI
         FormAMEOCINumAPAC.ShowDialog()
     End Sub
     Private Sub cep(param As String)
-        Dim CEP As New CEP()
-        Dim resultado As DataTable = CEP.getAddress(param)
+        Try
 
-        Dim tipo = resultado.Rows(0).Item(2).ToString
-        Dim logra = resultado.Rows(0).Item(3).ToString
-        Dim bairro = resultado.Rows(0).Item(4).ToString
+            Dim CEP As New CEP()
+            Dim resultado As DataTable = CEP.getAddress(param)
 
-        If resultado IsNot Nothing Then
+            If resultado IsNot Nothing Then
 
-            Dim foundItem = CType(cbTipoLogradouro.DataSource, BindingSource) _
-            .Cast(Of KeyValuePair(Of String, String))() _
-            .FirstOrDefault(Function(x) x.Value.Equals(tipo, StringComparison.OrdinalIgnoreCase))
+                Dim tipo = resultado.Rows(0).Item(2).ToString
+                Dim logra = resultado.Rows(0).Item(3).ToString
+                Dim bairro = resultado.Rows(0).Item(4).ToString
 
-            If foundItem.Key IsNot Nothing Then
-                cbTipoLogradouro.SelectedValue = foundItem.Key
+
+                Dim foundItem = CType(cbTipoLogradouro.DataSource, BindingSource) _
+                .Cast(Of KeyValuePair(Of String, String))() _
+                .FirstOrDefault(Function(x) x.Value.Equals(tipo, StringComparison.OrdinalIgnoreCase))
+
+                If foundItem.Key IsNot Nothing Then
+                    cbTipoLogradouro.SelectedValue = foundItem.Key
+                End If
+
+                txtLogradouro.Text = logra
+                txtBairro.Text = bairro
+            Else
+                MsgBox("CEP não encontrado ou erro na consulta.")
             End If
 
-            txtLogradouro.Text = logra
-            txtBairro.Text = bairro
-        Else
-            MsgBox("CEP não encontrado ou erro na consulta.")
-        End If
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Sub txtCep_Leave(sender As Object, e As EventArgs) Handles txtCep.Leave
@@ -844,16 +876,6 @@ Public Class FormAMEOCI
     Private Sub txtBairro_KeyDown(sender As Object, e As KeyEventArgs) Handles txtBairro.KeyDown
         If e.KeyCode = Keys.Escape Then dgvSugestoes.Visible = False
     End Sub
-    Private Sub txtCpfPaciente_TextChanged(sender As Object, e As EventArgs) Handles txtCpfPaciente.TextChanged
-
-        Try
-            Dim result As DataTable = getPacientes(txtCpfPaciente.Text.Trim())
-            resultPacientes(result)
-
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
-    End Sub
 
     Private Sub txtCep_TextChanged(sender As Object, e As EventArgs) Handles txtCep.TextChanged
         If txtCep.Text.Length = 9 Then
@@ -861,12 +883,6 @@ Public Class FormAMEOCI
             dgvSugestoes.Visible = False
         End If
     End Sub
-
-    'Private Sub cboPaciente_DropDownClosed(sender As Object, e As EventArgs) Handles txtNomePaciente.DropDownClosed
-    '    If txtNomePaciente.SelectedIndex >= 0 Then
-    '        result = getPacientes(Nothing, Nothing, Nothing, txtNomePaciente.SelectedValue)
-    '    End If
-    'End Sub
 
     Private Sub txtNomePaciente_SelectedIndexChanged(sender As Object, e As EventArgs) Handles txtNomePaciente.SelectedIndexChanged
         Try
@@ -902,16 +918,6 @@ Public Class FormAMEOCI
         End If
     End Sub
 
-    Private Sub txtNomePaciente_KeyUp(sender As Object, e As KeyEventArgs) Handles txtNomePaciente.KeyUp
-        If e.KeyCode = Keys.Up OrElse e.KeyCode = Keys.Down Then
-            If txtNomePaciente.SelectedIndex >= 0 Then
-                txtNomePaciente.SelectionLength = 0
-                result = getPacientes(Nothing, Nothing, Nothing, txtNomePaciente.SelectedValue)
-                resultPacientes(result)
-            End If
-        End If
-    End Sub
-
     Private Sub resultPacientes(result As DataTable)
         Try
 
@@ -929,13 +935,10 @@ Public Class FormAMEOCI
                     txtBairro.Text = ""
                 End If
 
+                txtCpfPaciente.Text = result.Rows(0).Item("cpf").ToString
                 dtNascimento.Text = result.Rows(0).Item("dtnasc").ToString
                 txtNomeMae.Text = result.Rows(0).Item("mae").ToString
-                If m.CalcularIdade(result.Rows(0).Item("dtnasc").ToString) >= 18 Then
-                    txtNomeRespPaciente.Text = result.Rows(0).Item("nome").ToString
-                Else
-                    txtNomeRespPaciente.Text = ""
-                End If
+                chkResponsavel()
 
                 If result.Rows(0).Item("tel").ToString.Length >= 13 Then
                     Dim ddd = result.Rows(0).Item("tel").ToString.Substring(1, 2)
@@ -950,13 +953,40 @@ Public Class FormAMEOCI
 
         End Try
     End Sub
+    Private Sub chkResponsavel()
+        Try
+            If m.CalcularIdade(dtNascimento.Text) >= 18 Then
+                txtNomeRespPaciente.Text = txtNomePaciente.Text
+            Else
+                txtNomeRespPaciente.Text = ""
+            End If
+        Catch ex As Exception
 
-    'Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-    '    Dim pdf As New Endereco
-    '    Dim lista = pdf.ExtrairCEPsDoTXT("D:\Desktop\CEPS.txt")
+        End Try
+    End Sub
 
-    '    pdf.SalvarCEPsNoMySQL(lista)
+    Private Sub dtValidadeIni_Leave(sender As Object, e As EventArgs) Handles dtValidadeIni.Leave
+        dtValidadeFim.Value = dtValidadeIni.Value.AddMonths(1)
+        dtAltaObito.Value = dtValidadeIni.Value
+        dtEmissao.Value = dtValidadeIni.Value
+        dtAutorizacao.Value = dtValidadeIni.Value
+    End Sub
+    Private Sub txtNomePaciente_Leave(sender As Object, e As EventArgs) Handles txtNomePaciente.Leave
+        chkResponsavel()
+    End Sub
 
-    'End Sub
+    Private Sub txtCpfPaciente_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCpfPaciente.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            Try
+                If txtCpfPaciente.Text.Length = 11 Then
+                    Dim result As DataTable = getPacientes(txtCpfPaciente.Text.Trim())
+                    resultPacientes(result)
+                End If
+
+            Catch ex As Exception
+                MsgBox(ex.Message)
+            End Try
+        End If
+    End Sub
 
 End Class

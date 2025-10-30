@@ -1,4 +1,6 @@
-﻿Public Class FormAMEOCINumAPAC
+﻿Imports ClosedXML.Excel
+
+Public Class FormAMEOCINumAPAC
 
     Private Function GerarNumerosAPAC_Padrao(inicio As String, fim As String, quantidade As Integer) As List(Of String)
         Dim lista As New List(Of String)
@@ -62,7 +64,32 @@
         Dim numeros
 
         If tbFaixaInicio.Text.Length = 13 AndAlso tbFaixaFim.Text.Length = 13 Then
-            numeros = GerarNumerosAPAC_Padrao(tbFaixaInicio.Text, tbFaixaFim.Text, numQtd.Value)
+            numeros = GerarNumerosAPAC_Padrao(tbFaixaInicio.Text, tbFaixaFim.Text, CInt(numQtd.Value))
+
+            ' Cria o workbook
+            Dim wb As New XLWorkbook()
+            Dim ws = wb.Worksheets.Add("APACs")
+
+            ' Cabeçalho
+            ws.Cell(1, 1).Value = "NÚMEROS APAC"
+            ws.Cell(1, 1).Style.Font.Bold = True
+
+            ' Insere os números
+            Dim linha As Integer = 2
+            For Each n In numeros
+                ws.Cell(linha, 1).Value = n.ToString()
+                linha += 1
+            Next
+
+            ' Ajusta largura da coluna
+            ws.Column(1).AdjustToContents()
+
+            ' Salva o arquivo
+            Dim caminho = IO.Path.Combine(Application.StartupPath, "numeros_apac.xlsx")
+            wb.SaveAs(caminho)
+
+            MessageBox.Show("Arquivo gerado com sucesso em:" & vbCrLf & caminho, "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
         Else
             MessageBox.Show("Os números devem ter 13 dígitos.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Return
@@ -71,6 +98,10 @@
         For Each n In numeros
 
         Next
+
     End Sub
 
+    Private Sub FormAMEOCINumAPAC_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
 End Class
