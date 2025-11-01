@@ -328,6 +328,7 @@ Public Class FormAMEOCI
     Private Sub btnAddPacAPAC_Click(sender As Object, e As EventArgs) Handles btnGerarArquivo.Click
         Try
             ' ==================== VALIDAÇÕES ====================
+            If Not m.ValidarCPF(txtCpfPaciente.Text) Then Return
             If txtNumApac.Text.Trim() = "" Then Throw New Exception("Informe o número da APAC.")
             If txtCpfPaciente.Text.Trim() = "" Then Throw New Exception("Informe o CPF do paciente.")
             If dtNascimento.Text.Trim() = "" Then Throw New Exception("Informe a data de nascimento do paciente.")
@@ -339,6 +340,7 @@ Public Class FormAMEOCI
             If txtCep.Text.Length < 8 Then Throw New Exception("Informe o CEP corretamente.")
             If txtNumero.Text.Trim() = "" Then Throw New Exception("Informe o número.")
             If txtProcedimentoPrincipal.SelectedIndex < 0 Then Throw New Exception("Selecione o procedimento principal.")
+            chkResponsavel()
 
             ' ==================== CONFIGURAÇÕES ====================
             Dim competencia As String = My.Settings.OCIcompetencia
@@ -517,6 +519,7 @@ Public Class FormAMEOCI
         txtTelefone.Clear()
         txtCep.Clear()
         cbTipoLogradouro.SelectedIndex = 0
+        txtCidSecundario.SelectedIndex = -1
         txtLogradouro.Clear()
         txtNumero.Clear()
         txtBairro.Clear()
@@ -933,10 +936,11 @@ Public Class FormAMEOCI
         saveDialog.FileName = fileAPAC
 
         If saveDialog.ShowDialog() = DialogResult.OK Then
-            File.Copy(filePath, saveDialog.FileName, True)
-            MessageBox.Show("Arquivo exportado com sucesso!" & vbCrLf & saveDialog.FileName, "Exportação concluída", MessageBoxButtons.OK, MessageBoxIcon.Information)
-
-            File.Delete(filePath)
+            'File.Copy(filePath, saveDialog.FileName, True)
+            If File.Exists(filePath) Then
+                File.Move(filePath, saveDialog.FileName)
+                MessageBox.Show($"Arquivo exportado com sucesso!{vbCrLf}{saveDialog.FileName}", "Exportação concluída", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            End If
 
         End If
 
@@ -1170,6 +1174,7 @@ Public Class FormAMEOCI
                     txtBairro.Text = ""
                 End If
 
+                txtNomePaciente.Text = result.Rows(0).Item("nome").ToString
                 txtCpfPaciente.Text = result.Rows(0).Item("cpf").ToString
                 dtNascimento.Text = result.Rows(0).Item("dtnasc").ToString
                 txtNomeMae.Text = result.Rows(0).Item("mae").ToString
@@ -1213,13 +1218,15 @@ Public Class FormAMEOCI
     Private Sub txtCpfPaciente_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCpfPaciente.KeyDown
         If e.KeyCode = Keys.Enter Then
             Try
-                If txtCpfPaciente.Text.Length = 11 Then
+                If m.ValidarCPF(txtCpfPaciente.Text) Then
                     Dim result As DataTable = getPacientes(txtCpfPaciente.Text.Trim())
                     resultPacientes(result)
+                Else
+                    MsgBox("CPF invalido!")
                 End If
 
             Catch ex As Exception
-                ' MsgBox(ex.Message)
+                MsgBox("CPF invalido!")
             End Try
         End If
     End Sub

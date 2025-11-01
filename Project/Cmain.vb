@@ -829,6 +829,39 @@ Public Class Main
         Return idade
     End Function
 
+    Public Function ValidarCPF(cpf As String) As Boolean
+        ' Remove máscara
+        cpf = New String(cpf.Where(AddressOf Char.IsDigit).ToArray())
+
+        ' Verifica tamanho
+        If cpf.Length <> 11 Then Return False
+
+        ' Elimina CPFs inválidos conhecidos
+        Dim invalidos() As String = {"00000000000", "11111111111", "22222222222", "33333333333",
+                                 "44444444444", "55555555555", "66666666666",
+                                 "77777777777", "88888888888", "99999999999"}
+        If invalidos.Contains(cpf) Then Return False
+
+        ' Calcula primeiro dígito
+        Dim soma As Integer = 0
+        For i As Integer = 0 To 8
+            soma += CInt(cpf(i).ToString()) * (10 - i)
+        Next
+        Dim resto As Integer = soma Mod 11
+        Dim digito1 As Integer = If(resto < 2, 0, 11 - resto)
+
+        ' Calcula segundo dígito
+        soma = 0
+        For i As Integer = 0 To 9
+            soma += CInt(cpf(i).ToString()) * (11 - i)
+        Next
+        resto = soma Mod 11
+        Dim digito2 As Integer = If(resto < 2, 0, 11 - resto)
+
+        ' Compara com os dígitos informados
+        Return cpf.EndsWith(digito1.ToString() & digito2.ToString())
+    End Function
+
 
 End Class
 
