@@ -863,8 +863,8 @@ Public Class FormAMEOCI
             txtMotivoSaida.ValueMember = "Key"
             txtMotivoSaida.SelectedIndex = 1
 
-            FormAMEmain.loadComboBox("SELECT id, nome FROM pacientes WHERE id > 1 ORDER BY nome", txtNomePaciente, "nome", "id")
-            txtNomePaciente.Text = ""
+            'FormAMEmain.loadComboBox("SELECT id, nome FROM pacientes WHERE id > 1 ORDER BY nome", txtNomePaciente, "nome", "id")
+            'txtNomePaciente.Text = ""
 
         Catch ex As Exception
             FormAMEOCIControleCompetencia.ShowDialog()
@@ -1124,12 +1124,12 @@ Public Class FormAMEOCI
     End Sub
 
     Private Sub txtNomePaciente_SelectedIndexChanged(sender As Object, e As EventArgs) Handles txtNomePaciente.SelectedIndexChanged
-        Try
-            result = getPacientes(Nothing, Nothing, Nothing, txtNomePaciente.SelectedValue)
-            resultPacientes(result)
-        Catch ex As Exception
+        'Try
+        '    result = getPacientes(Nothing, Nothing, Nothing, txtNomePaciente.SelectedValue)
+        '    resultPacientes(result)
+        'Catch ex As Exception
 
-        End Try
+        'End Try
 
     End Sub
 
@@ -1155,6 +1155,29 @@ Public Class FormAMEOCI
             cb.SelectionStart = Math.Min(pos, cb.Text.Length)
             _upperLock = False
         End If
+
+        If txtNomePaciente.Text.Length >= 5 Then
+            Try
+                Dim textoAtual As String = txtNomePaciente.Text  ' salva o que o usuário digitou
+                Dim posicaoCursor As Integer = txtNomePaciente.SelectionStart
+
+                ' Carrega dados do banco
+                Dim query As String = $"SELECT id, nome FROM pacientes WHERE id > 1 AND nome LIKE '%{textoAtual.Replace("'", "''")}%' ORDER BY nome"
+                FormAMEmain.loadComboBox(query, txtNomePaciente, "nome", "id")
+
+                ' Restaura o texto digitado
+                txtNomePaciente.Text = textoAtual
+                txtNomePaciente.SelectionStart = posicaoCursor
+                txtNomePaciente.DroppedDown = True  ' força abrir o dropdown
+                txtNomePaciente.DroppedDown = True  ' (duas vezes ajuda a forçar atualização visual)
+                txtNomePaciente.IntegralHeight = False
+                txtNomePaciente.MaxDropDownItems = 10
+            Catch ex As Exception
+
+            End Try
+
+        End If
+
     End Sub
 
     Private Sub resultPacientes(result As DataTable)
