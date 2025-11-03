@@ -9,6 +9,14 @@ Public Class FormAMEOCI
     Private linhas As New List(Of String)
     Dim m As New Main
     Dim result As DataTable
+    ' Variáveis globais
+    Private popupGrid As DataGridView
+    Private debounceTimer As New Timer() With {.Interval = 300}
+    Private isLoading As Boolean = False
+    Private IDpacienteSelecionado As Integer = -1
+
+
+
     'Private Sub btnGerarArquivo_Click(sender As Object, e As EventArgs) Handles btnGerarArquivo.Click
     '    If txtNumApac.Text = "" Then
     '        MessageBox.Show("Informe o número da APAC.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
@@ -728,8 +736,39 @@ Public Class FormAMEOCI
 
     End Function
 
+
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim novoMes As Integer
+
+        ' Inicializa o grid
+        popupGrid = New DataGridView With {
+        .Visible = False,
+        .ReadOnly = True,
+        .AllowUserToAddRows = False,
+        .AllowUserToDeleteRows = False,
+        .RowHeadersVisible = False,
+        .SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+        .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+        .BackgroundColor = Color.White,
+        .BorderStyle = BorderStyle.None,
+        .Width = 500,
+        .Height = 250
+    }
+
+        popupGrid.ColumnHeadersDefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+        popupGrid.CellBorderStyle = DataGridViewCellBorderStyle.Sunken
+        popupGrid.DefaultCellStyle.Font = New Font("Segoe UI", 9)
+        popupGrid.DefaultCellStyle.SelectionBackColor = Color.LightSteelBlue
+        popupGrid.DefaultCellStyle.SelectionForeColor = Color.Black
+        popupGrid.RowHeadersVisible = False
+
+        ' Adiciona ao formulário
+        Me.Controls.Add(popupGrid)
+        popupGrid.BringToFront()
+
+        ' Timer debounce
+        AddHandler debounceTimer.Tick, AddressOf BuscarPacientes
+        AddHandler popupGrid.CellClick, AddressOf popupGrid_CellClick
 
         Try
             ' 1. Converter a string para um número inteiro
@@ -1123,16 +1162,6 @@ Public Class FormAMEOCI
         End If
     End Sub
 
-    Private Sub txtNomePaciente_SelectedIndexChanged(sender As Object, e As EventArgs) Handles txtNomePaciente.SelectedIndexChanged
-        'Try
-        '    result = getPacientes(Nothing, Nothing, Nothing, txtNomePaciente.SelectedValue)
-        '    resultPacientes(result)
-        'Catch ex As Exception
-
-        'End Try
-
-    End Sub
-
     ' nível de classe:
     Private _upperLock As Boolean = False
 
@@ -1156,28 +1185,85 @@ Public Class FormAMEOCI
             _upperLock = False
         End If
 
-        If txtNomePaciente.Text.Length >= 5 Then
-            Try
-                Dim textoAtual As String = txtNomePaciente.Text  ' salva o que o usuário digitou
-                Dim posicaoCursor As Integer = txtNomePaciente.SelectionStart
+        If isLoading Then Exit Sub
+        debounceTimer.Stop()
 
-                ' Carrega dados do banco
-                Dim query As String = $"SELECT id, nome FROM pacientes WHERE id > 1 AND nome LIKE '%{textoAtual.Replace("'", "''")}%' ORDER BY nome"
-                FormAMEmain.loadComboBox(query, txtNomePaciente, "nome", "id")
-
-                ' Restaura o texto digitado
-                txtNomePaciente.Text = textoAtual
-                txtNomePaciente.SelectionStart = posicaoCursor
-                txtNomePaciente.DroppedDown = True  ' força abrir o dropdown
-                txtNomePaciente.DroppedDown = True  ' (duas vezes ajuda a forçar atualização visual)
-                txtNomePaciente.IntegralHeight = False
-                txtNomePaciente.MaxDropDownItems = 10
-            Catch ex As Exception
-
-            End Try
-
+        If txtNomePaciente.Text.Length >= 4 Then
+            debounceTimer.Start()
+        Else
+            popupGrid.Visible = False
         End If
 
+    End Sub
+
+    Private Sub BuscarPacientes(sender As Object, e As EventArgs)
+        debounceTimer.Stop()
+        Dim texto As String = txtNomePaciente.Text.Trim()
+
+        If texto.Length < 4 Then
+            popupGrid.Visible = False
+            Exit Sub
+        End If
+
+        Try
+            isLoading = True
+            result = getPacientes(, txtNomePaciente.Text,,)
+
+            If result.Rows.Count > 0 Then
+                popupGrid.DataSource = result
+
+                ' Posiciona o grid logo abaixo do textbox
+                popupGrid.Location = New Point(24, 205)
+                ' ======== CONFIGURAÇÃO DE COLUNAS INDIVIDUAIS ========
+
+                For Each col As DataGridViewColumn In popupGrid.Columns
+                    If col.Name.ToLower() <> "nome" AndAlso col.Name.ToLower() <> "dtnasc" Then
+                        col.Visible = False
+                    End If
+                Next
+
+                If popupGrid.Columns.Contains("nome") Then
+                    popupGrid.Columns("nome").HeaderText = "Nome do Paciente"
+                    popupGrid.Columns("dtnasc").Width = 250
+                    popupGrid.Columns("nome").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                End If
+
+                If popupGrid.Columns.Contains("dtnasc") Then
+                    popupGrid.Columns("dtnasc").HeaderText = "Nascimento"
+                    popupGrid.Columns("dtnasc").Width = 80
+                    popupGrid.Columns("dtnasc").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+                End If
+                popupGrid.Visible = True
+            Else
+                popupGrid.Visible = False
+            End If
+
+        Catch ex As Exception
+            popupGrid.Visible = False
+        Finally
+            isLoading = False
+        End Try
+    End Sub
+
+    Private Sub popupGrid_CellClick(sender As Object, e As DataGridViewCellEventArgs)
+        If e.RowIndex >= 0 Then
+            IDpacienteSelecionado = CInt(popupGrid.Rows(e.RowIndex).Cells("id").Value)
+            Try
+                isLoading = True ' 🔒 bloqueia o TextChanged durante a seleção
+                debounceTimer.Stop()
+                Dim linhas() As DataRow = result.Select("id = " & IDpacienteSelecionado)
+                If linhas.Length = 0 Then Exit Sub
+
+                ' Cria uma cópia apenas com essa linha
+                Dim dtSelecionado As DataTable = result.Clone()
+                dtSelecionado.ImportRow(linhas(0))
+                popupGrid.Visible = False
+
+                resultPacientes(dtSelecionado)
+            Finally
+                isLoading = False ' 🔓 libera novamente
+            End Try
+        End If
     End Sub
 
     Private Sub resultPacientes(result As DataTable)
@@ -1242,7 +1328,7 @@ Public Class FormAMEOCI
         If e.KeyCode = Keys.Enter Then
             Try
                 If m.ValidarCPF(txtCpfPaciente.Text) Then
-                    Dim result As DataTable = getPacientes(txtCpfPaciente.Text.Trim())
+                    result = getPacientes(txtCpfPaciente.Text.Trim())
                     resultPacientes(result)
                 Else
                     MsgBox("CPF invalido!")
