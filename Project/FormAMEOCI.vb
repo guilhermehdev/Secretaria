@@ -717,19 +717,20 @@ Public Class FormAMEOCI
         Dim query As String = "SELECT pacientes.*, ceps_peruibe.cep AS CEP,ceps_peruibe.tipo,ceps_peruibe.logradouro,ceps_peruibe.bairro
           FROM pacientes
           JOIN ceps_peruibe ON pacientes.id_logradouro = ceps_peruibe.id "
+        Dim orderBy As String = " ORDER BY pacientes.nome"
 
         If cpf IsNot Nothing Then
-            data = FormAMEmain.getDataset(query & $" WHERE pacientes.cpf ='{cpf}'")
+            data = FormAMEmain.getDataset(query & $" WHERE pacientes.cpf ='{cpf}' {orderBy}")
 
         ElseIf nome IsNot Nothing Then
-            data = FormAMEmain.getDataset(query & $" WHERE pacientes.nome LIKE '%{nome}%'")
+            data = FormAMEmain.getDataset(query & $" WHERE pacientes.nome LIKE '%{nome}%' {orderBy}")
 
         ElseIf dtnasc IsNot Nothing Then
 
-            data = FormAMEmain.getDataset(query & $" WHERE pacientes.dtnasc ='{dtnasc}'")
+            data = FormAMEmain.getDataset(query & $" WHERE pacientes.dtnasc ='{dtnasc}' {orderBy}")
         ElseIf id > 0 Then
 
-            data = FormAMEmain.getDataset(query & $" WHERE pacientes.id ={id}")
+            data = FormAMEmain.getDataset(query & $" WHERE pacientes.id ={id} {orderBy}")
         End If
 
         Return data
