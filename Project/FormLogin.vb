@@ -95,7 +95,12 @@ Public Class FormLogin
         tbSenha.Focus()
     End Sub
     Private Sub FormLogin_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        m.loadComboBox("SELECT * FROM usuarios WHERE ativo=1", cbUsuarios, "nome", "id")
+        Try
+            m.loadComboBox("SELECT * FROM usuarios WHERE ativo=1", cbUsuarios, "nome", "id")
+        Catch ex As Exception
+            FormSystemConnSettings.ShowDialog()
+        End Try
+
     End Sub
     Private Sub FormLogin_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
         If e.KeyCode = Keys.Return Then

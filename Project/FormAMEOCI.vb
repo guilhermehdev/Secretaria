@@ -739,6 +739,13 @@ Public Class FormAMEOCI
 
 
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        If My.Settings.databaseAME = "" Then
+            FormAMEbd.ShowDialog()
+            Me.Close()
+            Return
+        End If
+
+
         Dim novoMes As Integer
 
         ' Inicializa o grid

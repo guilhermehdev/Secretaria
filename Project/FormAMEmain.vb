@@ -669,7 +669,7 @@ Public Class FormAMEmain
             dsadapter.Fill(dspesquisa)
         Catch ex As Exception
             If errorMsg Then
-                MsgBox(ex)
+                MsgBox($"{ex}{vbCrLf}{sql}")
             End If
         Finally
             connection(False)
