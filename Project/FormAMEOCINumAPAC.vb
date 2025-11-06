@@ -3,6 +3,7 @@ Imports System.Security.Cryptography
 Imports System.Text.RegularExpressions
 Imports ClosedXML.Excel
 Imports System.Text
+Imports System.Windows
 
 Public Class FormAMEOCINumAPAC
 
@@ -64,7 +65,10 @@ Public Class FormAMEOCINumAPAC
         Return lista
     End Function
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        'Dim numeros = GerarNumerosAPAC_Padrao("3525704850877", "3525704854860", 400)
+        If tbFaixaInicio.Text.Length < 13 OrElse tbFaixaFim.Text.Length < 13 OrElse numQtd.Value < 1 Then
+            MessageBox.Show("Preencha todos os campos.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
+        End If
         Dim numeros
         SaveFileDialog1.ShowDialog()
         SaveFileDialog1.Filter = "Arquivos Excel|*.xlsx"
@@ -80,12 +84,13 @@ Public Class FormAMEOCINumAPAC
             Dim ws = wb.Worksheets.Add("APACs")
 
             ' Cabeçalho
-            ws.Cell(1, 1).Value = "NÚMEROS APAC"
-            ws.Cell(1, 1).Style.Font.Bold = True
+            'ws.Cell(1, 1).Value = "NÚMEROS APAC"
+            'ws.Cell(1, 1).Style.Font.Bold = True
 
             ' Insere os números
-            Dim linha As Integer = 2
+            Dim linha As Integer = 1
             For Each n In numeros
+                FormAMEmain.doQuery("INSERT INTO oci (num_apac) VALUES ('" & n.ToString() & "')")
                 ws.Cell(linha, 1).Value = n.ToString()
                 linha += 1
             Next
@@ -260,5 +265,181 @@ Public Class FormAMEOCINumAPAC
             substituirNumAPAC(OpenFileDialog1.FileName)
         End If
     End Sub
+
+    Private Sub loadNUMAPAC(Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As String = "", Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "")
+        Try
+            Dim where As String = "WHERE 1=1 "
+
+            If Not String.IsNullOrWhiteSpace(faixaIni) AndAlso Not String.IsNullOrWhiteSpace(faixaFim) Then
+                where &= $" AND oci.num_apac BETWEEN '{faixaIni}' AND '{faixaFim}' "
+            End If
+            If available <> "" Then
+                where &= " AND oci.status = 'DISP' "
+            End If
+            If user <> Nothing Then
+                where &= $" AND oci.id_usuario ={user} "
+            End If
+            If dtIni <> Nothing AndAlso dtFim <> Nothing Then
+                where &= $" AND oci.data BETWEEN '{dtIni.ToString("yyyy-MM-dd")}' AND '{dtFim.ToString("yyyy-MM-dd")}' "
+            End If
+            If Not String.IsNullOrWhiteSpace(oci) Then
+                where &= $" AND oci.id_cod_principal ={oci} "
+            End If
+            If Not String.IsNullOrWhiteSpace(status) Then
+                where &= $" AND oci.status ='{status}' "
+            End If
+
+            Dim data = FormAMEmain.getDataset($"SELECT oci.id, oci.num_apac, oci.compet, oci.`data`, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc, servidores.nome AS medico, oci.`status`, usuarios.nome AS responsavel 
+                FROM oci 
+               LEFT JOIN pacientes ON pacientes.id = oci.id_paciente 
+               LEFT JOIN servidores ON servidores.id = oci.id_medico
+               LEFT JOIN cod_oci_principal ON cod_oci_principal.id = oci.id_cod_principal 
+               LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} ORDER BY data DESC")
+
+            dgvNumerosAPAC.DataSource = data
+
+            dgvNumerosAPAC.Columns("id").Visible = False
+            dgvNumerosAPAC.Columns("num_apac").HeaderText = "Número APAC"
+            dgvNumerosAPAC.Columns("num_apac").Width = 90
+            dgvNumerosAPAC.Columns("compet").HeaderText = "Comp"
+            dgvNumerosAPAC.Columns("compet").Width = 60
+            dgvNumerosAPAC.Columns("data").HeaderText = "Data"
+            dgvNumerosAPAC.Columns("data").Width = 70
+            dgvNumerosAPAC.Columns("oci").HeaderText = "OCI"
+            dgvNumerosAPAC.Columns("oci").Width = 180
+            dgvNumerosAPAC.Columns("nome").HeaderText = "Paciente"
+            dgvNumerosAPAC.Columns("nome").Width = 200
+            dgvNumerosAPAC.Columns("dtnasc").HeaderText = "Nascimento"
+            dgvNumerosAPAC.Columns("dtnasc").Width = 80
+            dgvNumerosAPAC.Columns("medico").HeaderText = "Médico"
+            dgvNumerosAPAC.Columns("medico").Width = 200
+            dgvNumerosAPAC.Columns("status").HeaderText = "Status"
+            dgvNumerosAPAC.Columns("status").Width = 60
+            dgvNumerosAPAC.Columns("responsavel").HeaderText = "Responsável"
+            dgvNumerosAPAC.Columns("responsavel").Width = 150
+
+            ToolStripStatusLabel1.Text = dgvNumerosAPAC.Rows.Count & " registros encontrados."
+
+        Catch ex As Exception
+            MsgBox("Erro ao carregar números APAC: " & ex.Message)
+        End Try
+    End Sub
+
+    Private Sub AlterarStatusToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ctxMenuAPAC.Click
+        If dgvNumerosAPAC.SelectedRows.Count = 0 Then
+            MsgBox("Selecione ao menos uma linha.")
+            Exit Sub
+        End If
+
+        Dim novoStatus As String = InputBox("Informe o novo status:", "Alterar Status", "BLOQ")
+        If String.IsNullOrWhiteSpace(novoStatus) Then Exit Sub
+
+        For Each row As DataGridViewRow In dgvNumerosAPAC.SelectedRows
+            Dim id As Integer = CInt(row.Cells("id").Value)
+            Dim sql As String = $"UPDATE oci SET status = '{novoStatus}' WHERE id = {id}"
+            FormAMEmain.doQuery(sql) ' <-- tua função que executa SQL no banco
+            row.Cells("status").Value = novoStatus
+        Next
+
+        MsgBox("Status atualizado para " & dgvNumerosAPAC.SelectedRows.Count & " registro(s).", MsgBoxStyle.Information)
+    End Sub
+
+    'Private Sub CopiarDadosSelecionadosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ctxMenuAPAC.Click
+    '    If dgvNumerosAPAC.SelectedRows.Count = 0 Then
+    '        MsgBox("Nenhuma linha selecionada.")
+    '        Exit Sub
+    '    End If
+
+    '    Dim sb As New Text.StringBuilder()
+
+    '    ' Cabeçalhos
+    '    For Each col As DataGridViewColumn In dgvNumerosAPAC.Columns
+    '        If col.Visible Then sb.Append(col.HeaderText & vbTab)
+    '    Next
+    '    sb.AppendLine()
+
+    '    ' Linhas selecionadas
+    '    For Each row As DataGridViewRow In dgvNumerosAPAC.SelectedRows
+    '        For Each col As DataGridViewColumn In dgvNumerosAPAC.Columns
+    '            If col.Visible Then
+    '                Dim val = If(row.Cells(col.Index).Value, "")
+    '                sb.Append(val.ToString() & vbTab)
+    '            End If
+    '        Next
+    '        sb.AppendLine()
+    '    Next
+
+    '    Clipboard.SetText(sb.ToString())
+    '    MsgBox("Dados copiados para a área de transferência.", MsgBoxStyle.Information)
+    'End Sub
+
+
+    Private Sub FormAMEOCINumAPAC_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        FormAMEmain.loadComboBox("SELECT id, abrev FROM cod_oci_principal", cbOCI, "abrev", "id")
+        cbOCI.SelectedIndex = -1
+        FormAMEmain.loadComboBox("SELECT id, nome FROM usuarios ORDER BY nome", cbUsuarios, "nome", "id")
+        cbUsuarios.SelectedIndex = -1
+    End Sub
+
+    Private Sub tbAPACFim_TextChanged(sender As Object, e As EventArgs) Handles tbAPACFim.TextChanged
+        dgvNumerosAPAC.DataSource = Nothing
+        If tbAPACFim.Text.Length = 13 Then
+            chkDisponiveis.Checked = False
+            cbOCI.SelectedIndex = -1
+            cbUsuarios.SelectedIndex = -1
+            loadNUMAPAC(tbFaixaInicio.Text, tbFaixaFim.Text)
+        End If
+    End Sub
+    Private Sub chkDisponiveis_CheckedChanged(sender As Object, e As EventArgs) Handles chkDisponiveis.CheckedChanged
+        dgvNumerosAPAC.DataSource = Nothing
+        If chkDisponiveis.Checked Then
+            tbAPACFim.Text = ""
+            tbAPACIni.Text = ""
+            cbOCI.SelectedIndex = -1
+            cbUsuarios.SelectedIndex = -1
+
+            loadNUMAPAC(,, "DISP")
+        Else
+            dgvNumerosAPAC.DataSource = Nothing
+        End If
+
+    End Sub
+    Private Sub cbUsuarios_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbUsuarios.SelectionChangeCommitted
+        dgvNumerosAPAC.DataSource = Nothing
+        tbAPACIni.Text = ""
+        tbAPACFim.Text = ""
+        cbOCI.SelectedIndex = -1
+        chkDisponiveis.Checked = False
+        loadNUMAPAC(,,, CInt(cbUsuarios.SelectedValue))
+    End Sub
+    Private Sub dtpFim_ValueChanged(sender As Object, e As EventArgs) Handles dtpFim.ValueChanged
+        dgvNumerosAPAC.DataSource = Nothing
+        tbAPACIni.Text = ""
+        tbAPACFim.Text = ""
+        cbOCI.SelectedIndex = -1
+        cbUsuarios.SelectedIndex = -1
+        chkDisponiveis.Checked = False
+        loadNUMAPAC(,,,, dtpIni.Value, dtpFim.Value)
+    End Sub
+
+    Private Sub cbOCI_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbOCI.SelectionChangeCommitted
+        dgvNumerosAPAC.DataSource = Nothing
+        tbAPACIni.Text = ""
+        tbAPACFim.Text = ""
+        cbUsuarios.SelectedIndex = -1
+        chkDisponiveis.Checked = False
+        loadNUMAPAC(,,,,, , CStr(cbOCI.SelectedValue))
+    End Sub
+
+    Private Sub cbStatus_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbStatus.SelectionChangeCommitted
+        dgvNumerosAPAC.DataSource = Nothing
+        tbAPACIni.Text = ""
+        tbAPACFim.Text = ""
+        cbUsuarios.SelectedIndex = -1
+        cbOCI.SelectedIndex = -1
+        chkDisponiveis.Checked = False
+        loadNUMAPAC(,,,,, , , CStr(cbStatus.SelectedItem))
+    End Sub
+
 
 End Class

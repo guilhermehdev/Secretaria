@@ -346,7 +346,7 @@ Public Class FormAMEOCI
             If txtDDD.Text.Trim() = "" Then Throw New Exception("Informe o DDD.")
             If txtTelefone.Text.Trim() = "" Then Throw New Exception("Informe o telefone.")
             If txtCep.Text.Length < 8 Then Throw New Exception("Informe o CEP corretamente.")
-            If txtNumero.Text.Trim() = "" Then Throw New Exception("Informe o número.")
+            If txtNumero.Text.Trim() = "" Then Throw New Exception("Informe o número do logradouro.")
             If txtProcedimentoPrincipal.SelectedIndex < 0 Then Throw New Exception("Selecione o procedimento principal.")
             chkResponsavel()
 
@@ -479,7 +479,7 @@ Public Class FormAMEOCI
                 End Using
             End Using
 
-            MessageBox.Show("✅ Arquivo .SET gerado com sucesso e validado!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show("✅ Arquivo gerado com sucesso e validado!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
             clearFields()
 
         Catch ex As Exception
