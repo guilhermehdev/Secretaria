@@ -44,11 +44,11 @@ Partial Class FormSystemStart
         Me.btSair.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Firebrick
         Me.btSair.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btSair.ForeColor = System.Drawing.Color.Gainsboro
-        Me.btSair.Location = New System.Drawing.Point(248, 130)
+        Me.btSair.Location = New System.Drawing.Point(12, 159)
         Me.btSair.Name = "btSair"
-        Me.btSair.Size = New System.Drawing.Size(37, 23)
+        Me.btSair.Size = New System.Drawing.Size(273, 23)
         Me.btSair.TabIndex = 3
-        Me.btSair.Text = "Sair"
+        Me.btSair.Text = "Fechar"
         Me.btSair.UseVisualStyleBackColor = False
         '
         'MenuStrip1
@@ -181,12 +181,12 @@ Partial Class FormSystemStart
         Me.btAME.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btAME.UseVisualStyleBackColor = False
         '
-        'Fstart
+        'FormSystemStart
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(298, 170)
+        Me.ClientSize = New System.Drawing.Size(298, 188)
         Me.Controls.Add(Me.btAME)
         Me.Controls.Add(Me.btBLH)
         Me.Controls.Add(Me.btCNES)
@@ -194,12 +194,12 @@ Partial Class FormSystemStart
         Me.Controls.Add(Me.btRecepcao)
         Me.Controls.Add(Me.btOuvidoria)
         Me.Controls.Add(Me.MenuStrip1)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.MenuStrip1
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "Fstart"
+        Me.Name = "FormSystemStart"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Selecione o sistema"
         Me.MenuStrip1.ResumeLayout(False)

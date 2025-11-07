@@ -995,10 +995,11 @@ Public Class FormAMEOCI
 
     Private Sub ControleDeCompetênciaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ControleDeCompetênciaToolStripMenuItem.Click
         FormAMEOCIControleCompetencia.ShowDialog()
-
     End Sub
     Private Sub NúmerosAPACToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NúmerosAPACToolStripMenuItem.Click
-        FormAMEOCINumAPAC.Show()
+        FormLogin.Show()
+        FormLogin.system = "NUMAPAC"
+        'Me.WindowState = FormWindowState.Minimized
     End Sub
     Private Sub cep(param As String)
         Try

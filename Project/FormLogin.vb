@@ -7,7 +7,9 @@ Public Class FormLogin
         Me.Close()
     End Sub
     Private Sub FormLogin_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        FormSystemStart.Visible = True
+        If Application.OpenForms.Count = 1 AndAlso Application.OpenForms(0) Is Me Then
+            FormSystemStart.Visible = True
+        End If
     End Sub
 
     Private Sub btLogin_Click(sender As Object, e As EventArgs) Handles btLogin.Click
@@ -26,16 +28,25 @@ Public Class FormLogin
                 Case "CADUSUARIOS"
                     FormLoginCadUsuario.Show()
                     Me.Visible = False
+                Case "AME"
+                    FormAMEOCI.Show()
+                    Me.Visible = False
+                Case "NUMAPAC"
+                    FormAMEOCINumAPAC.Show()
+                    Me.Visible = False
             End Select
         End If
     End Sub
     Private Function checkCredentials(id As Integer)
         Dim userData = m.getDataset($"SELECT * FROM usuarios WHERE id ={id}")
+        Dim pass = userData.Rows(0).Item(2)
+        Dim level = userData.Rows(0).Item(4)
         Dim eouve = userData.Rows(0).Item(5).ToString
         Dim emtu = userData.Rows(0).Item(6).ToString
         Dim cnes = userData.Rows(0).Item(7).ToString
-        Dim pass = userData.Rows(0).Item(2)
-        Dim level = userData.Rows(0).Item(4)
+        Dim ame = userData.Rows(0).Item(8).ToString
+        Dim num_apac = userData.Rows(0).Item(9).ToString
+
 
         If tbSenha IsNot Nothing Then
                 If tbSenha.Text = "" Then
@@ -73,6 +84,20 @@ Public Class FormLogin
                 End If
             Case "CADUSUARIOS"
                 If level = 10 And pass = tbSenha.Text Then
+                    Return 1
+                Else
+                    m.msgAlert("Senha inválida")
+                    Return 0
+                End If
+            Case "AME"
+                If ame = 1 And pass = tbSenha.Text Then
+                    Return 1
+                Else
+                    m.msgAlert("Senha inválida")
+                    Return 0
+                End If
+            Case "NUMAPAC"
+                If num_apac = 1 And pass = tbSenha.Text Then
                     Return 1
                 Else
                     m.msgAlert("Senha inválida")

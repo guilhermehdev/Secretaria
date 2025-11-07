@@ -31,7 +31,8 @@
         Me.Visible = False
     End Sub
     Private Sub btAME_Click(sender As Object, e As EventArgs) Handles btAME.Click
-        FormAMEOCI.Show()
+        FormLogin.Show()
+        FormLogin.system = "AME"
         Me.Visible = False
     End Sub
 
