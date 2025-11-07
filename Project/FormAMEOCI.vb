@@ -14,6 +14,7 @@ Public Class FormAMEOCI
     Private debounceTimer As New Timer() With {.Interval = 300}
     Private isLoading As Boolean = False
     Private IDpacienteSelecionado As Integer = -1
+    Public Property idUser As Integer
 
 
 
@@ -333,20 +334,49 @@ Public Class FormAMEOCI
 
     'End Sub
 
+    Private Sub saveAPAC()
+        If Not txtNumApac.Text.Length = 13 Then
+            MessageBox.Show("Preencha o número da APAC corretamente.")
+            txtNumApac.Focus()
+            Return
+        End If
+        If result.Rows(0).Item("id").ToString = Nothing Then
+            MessageBox.Show("Selecione um paciente.")
+            txtNomePaciente.Focus()
+            Return
+        End If
+        If txtCNSMedicoExecutante.SelectedIndex = -1 Then
+            MessageBox.Show("Selecione o médico.")
+            txtCNSMedicoExecutante.Focus()
+            Return
+        End If
+        If txtProcedimentoPrincipal.SelectedIndex = -1 Then
+            MessageBox.Show("Selecione o procedimento principal.")
+            txtCNSMedicoExecutante.Focus()
+            Return
+        End If
+
+        FormAMEmain.doQuery("INSERT INTO oci (num_apac, compet, data, id_paciente, id_medico, id_cod_principal, status, id_usuario) VALUES ('" & txtNumApac.Text & "', '" & My.Settings.OCIcompetencia & "'," & dtValidadeIni.Value & ",'" & result.Rows(0).Item("id").ToString & "', '" & txtCNSMedicoExecutante.SelectedValue.ToString() & "', '" & txtProcedimentoPrincipal.SelectedValue.ToString() & "', 'CONC', " & idUser & ")")
+
+    End Sub
+
     Private Sub btnAddPacAPAC_Click(sender As Object, e As EventArgs) Handles btnGerarArquivo.Click
         Try
             ' ==================== VALIDAÇÕES ====================
-            If Not m.ValidarCPF(txtCpfPaciente.Text) Then Return
+            If Not m.ValidarCPF(txtCpfPaciente.Text) Then
+                MessageBox.Show("CPF inválido. Verifique e tente novamente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
+            End If
             If txtNumApac.Text.Trim() = "" Then Throw New Exception("Informe o número da APAC.")
-            If txtCpfPaciente.Text.Trim() = "" Then Throw New Exception("Informe o CPF do paciente.")
-            If dtNascimento.Text.Trim() = "" Then Throw New Exception("Informe a data de nascimento do paciente.")
-            If txtNomePaciente.Text.Trim() = "" Then Throw New Exception("Informe o nome do paciente.")
+            txtNumApac.Focus()
+            If dtNascimento.Text.Trim() = "" Then Throw New Exception("Informe a data de nascimento Do paciente.")
+            If txtNomePaciente.Text.Trim() = "" Then Throw New Exception("Informe o nome Do paciente.")
             If txtNomeMae.Text.Trim() = "" Then Throw New Exception("Informe o nome da mãe.")
-            If txtNomeRespPaciente.Text.Trim() = "" Then Throw New Exception("Informe o nome do responsável.")
+            If txtNomeRespPaciente.Text.Trim() = "" Then Throw New Exception("Informe o nome Do responsável.")
             If txtDDD.Text.Trim() = "" Then Throw New Exception("Informe o DDD.")
             If txtTelefone.Text.Trim() = "" Then Throw New Exception("Informe o telefone.")
             If txtCep.Text.Length < 8 Then Throw New Exception("Informe o CEP corretamente.")
-            If txtNumero.Text.Trim() = "" Then Throw New Exception("Informe o número do logradouro.")
+            If txtNumero.Text.Trim() = "" Then Throw New Exception("Informe o número Do logradouro.")
             If txtProcedimentoPrincipal.SelectedIndex < 0 Then Throw New Exception("Selecione o procedimento principal.")
             chkResponsavel()
 
@@ -1333,8 +1363,18 @@ Public Class FormAMEOCI
         chkResponsavel()
     End Sub
 
-    Private Sub txtCpfPaciente_KeyDown(sender As Object, e As KeyEventArgs) Handles txtCpfPaciente.KeyDown
-        If e.KeyCode = Keys.Enter Then
+    Private Sub txtCNSMedicoExecutante_SelectedIndexChanged(sender As Object, e As EventArgs) Handles txtCNSMedicoExecutante.SelectedIndexChanged
+        Try
+            txtNomeMedicoSolicitante.SelectedIndex = txtCNSMedicoExecutante.SelectedIndex
+        Catch ex As Exception
+
+        End Try
+    End Sub
+    Private Sub FormAMEOCI_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        FormSystemStart.Visible = True
+    End Sub
+    Private Sub txtCpfPaciente_TextChanged(sender As Object, e As EventArgs) Handles txtCpfPaciente.TextChanged
+        If txtCpfPaciente.Text.Length = 11 Then
             Try
                 If m.ValidarCPF(txtCpfPaciente.Text) Then
                     result = getPacientes(txtCpfPaciente.Text.Trim())
@@ -1349,15 +1389,5 @@ Public Class FormAMEOCI
         End If
     End Sub
 
-    Private Sub txtCNSMedicoExecutante_SelectedIndexChanged(sender As Object, e As EventArgs) Handles txtCNSMedicoExecutante.SelectedIndexChanged
-        Try
-            txtNomeMedicoSolicitante.SelectedIndex = txtCNSMedicoExecutante.SelectedIndex
-        Catch ex As Exception
-
-        End Try
-    End Sub
-    Private Sub FormAMEOCI_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        FormSystemStart.Visible = True
-    End Sub
 
 End Class

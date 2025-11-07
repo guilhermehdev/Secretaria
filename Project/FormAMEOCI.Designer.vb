@@ -88,7 +88,6 @@ Partial Class FormAMEOCI
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.txtNomeAutorizador = New System.Windows.Forms.ComboBox()
         Me.txtNomeMedicoSolicitante = New System.Windows.Forms.ComboBox()
-        Me.btAddAPAC = New System.Windows.Forms.Button()
         Me.Label50 = New System.Windows.Forms.Label()
         Me.txtEquipe = New System.Windows.Forms.TextBox()
         Me.Label40 = New System.Windows.Forms.Label()
@@ -106,6 +105,7 @@ Partial Class FormAMEOCI
         Me.txtMotivoSaida = New System.Windows.Forms.ComboBox()
         Me.dtEmissao = New System.Windows.Forms.DateTimePicker()
         Me.dtAutorizacao = New System.Windows.Forms.DateTimePicker()
+        Me.btAddAPAC = New System.Windows.Forms.Button()
         Me.Label47 = New System.Windows.Forms.Label()
         Me.Label46 = New System.Windows.Forms.Label()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
@@ -748,15 +748,6 @@ Partial Class FormAMEOCI
         Me.txtNomeMedicoSolicitante.Size = New System.Drawing.Size(415, 21)
         Me.txtNomeMedicoSolicitante.TabIndex = 44
         '
-        'btAddAPAC
-        '
-        Me.btAddAPAC.Location = New System.Drawing.Point(936, 485)
-        Me.btAddAPAC.Name = "btAddAPAC"
-        Me.btAddAPAC.Size = New System.Drawing.Size(107, 23)
-        Me.btAddAPAC.TabIndex = 51
-        Me.btAddAPAC.Text = "Exportar registros"
-        Me.btAddAPAC.UseVisualStyleBackColor = True
-        '
         'Label50
         '
         Me.Label50.AutoSize = True
@@ -901,6 +892,15 @@ Partial Class FormAMEOCI
         Me.dtAutorizacao.Name = "dtAutorizacao"
         Me.dtAutorizacao.Size = New System.Drawing.Size(82, 20)
         Me.dtAutorizacao.TabIndex = 47
+        '
+        'btAddAPAC
+        '
+        Me.btAddAPAC.Location = New System.Drawing.Point(936, 485)
+        Me.btAddAPAC.Name = "btAddAPAC"
+        Me.btAddAPAC.Size = New System.Drawing.Size(107, 23)
+        Me.btAddAPAC.TabIndex = 51
+        Me.btAddAPAC.Text = "Exportar registros"
+        Me.btAddAPAC.UseVisualStyleBackColor = True
         '
         'Label47
         '
