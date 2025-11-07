@@ -498,6 +498,12 @@
     <Compile Include="FormAMEOCINumAPAC.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormAMEOCIstatus.Designer.vb">
+      <DependentUpon>FormAMEOCIstatus.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormAMEOCIstatus.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormBLHSorologias.Designer.vb">
       <DependentUpon>FormBLHSorologias.vb</DependentUpon>
     </Compile>
@@ -699,6 +705,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormAMEOCINumAPAC.resx">
       <DependentUpon>FormAMEOCINumAPAC.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAMEOCIstatus.resx">
+      <DependentUpon>FormAMEOCIstatus.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormBLHSorologias.resx">
       <DependentUpon>FormBLHSorologias.vb</DependentUpon>

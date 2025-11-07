@@ -33,6 +33,8 @@ Partial Class FormAMEOCINumAPAC
         Me.tbFaixaFim = New System.Windows.Forms.TextBox()
         Me.numQtd = New System.Windows.Forms.NumericUpDown()
         Me.dgvNumerosAPAC = New System.Windows.Forms.DataGridView()
+        Me.ctxMenuAPAC = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.AlterarStatusToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.cbStatus = New System.Windows.Forms.ComboBox()
@@ -56,13 +58,12 @@ Partial Class FormAMEOCINumAPAC
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.statusLabelRegistros = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.ctxMenuAPAC = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.AlterarStatusToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CopiarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.numQtd, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvNumerosAPAC, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.ctxMenuAPAC.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
-        Me.ctxMenuAPAC.SuspendLayout()
         Me.SuspendLayout()
         '
         'Button2
@@ -167,6 +168,18 @@ Partial Class FormAMEOCINumAPAC
         Me.dgvNumerosAPAC.Size = New System.Drawing.Size(930, 357)
         Me.dgvNumerosAPAC.TabIndex = 33
         Me.dgvNumerosAPAC.TabStop = False
+        '
+        'ctxMenuAPAC
+        '
+        Me.ctxMenuAPAC.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AlterarStatusToolStripMenuItem, Me.CopiarToolStripMenuItem})
+        Me.ctxMenuAPAC.Name = "ctxMenuAPAC"
+        Me.ctxMenuAPAC.Size = New System.Drawing.Size(181, 70)
+        '
+        'AlterarStatusToolStripMenuItem
+        '
+        Me.AlterarStatusToolStripMenuItem.Name = "AlterarStatusToolStripMenuItem"
+        Me.AlterarStatusToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.AlterarStatusToolStripMenuItem.Text = "Alterar Status"
         '
         'GroupBox1
         '
@@ -365,17 +378,11 @@ Partial Class FormAMEOCINumAPAC
         Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(32, 17)
         Me.ToolStripStatusLabel1.Text = "Regs"
         '
-        'ctxMenuAPAC
+        'CopiarToolStripMenuItem
         '
-        Me.ctxMenuAPAC.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AlterarStatusToolStripMenuItem})
-        Me.ctxMenuAPAC.Name = "ctxMenuAPAC"
-        Me.ctxMenuAPAC.Size = New System.Drawing.Size(145, 26)
-        '
-        'AlterarStatusToolStripMenuItem
-        '
-        Me.AlterarStatusToolStripMenuItem.Name = "AlterarStatusToolStripMenuItem"
-        Me.AlterarStatusToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
-        Me.AlterarStatusToolStripMenuItem.Text = "Alterar Status"
+        Me.CopiarToolStripMenuItem.Name = "CopiarToolStripMenuItem"
+        Me.CopiarToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.CopiarToolStripMenuItem.Text = "Copiar"
         '
         'FormAMEOCINumAPAC
         '
@@ -399,11 +406,11 @@ Partial Class FormAMEOCINumAPAC
         Me.Text = "Gerador APAC"
         CType(Me.numQtd, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvNumerosAPAC, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ctxMenuAPAC.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.StatusStrip1.ResumeLayout(False)
         Me.StatusStrip1.PerformLayout()
-        Me.ctxMenuAPAC.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -440,4 +447,5 @@ Partial Class FormAMEOCINumAPAC
     Friend WithEvents ToolStripStatusLabel1 As ToolStripStatusLabel
     Friend WithEvents ctxMenuAPAC As ContextMenuStrip
     Friend WithEvents AlterarStatusToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents CopiarToolStripMenuItem As ToolStripMenuItem
 End Class

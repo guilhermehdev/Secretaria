@@ -325,24 +325,6 @@ Public Class FormAMEOCINumAPAC
         End Try
     End Sub
 
-    Private Sub AlterarStatusToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ctxMenuAPAC.Click
-        If dgvNumerosAPAC.SelectedRows.Count = 0 Then
-            MsgBox("Selecione ao menos uma linha.")
-            Exit Sub
-        End If
-
-        Dim novoStatus As String = InputBox("Informe o novo status:", "Alterar Status", "BLOQ")
-        If String.IsNullOrWhiteSpace(novoStatus) Then Exit Sub
-
-        For Each row As DataGridViewRow In dgvNumerosAPAC.SelectedRows
-            Dim id As Integer = CInt(row.Cells("id").Value)
-            Dim sql As String = $"UPDATE oci SET status = '{novoStatus}' WHERE id = {id}"
-            FormAMEmain.doQuery(sql) ' <-- tua função que executa SQL no banco
-            row.Cells("status").Value = novoStatus
-        Next
-
-        MsgBox("Status atualizado para " & dgvNumerosAPAC.SelectedRows.Count & " registro(s).", MsgBoxStyle.Information)
-    End Sub
 
     'Private Sub CopiarDadosSelecionadosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ctxMenuAPAC.Click
     '    If dgvNumerosAPAC.SelectedRows.Count = 0 Then
@@ -441,5 +423,50 @@ Public Class FormAMEOCINumAPAC
         loadNUMAPAC(,,,,, , , CStr(cbStatus.SelectedItem))
     End Sub
 
+    Private Sub AlterarStatusToolStripMenuItem_Click_1(sender As Object, e As EventArgs) Handles AlterarStatusToolStripMenuItem.Click
+        If dgvNumerosAPAC.SelectedRows.Count = 0 Then
+            MsgBox("Selecione ao menos uma linha.")
+            Exit Sub
+        End If
+
+        Using frm As New FormAMEOCIstatus
+            If frm.ShowDialog() = DialogResult.OK Then
+                Dim novoStatus As String = frm.StatusSelecionado
+                If String.IsNullOrWhiteSpace(novoStatus) Then Exit Sub
+
+                For Each row As DataGridViewRow In dgvNumerosAPAC.SelectedRows
+                    Dim id As Integer = CInt(row.Cells("id").Value)
+                    Dim sql As String = $"UPDATE oci SET status = '{novoStatus}' WHERE id = {id}"
+                    FormAMEmain.doQuery(sql)
+                    row.Cells("status").Value = novoStatus
+                Next
+            End If
+        End Using
+
+        MsgBox("Status atualizado em " & dgvNumerosAPAC.SelectedRows.Count & " Números APAC.", MsgBoxStyle.Information)
+    End Sub
+
+    Private Sub CopiarToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CopiarToolStripMenuItem.Click
+
+        If dgvNumerosAPAC.SelectedCells.Count = 0 Then
+            MsgBox("Nenhuma célula selecionada.")
+            Exit Sub
+        End If
+
+        ' Descobre a coluna da primeira célula selecionada
+        Dim colIndex As Integer = dgvNumerosAPAC.SelectedCells(0).ColumnIndex
+        Dim sb As New Text.StringBuilder()
+
+        ' Copia só as células da mesma coluna
+        For Each cell As DataGridViewCell In dgvNumerosAPAC.SelectedCells
+            If cell.ColumnIndex = 1 Then
+                sb.AppendLine(cell.Value.ToString())
+            End If
+        Next
+
+        ' Copia para área de transferência
+        Clipboard.SetText(sb.ToString())
+        ' MsgBox("Dados copiados da coluna '" & dgvNumerosAPAC.Columns(colIndex).HeaderText & "'.", MsgBoxStyle.Information)
+    End Sub
 
 End Class
