@@ -998,7 +998,7 @@ Public Class FormAMEOCI
 
     End Sub
     Private Sub NúmerosAPACToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NúmerosAPACToolStripMenuItem.Click
-        FormAMEOCINumAPAC.ShowDialog()
+        FormAMEOCINumAPAC.Show()
     End Sub
     Private Sub cep(param As String)
         Try

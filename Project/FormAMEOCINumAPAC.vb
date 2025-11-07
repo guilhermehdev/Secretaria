@@ -270,7 +270,7 @@ Public Class FormAMEOCINumAPAC
         Try
             Dim where As String = "WHERE 1=1 "
 
-            If Not String.IsNullOrWhiteSpace(faixaIni) AndAlso Not String.IsNullOrWhiteSpace(faixaFim) Then
+            If faixaIni <> Nothing AndAlso faixaFim <> Nothing Then
                 where &= $" AND oci.num_apac BETWEEN '{faixaIni}' AND '{faixaFim}' "
             End If
             If available <> "" Then
@@ -289,12 +289,12 @@ Public Class FormAMEOCINumAPAC
                 where &= $" AND oci.status ='{status}' "
             End If
 
-            Dim data = FormAMEmain.getDataset($"SELECT oci.id, oci.num_apac, oci.compet, oci.`data`, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc, servidores.nome AS medico, oci.`status`, usuarios.nome AS responsavel 
+            Dim data = FormAMEmain.getDataset($"SELECT oci.id, oci.num_apac, oci.`status`, oci.compet, oci.`data`, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc, servidores.nome AS medico,  usuarios.nome AS responsavel 
                 FROM oci 
                LEFT JOIN pacientes ON pacientes.id = oci.id_paciente 
                LEFT JOIN servidores ON servidores.id = oci.id_medico
                LEFT JOIN cod_oci_principal ON cod_oci_principal.id = oci.id_cod_principal 
-               LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} ORDER BY data DESC")
+               LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} ORDER BY id")
 
             dgvNumerosAPAC.DataSource = data
 
@@ -325,37 +325,6 @@ Public Class FormAMEOCINumAPAC
         End Try
     End Sub
 
-
-    'Private Sub CopiarDadosSelecionadosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ctxMenuAPAC.Click
-    '    If dgvNumerosAPAC.SelectedRows.Count = 0 Then
-    '        MsgBox("Nenhuma linha selecionada.")
-    '        Exit Sub
-    '    End If
-
-    '    Dim sb As New Text.StringBuilder()
-
-    '    ' Cabeçalhos
-    '    For Each col As DataGridViewColumn In dgvNumerosAPAC.Columns
-    '        If col.Visible Then sb.Append(col.HeaderText & vbTab)
-    '    Next
-    '    sb.AppendLine()
-
-    '    ' Linhas selecionadas
-    '    For Each row As DataGridViewRow In dgvNumerosAPAC.SelectedRows
-    '        For Each col As DataGridViewColumn In dgvNumerosAPAC.Columns
-    '            If col.Visible Then
-    '                Dim val = If(row.Cells(col.Index).Value, "")
-    '                sb.Append(val.ToString() & vbTab)
-    '            End If
-    '        Next
-    '        sb.AppendLine()
-    '    Next
-
-    '    Clipboard.SetText(sb.ToString())
-    '    MsgBox("Dados copiados para a área de transferência.", MsgBoxStyle.Information)
-    'End Sub
-
-
     Private Sub FormAMEOCINumAPAC_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         FormAMEmain.loadComboBox("SELECT id, abrev FROM cod_oci_principal", cbOCI, "abrev", "id")
         cbOCI.SelectedIndex = -1
@@ -363,14 +332,24 @@ Public Class FormAMEOCINumAPAC
         cbUsuarios.SelectedIndex = -1
     End Sub
 
-    Private Sub tbAPACFim_TextChanged(sender As Object, e As EventArgs) Handles tbAPACFim.TextChanged
+    Private Sub loadByAPACinterval()
         dgvNumerosAPAC.DataSource = Nothing
         If tbAPACFim.Text.Length = 13 Then
             chkDisponiveis.Checked = False
             cbOCI.SelectedIndex = -1
             cbUsuarios.SelectedIndex = -1
-            loadNUMAPAC(tbFaixaInicio.Text, tbFaixaFim.Text)
+            If tbAPACIni.Text.Length > 0 AndAlso tbAPACFim.Text > 0 Then
+                loadNUMAPAC(tbAPACIni.Text, tbAPACFim.Text)
+            End If
         End If
+
+    End Sub
+
+    Private Sub tbAPACFim_TextChanged(sender As Object, e As EventArgs) Handles tbAPACFim.TextChanged
+        loadByAPACinterval()
+    End Sub
+    Private Sub tbAPACIni_TextChanged(sender As Object, e As EventArgs) Handles tbAPACIni.TextChanged
+        loadByAPACinterval()
     End Sub
     Private Sub chkDisponiveis_CheckedChanged(sender As Object, e As EventArgs) Handles chkDisponiveis.CheckedChanged
         dgvNumerosAPAC.DataSource = Nothing
