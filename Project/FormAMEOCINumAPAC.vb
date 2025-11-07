@@ -373,14 +373,20 @@ Public Class FormAMEOCINumAPAC
         chkDisponiveis.Checked = False
         loadNUMAPAC(,,, CInt(cbUsuarios.SelectedValue))
     End Sub
-    Private Sub dtpFim_ValueChanged(sender As Object, e As EventArgs) Handles dtpFim.ValueChanged
+    Private Sub loadByData()
         dgvNumerosAPAC.DataSource = Nothing
         tbAPACIni.Text = ""
         tbAPACFim.Text = ""
         cbOCI.SelectedIndex = -1
         cbUsuarios.SelectedIndex = -1
         chkDisponiveis.Checked = False
-        loadNUMAPAC(,,,, dtpIni.Value, dtpFim.Value)
+        loadNUMAPAC(,,,, dtpIni.Value, dtpFim.Value,,)
+    End Sub
+    Private Sub dtpIni_ValueChanged(sender As Object, e As EventArgs) Handles dtpIni.ValueChanged
+        loadByData()
+    End Sub
+    Private Sub dtpFim_ValueChanged(sender As Object, e As EventArgs) Handles dtpFim.ValueChanged
+        loadByData()
     End Sub
 
     Private Sub cbOCI_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbOCI.SelectionChangeCommitted
@@ -446,6 +452,32 @@ Public Class FormAMEOCINumAPAC
         ' Copia para área de transferência
         Clipboard.SetText(sb.ToString())
         ' MsgBox("Dados copiados da coluna '" & dgvNumerosAPAC.Columns(colIndex).HeaderText & "'.", MsgBoxStyle.Information)
+    End Sub
+
+    Private Sub dgvNumerosAPAC_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles dgvNumerosAPAC.CellFormatting
+        If dgvNumerosAPAC.Columns(e.ColumnIndex).Name = "status" AndAlso e.Value IsNot Nothing Then
+            Dim valor As String = e.Value.ToString()
+
+            Dim row As DataGridViewRow = dgvNumerosAPAC.Rows(e.RowIndex)
+
+            Select Case valor
+                Case "DISP"
+                    row.DefaultCellStyle.BackColor = Color.LightGreen
+                    row.DefaultCellStyle.ForeColor = Color.DarkGreen
+
+                Case "CONC"
+                    row.DefaultCellStyle.BackColor = Color.SteelBlue
+                    row.DefaultCellStyle.ForeColor = Color.White
+
+                Case "CANC"
+                    row.DefaultCellStyle.BackColor = Color.DarkGray
+                    row.DefaultCellStyle.ForeColor = Color.White
+
+                Case "BLOQ"
+                    row.DefaultCellStyle.BackColor = Color.Maroon
+                    row.DefaultCellStyle.ForeColor = Color.White
+            End Select
+        End If
     End Sub
 
 End Class

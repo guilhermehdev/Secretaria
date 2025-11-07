@@ -178,7 +178,7 @@ Partial Class FormAMEOCINumAPAC
         'AlterarStatusToolStripMenuItem
         '
         Me.AlterarStatusToolStripMenuItem.Name = "AlterarStatusToolStripMenuItem"
-        Me.AlterarStatusToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.AlterarStatusToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
         Me.AlterarStatusToolStripMenuItem.Text = "Alterar Status"
         '
         'GroupBox1
@@ -381,7 +381,7 @@ Partial Class FormAMEOCINumAPAC
         'CopiarToolStripMenuItem
         '
         Me.CopiarToolStripMenuItem.Name = "CopiarToolStripMenuItem"
-        Me.CopiarToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.CopiarToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
         Me.CopiarToolStripMenuItem.Text = "Copiar"
         '
         'FormAMEOCINumAPAC
