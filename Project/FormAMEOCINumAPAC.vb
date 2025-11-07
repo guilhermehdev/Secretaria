@@ -358,7 +358,7 @@ Public Class FormAMEOCINumAPAC
             tbAPACIni.Text = ""
             cbOCI.SelectedIndex = -1
             cbUsuarios.SelectedIndex = -1
-
+            cbStatus.SelectedIndex = -1
             loadNUMAPAC(,, "DISP")
         Else
             dgvNumerosAPAC.DataSource = Nothing
@@ -370,6 +370,7 @@ Public Class FormAMEOCINumAPAC
         tbAPACIni.Text = ""
         tbAPACFim.Text = ""
         cbOCI.SelectedIndex = -1
+        cbStatus.SelectedIndex = -1
         chkDisponiveis.Checked = False
         loadNUMAPAC(,,, CInt(cbUsuarios.SelectedValue))
     End Sub
@@ -379,6 +380,7 @@ Public Class FormAMEOCINumAPAC
         tbAPACFim.Text = ""
         cbOCI.SelectedIndex = -1
         cbUsuarios.SelectedIndex = -1
+        cbStatus.SelectedIndex = -1
         chkDisponiveis.Checked = False
         loadNUMAPAC(,,,, dtpIni.Value, dtpFim.Value,,)
     End Sub
@@ -394,6 +396,7 @@ Public Class FormAMEOCINumAPAC
         tbAPACIni.Text = ""
         tbAPACFim.Text = ""
         cbUsuarios.SelectedIndex = -1
+        cbStatus.SelectedIndex = -1
         chkDisponiveis.Checked = False
         loadNUMAPAC(,,,,, , CStr(cbOCI.SelectedValue))
     End Sub
