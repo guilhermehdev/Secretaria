@@ -14,6 +14,7 @@ Public Class FormAMEOCI
     Private debounceTimer As New Timer() With {.Interval = 300}
     Private isLoading As Boolean = False
     Private IDpacienteSelecionado As Integer = -1
+    Private nameHasFocused As Boolean = False
     Public Property idUser As Integer
 
 
@@ -1246,41 +1247,46 @@ Public Class FormAMEOCI
 
         Try
             isLoading = True
-            result = getPacientes(, txtNomePaciente.Text,,)
+            If nameHasFocused Then
+                result = getPacientes(, txtNomePaciente.Text,,)
 
-            If result.Rows.Count > 0 Then
-                popupGrid.DataSource = result
+                If result.Rows.Count > 0 Then
+                    popupGrid.DataSource = result
 
-                ' Posiciona o grid logo abaixo do textbox
-                popupGrid.Location = New Point(24, 205)
-                ' ======== CONFIGURAÇÃO DE COLUNAS INDIVIDUAIS ========
+                    ' Posiciona o grid logo abaixo do textbox
+                    popupGrid.Location = New Point(24, 205)
+                    ' ======== CONFIGURAÇÃO DE COLUNAS INDIVIDUAIS ========
 
-                For Each col As DataGridViewColumn In popupGrid.Columns
-                    If col.Name.ToLower() <> "nome" AndAlso col.Name.ToLower() <> "dtnasc" Then
-                        col.Visible = False
+                    For Each col As DataGridViewColumn In popupGrid.Columns
+                        If col.Name.ToLower() <> "nome" AndAlso col.Name.ToLower() <> "dtnasc" Then
+                            col.Visible = False
+                        End If
+                    Next
+
+                    If popupGrid.Columns.Contains("nome") Then
+                        popupGrid.Columns("nome").HeaderText = "Nome do Paciente"
+                        popupGrid.Columns("dtnasc").Width = 250
+                        popupGrid.Columns("nome").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                     End If
-                Next
 
-                If popupGrid.Columns.Contains("nome") Then
-                    popupGrid.Columns("nome").HeaderText = "Nome do Paciente"
-                    popupGrid.Columns("dtnasc").Width = 250
-                    popupGrid.Columns("nome").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                    If popupGrid.Columns.Contains("dtnasc") Then
+                        popupGrid.Columns("dtnasc").HeaderText = "Nascimento"
+                        popupGrid.Columns("dtnasc").Width = 80
+                        popupGrid.Columns("dtnasc").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+                    End If
+                    popupGrid.Visible = True
+                Else
+                    popupGrid.Visible = False
                 End If
 
-                If popupGrid.Columns.Contains("dtnasc") Then
-                    popupGrid.Columns("dtnasc").HeaderText = "Nascimento"
-                    popupGrid.Columns("dtnasc").Width = 80
-                    popupGrid.Columns("dtnasc").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
-                End If
-                popupGrid.Visible = True
-            Else
-                popupGrid.Visible = False
             End If
 
         Catch ex As Exception
             popupGrid.Visible = False
+            nameHasFocused = False
         Finally
             isLoading = False
+            nameHasFocused = False
         End Try
     End Sub
 
@@ -1379,6 +1385,7 @@ Public Class FormAMEOCI
                 If m.ValidarCPF(txtCpfPaciente.Text) Then
                     result = getPacientes(txtCpfPaciente.Text.Trim())
                     resultPacientes(result)
+                    popupGrid.Visible = False
                 Else
                     MsgBox("CPF invalido!")
                 End If
@@ -1389,5 +1396,14 @@ Public Class FormAMEOCI
         End If
     End Sub
 
+    Private Sub FormAMEOCI_KeyPress(sender As Object, e As KeyPressEventArgs) Handles MyBase.KeyPress
+        If e.KeyChar = ChrW(Keys.Escape) Then
+            dgvSugestoes.Visible = False
+            popupGrid.Visible = False
+        End If
+    End Sub
 
+    Private Sub txtNomePaciente_Enter(sender As Object, e As EventArgs) Handles txtNomePaciente.Enter
+        nameHasFocused = True
+    End Sub
 End Class

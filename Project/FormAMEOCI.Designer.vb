@@ -1190,7 +1190,7 @@ Partial Class FormAMEOCI
         DataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dgvSugestoes.DefaultCellStyle = DataGridViewCellStyle11
         Me.dgvSugestoes.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
-        Me.dgvSugestoes.Location = New System.Drawing.Point(-640, 267)
+        Me.dgvSugestoes.Location = New System.Drawing.Point(-640, 257)
         Me.dgvSugestoes.MultiSelect = False
         Me.dgvSugestoes.Name = "dgvSugestoes"
         Me.dgvSugestoes.ReadOnly = True
@@ -1213,7 +1213,7 @@ Partial Class FormAMEOCI
         '
         'StatusStrip1
         '
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 514)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 494)
         Me.StatusStrip1.Name = "StatusStrip1"
         Me.StatusStrip1.Size = New System.Drawing.Size(1055, 22)
         Me.StatusStrip1.TabIndex = 52
@@ -1223,7 +1223,7 @@ Partial Class FormAMEOCI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1055, 536)
+        Me.ClientSize = New System.Drawing.Size(1055, 516)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.dgvSugestoes)
