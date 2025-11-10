@@ -357,7 +357,7 @@ Public Class FormAMEOCI
             Return
         End If
 
-        FormAMEmain.doQuery("INSERT INTO oci (num_apac, compet, data, id_paciente, id_medico, id_cod_principal, status, id_usuario) VALUES ('" & txtNumApac.Text & "', '" & My.Settings.OCIcompetencia & "'," & dtValidadeIni.Value & ",'" & result.Rows(0).Item("id").ToString & "', '" & txtCNSMedicoExecutante.SelectedValue.ToString() & "', '" & txtProcedimentoPrincipal.SelectedValue.ToString() & "', 'CONC', " & idUser & ")")
+        FormAMEmain.doQuery($"UPDATE oci SET num_apac='{txtNumApac.Text}', compet='{My.Settings.OCIcompetencia}', data='{dtValidadeIni.Value}', id_paciente={result.Rows(0).Item("id")}, id_medico={txtCNSMedicoExecutante.SelectedValue}, id_cod_principal={txtProcedimentoPrincipal.SelectedValue}, status='BLOQ', id_usuario={idUser} WHERE id={}")
 
     End Sub
 
@@ -510,8 +510,10 @@ Public Class FormAMEOCI
                 End Using
             End Using
 
-            MessageBox.Show("✅ Arquivo gerado com sucesso e validado!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show("✅ Paciente adicionado!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
             clearFields()
+
+            saveAPAC()
 
         Catch ex As Exception
             MessageBox.Show("⚠️ Erro ao gerar arquivo: " & ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
