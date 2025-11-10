@@ -357,8 +357,13 @@ Public Class FormAMEOCI
             Return
         End If
 
-        FormAMEmain.doQuery($"UPDATE oci SET num_apac='{txtNumApac.Text}', compet='{My.Settings.OCIcompetencia}', data='{dtValidadeIni.Value}', id_paciente={result.Rows(0).Item("id")}, id_medico={txtCNSMedicoExecutante.SelectedValue}, id_cod_principal={txtProcedimentoPrincipal.SelectedValue}, status='BLOQ', id_usuario={idUser} WHERE id={}")
+        'FormAMEmain.doQuery($"UPDATE oci SET num_apac='{txtNumApac.Text}', compet='{My.Settings.OCIcompetencia}', data='{dtValidadeIni.Value}', id_paciente={result.Rows(0).Item("id")}, id_medico={txtCNSMedicoExecutante.SelectedValue}, id_cod_principal={txtProcedimentoPrincipal.SelectedValue}, status='BLOQ', id_usuario={idUser} WHERE id={}")
 
+    End Sub
+
+    Private Sub loadNumAPAC()
+        Dim query = "SELECT id INTO @id FROM oci WHERE status = 'DISP' ORDER BY id LIMIT 1;
+UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
     End Sub
 
     Private Sub btnAddPacAPAC_Click(sender As Object, e As EventArgs) Handles btnGerarArquivo.Click
@@ -769,8 +774,6 @@ Public Class FormAMEOCI
         Return data
 
     End Function
-
-
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If My.Settings.databaseAME = "" Then
             FormAMEbd.ShowDialog()
