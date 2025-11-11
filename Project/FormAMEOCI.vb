@@ -2,8 +2,10 @@
 Imports System.IO
 Imports System.Security.Principal
 Imports System.Text
+Imports System.Text.RegularExpressions
 Imports System.Web
 Imports Mysqlx.XDevAPI.Common
+Imports ClosedXML.Excel
 
 Public Class FormAMEOCI
     Private linhas As New List(Of String)
@@ -795,6 +797,210 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
         Return data
 
     End Function
+
+    Public Class ApacRegistro
+        Public Property NumeroApac As String
+        Public Property NomePaciente As String
+    End Class
+
+    Public Function ExtrairApacsNaoUsadas(usadas As IEnumerable(Of String), caminhoArquivo As String) As List(Of ApacRegistro)
+        Dim lista As New List(Of ApacRegistro)
+        Dim usadasSet As New HashSet(Of String)(usadas) ' busca rápida
+        Dim linhas = File.ReadAllLines(caminhoArquivo, Encoding.GetEncoding("ISO-8859-1"))
+
+        For Each linha As String In linhas
+            If linha.StartsWith("14") AndAlso linha.Length > 80 Then
+                ' Extrai número da APAC
+                Dim numero As String = linha.Substring(8, 13).Trim()
+
+                ' Pula os códigos até achar o nome
+                Dim i As Integer = 21
+                While i < linha.Length AndAlso (Char.IsDigit(linha(i)) OrElse Char.IsWhiteSpace(linha(i)))
+                    i += 1
+                End While
+
+                ' Extrai o nome (até 30 caracteres)
+                Dim nome As String = ""
+                If i < linha.Length Then
+                    Dim tamanho = Math.Min(30, linha.Length - i)
+                    nome = linha.Substring(i, tamanho).Trim()
+                End If
+
+                ' Só adiciona se NÃO estiver na lista de usadas
+                If Not usadasSet.Contains(numero) Then
+                    lista.Add(New ApacRegistro With {
+                    .NumeroApac = numero,
+                    .NomePaciente = nome
+                })
+                End If
+            End If
+        Next
+
+        Return lista
+    End Function
+
+
+    Public Function ExtrairApacsOUT_Cruzado(caminhoOut As String, apacsUsadas As IEnumerable(Of String)) As List(Of ApacRegistro)
+        Dim usados = New HashSet(Of String)(apacsUsadas) ' busca O(1)
+        Dim lista As New List(Of ApacRegistro)
+
+        ' Use ISO-8859-1 pois arquivos do SUS costumam vir nessa codificação
+        Dim linhas = File.ReadAllLines(caminhoOut, Encoding.GetEncoding("ISO-8859-1"))
+
+        For Each linha In linhas
+            If Not linha.StartsWith("14") Then Continue For
+
+            ' Procura todos os grupos de 13 dígitos (podem existir outros campos numéricos)
+            Dim m As Match = Regex.Match(linha, "\d{13}")
+            While m.Success
+                Dim apac As String = m.Value
+                If usados.Contains(apac) Then
+                    ' Começa logo após o número da APAC
+                    Dim i As Integer = m.Index + m.Length
+
+                    ' Pula dígitos e espaços que vêm logo em seguida
+                    While i < linha.Length AndAlso (Char.IsDigit(linha(i)) OrElse Char.IsWhiteSpace(linha(i)))
+                        i += 1
+                    End While
+
+                    ' A partir daqui deve começar o nome (letras e espaços). Captura até 30 chars.
+                    Dim maxLen As Integer = Math.Min(30, Math.Max(0, linha.Length - i))
+                    Dim rawNome As String = If(maxLen > 0, linha.Substring(i, maxLen), "").Trim()
+
+                    ' Limpa o nome mantendo letras com acento/ç e espaços (evita pegar ruídos se vier algo fora do padrão)
+                    Dim nomeMatch = Regex.Match(rawNome, "^[A-ZÁÂÃÀÉÊÍÓÔÕÚÜÇ\s]{3,}", RegexOptions.CultureInvariant)
+                    Dim nome As String = If(nomeMatch.Success, nomeMatch.Value.Trim(), rawNome)
+
+                    ' Normaliza para maiúsculas pt-BR
+                    nome = nome.ToUpper(New CultureInfo("pt-BR"))
+
+                    lista.Add(New ApacRegistro With {.NumeroApac = apac, .NomePaciente = nome})
+                    Exit While ' achou a APAC dessa linha que interessa; segue para próxima linha
+                End If
+                m = m.NextMatch()
+            End While
+        Next
+
+        Return lista
+    End Function
+
+    'Public Function ExtrairApacsOUT(caminhoArquivo As String) As List(Of ApacRegistro)
+    '    Dim lista As New List(Of ApacRegistro)
+    '    Dim linhas = File.ReadAllLines(caminhoArquivo, Encoding.GetEncoding("ISO-8859-1"))
+
+    '    For Each linha As String In linhas
+    '        If linha.StartsWith("14") AndAlso linha.Length > 80 Then
+    '            ' Extrai número da APAC (13 dígitos após a competência)
+    '            Dim numero As String = linha.Substring(8, 13).Trim()
+
+    '            ' Localiza o início do nome do paciente:
+    '            ' Após o número da APAC, há uma sequência de dígitos (ex: datas, códigos).
+    '            ' Pular todos os dígitos e espaços até achar a primeira letra.
+    '            Dim i As Integer = 21
+    '            While i < linha.Length AndAlso (Char.IsDigit(linha(i)) OrElse Char.IsWhiteSpace(linha(i)))
+    '                i += 1
+    '            End While
+
+    '            ' Extrair o nome (30 caracteres após o primeiro caractere não numérico)
+    '            Dim nome As String = ""
+    '            If i < linha.Length Then
+    '                Dim tamanho = Math.Min(30, linha.Length - i)
+    '                nome = linha.Substring(i, tamanho).Trim()
+    '            End If
+
+    '            lista.Add(New ApacRegistro With {
+    '            .NumeroApac = numero,
+    '            .NomePaciente = nome
+    '        })
+    '        End If
+    '    Next
+
+    '    Return lista
+    'End Function
+
+    'Public Function ExtrairApacsOUT(caminhoArquivo As String) As List(Of ApacRegistro)
+    '    Dim lista As New List(Of ApacRegistro)
+
+    '    For Each linha As String In File.ReadAllLines(caminhoArquivo, Encoding.GetEncoding("ISO-8859-1"))
+    '        If linha.StartsWith("14") AndAlso linha.Length > 80 Then
+    '            Dim numero As String = linha.Substring(8, 13).Trim()
+    '            Dim nome As String = linha.Substring(44, 30).Trim()
+
+    '            lista.Add(New ApacRegistro With {
+    '            .NumeroApac = numero,
+    '            .NomePaciente = nome
+    '        })
+    '        End If
+    '    Next
+
+    '    Return lista
+
+    'End Function
+
+    Public Function ExtrairApacsOUT(caminhoArquivo As String) As List(Of ApacRegistro)
+        Dim lista As New List(Of ApacRegistro)
+        Dim linhas = File.ReadAllLines(caminhoArquivo, Encoding.GetEncoding("ISO-8859-1"))
+
+        For Each linha As String In linhas
+            If linha.StartsWith("14") AndAlso linha.Length > 80 Then
+                ' Extrai número da APAC (13 dígitos após a competência)
+                Dim numero As String = linha.Substring(8, 13).Trim()
+
+                ' Localiza o início do nome (pula números após a APAC)
+                Dim i As Integer = 21
+                While i < linha.Length AndAlso (Char.IsDigit(linha(i)) OrElse Char.IsWhiteSpace(linha(i)))
+                    i += 1
+                End While
+
+                ' Extrai o nome (30 caracteres após o primeiro caractere não numérico)
+                Dim nome As String = ""
+                If i < linha.Length Then
+                    Dim tamanho = Math.Min(30, linha.Length - i)
+                    nome = linha.Substring(i, tamanho).Trim()
+                End If
+
+                lista.Add(New ApacRegistro With {
+                    .NumeroApac = numero,
+                    .NomePaciente = nome
+                })
+            End If
+        Next
+
+        Return lista
+    End Function
+
+    Public Sub ExportarApacsExcel(lista As List(Of ApacRegistro), caminho As String)
+        Using wb As New XLWorkbook()
+            Dim ws = wb.Worksheets.Add("APACs")
+
+            ' Sem cabeçalho: grava direto os dados
+            Dim linha As Integer = 1
+            For Each apac In lista
+                ' Converte o Nº APAC para Decimal para garantir tipo numérico
+                Dim num As Decimal
+                If Not Decimal.TryParse(apac.NumeroApac, NumberStyles.None, CultureInfo.InvariantCulture, num) Then
+                    ' Se der falha (não deve), grava como texto mesmo
+                    ws.Cell(linha, 1).Value = apac.NumeroApac
+                Else
+                    ws.Cell(linha, 1).Value = num
+                End If
+
+                ws.Cell(linha, 2).Value = apac.NomePaciente
+                linha += 1
+            Next
+
+            ' Aplica formatação numérica sem casas decimais à coluna 1 (somente sobre as células usadas)
+            If lista.Count > 0 Then
+                ws.Range(1, 1, lista.Count, 1).Style.NumberFormat.Format = "0"
+            End If
+
+            ' Ajusta larguras
+            ws.Columns(1, 2).AdjustToContents()
+
+            wb.SaveAs(caminho)
+        End Using
+    End Sub
+
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If My.Settings.databaseAME = "" Then
             FormAMEbd.ShowDialog()
@@ -1432,4 +1638,25 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
     Private Sub txtNomePaciente_Enter(sender As Object, e As EventArgs) Handles txtNomePaciente.Enter
         nameHasFocused = True
     End Sub
+
+    Public Sub ExportarCSV(lista As List(Of ApacRegistro), destino As String)
+        Using sw As New StreamWriter(destino, False, Encoding.UTF8)
+            sw.WriteLine("NumeroAPAC;NomePaciente")
+            For Each item In lista
+                sw.WriteLine($"{item.NumeroApac};{item.NomePaciente}")
+            Next
+        End Using
+    End Sub
+
+    Private Sub APACToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles APACToolStripMenuItem.Click
+        If OpenFileDialog1.ShowDialog Then
+            Dim itens = (ExtrairApacsOUT(OpenFileDialog1.FileName))
+            ExportarApacsExcel(itens, "D:\Desktop\APACs.xlsx")
+            'ExportarCSV(itens, "D:\Desktop\Extraidas.csv")
+            ' Dim notUsed = ExtrairApacsNaoUsadas(itens, "D:\Desktop\APACs.xlsx")
+            'ExportarApacsExcel(notUsed, "D:\Desktop\APAClivre.xlsx")
+
+        End If
+    End Sub
+
 End Class
