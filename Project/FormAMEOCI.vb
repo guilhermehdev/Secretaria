@@ -614,8 +614,29 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
             dgvProcedimentos.Rows.Add("0211060259", "225265", "1")
 
         ElseIf txtProcedimentoPrincipal.SelectedValue = "0903010011" Then
-            procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
             cbo.Add("225270", "225270 - Médico ortopedista e traumatologista")
+            procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
+            procedSec.Add("0204020034", "0204020034 - RADIOGRAFIA DE COLUNA CERVICAL (AP + LATERAL + TO + OBLÍQUAS)")
+            procedSec.Add("0204020042", "0204020042 - RADIOGRAFIA DE COLUNA CERVICAL (AP + LATERAL + TO / FLEXÃO)")
+            procedSec.Add("0204020077", "0204020077 - RADIOGRAFIA DE COLUNA LOMBO-SACRA (C/ OBLÍQUAS)")
+            procedSec.Add("0204020085", "0204020085 - RADIOGRAFIA DE COLUNA LOMBO-SACRA FUNCIONAL / DINÂMICA")
+            procedSec.Add("0204020093", "0204020093 - RADIOGRAFIA DE COLUNA TORÁCICA (AP + LATERAL)")
+            procedSec.Add("0204020107", "0204020107 - RADIOGRAFIA DE COLUNA TORACO-LOMBAR")
+            procedSec.Add("0204020131", "0204020131 - RADIOGRAFIA PANORÂMICA DE COLUNA TOTAL - TELESPONDILOGRAFIA")
+            procedSec.Add("0204040035", "0204040035 - RADIOGRAFIA DE ARTICULAÇÃO ESCÁPULO-UMERAL")
+            procedSec.Add("0204040078", "0204040078 - RADIOGRAFIA DE COTOVELO")
+            procedSec.Add("0204040094", "0204040094 - RADIOGRAFIA DE MÃO")
+            procedSec.Add("0204040116", "0204040116 - RADIOGRAFIA DE ESCÁPULA/OMBRO (TRÊS POSIÇÕES)")
+            procedSec.Add("0204040124", "0204040124 - RADIOGRAFIA DE PUNHO (AP + LATERAL + OBLÍQUA)")
+            procedSec.Add("0204060060", "0204060060 - RADIOGRAFIA DE ARTICULAÇÃO COXO-FEMORAL")
+            procedSec.Add("0204060095", "0204060095 - RADIOGRAFIA DE BACIA")
+            procedSec.Add("0204060109", "0204060109 - RADIOGRAFIA DE CALCÂNEO")
+            procedSec.Add("0204060125", "0204060125 - RADIOGRAFIA DE JOELHO (AP + LATERAL)")
+            procedSec.Add("0204060133", "0204060133 - RADIOGRAFIA DE JOELHO OU PATELA (AP + LATERAL + AXIAL)")
+            procedSec.Add("0204060141", "0204060141 - RADIOGRAFIA DE JOELHO OU PATELA (AP + LATERAL + OBLÍQUA + 3)")
+            procedSec.Add("0204060150", "0204060150 - RADIOGRAFIA DE PÉ / DEDOS DO PÉ")
+            procedSec.Add("0204060176", "0204060176 - RADIOGRAFIA PANORÂMICA DE MEMBROS INFERIORES")
+            procedSec.Add("0301010307", "0301010307 - TELECONSULTA MÉDICA NA ATENÇÃO ESPECIALIZADA")
             dgvProcedimentos.Rows.Add("0301010072", "225270", "1")
 
         ElseIf txtProcedimentoPrincipal.SelectedValue = "0904010031" Then
@@ -1357,7 +1378,7 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
             If m.CalcularIdade(CDate(dtNascimento.Text)) >= 18 Then
                 txtNomeRespPaciente.Text = txtNomePaciente.Text.ToString
             Else
-                txtNomeRespPaciente.Text = ""
+                txtNomeRespPaciente.Text = txtNomeMae.Text.ToString
             End If
         Catch ex As Exception
             ' MsgBox(ex.Message)
