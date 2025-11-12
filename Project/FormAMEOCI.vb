@@ -801,6 +801,8 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
     Public Class ApacRegistro
         Public Property NumeroApac As String
         Public Property NomePaciente As String
+        Public Property ProcedimentoPrincipal As String
+        Public Property SUSMedicoExecutante As String
     End Class
 
     Public Function ExtrairApacsNaoUsadas(usadas As IEnumerable(Of String), caminhoArquivo As String) As List(Of ApacRegistro)
@@ -942,27 +944,41 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
         Dim linhas = File.ReadAllLines(caminhoArquivo, Encoding.GetEncoding("ISO-8859-1"))
 
         For Each linha As String In linhas
-            If linha.StartsWith("14") AndAlso linha.Length > 80 Then
-                ' Extrai número da APAC (13 dígitos após a competência)
+            If linha.StartsWith("14") AndAlso linha.Length > 300 Then
+                ' Número APAC
                 Dim numero As String = linha.Substring(8, 13).Trim()
 
-                ' Localiza o início do nome (pula números após a APAC)
+                ' Ignora qualquer bloco numérico após a APAC (como 0320251103003)
                 Dim i As Integer = 21
                 While i < linha.Length AndAlso (Char.IsDigit(linha(i)) OrElse Char.IsWhiteSpace(linha(i)))
                     i += 1
                 End While
 
-                ' Extrai o nome (30 caracteres após o primeiro caractere não numérico)
+                ' Nome do paciente (até 30 caracteres a partir da primeira letra encontrada)
                 Dim nome As String = ""
                 If i < linha.Length Then
                     Dim tamanho = Math.Min(30, linha.Length - i)
                     nome = linha.Substring(i, tamanho).Trim()
                 End If
 
+                ' Procedimento principal (10 dígitos fixos na posição 174)
+                Dim procedimento As String = linha.Substring(216, 10).Trim()
+                'If linha.Length >= 184 Then
+                'procedimento = linha.Substring(174, 10).Trim()
+                'End If
+
+                ' SUS do médico executante (15 dígitos fixos na posição 285)
+                Dim susMedico As String = linha.Substring(281, 15).Trim()
+                'If linha.Length >= 300 Then
+                'susMedico = linha.Substring(285, 15).Trim()
+                'End If
+
                 lista.Add(New ApacRegistro With {
-                    .NumeroApac = numero,
-                    .NomePaciente = nome
-                })
+                .NumeroApac = numero,
+                .NomePaciente = nome,
+                .ProcedimentoPrincipal = procedimento,
+                .SUSMedicoExecutante = susMedico
+            })
             End If
         Next
 
@@ -986,16 +1002,32 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
                 End If
 
                 ws.Cell(linha, 2).Value = apac.NomePaciente
+
+                Dim proc As Decimal
+                If Decimal.TryParse(apac.ProcedimentoPrincipal, NumberStyles.None, CultureInfo.InvariantCulture, proc) Then
+                    ws.Cell(linha, 3).Value = proc
+                Else
+                    ws.Cell(linha, 3).Value = apac.ProcedimentoPrincipal
+                End If
+
+                Dim sus As Decimal
+                If Decimal.TryParse(apac.SUSMedicoExecutante, NumberStyles.None, CultureInfo.InvariantCulture, sus) Then
+                    ws.Cell(linha, 4).Value = sus
+                Else
+                    ws.Cell(linha, 4).Value = apac.SUSMedicoExecutante
+                End If
                 linha += 1
             Next
 
             ' Aplica formatação numérica sem casas decimais à coluna 1 (somente sobre as células usadas)
             If lista.Count > 0 Then
                 ws.Range(1, 1, lista.Count, 1).Style.NumberFormat.Format = "0"
+                ws.Range(1, 3, lista.Count, 3).Style.NumberFormat.Format = "0"
+                ws.Range(1, 4, lista.Count, 4).Style.NumberFormat.Format = "0"
             End If
 
             ' Ajusta larguras
-            ws.Columns(1, 2).AdjustToContents()
+            ws.Columns(1, 4).AdjustToContents()
 
             wb.SaveAs(caminho)
         End Using
@@ -1649,9 +1681,11 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
     End Sub
 
     Private Sub APACToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles APACToolStripMenuItem.Click
+        Dim desktop As String = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+
         If OpenFileDialog1.ShowDialog Then
             Dim itens = (ExtrairApacsOUT(OpenFileDialog1.FileName))
-            ExportarApacsExcel(itens, "D:\Desktop\APACs.xlsx")
+            ExportarApacsExcel(itens, desktop & "\APAC.xlsx")
             'ExportarCSV(itens, "D:\Desktop\Extraidas.csv")
             ' Dim notUsed = ExtrairApacsNaoUsadas(itens, "D:\Desktop\APACs.xlsx")
             'ExportarApacsExcel(notUsed, "D:\Desktop\APAClivre.xlsx")
