@@ -266,14 +266,14 @@ Public Class FormAMEOCINumAPAC
         End If
     End Sub
 
-    Private Sub loadNUMAPAC(Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As String = "", Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "")
+    Private Sub loadNUMAPAC(Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "")
         Try
             Dim where As String = "WHERE 1=1 "
 
-            If faixaIni <> Nothing AndAlso faixaFim <> Nothing Then
+            If Not String.IsNullOrEmpty(faixaIni) AndAlso Not String.IsNullOrEmpty(faixaFim) Then
                 where &= $" AND oci.num_apac BETWEEN '{faixaIni}' AND '{faixaFim}' "
             End If
-            If available <> "" Then
+            If available Then
                 where &= " AND oci.status = 'DISP' "
             End If
             If user <> Nothing Then
@@ -289,7 +289,8 @@ Public Class FormAMEOCINumAPAC
                 where &= $" AND oci.status ='{status}' "
             End If
 
-            Dim data = FormAMEmain.getDataset($"SELECT oci.id, oci.num_apac, oci.`status`, oci.compet, oci.`data`, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc, servidores.nome AS medico,  usuarios.nome AS responsavel 
+
+            Dim data = FormAMEmain.getDataset($"SELECT oci.id, oci.num_apac, oci.`status`, oci.compet, oci.`data`, cod_oci_principal.abrev AS oci, pacientes.nome, oci.nome_paciente AS paciente, pacientes.dtnasc, servidores.nome AS medico,  usuarios.nome AS responsavel 
                 FROM oci 
                LEFT JOIN pacientes ON pacientes.id = oci.id_paciente 
                LEFT JOIN servidores ON servidores.id = oci.id_medico
@@ -307,8 +308,6 @@ Public Class FormAMEOCINumAPAC
             dgvNumerosAPAC.Columns("data").Width = 70
             dgvNumerosAPAC.Columns("oci").HeaderText = "OCI"
             dgvNumerosAPAC.Columns("oci").Width = 180
-            dgvNumerosAPAC.Columns("nome").HeaderText = "Paciente"
-            dgvNumerosAPAC.Columns("nome").Width = 200
             dgvNumerosAPAC.Columns("dtnasc").HeaderText = "Nascimento"
             dgvNumerosAPAC.Columns("dtnasc").Width = 80
             dgvNumerosAPAC.Columns("medico").HeaderText = "Médico"
@@ -317,6 +316,24 @@ Public Class FormAMEOCINumAPAC
             dgvNumerosAPAC.Columns("status").Width = 60
             dgvNumerosAPAC.Columns("responsavel").HeaderText = "Responsável"
             dgvNumerosAPAC.Columns("responsavel").Width = 150
+
+            Dim usarNomePaciente As Boolean = False
+
+            If data.Columns.Contains("nome") AndAlso data.AsEnumerable().Any(Function(r) Not IsDBNull(r("nome")) AndAlso r("nome").ToString().Trim() <> "") Then
+                usarNomePaciente = True
+            End If
+
+            If usarNomePaciente Then
+                dgvNumerosAPAC.Columns("paciente").Visible = False
+                dgvNumerosAPAC.Columns("nome").Visible = True
+                dgvNumerosAPAC.Columns("nome").HeaderText = "Paciente"
+                dgvNumerosAPAC.Columns("nome").Width = 200
+            Else
+                dgvNumerosAPAC.Columns("nome").Visible = False
+                dgvNumerosAPAC.Columns("paciente").Visible = True
+                dgvNumerosAPAC.Columns("paciente").HeaderText = "Paciente"
+                dgvNumerosAPAC.Columns("paciente").Width = 200
+            End If
 
             ToolStripStatusLabel1.Text = dgvNumerosAPAC.Rows.Count & " registros encontrados."
 
@@ -359,7 +376,7 @@ Public Class FormAMEOCINumAPAC
             cbOCI.SelectedIndex = -1
             cbUsuarios.SelectedIndex = -1
             cbStatus.SelectedIndex = -1
-            loadNUMAPAC(,, "DISP")
+            loadNUMAPAC(,, True)
         Else
             dgvNumerosAPAC.DataSource = Nothing
         End If

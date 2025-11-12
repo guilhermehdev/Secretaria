@@ -51,9 +51,10 @@ Public Class FormAMEOCI
             idProced = dictProceds(codigoBusca)
         End If
 
-        If FormAMEmain.doQuery($"UPDATE oci SET compet='{My.Settings.OCIcompetencia}', data='{dtValidadeIni.Value}', id_paciente={result.Rows(0).Item("id")}, id_medico={txtCNSMedicoExecutante.SelectedValue}, id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'") Then
+        If FormAMEmain.doQuery($"UPDATE oci SET compet='{My.Settings.OCIcompetencia}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={result.Rows(0).Item("id")}, id_medico={txtCNSMedicoExecutante.SelectedValue}, id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'") Then
             clearFields()
-            txtNumApac.Text = GetAndLockNextApac()
+            btNovonumeroAPAC.Enabled = True
+            'txtNumApac.Text = GetAndLockNextApac()
         End If
 
 
@@ -61,12 +62,12 @@ Public Class FormAMEOCI
     Private Sub btnAddPacAPAC_Click(sender As Object, e As EventArgs) Handles btnGerarArquivo.Click
         Try
             ' ==================== VALIDAÇÕES ====================
+            If txtNumApac.Text.Trim() = "" Then Throw New Exception("Informe o número da APAC.")
+            txtNumApac.Focus()
             If Not m.ValidarCPF(txtCpfPaciente.Text) Then
                 MessageBox.Show("CPF inválido. Verifique e tente novamente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 Return
             End If
-            If txtNumApac.Text.Trim() = "" Then Throw New Exception("Informe o número da APAC.")
-            txtNumApac.Focus()
             If dtNascimento.Text.Trim() = "" Then Throw New Exception("Informe a data de nascimento Do paciente.")
             If txtNomePaciente.Text.Trim() = "" Then Throw New Exception("Informe o nome Do paciente.")
             If txtNomeMae.Text.Trim() = "" Then Throw New Exception("Informe o nome da mãe.")
@@ -665,9 +666,7 @@ Public Class FormAMEOCI
             Return
         End If
 
-        txtNumApac.Text = GetAndLockNextApac()
         dtValidadeIni.Focus()
-
         Dim novoMes As Integer
 
         ' Inicializa o grid
@@ -1138,36 +1137,39 @@ Public Class FormAMEOCI
 
         Try
             isLoading = True
-            If nameHasFocused Then
-                result = getPacientes(, txtNomePaciente.Text,,)
 
-                If result.Rows.Count > 0 Then
-                    popupGrid.DataSource = result
+            result = getPacientes(, txtNomePaciente.Text,,)
 
-                    ' Posiciona o grid logo abaixo do textbox
-                    popupGrid.Location = New Point(24, 205)
-                    ' ======== CONFIGURAÇÃO DE COLUNAS INDIVIDUAIS ========
+            If result.Rows.Count > 0 Then
+                popupGrid.DataSource = result
 
-                    For Each col As DataGridViewColumn In popupGrid.Columns
-                        If col.Name.ToLower() <> "nome" AndAlso col.Name.ToLower() <> "dtnasc" Then
-                            col.Visible = False
-                        End If
-                    Next
+                ' Posiciona o grid logo abaixo do textbox
+                popupGrid.Location = New Point(24, 205)
+                ' ======== CONFIGURAÇÃO DE COLUNAS INDIVIDUAIS ========
 
-                    If popupGrid.Columns.Contains("nome") Then
-                        popupGrid.Columns("nome").HeaderText = "Nome do Paciente"
-                        popupGrid.Columns("dtnasc").Width = 250
-                        popupGrid.Columns("nome").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                For Each col As DataGridViewColumn In popupGrid.Columns
+                    If col.Name.ToLower() <> "nome" AndAlso col.Name.ToLower() <> "dtnasc" Then
+                        col.Visible = False
                     End If
+                Next
 
-                    If popupGrid.Columns.Contains("dtnasc") Then
-                        popupGrid.Columns("dtnasc").HeaderText = "Nascimento"
-                        popupGrid.Columns("dtnasc").Width = 80
-                        popupGrid.Columns("dtnasc").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
-                    End If
-                    popupGrid.Visible = True
-                Else
+                If popupGrid.Columns.Contains("nome") Then
+                    popupGrid.Columns("nome").HeaderText = "Nome do Paciente"
+                    popupGrid.Columns("dtnasc").Width = 250
+                    popupGrid.Columns("nome").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                End If
+
+                If popupGrid.Columns.Contains("dtnasc") Then
+                    popupGrid.Columns("dtnasc").HeaderText = "Nascimento"
+                    popupGrid.Columns("dtnasc").Width = 80
+                    popupGrid.Columns("dtnasc").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+                End If
+
+                If txtCpfPaciente.Text.Length = 11 Then
+                    ' Se CPF já estiver preenchido, oculta o grid 
                     popupGrid.Visible = False
+                Else
+                    popupGrid.Visible = True
                 End If
 
             End If
@@ -1282,6 +1284,8 @@ Public Class FormAMEOCI
                     popupGrid.Visible = False
                 Else
                     MsgBox("CPF invalido!")
+                    txtCpfPaciente.Focus()
+                    txtCpfPaciente.Clear()
                 End If
 
             Catch ex As Exception
@@ -1295,10 +1299,6 @@ Public Class FormAMEOCI
             dgvSugestoes.Visible = False
             popupGrid.Visible = False
         End If
-    End Sub
-
-    Private Sub txtNomePaciente_Enter(sender As Object, e As EventArgs) Handles txtNomePaciente.Enter
-        nameHasFocused = True
     End Sub
 
     Public Sub ExportarCSV(lista As List(Of ApacRegistro), destino As String)
@@ -1399,9 +1399,16 @@ Public Class FormAMEOCI
         FormSystemStart.Visible = True
         If Not String.IsNullOrEmpty(txtNumApac.Text) Then
             UnlockApac(txtNumApac.Text)
+            btNovonumeroAPAC.Enabled = True
         End If
         Me.Close()
     End Sub
+    Private Sub btNovonumeroAPAC_Click(sender As Object, e As EventArgs) Handles btNovonumeroAPAC.Click
+        txtNumApac.Text = GetAndLockNextApac()
+        dtValidadeIni.Focus()
+        btNovonumeroAPAC.Enabled = False
+    End Sub
+
 End Class
 
 Public Class ApacRegistro
