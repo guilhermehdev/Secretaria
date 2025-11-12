@@ -5,6 +5,7 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Web
 Imports ClosedXML.Excel
+Imports MySql.Data.MySqlClient
 Imports Mysqlx.XDevAPI.Common
 
 
@@ -42,15 +43,21 @@ Public Class FormAMEOCI
             Return
         End If
 
-        'FormAMEmain.doQuery($"UPDATE oci SET num_apac='{txtNumApac.Text}', compet='{My.Settings.OCIcompetencia}', data='{dtValidadeIni.Value}', id_paciente={result.Rows(0).Item("id")}, id_medico={txtCNSMedicoExecutante.SelectedValue}, id_cod_principal={txtProcedimentoPrincipal.SelectedValue}, status='BLOQ', id_usuario={idUser} WHERE id={}")
+        Dim dictProceds As Dictionary(Of String, Integer) = CarregarProcedimentosCodId()
+        Dim idProced As Integer
+
+        Dim codigoBusca As String = txtProcedimentoPrincipal.SelectedValue
+        If dictProceds.ContainsKey(codigoBusca) Then
+            idProced = dictProceds(codigoBusca)
+        End If
+
+        If FormAMEmain.doQuery($"UPDATE oci SET compet='{My.Settings.OCIcompetencia}', data='{dtValidadeIni.Value}', id_paciente={result.Rows(0).Item("id")}, id_medico={txtCNSMedicoExecutante.SelectedValue}, id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'") Then
+            clearFields()
+            txtNumApac.Text = GetAndLockNextApac()
+        End If
+
 
     End Sub
-
-    Private Sub loadNumAPAC()
-        Dim query = "SELECT id INTO @id FROM oci WHERE status = 'DISP' ORDER BY id LIMIT 1;
-UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
-    End Sub
-
     Private Sub btnAddPacAPAC_Click(sender As Object, e As EventArgs) Handles btnGerarArquivo.Click
         Try
             ' ==================== VALIDAÇÕES ====================
@@ -200,10 +207,8 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
                 End Using
             End Using
 
-            MessageBox.Show("✅ Paciente adicionado!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            clearFields()
-
             saveAPAC()
+            MessageBox.Show("✅ Paciente adicionado!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
         Catch ex As Exception
             MessageBox.Show("⚠️ Erro ao gerar arquivo: " & ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -549,48 +554,6 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
 
         Return lista
     End Function
-    Public Function ExtrairApacsOUT(caminhoArquivo As String) As List(Of ApacRegistro)
-        Dim lista As New List(Of ApacRegistro)
-        Dim linhas = File.ReadAllLines(caminhoArquivo, Encoding.GetEncoding("ISO-8859-1"))
-
-        For Each linha As String In linhas
-            If linha.StartsWith("14") AndAlso linha.Length > 300 Then
-                ' Número APAC
-                Dim numero As String = linha.Substring(8, 13).Trim()
-
-                ' Ignora qualquer bloco numérico após a APAC (como 0320251103003)
-                Dim i As Integer = 21
-                While i < linha.Length AndAlso (Char.IsDigit(linha(i)) OrElse Char.IsWhiteSpace(linha(i)))
-                    i += 1
-                End While
-
-                Dim nome As String = ""
-                If i < linha.Length Then
-                    Dim tamanho = Math.Min(30, linha.Length - i)
-                    nome = linha.Substring(i, tamanho).Trim()
-                End If
-
-                Dim procedimento As String = linha.Substring(216, 10).Trim()
-
-                Dim susMedico As String = linha.Substring(281, 15).Trim()
-
-                Dim dataTxt As String = linha.Substring(38, 8).Trim()
-
-                Dim compt As String = linha.Substring(2, 6).Trim()
-
-                lista.Add(New ApacRegistro With {
-                .NumeroApac = numero,
-                .NomePaciente = nome,
-                .ProcedimentoPrincipal = procedimento,
-                .SUSMedicoExecutante = susMedico,
-                .data = DateTime.ParseExact(dataTxt, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None),
-                .competencia = compt
-            })
-            End If
-        Next
-
-        Return lista
-    End Function
 
     Public Sub ExportarApacsExcel(lista As List(Of ApacRegistro), caminho As String)
         Using wb As New XLWorkbook()
@@ -654,6 +617,46 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
             wb.SaveAs(caminho)
         End Using
     End Sub
+    Private Sub loadNumAPAC()
+        Dim query = "SELECT num_apac INTO @apac FROM oci WHERE status = 'DISP' ORDER BY id LIMIT 1;
+                     UPDATE oci SET status = 'BLOQ' WHERE num_apac = @apac;"
+    End Sub
+
+    Public Function GetAndLockNextApac() As String
+        Try
+            ' 1️⃣ Busca a próxima APAC disponível
+            Dim dt As DataTable = FormAMEmain.getDataset("SELECT num_apac FROM oci WHERE status='DISP' ORDER BY id LIMIT 1")
+
+            If dt.Rows.Count = 0 Then
+                Return Nothing
+            End If
+
+            Dim apac As String = dt.Rows(0)("num_apac").ToString()
+
+            ' 2️⃣ Bloqueia a APAC encontrada
+            Dim sqlUpdate As String = "UPDATE oci SET status='BLOQ' WHERE num_apac=@apac"
+            Dim p As New Dictionary(Of String, Object) From {{"@apac", apac}}
+            FormAMEmain.doQuery(sqlUpdate, p)
+
+            Return apac
+
+        Catch ex As Exception
+            MsgBox("Erro ao buscar/bloquear APAC: " & ex.Message)
+            Return Nothing
+        End Try
+    End Function
+    Public Sub UnlockApac(numApac As String)
+        If String.IsNullOrWhiteSpace(numApac) Then Exit Sub
+
+        Try
+            Dim sql As String = "UPDATE oci SET status='DISP' WHERE num_apac=@apac AND status='BLOQ'"
+            Dim p As New Dictionary(Of String, Object) From {{"@apac", numApac}}
+            FormAMEmain.doQuery(sql, p)
+        Catch ex As Exception
+            MsgBox("Erro ao liberar APAC: " & ex.Message)
+        End Try
+    End Sub
+
 
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If My.Settings.databaseAME = "" Then
@@ -662,6 +665,8 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
             Return
         End If
 
+        txtNumApac.Text = GetAndLockNextApac()
+        dtValidadeIni.Focus()
 
         Dim novoMes As Integer
 
@@ -1264,6 +1269,9 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
     End Sub
     Private Sub FormAMEOCI_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         FormSystemStart.Visible = True
+        If Not String.IsNullOrEmpty(txtNumApac.Text) Then
+            UnlockApac(txtNumApac.Text)
+        End If
     End Sub
     Private Sub txtCpfPaciente_TextChanged(sender As Object, e As EventArgs) Handles txtCpfPaciente.TextChanged
         If txtCpfPaciente.Text.Length = 11 Then
@@ -1307,15 +1315,95 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
 
         If OpenFileDialog1.ShowDialog Then
             Dim itens = (ExtrairApacsOUT(OpenFileDialog1.FileName))
-            ExportarApacsExcel(itens, desktop & "\APAC.xlsx")
-            'ExportarCSV(itens, "D:\Desktop\Extraidas.csv")
-            ' Dim notUsed = ExtrairApacsNaoUsadas(itens, "D:\Desktop\APACs.xlsx")
-            'ExportarApacsExcel(notUsed, "D:\Desktop\APAClivre.xlsx")
+            'ExportarApacsExcel(itens, desktop & "\APAC.xlsx")
+            importFromAPACtoDB(itens)
 
         End If
     End Sub
 
+    Private Sub importFromAPACtoDB(apacs As List(Of ApacRegistro))
+        Dim proceds As New List(Of String)
+        Dim dictProceds As Dictionary(Of String, Integer) = CarregarProcedimentosCodId()
+        Dim idProced As Integer
+
+        For Each apac In apacs
+            Dim codigoBusca As String = apac.ProcedimentoPrincipal
+            If dictProceds.ContainsKey(codigoBusca) Then
+                idProced = dictProceds(codigoBusca)
+            End If
+
+            FormAMEmain.doQuery($"UPDATE oci SET compet='{apac.competencia}', data='{m.mysqlDateFormat(apac.data)}', nome_paciente='{apac.NomePaciente}', id_medico='{apac.SUSMedicoExecutante}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{apac.NumeroApac}'")
+        Next
+
+        MsgBox("Importação concluída!")
+
+    End Sub
+
+    Public Function CarregarProcedimentosCodId() As Dictionary(Of String, Integer)
+        Dim procedimentos As New Dictionary(Of String, Integer)
+
+        Dim data = FormAMEmain.getDataset("SELECT cod, id FROM cod_oci_principal")
+
+        For Each rdr As DataRow In data.Rows
+            Dim cod As String = rdr("cod").ToString().Trim()
+            Dim id As Integer = Convert.ToInt32(rdr("id"))
+            If Not procedimentos.ContainsKey(cod) Then
+                procedimentos.Add(cod, id)
+            End If
+        Next
+
+        Return procedimentos
+    End Function
+
+    Public Function ExtrairApacsOUT(caminhoArquivo As String) As List(Of ApacRegistro)
+        Dim lista As New List(Of ApacRegistro)
+        Dim linhas = File.ReadAllLines(caminhoArquivo, Encoding.GetEncoding("ISO-8859-1"))
+
+        For Each linha As String In linhas
+            If linha.StartsWith("14") AndAlso linha.Length > 300 Then
+                ' Número APAC
+                Dim numero As String = linha.Substring(8, 13).Trim()
+
+                ' Ignora qualquer bloco numérico após a APAC (como 0320251103003)
+                Dim i As Integer = 21
+                While i < linha.Length AndAlso (Char.IsDigit(linha(i)) OrElse Char.IsWhiteSpace(linha(i)))
+                    i += 1
+                End While
+
+                Dim nome As String = ""
+                If i < linha.Length Then
+                    Dim tamanho = Math.Min(30, linha.Length - i)
+                    nome = linha.Substring(i, tamanho).Trim()
+                End If
+
+                Dim procedimento As String = linha.Substring(216, 10).Trim()
+                Dim susMedico As String = linha.Substring(281, 15).Trim()
+                Dim dataTxt As String = linha.Substring(38, 8).Trim()
+                Dim compt As String = linha.Substring(2, 6).Trim()
+
+                lista.Add(New ApacRegistro With {
+                .NumeroApac = numero,
+                .NomePaciente = nome,
+                .ProcedimentoPrincipal = procedimento,
+                .SUSMedicoExecutante = susMedico,
+                .data = DateTime.ParseExact(dataTxt, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None),
+                .competencia = compt
+            })
+            End If
+        Next
+
+        Return lista
+    End Function
+
+    Private Sub btFechar_Click(sender As Object, e As EventArgs) Handles btFechar.Click
+        FormSystemStart.Visible = True
+        If Not String.IsNullOrEmpty(txtNumApac.Text) Then
+            UnlockApac(txtNumApac.Text)
+        End If
+        Me.Close()
+    End Sub
 End Class
+
 Public Class ApacRegistro
     Public Property NumeroApac As String
     Public Property NomePaciente As String

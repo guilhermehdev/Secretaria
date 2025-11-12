@@ -639,26 +639,6 @@ Public Class FormAMEmain
             connection(False)
         End Try
     End Function
-
-
-    'Public Function doQuery(ByVal sql As String, Optional ByVal errorMsg As Boolean = False) 'insert/update/delete
-    '    Try
-    '        connection(True)
-    '        Dim command As New MySqlCommand
-    '        command.Connection = vconexao
-    '        command.CommandText = sql
-    '        command.ExecuteNonQuery()
-    '        Return True
-    '    Catch ex As Exception
-    '        If errorMsg Then
-    '            MsgBox($"{ex}{vbCrLf}{sql}")
-    '        End If
-    '        Throw
-    '    Finally
-    '        connection(False)
-    '    End Try
-    'End Function
-
     Public Function getDataset(ByVal sql As String, Optional ByVal errorMsg As Boolean = False) As DataTable
         Dim dspesquisa As New DataTable
         Try
