@@ -4,8 +4,9 @@ Imports System.Security.Principal
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Web
-Imports Mysqlx.XDevAPI.Common
 Imports ClosedXML.Excel
+Imports Mysqlx.XDevAPI.Common
+
 
 Public Class FormAMEOCI
     Private linhas As New List(Of String)
@@ -18,324 +19,6 @@ Public Class FormAMEOCI
     Private IDpacienteSelecionado As Integer = -1
     Private nameHasFocused As Boolean = False
     Public Property idUser As Integer
-
-
-
-    'Private Sub btnGerarArquivo_Click(sender As Object, e As EventArgs) Handles btnGerarArquivo.Click
-    '    If txtNumApac.Text = "" Then
-    '        MessageBox.Show("Informe o número da APAC.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '        txtNumApac.Focus()
-    '        Exit Sub
-    '    End If
-    '    If txtCpfPaciente.Text = "" Then
-    '        MessageBox.Show("Informe o CPF do paciente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '        txtCpfPaciente.Focus()
-    '        Exit Sub
-    '    End If
-    '    If dtNascimento.Text = "" Then
-    '        MessageBox.Show("Informe a data de nascimento do paciente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '        dtNascimento.Focus()
-    '        Exit Sub
-    '    End If
-    '    If txtNomePaciente.Text = "" Then
-    '        MessageBox.Show("Informe o nome do paciente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '        txtNomePaciente.Focus()
-    '        Exit Sub
-    '    End If
-    '    If txtNomeMae.Text = "" Then
-    '        MessageBox.Show("Informe o nome da mãe do paciente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '        txtNomeMae.Focus()
-    '        Exit Sub
-    '    End If
-    '    If txtNomeRespPaciente.Text = "" Then
-    '        MessageBox.Show("Informe o nome do responsavel pelo paciente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '        txtNomeRespPaciente.Focus()
-    '        Exit Sub
-    '    End If
-    '    If txtDDD.Text = "" Then
-    '        MessageBox.Show("Informe o DDD.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '        txtDDD.Focus()
-    '        Exit Sub
-    '    End If
-    '    If txtTelefone.Text = "" Then
-    '        MessageBox.Show("Informe o numero.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '        txtTelefone.Focus()
-    '        Exit Sub
-    '    End If
-    '    If txtCep.Text.Length < 9 Then
-    '        MessageBox.Show("Informe o CEP.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '        txtCep.Focus()
-    '        Exit Sub
-    '    End If
-    '    If txtNumero.Text = "" Then
-    '        MessageBox.Show("Informe o Número.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '        txtNumero.Focus()
-    '        Exit Sub
-    '    End If
-    '    If txtProcedimentoPrincipal.SelectedIndex < 0 Then
-    '        MessageBox.Show("Selecione o procedimento principal.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '        txtNumero.Focus()
-    '        Exit Sub
-    '    End If
-
-    '    Try
-    '        Dim codigos As New List(Of String)
-    '        Dim quantidades As New List(Of Integer)
-    '        'Dim linhas As New List(Of String)
-    '        Dim dataGeracao As String = Date.Now.ToString("yyyyMMdd")
-    '        Dim dataProcessamento As String = Date.Now.ToString("yyyyMMdd")
-    '        Dim versao As String = "1.0".PadRight(15, " "c) ' Versão deve ter 15 caracteres
-
-    '        For Each row As DataGridViewRow In dgvProcedimentos.Rows
-    '            If Not row.IsNewRow Then
-    '                codigos.Add(row.Cells("Codigo").Value.ToString())
-    '                quantidades.Add(Convert.ToInt32(row.Cells("Quantidade").Value))
-    '            End If
-    '        Next
-
-    '        ' Dim campoControle As String = CalcularCampoControle(txtNumApac.Text, codigos, quantidades)
-    '        Dim competenciaFormatada As String = My.Settings.OCIcompetencia
-
-    '        ' Caminho fixo do arquivo principal
-    '        Dim filePath As String = Path.Combine("C:\APAC\IMPORTA", "AP" & competenciaFormatada & chkMonthEXT())
-
-    '        ' Se o arquivo ainda não existir, cria com o header
-    '        If Not File.Exists(filePath) OrElse New FileInfo(filePath).Length = 0 Then
-    '            ' ================= HEADER (Registro 01) =================
-    '            Dim header As New StringBuilder()
-    '            header.Append("01#APAC")                                     ' Identificação
-    '            header.Append(competenciaFormatada)                          ' Competência (AAAAMM)
-
-    '            Dim qtdApacs As Integer = 1 ' se for 1 APAC, ajuste se for mais
-    '            header.Append(qtdApacs.ToString().PadLeft(6, "0"c))          ' Quantidade de APACs (6)
-
-    '            Dim campoControle As String = CalcularCampoControle(txtNumApac.Text, codigos, quantidades)
-    '            header.Append(campoControle.PadLeft(4, "0"c))
-
-    '            header.Append(Fmt(RemoverAcentos(My.Settings.OCInomeUnidade), 30))                  ' Nome órgão origem (30)
-    '            header.Append(Fmt(My.Settings.OCIsigla, 6))                    ' Sigla (6)
-    '            header.Append(My.Settings.OCIcnpj.Replace(".", "").Replace("/", "").Replace("-", "").PadLeft(14, "0"c)) ' 
-    '            header.Append(Fmt(RemoverAcentos(My.Settings.OCIorgaoDestino), 40))                 ' Nome órgão destino (40)
-    '            header.Append(My.Settings.OCItipo.PadRight(1, " "c))         ' Tipo órgão destino M/E' Campo controle (4)
-
-    '            'header.Append(Fmt(txtOrgaoOrigem.Text, 30))                  ' Nome órgão origem (30)
-    '            'header.Append(Fmt(txtSiglaOrgao.Text, 6))                    ' Sigla (6)
-    '            'header.Append(txtCGC.Text.Replace(".", "").Replace("/", "").Replace("-", "").PadLeft(14, "0"c)) ' CNPJ
-    '            'header.Append(Fmt(txtOrgaoDestino.Text, 40))                 ' Nome órgão destino (40)
-    '            'header.Append(txtDestinoTipo.Text.PadRight(1, " "c))         ' Tipo órgão destino M/E
-
-    '            ' Aqui precisa usar a DATA DA COMPETÊNCIA, não a data de hoje
-    '            Dim dataCompetencia As String = competenciaFormatada & "20"  ' AAAAMM + "20" (ajuste pro dia correto do mês)
-    '            header.Append(dataCompetencia)
-
-    '            header.Append("Versao 01.00".PadRight(15, " "c))             ' Versão
-    '            'linhas.Add(header.ToString())
-    '            File.AppendAllText(filePath, header.ToString() & Chr(13) & Chr(10), Encoding.GetEncoding("iso-8859-1"))
-
-    '        End If
-
-    '        Dim r14 As New StringBuilder()
-
-    '        ' 01. Tipo registro
-    '        r14.Append("14")                                  ' 2
-
-    '        ' 02. Competência
-    '        r14.Append(competenciaFormatada)                  ' 6 (AAAAMM)
-
-    '        ' 03. Nº da APAC
-    '        r14.Append(txtNumApac.Text.PadLeft(13, "0"c))     ' 13
-
-    '        ' 05. UF
-    '        r14.Append(My.Settings.OCIuf.PadRight(2, " "c))
-
-    '        ' 06. CNES Solicitante
-    '        r14.Append(txtCnesExecutante.Text.PadLeft(7, "0"c)) ' 7
-
-    '        ' 08. Data autorização
-    '        r14.Append(Date.Now.ToString("yyyyMMdd")) ' 8
-
-    '        ' 09. Data emissão
-    '        r14.Append(dtValidadeIni.Value.ToString("yyyyMMdd"))     ' 8
-
-    '        ' 10. Data validade
-    '        r14.Append(dtValidadeFim.Value.ToString("yyyyMMdd")) ' 8
-
-    '        r14.Append("00")      ' Tipo de atendimento (2)
-
-    '        ' 11. Tipo APAC
-    '        r14.Append(txtTipoApac.SelectedValue.ToString())
-
-    '        ' 13. Nome paciente
-    '        r14.Append(Fmt(txtNomePaciente.Text, 30))
-
-    '        ' 14. Nome mãe
-    '        r14.Append(Fmt(txtNomeMae.Text, 30))
-
-    '        ' 15. Logradouro
-    '        r14.Append(Fmt(txtLogradouro.Text, 30))
-
-    '        ' 16. Número residência
-    '        r14.Append(txtNumero.Text.PadRight(5, " "c))
-
-    '        ' 17. Complemento
-    '        If txtComplemento.Text.Length > 0 Then
-    '            r14.Append(RemoverAcentos(txtComplemento.Text.PadRight(10, " "c)))
-    '        Else
-    '            r14.Append("          ")
-    '        End If
-
-    '        ' 18. CEP
-    '        r14.Append(txtCep.Text.Replace("-", "").PadRight(8, " "c))
-
-    '        ' 19. Município IBGE
-    '        r14.Append(txtMunIbge.Text.PadLeft(7, "0"c))        ' 7
-
-    '        ' 20. Data nascimento
-    '        r14.Append(Format(CDate(dtNascimento.Text).ToString("yyyyMMdd"))) ' 8
-
-    '        ' 21. Sexo
-    '        r14.Append(txtSexo.Text.PadRight(1, " "c))          ' 1
-
-    '        ' 22. Nome médico solicitante
-    '        r14.Append(Fmt(txtNomeMedicoSolicitante.Text, 30))             ' 30
-
-    '        ' 23. Procedimento principal
-    '        r14.Append(txtProcedimentoPrincipal.SelectedValue.PadLeft(10, "0"c)) ' 10
-
-    '        ' 24. Motivo saída
-    '        r14.Append(txtMotivoSaida.SelectedValue.ToString().PadLeft(2, "0"c)) ' 2
-
-    '        ' 25. Data alta/óbito/transf
-    '        If txtMotivoSaida.SelectedValue.ToString() <> "00" Then
-    '            r14.Append(dtAltaObito.Value.ToString("yyyyMMdd"))
-    '        Else
-    '            r14.Append("        ")
-    '        End If                                              ' 8
-
-    '        ' 26. Nome MEDICO AUTORIZADOR
-    '        r14.Append(Fmt(txtNomeAutorizador.Text, 30))            ' 30
-
-    '        ' 27. CNS paciente
-    '        If txtCnsPaciente.Text.Length > 0 Then
-    '            r14.Append(txtCnsPaciente.Text.PadLeft(15, "0"c))   ' 15
-    '        Else
-    '            r14.Append("               ")
-    '        End If
-
-    '        ' 28. CNS médico solicitante
-    '        r14.Append(txtNomeMedicoSolicitante.SelectedValue.PadLeft(15, "0"c)) ' 15
-
-    '        ' 29. CNS diretor
-    '        r14.Append(txtNomeAutorizador.SelectedValue.PadLeft(15, "0"c))    ' 15
-
-    '        r14.Append("    ")
-
-    '        If txtProntuario.Text <> "" Then
-    '            r14.Append(txtProntuario.Text.PadRight(10, " "c))
-    '        Else
-    '            r14.Append("          ")
-    '        End If
-
-    '        r14.Append(txtCnesSolicitante.Text.PadLeft(7, "0"c))
-
-    '        r14.Append(dtEmissao.Value.ToString("yyyyMMdd"))
-
-    '        r14.Append(dtAutorizacao.Value.ToString("yyyyMMdd"))
-
-    '        r14.Append(Fmt(txtGestor.Text, 10))
-
-    '        r14.Append(txtTipoAtend.SelectedValue.PadLeft(2, "0"c))      ' Tipo de atendimento (2)
-
-    '        If String.IsNullOrWhiteSpace(txtApacAnterior.Text) Then
-    '            r14.Append("0000000000000")
-    '        Else
-    '            r14.Append(txtApacAnterior.Text.PadLeft(13, "0"c))
-    '        End If
-
-    '        r14.Append(txtRaca.SelectedValue.ToString().PadLeft(2, "0"c))
-
-    '        r14.Append(Fmt(txtNomeRespPaciente.Text, 30))
-
-    '        r14.Append("010")
-
-    '        If txtRaca.SelectedValue.ToString() = "05" Then
-    '            r14.Append("    ")
-    '        Else
-    '            r14.Append("    ")
-    '        End If
-
-    '        r14.Append(cbTipoLogradouro.SelectedValue.PadLeft(3, "0"c))
-
-    '        r14.Append(txtBairro.Text.PadRight(30, " "c))
-
-    '        r14.Append(txtDDD.Text.PadLeft(2, " "c))
-
-    '        r14.Append(txtTelefone.Text.PadLeft(9, " "c))
-
-    '        r14.Append(txtEmail.Text.PadRight(40, " "c))
-
-    '        r14.Append(txtCNSMedicoExecutante.SelectedValue.PadLeft(15, "0"c))
-
-    '        r14.Append(txtCpfPaciente.Text.PadLeft(11, "0"c))
-
-    '        r14.Append(txtEquipe.Text.PadLeft(10, " "c))
-
-    '        r14.Append(If(chkSituacaoRua.Checked, "S", "N"))
-
-    '        'linhas.Add(r14.ToString())
-    '        File.AppendAllText(filePath, r14.ToString() & Chr(13) & Chr(10), Encoding.GetEncoding("iso-8859-1"))
-
-    '        Dim r06 As New StringBuilder()
-    '        r06.Append("06")
-    '        r06.Append(competenciaFormatada)
-    '        r06.Append(txtNumApac.Text.PadLeft(13, "0"c))
-    '        r06.Append(txtCidPrincipal.SelectedValue.PadRight(4, " "c))
-    '        If txtCidSecundario.SelectedIndex >= 0 Then
-    '            r06.Append(txtCidSecundario.SelectedValue.PadRight(4, " "c))
-    '        End If
-    '        'linhas.Add(r06.ToString())
-    '        File.AppendAllText(filePath, r06.ToString() & Chr(13) & Chr(10), Encoding.GetEncoding("iso-8859-1"))
-
-    '        ' ========== REGISTRO 13 PRINCIPAL ==========
-    '        Dim r13Principal As New StringBuilder()
-    '        r13Principal.Append("13")
-    '        r13Principal.Append(competenciaFormatada)
-    '        r13Principal.Append(txtNumApac.Text.PadLeft(13, "0"c))
-    '        r13Principal.Append(txtProcedimentoPrincipal.SelectedValue.PadLeft(10, "0"c))
-    '        r13Principal.Append(CBOmed.SelectedValue.PadLeft(6, "0"c))
-    '        r13Principal.Append("0000001") ' quantidade = 1 (7 dígitos)
-    '        r13Principal.Append(New String(" "c, 53))
-    '        'linhas.Add(r13Principal.ToString()) ' NÃO põe vbCrLf aqui
-    '        File.AppendAllText(filePath, r13Principal.ToString() & Chr(13) & Chr(10), Encoding.GetEncoding("iso-8859-1"))
-    '        ' ========== REGISTRO 13 SECUNDÁRIOS ==========
-    '        For i = 0 To dgvProcedimentos.RowCount - 1
-    '            If dgvProcedimentos.Rows(i).IsNewRow Then Continue For
-
-    '            Dim r13 As New StringBuilder() ' novo builder a cada linha
-
-    '            r13.Append("13")
-    '            r13.Append(competenciaFormatada)
-    '            r13.Append(txtNumApac.Text.PadLeft(13, "0"c))
-    '            r13.Append(dgvProcedimentos.Rows(i).Cells(0).Value.ToString().PadLeft(10, "0"c)) ' código procedimento
-    '            r13.Append(dgvProcedimentos.Rows(i).Cells(1).Value.ToString().PadLeft(6, "0"c)) ' CBO
-    '            r13.Append(dgvProcedimentos.Rows(i).Cells(2).Value.ToString().PadLeft(7, "0"c)) ' quantidade
-    '            r13.Append(New String(" "c, 53))
-    '            'linhas.Add(r13.ToString())
-    '            File.AppendAllText(filePath, r13.ToString() & Chr(13) & Chr(10), Encoding.GetEncoding("iso-8859-1"))
-    '        Next
-
-
-    '        ' Grava automaticamente no arquivo .SET
-    '        'File.AppendAllText(filePath, String.Join(vbCrLf, linhas) & vbCrLf, Encoding.GetEncoding("iso-8859-1"))
-    '        MessageBox.Show("APAC adicionada e salva no arquivo com sucesso!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information)
-
-    '        clearFields()
-
-    '    Catch ex As Exception
-    '        MessageBox.Show("Erro ao gerar arquivo: " & ex.Message)
-    '    End Try
-
-    'End Sub
 
     Private Sub saveAPAC()
         If Not txtNumApac.Text.Length = 13 Then
@@ -549,8 +232,6 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
         Return semAcento.ToUpper
 
     End Function
-
-
     Private Sub clearFields()
         txtCpfPaciente.Clear()
         txtCnsPaciente.Clear()
@@ -576,7 +257,6 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
         txtNumApac.Focus()
 
     End Sub
-
     Private Sub txtProcedimentoPrincipal_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles txtProcedimentoPrincipal.SelectionChangeCommitted
         Dim procedSec As New Dictionary(Of String, String)
         Dim cbo As New Dictionary(Of String, String)
@@ -682,7 +362,6 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
         ' Adiciona a linha com todas as colunas necessárias
         dgvProcedimentos.Rows.Add(cod, cbo, qtd)
     End Sub
-
     Public Function CalcularCampoControle(apacNumber As String, codigosProcedimento As List(Of String), quantidadesProcedimento As List(Of Integer)) As String
         Dim total As Long = 0
 
@@ -712,12 +391,10 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
         ' Retorna com 4 dígitos, zeros à esquerda
         Return campoControle.ToString().PadLeft(4, "0"c)
     End Function
-
     Private Function GetNextLoteNumber(qtdApacs As Integer) As String
         ' Retorna a quantidade de APACs do lote com 6 dígitos
         Return qtdApacs.ToString().PadLeft(6, "0"c)
     End Function
-
     Private Function ComputeControlField(apacNumber As String, procCodes As List(Of String), procQuantities As List(Of Integer)) As String
         Dim total As Long = 0
 
@@ -739,13 +416,11 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
         Dim campo As Integer = resto + 1111
         Return campo.ToString().PadLeft(4, "0"c)
     End Function
-
     Private Function Fmt(valor As String, tamanho As Integer) As String
         If valor Is Nothing Then valor = ""
         valor = valor.Trim()
         Return RemoverAcentos(valor.PadRight(tamanho, " "c).Substring(0, tamanho))
     End Function
-
     Private Sub btnRemoverProcedimento_Click(sender As Object, e As EventArgs) Handles btnRemoverProcedimento.Click
         If dgvProcedimentos.SelectedRows.Count > 0 Then
             For Each row As DataGridViewRow In dgvProcedimentos.SelectedRows
@@ -757,7 +432,6 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
             MessageBox.Show("Selecione um procedimento para remover.")
         End If
     End Sub
-
     Private Sub getServersSUS()
         Dim main As New FormAMEmain
         Dim comboList As New List(Of System.Windows.Forms.ComboBox) From {
@@ -772,7 +446,6 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
         main.loadComboBox($"SELECT SUS, nome FROM servidores WHERE oci_autorizador=1", txtNomeAutorizador, "nome", "SUS", True)
 
     End Sub
-
     Private Function getPacientes(Optional ByVal cpf As String = Nothing, Optional nome As String = Nothing, Optional dtnasc As String = Nothing, Optional id As Integer = 0)
         Dim data As DataTable = Nothing
         Dim query As String = "SELECT pacientes.*, ceps_peruibe.cep AS CEP,ceps_peruibe.tipo,ceps_peruibe.logradouro,ceps_peruibe.bairro
@@ -797,13 +470,6 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
         Return data
 
     End Function
-
-    Public Class ApacRegistro
-        Public Property NumeroApac As String
-        Public Property NomePaciente As String
-        Public Property ProcedimentoPrincipal As String
-        Public Property SUSMedicoExecutante As String
-    End Class
 
     Public Function ExtrairApacsNaoUsadas(usadas As IEnumerable(Of String), caminhoArquivo As String) As List(Of ApacRegistro)
         Dim lista As New List(Of ApacRegistro)
@@ -840,8 +506,6 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
 
         Return lista
     End Function
-
-
     Public Function ExtrairApacsOUT_Cruzado(caminhoOut As String, apacsUsadas As IEnumerable(Of String)) As List(Of ApacRegistro)
         Dim usados = New HashSet(Of String)(apacsUsadas) ' busca O(1)
         Dim lista As New List(Of ApacRegistro)
@@ -885,60 +549,6 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
 
         Return lista
     End Function
-
-    'Public Function ExtrairApacsOUT(caminhoArquivo As String) As List(Of ApacRegistro)
-    '    Dim lista As New List(Of ApacRegistro)
-    '    Dim linhas = File.ReadAllLines(caminhoArquivo, Encoding.GetEncoding("ISO-8859-1"))
-
-    '    For Each linha As String In linhas
-    '        If linha.StartsWith("14") AndAlso linha.Length > 80 Then
-    '            ' Extrai número da APAC (13 dígitos após a competência)
-    '            Dim numero As String = linha.Substring(8, 13).Trim()
-
-    '            ' Localiza o início do nome do paciente:
-    '            ' Após o número da APAC, há uma sequência de dígitos (ex: datas, códigos).
-    '            ' Pular todos os dígitos e espaços até achar a primeira letra.
-    '            Dim i As Integer = 21
-    '            While i < linha.Length AndAlso (Char.IsDigit(linha(i)) OrElse Char.IsWhiteSpace(linha(i)))
-    '                i += 1
-    '            End While
-
-    '            ' Extrair o nome (30 caracteres após o primeiro caractere não numérico)
-    '            Dim nome As String = ""
-    '            If i < linha.Length Then
-    '                Dim tamanho = Math.Min(30, linha.Length - i)
-    '                nome = linha.Substring(i, tamanho).Trim()
-    '            End If
-
-    '            lista.Add(New ApacRegistro With {
-    '            .NumeroApac = numero,
-    '            .NomePaciente = nome
-    '        })
-    '        End If
-    '    Next
-
-    '    Return lista
-    'End Function
-
-    'Public Function ExtrairApacsOUT(caminhoArquivo As String) As List(Of ApacRegistro)
-    '    Dim lista As New List(Of ApacRegistro)
-
-    '    For Each linha As String In File.ReadAllLines(caminhoArquivo, Encoding.GetEncoding("ISO-8859-1"))
-    '        If linha.StartsWith("14") AndAlso linha.Length > 80 Then
-    '            Dim numero As String = linha.Substring(8, 13).Trim()
-    '            Dim nome As String = linha.Substring(44, 30).Trim()
-
-    '            lista.Add(New ApacRegistro With {
-    '            .NumeroApac = numero,
-    '            .NomePaciente = nome
-    '        })
-    '        End If
-    '    Next
-
-    '    Return lista
-
-    'End Function
-
     Public Function ExtrairApacsOUT(caminhoArquivo As String) As List(Of ApacRegistro)
         Dim lista As New List(Of ApacRegistro)
         Dim linhas = File.ReadAllLines(caminhoArquivo, Encoding.GetEncoding("ISO-8859-1"))
@@ -954,30 +564,27 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
                     i += 1
                 End While
 
-                ' Nome do paciente (até 30 caracteres a partir da primeira letra encontrada)
                 Dim nome As String = ""
                 If i < linha.Length Then
                     Dim tamanho = Math.Min(30, linha.Length - i)
                     nome = linha.Substring(i, tamanho).Trim()
                 End If
 
-                ' Procedimento principal (10 dígitos fixos na posição 174)
                 Dim procedimento As String = linha.Substring(216, 10).Trim()
-                'If linha.Length >= 184 Then
-                'procedimento = linha.Substring(174, 10).Trim()
-                'End If
 
-                ' SUS do médico executante (15 dígitos fixos na posição 285)
                 Dim susMedico As String = linha.Substring(281, 15).Trim()
-                'If linha.Length >= 300 Then
-                'susMedico = linha.Substring(285, 15).Trim()
-                'End If
+
+                Dim dataTxt As String = linha.Substring(38, 8).Trim()
+
+                Dim compt As String = linha.Substring(2, 6).Trim()
 
                 lista.Add(New ApacRegistro With {
                 .NumeroApac = numero,
                 .NomePaciente = nome,
                 .ProcedimentoPrincipal = procedimento,
-                .SUSMedicoExecutante = susMedico
+                .SUSMedicoExecutante = susMedico,
+                .data = DateTime.ParseExact(dataTxt, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None),
+                .competencia = compt
             })
             End If
         Next
@@ -987,9 +594,15 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
 
     Public Sub ExportarApacsExcel(lista As List(Of ApacRegistro), caminho As String)
         Using wb As New XLWorkbook()
-            Dim ws = wb.Worksheets.Add("APACs")
 
-            ' Sem cabeçalho: grava direto os dados
+            Dim competencia As String = lista.FirstOrDefault()?.competencia
+            Dim mes As Integer = Integer.Parse(competencia.Substring(4, 2))
+            Dim ano As String = competencia.Substring(0, 4)
+            Dim ws = wb.Worksheets.Add($"APACs {mes - ano}")
+            ws.Cell(1, 6).Value = MonthName(mes).ToUpper() & "/" & ano
+            ws.Cell(1, 6).Style.Font.Bold = True
+            ws.Cell(1, 6).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center
+
             Dim linha As Integer = 1
             For Each apac In lista
                 ' Converte o Nº APAC para Decimal para garantir tipo numérico
@@ -1016,6 +629,15 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
                 Else
                     ws.Cell(linha, 4).Value = apac.SUSMedicoExecutante
                 End If
+
+                Dim dataApac As Date
+                If DateTime.TryParseExact(apac.data, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, dataApac) Then
+                    ws.Cell(linha, 5).Value = dataApac
+                    ws.Cell(linha, 5).Style.DateFormat.Format = "dd/MM/yyyy"
+                Else
+                    ws.Cell(linha, 5).Value = apac.data
+                End If
+
                 linha += 1
             Next
 
@@ -1027,7 +649,7 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
             End If
 
             ' Ajusta larguras
-            ws.Columns(1, 4).AdjustToContents()
+            ws.Columns(1, 6).AdjustToContents()
 
             wb.SaveAs(caminho)
         End Using
@@ -1693,4 +1315,12 @@ UPDATE oci SET status = 'BLOQ' WHERE id = @id;"
         End If
     End Sub
 
+End Class
+Public Class ApacRegistro
+    Public Property NumeroApac As String
+    Public Property NomePaciente As String
+    Public Property ProcedimentoPrincipal As String
+    Public Property SUSMedicoExecutante As String
+    Public Property data As Date
+    Public Property competencia As String
 End Class
