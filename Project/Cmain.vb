@@ -861,6 +861,26 @@ Public Class Main
         ' Compara com os dígitos informados
         Return cpf.EndsWith(digito1.ToString() & digito2.ToString())
     End Function
+    Public Function SafeValue(dt As DataTable, columnName As String, Optional rowIndex As Integer = 0) As Object
+        ' Se DataTable é Nothing ou sem linhas → retorna DBNull
+        If dt Is Nothing OrElse dt.Rows.Count = 0 Then
+            Return DBNull.Value
+        End If
+
+        ' Se a coluna não existe → também retorna DBNull
+        If Not dt.Columns.Contains(columnName) Then
+            Return DBNull.Value
+        End If
+
+        ' Se o valor é DBNull → retorna DBNull
+        Dim val = dt.Rows(rowIndex)(columnName)
+        If IsDBNull(val) Then
+            Return DBNull.Value
+        End If
+
+        ' Retorna o valor real
+        Return val
+    End Function
 
 
 End Class

@@ -27,11 +27,6 @@ Public Class FormAMEOCI
             txtNumApac.Focus()
             Return
         End If
-        If result.Rows(0).Item("id").ToString = Nothing Then
-            MessageBox.Show("Selecione um paciente.")
-            txtNomePaciente.Focus()
-            Return
-        End If
         If txtCNSMedicoExecutante.SelectedIndex = -1 Then
             MessageBox.Show("Selecione o médico.")
             txtCNSMedicoExecutante.Focus()
@@ -51,12 +46,35 @@ Public Class FormAMEOCI
             idProced = dictProceds(codigoBusca)
         End If
 
-        If FormAMEmain.doQuery($"UPDATE oci SET compet='{My.Settings.OCIcompetencia}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={result.Rows(0).Item("id")}, id_medico={txtCNSMedicoExecutante.SelectedValue}, id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'") Then
-            clearFields()
-            btNovonumeroAPAC.Enabled = True
-            'txtNumApac.Text = GetAndLockNextApac()
-        End If
+        Try
+            ' Obtem ID do paciente de forma segura
+            Dim idPac As Object = m.SafeValue(result, "id", 0)
 
+            ' Se o valor for DBNull, precisa gravar NULL literal na query (sem aspas)
+            Dim idPacSQL As String
+            Dim nomePac As String = ""
+            If idPac Is DBNull.Value Then
+                idPacSQL = $"NULL"
+                nomePac = $"nome_paciente='{txtNomePaciente.Text.Trim()}', "
+            Else
+                idPacSQL = idPac.ToString()
+                nomePac = ""
+            End If
+
+            Dim query = $"UPDATE oci SET compet='{My.Settings.OCIcompetencia}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPacSQL}, {nomePac} id_medico='{txtCNSMedicoExecutante.SelectedValue}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
+
+           ' Debug.Write(query)
+
+            If FormAMEmain.doQuery(query) Then
+                clearFields()
+                btNovonumeroAPAC.Enabled = True
+                'txtNumApac.Text = GetAndLockNextApac()
+            End If
+
+        Catch ex As Exception
+            UnlockApac(txtNumApac.Text)
+            MsgBox("Erro ao salvar APAC: " & ex.Message)
+        End Try
 
     End Sub
     Private Sub btnAddPacAPAC_Click(sender As Object, e As EventArgs) Handles btnGerarArquivo.Click
@@ -68,6 +86,8 @@ Public Class FormAMEOCI
                 MessageBox.Show("CPF inválido. Verifique e tente novamente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 Return
             End If
+            chkResponsavel()
+
             If dtNascimento.Text.Trim() = "" Then Throw New Exception("Informe a data de nascimento Do paciente.")
             If txtNomePaciente.Text.Trim() = "" Then Throw New Exception("Informe o nome Do paciente.")
             If txtNomeMae.Text.Trim() = "" Then Throw New Exception("Informe o nome da mãe.")
@@ -77,7 +97,6 @@ Public Class FormAMEOCI
             If txtCep.Text.Length < 8 Then Throw New Exception("Informe o CEP corretamente.")
             If txtNumero.Text.Trim() = "" Then Throw New Exception("Informe o número Do logradouro.")
             If txtProcedimentoPrincipal.SelectedIndex < 0 Then Throw New Exception("Selecione o procedimento principal.")
-            chkResponsavel()
 
             ' ==================== CONFIGURAÇÕES ====================
             Dim competencia As String = My.Settings.OCIcompetencia
@@ -459,21 +478,27 @@ Public Class FormAMEOCI
           JOIN ceps_peruibe ON pacientes.id_logradouro = ceps_peruibe.id "
         Dim orderBy As String = " ORDER BY pacientes.nome"
 
-        If cpf IsNot Nothing Then
-            data = FormAMEmain.getDataset(query & $" WHERE pacientes.cpf ='{cpf}' {orderBy}")
+        Try
 
-        ElseIf nome IsNot Nothing Then
-            data = FormAMEmain.getDataset(query & $" WHERE pacientes.nome LIKE '%{nome}%' {orderBy}")
+            If cpf IsNot Nothing Then
+                data = FormAMEmain.getDataset(query & $" WHERE pacientes.cpf ='{cpf}' {orderBy}")
 
-        ElseIf dtnasc IsNot Nothing Then
+            ElseIf nome IsNot Nothing Then
+                data = FormAMEmain.getDataset(query & $" WHERE pacientes.nome LIKE '%{nome}%' {orderBy}")
 
-            data = FormAMEmain.getDataset(query & $" WHERE pacientes.dtnasc ='{dtnasc}' {orderBy}")
-        ElseIf id > 0 Then
+            ElseIf dtnasc IsNot Nothing Then
 
-            data = FormAMEmain.getDataset(query & $" WHERE pacientes.id ={id} {orderBy}")
-        End If
+                data = FormAMEmain.getDataset(query & $" WHERE pacientes.dtnasc ='{dtnasc}' {orderBy}")
+            ElseIf id > 0 Then
 
-        Return data
+                data = FormAMEmain.getDataset(query & $" WHERE pacientes.id ={id} {orderBy}")
+            End If
+
+            Return data
+
+        Catch ex As Exception
+            Return false
+        End Try
 
     End Function
 
@@ -1144,7 +1169,7 @@ Public Class FormAMEOCI
                 popupGrid.DataSource = result
 
                 ' Posiciona o grid logo abaixo do textbox
-                popupGrid.Location = New Point(24, 205)
+                popupGrid.Location = New Point(30, 225)
                 ' ======== CONFIGURAÇÃO DE COLUNAS INDIVIDUAIS ========
 
                 For Each col As DataGridViewColumn In popupGrid.Columns
