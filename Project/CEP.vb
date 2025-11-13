@@ -3,16 +3,8 @@ Imports System.IO
 Imports System.Web.Script.Serialization
 
 Public Class CEP
-    Public Property cep As String
-    Public Property logradouro As String
-    Public Property complemento As String
-    Public Property bairro As String
-    Public Property localidade As String
-    Public Property uf As String
-    Public Property ibge As String
-    Public Property gia As String
-    Public Property ddd As String
-    Public Property siafi As String
+
+    Dim address As DataTable
 
     Public Function searchCEPviacep(cep As String) As CEP
         Try
@@ -46,7 +38,6 @@ Public Class CEP
     Public Function getAddress(Optional cep As String = "", Optional logradouro As String = "", Optional bairro As String = "")
         Dim query As String = "SELECT * FROM ceps_peruibe WHERE 1=1 "
         Dim conn As New FormAMEmain
-        Dim address As DataTable
 
         Try
             If cep <> "" Then

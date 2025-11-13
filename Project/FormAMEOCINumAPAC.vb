@@ -290,9 +290,9 @@ Public Class FormAMEOCINumAPAC
             End If
 
 
-            Dim data = FormAMEmain.getDataset($"SELECT oci.id, oci.num_apac, oci.`status`, oci.compet, oci.`data`, cod_oci_principal.abrev AS oci, pacientes.nome, oci.nome_paciente AS paciente, pacientes.dtnasc, servidores.nome AS medico,  usuarios.nome AS responsavel 
+            Dim data = FormAMEmain.getDataset($"SELECT oci.id, oci.num_apac, oci.`status`, oci.compet, oci.`data`, cod_oci_principal.abrev AS oci, COALESCE(pacientes.nome, oci.nome_paciente) AS paciente_final, pacientes.dtnasc, servidores.nome AS medico, usuarios.nome AS responsavel 
                 FROM oci 
-               LEFT JOIN pacientes ON pacientes.id = oci.id_paciente 
+               LEFT JOIN pacientes ON TRIM(UPPER(pacientes.nome)) = TRIM(UPPER(oci.nome_paciente)) SET pacientes.id = oci.id_paciente 
                LEFT JOIN servidores ON servidores.id = oci.id_medico
                LEFT JOIN cod_oci_principal ON cod_oci_principal.id = oci.id_cod_principal 
                LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} ORDER BY id")
@@ -308,6 +308,8 @@ Public Class FormAMEOCINumAPAC
             dgvNumerosAPAC.Columns("data").Width = 70
             dgvNumerosAPAC.Columns("oci").HeaderText = "OCI"
             dgvNumerosAPAC.Columns("oci").Width = 180
+            dgvNumerosAPAC.Columns("paciente_final").HeaderText = "Paciente"
+            dgvNumerosAPAC.Columns("paciente_final").Width = 220
             dgvNumerosAPAC.Columns("dtnasc").HeaderText = "Nascimento"
             dgvNumerosAPAC.Columns("dtnasc").Width = 80
             dgvNumerosAPAC.Columns("medico").HeaderText = "Médico"
@@ -317,23 +319,23 @@ Public Class FormAMEOCINumAPAC
             dgvNumerosAPAC.Columns("responsavel").HeaderText = "Responsável"
             dgvNumerosAPAC.Columns("responsavel").Width = 150
 
-            Dim usarNomePaciente As Boolean = False
+            'Dim usarNomePaciente As Boolean = False
 
-            If data.Columns.Contains("nome") AndAlso data.AsEnumerable().Any(Function(r) Not IsDBNull(r("nome")) AndAlso r("nome").ToString().Trim() <> "") Then
-                usarNomePaciente = True
-            End If
+            'If data.Columns.Contains("nome") AndAlso data.AsEnumerable().Any(Function(r) Not IsDBNull(r("nome")) AndAlso r("nome").ToString().Trim() <> "") Then
+            '    usarNomePaciente = True
+            'End If
 
-            If usarNomePaciente Then
-                dgvNumerosAPAC.Columns("paciente").Visible = False
-                dgvNumerosAPAC.Columns("nome").Visible = True
-                dgvNumerosAPAC.Columns("nome").HeaderText = "Paciente"
-                dgvNumerosAPAC.Columns("nome").Width = 200
-            Else
-                dgvNumerosAPAC.Columns("nome").Visible = False
-                dgvNumerosAPAC.Columns("paciente").Visible = True
-                dgvNumerosAPAC.Columns("paciente").HeaderText = "Paciente"
-                dgvNumerosAPAC.Columns("paciente").Width = 200
-            End If
+            'If usarNomePaciente Then
+            '    dgvNumerosAPAC.Columns("paciente").Visible = False
+            '    dgvNumerosAPAC.Columns("nome").Visible = True
+            '    dgvNumerosAPAC.Columns("nome").HeaderText = "Paciente"
+            '    dgvNumerosAPAC.Columns("nome").Width = 200
+            'Else
+            '    dgvNumerosAPAC.Columns("nome").Visible = False
+            '    dgvNumerosAPAC.Columns("paciente").Visible = True
+            '    dgvNumerosAPAC.Columns("paciente").HeaderText = "Paciente"
+            '    dgvNumerosAPAC.Columns("paciente").Width = 200
+            'End If
 
             ToolStripStatusLabel1.Text = dgvNumerosAPAC.Rows.Count & " registros encontrados."
 

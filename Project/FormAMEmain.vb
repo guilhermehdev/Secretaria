@@ -620,18 +620,58 @@ Public Class FormAMEmain
             vconexao.Close()
         End If
     End Sub
-    Public Function doQuery(ByVal sql As String, Optional params As Dictionary(Of String, Object) = Nothing, Optional ByVal errorMsg As Boolean = False) As Boolean
+    'Public Function doQuery(ByVal sql As String, Optional params As Dictionary(Of String, Object) = Nothing, Optional ByVal errorMsg As Boolean = False) As Boolean
+    '    Try
+    '        connection(True)
+    '        Using command As New MySqlCommand(sql, vconexao)
+    '            If params IsNot Nothing Then
+    '                For Each kvp In params
+    '                    command.Parameters.AddWithValue(kvp.Key, kvp.Value)
+    '                Next
+    '            End If
+    '            command.ExecuteNonQuery()
+    '        End Using
+    '        Return True
+    '    Catch ex As Exception
+    '        If errorMsg Then MsgBox($"{ex}{vbCrLf}{sql}")
+    '        Throw
+    '    Finally
+    '        connection(False)
+    '    End Try
+    'End Function
+
+    Public Function doQuery(ByVal sql As String, Optional params As Dictionary(Of String, Object) = Nothing, Optional ByVal errorMsg As Boolean = False) As Object
         Try
             connection(True)
+            Dim result As Object = Nothing
+
+            ' Verifica se é um INSERT
+            Dim isInsert As Boolean = sql.TrimStart().ToUpper().StartsWith("INSERT")
+
+            ' Se for INSERT, concatena para retornar o ID
+            If isInsert Then
+                sql &= "; SELECT LAST_INSERT_ID();"
+            End If
+
             Using command As New MySqlCommand(sql, vconexao)
                 If params IsNot Nothing Then
                     For Each kvp In params
                         command.Parameters.AddWithValue(kvp.Key, kvp.Value)
                     Next
                 End If
-                command.ExecuteNonQuery()
+
+                If isInsert Then
+                    ' INSERT: retorna o ID gerado
+                    result = command.ExecuteScalar()
+                Else
+                    ' UPDATE / DELETE / etc: retorna True/False
+                    command.ExecuteNonQuery()
+                    result = True
+                End If
             End Using
-            Return True
+
+            Return result
+
         Catch ex As Exception
             If errorMsg Then MsgBox($"{ex}{vbCrLf}{sql}")
             Throw
@@ -639,6 +679,7 @@ Public Class FormAMEmain
             connection(False)
         End Try
     End Function
+
     Public Function getDataset(ByVal sql As String, Optional ByVal errorMsg As Boolean = False) As DataTable
         Dim dspesquisa As New DataTable
         Try

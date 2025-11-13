@@ -13,6 +13,7 @@ Public Class FormAMEOCI
     Private linhas As New List(Of String)
     Dim m As New Main
     Dim result As DataTable
+    Dim endereco As DataTable
     ' Variáveis globais
     Private popupGrid As DataGridView
     Private debounceTimer As New Timer() With {.Interval = 300}
@@ -54,16 +55,19 @@ Public Class FormAMEOCI
             Dim idPacSQL As String
             Dim nomePac As String = ""
             If idPac Is DBNull.Value Then
-                idPacSQL = $"NULL"
-                nomePac = $"nome_paciente='{txtNomePaciente.Text.Trim()}', "
+                'idPacSQL = $"NULL"
+                'nomePac = $"nome_paciente='{txtNomePaciente.Text.Trim()}', "
+
+                idPacSQL = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{txtNomePaciente.Text}', '{m.mysqlDateFormat(dtValidadeIni.Value)}', '{txtNomeMae.Text}', '({txtDDD.Text}){txtTelefone.Text}', '{txtCpfPaciente.Text}',{endereco.Rows(0).Item("id")}, '{txtNumero.Text}', '{txtComplemento.Text}')")
+
             Else
                 idPacSQL = idPac.ToString()
-                nomePac = ""
+                'nomePac = ""
             End If
 
-            Dim query = $"UPDATE oci SET compet='{My.Settings.OCIcompetencia}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPacSQL}, {nomePac} id_medico='{txtCNSMedicoExecutante.SelectedValue}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
+            Dim query = $"UPDATE oci Set compet='{My.Settings.OCIcompetencia}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPacSQL}, id_medico='{txtCNSMedicoExecutante.SelectedValue}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
 
-           ' Debug.Write(query)
+            ' Debug.Write(query)
 
             If FormAMEmain.doQuery(query) Then
                 clearFields()
@@ -683,7 +687,6 @@ Public Class FormAMEOCI
         End Try
     End Sub
 
-
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If My.Settings.databaseAME = "" Then
             FormAMEbd.ShowDialog()
@@ -951,15 +954,13 @@ Public Class FormAMEOCI
         Try
 
             Dim CEP As New CEP()
-            Dim resultado As DataTable = CEP.getAddress(param)
+            endereco = CEP.getAddress(param)
 
-            If resultado IsNot Nothing Then
+            If endereco IsNot Nothing Then
 
-                Dim tipo = resultado.Rows(0).Item(2).ToString
-                Dim logra = resultado.Rows(0).Item(3).ToString
-                Dim bairro = resultado.Rows(0).Item(4).ToString
-
-
+                Dim tipo = endereco.Rows(0).Item(2).ToString
+                Dim logra = endereco.Rows(0).Item(3).ToString
+                Dim bairro = endereco.Rows(0).Item(4).ToString
                 Dim foundItem = CType(cbTipoLogradouro.DataSource, BindingSource) _
                 .Cast(Of KeyValuePair(Of String, String))() _
                 .FirstOrDefault(Function(x) x.Value.Equals(tipo, StringComparison.OrdinalIgnoreCase))
