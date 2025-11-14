@@ -55,11 +55,17 @@ Public Class FormAMEOCI
             ' Se o valor for DBNull, precisa gravar NULL literal na query (sem aspas)
             Dim idPacSQL As String
             Dim nomePac As String = ""
+
             If idPac Is DBNull.Value Then
                 'idPacSQL = $"NULL"
                 'nomePac = $"nome_paciente='{txtNomePaciente.Text.Trim()}', "
+                Try
 
-                idPacSQL = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{txtNomePaciente.Text}', '{m.mysqlDateFormat(dtValidadeIni.Value)}', '{txtNomeMae.Text}', '({txtDDD.Text}){txtTelefone.Text}', '{txtCpfPaciente.Text}',{endereco.Rows(0).Item("id")}, '{txtNumero.Text}', '{txtComplemento.Text}')")
+                    idPacSQL = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{txtNomePaciente.Text}', '{m.mysqlDateFormat(dtValidadeIni.Value)}', '{txtNomeMae.Text}', '({txtDDD.Text}){txtTelefone.Text}', '{txtCpfPaciente.Text}',{endereco.Rows(0).Item("id")}, '{txtNumero.Text}', '{txtComplemento.Text}')")
+
+                Catch ex As Exception
+                    MsgBox("Usuario já cadastrado!")
+                End Try
 
             Else
                 idPacSQL = idPac.ToString()
@@ -502,7 +508,7 @@ Public Class FormAMEOCI
             Return data
 
         Catch ex As Exception
-            Return false
+            Return False
         End Try
 
     End Function
@@ -1346,41 +1352,6 @@ Public Class FormAMEOCI
 
         End If
     End Sub
-
-    Private Sub APACtoDB(apacs As List(Of ApacRegistro))
-        Dim proceds As New List(Of String)
-        Dim dictProceds As Dictionary(Of String, Integer) = CarregarProcedimentosCodId()
-        Dim idProced As Integer
-
-        For Each apac In apacs
-            Dim codigoBusca As String = apac.ProcedimentoPrincipal
-            If dictProceds.ContainsKey(codigoBusca) Then
-                idProced = dictProceds(codigoBusca)
-            End If
-
-            Dim ddd As String = ""
-            Dim tel As String = ""
-            If apac.TelPaciente.Length > 0 Then
-                ddd = $"({apac.TelPaciente.Substring(0, 2)})"
-                tel = apac.TelPaciente.Substring(2, apac.TelPaciente.Length - 2)
-            End If
-
-            ' MsgBox(apac.NomePaciente & " / " & apac.CEPPaciente & " / " & apac.MaePaciente & " / " & apac.TelPaciente & " / " & apac.CPFPaciente & " / " & apac.numeroResPaciente & " / " & apac.complementoPaciente)
-            ' Return
-            Dim idLogra = cepObj.getAddress(apac.CEPPaciente.Insert(5, "-")).Rows(0).Item("id")
-            If idLogra Is Nothing OrElse idLogra.Rows.Count = 0 Then
-                idLogra = 0
-            End If
-
-            FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{apac.NomePaciente}', '{m.mysqlDateFormat(apac.DtnascPaciente)}', '{apac.MaePaciente}', '{ddd}{tel}', '{apac.CPFPaciente}',{idLogra}, {apac.numeroResPaciente}, '{apac.complementoPaciente}')")
-
-            FormAMEmain.doQuery($"UPDATE oci SET compet='{apac.competencia}', data='{m.mysqlDateFormat(apac.data)}', nome_paciente='{apac.NomePaciente}', id_medico='{apac.SUSMedicoExecutante}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{apac.NumeroApac}'")
-        Next
-
-        MsgBox("Importação concluída!")
-
-    End Sub
-
     Public Function CarregarProcedimentosCodId() As Dictionary(Of String, Integer)
         Dim procedimentos As New Dictionary(Of String, Integer)
 
@@ -1396,6 +1367,20 @@ Public Class FormAMEOCI
 
         Return procedimentos
     End Function
+
+    Private Sub btFechar_Click(sender As Object, e As EventArgs) Handles btFechar.Click
+        FormSystemStart.Visible = True
+        If Not String.IsNullOrEmpty(txtNumApac.Text) Then
+            UnlockApac(txtNumApac.Text)
+            btNovonumeroAPAC.Enabled = True
+        End If
+        Me.Close()
+    End Sub
+    Private Sub btNovonumeroAPAC_Click(sender As Object, e As EventArgs) Handles btNovonumeroAPAC.Click
+        txtNumApac.Text = GetAndLockNextApac()
+        dtValidadeIni.Focus()
+        btNovonumeroAPAC.Enabled = False
+    End Sub
 
     Public Function importFromApacs(caminhoArquivo As String) As List(Of ApacRegistro)
         Dim lista As New List(Of ApacRegistro)
@@ -1429,6 +1414,9 @@ Public Class FormAMEOCI
                 Dim mae As String = linha.Substring(87, 30).Trim()
                 Dim numeroRes As String = linha.Substring(147, 5).Trim()
                 Dim complento As String = linha.Substring(152, 10).Trim()
+                Dim tipoLogra As String = linha.Substring(412, 3).Trim()
+                Dim logradouro As String = linha.Substring(117, 30).Trim()
+                Dim bairro As String = linha.Substring(415, 30).Trim()
 
                 lista.Add(New ApacRegistro With {
                 .NumeroApac = numero,
@@ -1443,26 +1431,96 @@ Public Class FormAMEOCI
                 .MaePaciente = mae,
                 .TelPaciente = tel,
                 .numeroResPaciente = numeroRes,
-                .complementoPaciente = complento
+                .complementoPaciente = complento,
+                .TipoLograPaciente = tipoLogra,
+                .LograPaciente = logradouro,
+                .BairroPaciente = bairro
             })
             End If
         Next
 
         Return lista
     End Function
+    Public Function GetDescricaoLogradouro(cod As String) As String
+        Dim c As String = cod.Trim().PadLeft(3, "0"c)
 
-    Private Sub btFechar_Click(sender As Object, e As EventArgs) Handles btFechar.Click
-        FormSystemStart.Visible = True
-        If Not String.IsNullOrEmpty(txtNumApac.Text) Then
-            UnlockApac(txtNumApac.Text)
-            btNovonumeroAPAC.Enabled = True
-        End If
-        Me.Close()
-    End Sub
-    Private Sub btNovonumeroAPAC_Click(sender As Object, e As EventArgs) Handles btNovonumeroAPAC.Click
-        txtNumApac.Text = GetAndLockNextApac()
-        dtValidadeIni.Focus()
-        btNovonumeroAPAC.Enabled = False
+        Select Case c
+        ' --- da tela do APAC.exe (print) ---
+            Case "001" : Return "ACESSO"
+            Case "002" : Return "ADRO"
+            Case "004" : Return "ALAMEDA"
+            Case "005" : Return "ALTO"
+            Case "007" : Return "ATALHO"
+            Case "008" : Return "AVENIDA"
+            Case "009" : Return "BALNEARIO"
+            Case "010" : Return "BELVEDERE"
+            Case "011" : Return "BECO"
+            Case "012" : Return "BLOCO"
+            Case "013" : Return "BOSQUE"
+            Case "014" : Return "BOULEVARD"
+            Case "015" : Return "BAIXA"
+
+        ' --- códigos que você já usa na sua base ---
+            Case "031" : Return "ESTRADA"
+            Case "065" : Return "PRAÇA"
+            Case "081" : Return "RUA"
+            Case "095" : Return "SETOR"
+            Case "105" : Return "VIELA"
+
+                ' fallback: se não tiver na tabela, devolve o próprio código
+            Case Else
+                Return $"CÓDIGO {c}"
+        End Select
+    End Function
+
+    Private Sub APACtoDB(apacs As List(Of ApacRegistro))
+        Dim proceds As New List(Of String)
+        Dim dictProceds As Dictionary(Of String, Integer) = CarregarProcedimentosCodId()
+        Dim idProced As Integer
+
+        For Each apac In apacs
+            Dim codigoBusca As String = apac.ProcedimentoPrincipal
+            If dictProceds.ContainsKey(codigoBusca) Then
+                idProced = dictProceds(codigoBusca)
+            End If
+
+            Dim ddd As String = ""
+            Dim tel As String = ""
+            If apac.TelPaciente.Length > 0 Then
+                ddd = $"({apac.TelPaciente.Substring(0, 2)})"
+                tel = apac.TelPaciente.Substring(2, apac.TelPaciente.Length - 2)
+            End If
+
+            ' MsgBox(apac.NomePaciente & " / " & apac.CEPPaciente & " / " & apac.MaePaciente & " / " & apac.TelPaciente & " / " & apac.CPFPaciente & " / " & apac.numeroResPaciente & " / " & apac.complementoPaciente)
+            ' Return
+
+
+            Dim dtLogra = cepObj.getAddress(apac.CEPPaciente.Insert(5, "-"))
+            Dim idLogra As Integer = 0
+
+
+            If dtLogra IsNot Nothing AndAlso dtLogra.Rows.Count > 0 Then
+                idLogra = Convert.ToInt32(dtLogra.Rows(0)("id"))
+            Else
+                Try
+                    idLogra = FormAMEmain.doQuery($"INSERT INTO ceps_peruibe (cep, tipo, logradouro, bairro) VALUES ('{apac.CEPPaciente}', '{GetDescricaoLogradouro(apac.TipoLograPaciente)}', '{apac.LograPaciente}', '{apac.BairroPaciente}')")
+                Catch ex As Exception
+                    MsgBox(ex.Message)
+                End Try
+            End If
+
+            Try
+                Dim idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{apac.NomePaciente}', '{m.mysqlDateFormat(apac.DtnascPaciente)}', '{apac.MaePaciente}', '{ddd}{tel}', '{apac.CPFPaciente}',{idLogra}, {apac.numeroResPaciente}, '{apac.complementoPaciente}')")
+
+                FormAMEmain.doQuery($"UPDATE oci SET compet='{apac.competencia}', data='{m.mysqlDateFormat(apac.data)}', id_paciente='{idPac}', id_medico='{apac.SUSMedicoExecutante}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{apac.NumeroApac}'")
+
+            Catch ex As Exception
+
+            End Try
+        Next
+
+        MsgBox("Importação concluída!")
+
     End Sub
 
 End Class
@@ -1474,6 +1532,9 @@ Public Class ApacRegistro
     Public Property CPFPaciente As String
     Public Property MaePaciente As String
     Public Property CEPPaciente As String
+    Public Property TipoLograPaciente As String
+    Public Property LograPaciente As String
+    Public Property BairroPaciente As String
     Public Property numeroResPaciente As String
     Public Property complementoPaciente As String
     Public Property TelPaciente As String

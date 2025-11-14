@@ -290,12 +290,7 @@ Public Class FormAMEOCINumAPAC
             End If
 
 
-            Dim data = FormAMEmain.getDataset($"SELECT oci.id, oci.num_apac, oci.`status`, oci.compet, oci.`data`, cod_oci_principal.abrev AS oci, COALESCE(pacientes.nome, oci.nome_paciente) AS paciente_final,  COALESCE(pacientes.dtnasc, (
-                SELECT p2.dtnasc 
-                FROM pacientes p2 
-                WHERE TRIM(UPPER(p2.nome)) = TRIM(UPPER(oci.nome_paciente))
-                LIMIT 1
-                )) AS dtnasc, servidores.nome AS medico, usuarios.nome AS responsavel 
+            Dim data = FormAMEmain.getDataset($"SELECT oci.id, oci.num_apac, oci.`status`, oci.compet, oci.`data`, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc AS dtnasc, servidores.nome AS medico, usuarios.nome AS responsavel 
                 FROM oci 
                LEFT JOIN pacientes ON pacientes.id = oci.id_paciente 
                LEFT JOIN servidores ON servidores.SUS = oci.id_medico
@@ -313,8 +308,8 @@ Public Class FormAMEOCINumAPAC
             dgvNumerosAPAC.Columns("data").Width = 70
             dgvNumerosAPAC.Columns("oci").HeaderText = "OCI"
             dgvNumerosAPAC.Columns("oci").Width = 180
-            dgvNumerosAPAC.Columns("paciente_final").HeaderText = "Paciente"
-            dgvNumerosAPAC.Columns("paciente_final").Width = 220
+            dgvNumerosAPAC.Columns("nome").HeaderText = "Paciente"
+            dgvNumerosAPAC.Columns("nome").Width = 220
             dgvNumerosAPAC.Columns("dtnasc").HeaderText = "Nascimento"
             dgvNumerosAPAC.Columns("dtnasc").Width = 80
             dgvNumerosAPAC.Columns("medico").HeaderText = "Médico"
