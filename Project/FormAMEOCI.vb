@@ -1497,8 +1497,6 @@ Public Class FormAMEOCI
 
             Dim dtLogra = cepObj.getAddress(apac.CEPPaciente.Insert(5, "-"))
             Dim idLogra As Integer = 0
-
-
             If dtLogra IsNot Nothing AndAlso dtLogra.Rows.Count > 0 Then
                 idLogra = Convert.ToInt32(dtLogra.Rows(0)("id"))
             Else
@@ -1520,9 +1518,7 @@ Public Class FormAMEOCI
         Next
 
         MsgBox("Importação concluída!")
-
     End Sub
-
 End Class
 
 Public Class ApacRegistro
