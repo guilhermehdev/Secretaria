@@ -35,7 +35,7 @@ Public Class CEP
             Return Nothing
         End Try
     End Function
-    Public Function getAddress(Optional cep As String = "", Optional logradouro As String = "", Optional bairro As String = "")
+    Public Function getAddress(Optional cep As String = "", Optional logradouro As String = "", Optional bairro As String = "") As DataTable
         Dim query As String = "SELECT * FROM ceps_peruibe WHERE 1=1 "
         Dim conn As New FormAMEmain
 

@@ -14,6 +14,7 @@ Public Class FormAMEOCI
     Dim m As New Main
     Dim result As DataTable
     Dim endereco As DataTable
+    Dim cepObj As New CEP()
     ' Variáveis globais
     Private popupGrid As DataGridView
     Private debounceTimer As New Timer() With {.Interval = 300}
@@ -1034,7 +1035,6 @@ Public Class FormAMEOCI
             End If
 
             ' Busca no banco (usa sua função existente)
-            Dim cepObj As New CEP()
             Dim resultado As DataTable = cepObj.getAddress("", texto, "")
 
             If resultado Is Nothing OrElse resultado.Rows.Count = 0 Then
@@ -1340,14 +1340,14 @@ Public Class FormAMEOCI
         Dim desktop As String = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
 
         If OpenFileDialog1.ShowDialog Then
-            Dim itens = (ExtrairApacsOUT(OpenFileDialog1.FileName))
+            Dim itens = (importFromApacs(OpenFileDialog1.FileName))
             'ExportarApacsExcel(itens, desktop & "\APAC.xlsx")
-            importFromAPACtoDB(itens)
+            APACtoDB(itens)
 
         End If
     End Sub
 
-    Private Sub importFromAPACtoDB(apacs As List(Of ApacRegistro))
+    Private Sub APACtoDB(apacs As List(Of ApacRegistro))
         Dim proceds As New List(Of String)
         Dim dictProceds As Dictionary(Of String, Integer) = CarregarProcedimentosCodId()
         Dim idProced As Integer
@@ -1357,6 +1357,22 @@ Public Class FormAMEOCI
             If dictProceds.ContainsKey(codigoBusca) Then
                 idProced = dictProceds(codigoBusca)
             End If
+
+            Dim ddd As String = ""
+            Dim tel As String = ""
+            If apac.TelPaciente.Length > 0 Then
+                ddd = $"({apac.TelPaciente.Substring(0, 2)})"
+                tel = apac.TelPaciente.Substring(2, apac.TelPaciente.Length - 2)
+            End If
+
+            ' MsgBox(apac.NomePaciente & " / " & apac.CEPPaciente & " / " & apac.MaePaciente & " / " & apac.TelPaciente & " / " & apac.CPFPaciente & " / " & apac.numeroResPaciente & " / " & apac.complementoPaciente)
+            ' Return
+            Dim idLogra = cepObj.getAddress(apac.CEPPaciente.Insert(5, "-")).Rows(0).Item("id")
+            If idLogra Is Nothing OrElse idLogra.Rows.Count = 0 Then
+                idLogra = 0
+            End If
+
+            FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{apac.NomePaciente}', '{m.mysqlDateFormat(apac.DtnascPaciente)}', '{apac.MaePaciente}', '{ddd}{tel}', '{apac.CPFPaciente}',{idLogra}, {apac.numeroResPaciente}, '{apac.complementoPaciente}')")
 
             FormAMEmain.doQuery($"UPDATE oci SET compet='{apac.competencia}', data='{m.mysqlDateFormat(apac.data)}', nome_paciente='{apac.NomePaciente}', id_medico='{apac.SUSMedicoExecutante}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{apac.NumeroApac}'")
         Next
@@ -1381,7 +1397,7 @@ Public Class FormAMEOCI
         Return procedimentos
     End Function
 
-    Public Function ExtrairApacsOUT(caminhoArquivo As String) As List(Of ApacRegistro)
+    Public Function importFromApacs(caminhoArquivo As String) As List(Of ApacRegistro)
         Dim lista As New List(Of ApacRegistro)
         Dim linhas = File.ReadAllLines(caminhoArquivo, Encoding.GetEncoding("ISO-8859-1"))
 
@@ -1406,6 +1422,13 @@ Public Class FormAMEOCI
                 Dim susMedico As String = linha.Substring(281, 15).Trim()
                 Dim dataTxt As String = linha.Substring(38, 8).Trim()
                 Dim compt As String = linha.Substring(2, 6).Trim()
+                Dim cpf As String = linha.Substring(511, 11).Trim()
+                Dim dtnasc As String = linha.Substring(177, 8).Trim()
+                Dim cep As String = linha.Substring(162, 8).Trim()
+                Dim tel As String = linha.Substring(445, 11).Trim()
+                Dim mae As String = linha.Substring(87, 30).Trim()
+                Dim numeroRes As String = linha.Substring(147, 5).Trim()
+                Dim complento As String = linha.Substring(152, 10).Trim()
 
                 lista.Add(New ApacRegistro With {
                 .NumeroApac = numero,
@@ -1413,7 +1436,14 @@ Public Class FormAMEOCI
                 .ProcedimentoPrincipal = procedimento,
                 .SUSMedicoExecutante = susMedico,
                 .data = DateTime.ParseExact(dataTxt, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None),
-                .competencia = compt
+                .competencia = compt,
+                .CPFPaciente = cpf,
+                .DtnascPaciente = DateTime.ParseExact(dtnasc, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None),
+                .CEPPaciente = cep,
+                .MaePaciente = mae,
+                .TelPaciente = tel,
+                .numeroResPaciente = numeroRes,
+                .complementoPaciente = complento
             })
             End If
         Next
@@ -1440,6 +1470,13 @@ End Class
 Public Class ApacRegistro
     Public Property NumeroApac As String
     Public Property NomePaciente As String
+    Public Property DtnascPaciente As Date
+    Public Property CPFPaciente As String
+    Public Property MaePaciente As String
+    Public Property CEPPaciente As String
+    Public Property numeroResPaciente As String
+    Public Property complementoPaciente As String
+    Public Property TelPaciente As String
     Public Property ProcedimentoPrincipal As String
     Public Property SUSMedicoExecutante As String
     Public Property data As Date

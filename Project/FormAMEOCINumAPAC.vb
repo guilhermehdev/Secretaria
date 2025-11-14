@@ -290,10 +290,15 @@ Public Class FormAMEOCINumAPAC
             End If
 
 
-            Dim data = FormAMEmain.getDataset($"SELECT oci.id, oci.num_apac, oci.`status`, oci.compet, oci.`data`, cod_oci_principal.abrev AS oci, COALESCE(pacientes.nome, oci.nome_paciente) AS paciente_final, pacientes.dtnasc, servidores.nome AS medico, usuarios.nome AS responsavel 
+            Dim data = FormAMEmain.getDataset($"SELECT oci.id, oci.num_apac, oci.`status`, oci.compet, oci.`data`, cod_oci_principal.abrev AS oci, COALESCE(pacientes.nome, oci.nome_paciente) AS paciente_final,  COALESCE(pacientes.dtnasc, (
+                SELECT p2.dtnasc 
+                FROM pacientes p2 
+                WHERE TRIM(UPPER(p2.nome)) = TRIM(UPPER(oci.nome_paciente))
+                LIMIT 1
+                )) AS dtnasc, servidores.nome AS medico, usuarios.nome AS responsavel 
                 FROM oci 
                LEFT JOIN pacientes ON pacientes.id = oci.id_paciente 
-               LEFT JOIN servidores ON servidores.id = oci.id_medico
+               LEFT JOIN servidores ON servidores.SUS = oci.id_medico
                LEFT JOIN cod_oci_principal ON cod_oci_principal.id = oci.id_cod_principal 
                LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} ORDER BY id")
 
