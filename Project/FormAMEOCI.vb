@@ -241,7 +241,12 @@ Public Class FormAMEOCI
 
             saveAPAC()
             MessageBox.Show("✅ Paciente adicionado!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
-
+            Dim selectedCNSExe As Integer = txtCNSMedicoExecutante.SelectedIndex
+            Dim selectedAutorizador As Integer = txtNomeAutorizador.SelectedIndex
+            TabControl1.SelectedTab = TabControl1.TabPages(0)  ' ativa a terceira aba (0-based)
+            txtProcedimentoPrincipal_SelectionChangeCommitted(sender, e) ' atualiza procedimentos)
+            txtCNSMedicoExecutante.SelectedIndex = selectedCNSExe
+            txtNomeAutorizador.SelectedIndex = selectedAutorizador
         Catch ex As Exception
             MessageBox.Show("⚠️ Erro ao gerar arquivo: " & ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
