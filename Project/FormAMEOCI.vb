@@ -109,7 +109,10 @@ Public Class FormAMEOCI
 
             ' ==================== CONFIGURAÇÕES ====================
             Dim competencia As String = My.Settings.OCIcompetencia
-            Dim caminhoArquivo As String = Path.Combine("C:\APAC\IMPORTA", "AP" & competencia & chkMonthEXT())
+            Dim caminhoArquivo As String = Path.Combine(Application.StartupPath & "\APAC\EXPORTADOS", "AP" & competencia & chkMonthEXT())
+            If Not Directory.Exists(Application.StartupPath & "\APAC\EXPORTADOS") Then
+                Directory.CreateDirectory(Application.StartupPath & "\APAC\EXPORTADOS")
+            End If
             Dim codigos As New List(Of String)
             Dim quantidades As New List(Of Integer)
 
