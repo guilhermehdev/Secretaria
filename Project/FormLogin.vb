@@ -37,6 +37,7 @@ Public Class FormLogin
                     Me.Visible = False
             End Select
         End If
+
     End Sub
     Private Function checkCredentials(id As Integer)
         Dim userData = m.getDataset($"SELECT * FROM usuarios WHERE id ={id}")

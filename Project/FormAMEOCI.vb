@@ -57,19 +57,16 @@ Public Class FormAMEOCI
             Dim nomePac As String = ""
 
             If idPac Is DBNull.Value Then
-                'idPacSQL = $"NULL"
-                'nomePac = $"nome_paciente='{txtNomePaciente.Text.Trim()}', "
                 Try
-
                     idPacSQL = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{txtNomePaciente.Text}', '{m.mysqlDateFormat(dtValidadeIni.Value)}', '{txtNomeMae.Text}', '({txtDDD.Text}){txtTelefone.Text}', '{txtCpfPaciente.Text}',{endereco.Rows(0).Item("id")}, '{txtNumero.Text}', '{txtComplemento.Text}')")
 
                 Catch ex As Exception
-                    MsgBox("Usuario já cadastrado!")
+                    'MsgBox("Paciente já cadastrado!")
+                    idPacSQL = FormAMEmain.getDataset($"SELECT id FROM pacientes WHERE cpf='{txtCpfPaciente.Text}'").Rows(0).Item("id").ToString()
                 End Try
 
             Else
                 idPacSQL = idPac.ToString()
-                'nomePac = ""
             End If
 
             Dim query = $"UPDATE oci Set compet='{My.Settings.OCIcompetencia}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPacSQL}, id_medico='{txtCNSMedicoExecutante.SelectedValue}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
@@ -79,6 +76,7 @@ Public Class FormAMEOCI
             If FormAMEmain.doQuery(query) Then
                 clearFields()
                 btNovonumeroAPAC.Enabled = True
+                loadAPACbyUser(idUser)
                 'txtNumApac.Text = GetAndLockNextApac()
             End If
 
@@ -694,12 +692,18 @@ Public Class FormAMEOCI
         End Try
     End Sub
 
+    Private Sub loadAPACbyUser(idUser As Integer)
+        FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, , , , idUser)
+    End Sub
+
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If My.Settings.databaseAME = "" Then
             FormAMEbd.ShowDialog()
             Me.Close()
             Return
         End If
+
+        loadAPACbyUser(idUser)
 
         dtValidadeIni.Focus()
         Dim novoMes As Integer
@@ -910,7 +914,7 @@ Public Class FormAMEOCI
 
     Private Sub btAddAPAC_Click(sender As Object, e As EventArgs) Handles btAddAPAC.Click
         ' Caminho padrão
-        Dim pastaDestino As String = "C:\APAC\IMPORTA"
+        Dim pastaDestino As String = Application.StartupPath & "\APAC\EXPORTADOS"
         If Not Directory.Exists(pastaDestino) Then
             Directory.CreateDirectory(pastaDestino)
         End If
@@ -941,8 +945,9 @@ Public Class FormAMEOCI
         If saveDialog.ShowDialog() = DialogResult.OK Then
             'File.Copy(filePath, saveDialog.FileName, True)
             If File.Exists(filePath) Then
-                File.Move(filePath, saveDialog.FileName)
+                File.Copy(filePath, saveDialog.FileName)
                 MessageBox.Show($"Arquivo exportado com sucesso!{vbCrLf}{saveDialog.FileName}", "Exportação concluída", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                File.WriteAllText(filePath, "")
             End If
 
         End If
@@ -1497,6 +1502,7 @@ Public Class FormAMEOCI
 
             Dim dtLogra = cepObj.getAddress(apac.CEPPaciente.Insert(5, "-"))
             Dim idLogra As Integer = 0
+            Dim idPac As Integer = 0
             If dtLogra IsNot Nothing AndAlso dtLogra.Rows.Count > 0 Then
                 idLogra = Convert.ToInt32(dtLogra.Rows(0)("id"))
             Else
@@ -1508,13 +1514,12 @@ Public Class FormAMEOCI
             End If
 
             Try
-                Dim idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{apac.NomePaciente}', '{m.mysqlDateFormat(apac.DtnascPaciente)}', '{apac.MaePaciente}', '{ddd}{tel}', '{apac.CPFPaciente}',{idLogra}, {apac.numeroResPaciente}, '{apac.complementoPaciente}')")
-
-                FormAMEmain.doQuery($"UPDATE oci SET compet='{apac.competencia}', data='{m.mysqlDateFormat(apac.data)}', id_paciente='{idPac}', id_medico='{apac.SUSMedicoExecutante}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{apac.NumeroApac}'")
-
+                idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{apac.NomePaciente}', '{m.mysqlDateFormat(apac.DtnascPaciente)}', '{apac.MaePaciente}', '{ddd}{tel}', '{apac.CPFPaciente}',{idLogra}, {apac.numeroResPaciente}, '{apac.complementoPaciente}')")
             Catch ex As Exception
-
+                Continue For
             End Try
+
+            FormAMEmain.doQuery($"UPDATE oci SET compet='{apac.competencia}', data='{m.mysqlDateFormat(apac.data)}', id_paciente='{idPac}', id_medico='{apac.SUSMedicoExecutante}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{apac.NumeroApac}'")
         Next
 
         MsgBox("Importação concluída!")

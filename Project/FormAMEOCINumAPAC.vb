@@ -266,7 +266,7 @@ Public Class FormAMEOCINumAPAC
         End If
     End Sub
 
-    Private Sub loadNUMAPAC(Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "")
+    Public Sub loadNUMAPAC(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "")
         Try
             Dim where As String = "WHERE 1=1 "
 
@@ -297,27 +297,27 @@ Public Class FormAMEOCINumAPAC
                LEFT JOIN cod_oci_principal ON cod_oci_principal.id = oci.id_cod_principal 
                LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} ORDER BY id")
 
-            dgvNumerosAPAC.DataSource = data
+            datagridview.DataSource = data
 
-            dgvNumerosAPAC.Columns("id").Visible = False
-            dgvNumerosAPAC.Columns("num_apac").HeaderText = "Número APAC"
-            dgvNumerosAPAC.Columns("num_apac").Width = 90
-            dgvNumerosAPAC.Columns("compet").HeaderText = "Comp"
-            dgvNumerosAPAC.Columns("compet").Width = 60
-            dgvNumerosAPAC.Columns("data").HeaderText = "Data"
-            dgvNumerosAPAC.Columns("data").Width = 70
-            dgvNumerosAPAC.Columns("oci").HeaderText = "OCI"
-            dgvNumerosAPAC.Columns("oci").Width = 180
-            dgvNumerosAPAC.Columns("nome").HeaderText = "Paciente"
-            dgvNumerosAPAC.Columns("nome").Width = 220
-            dgvNumerosAPAC.Columns("dtnasc").HeaderText = "Nascimento"
-            dgvNumerosAPAC.Columns("dtnasc").Width = 80
-            dgvNumerosAPAC.Columns("medico").HeaderText = "Médico"
-            dgvNumerosAPAC.Columns("medico").Width = 200
-            dgvNumerosAPAC.Columns("status").HeaderText = "Status"
-            dgvNumerosAPAC.Columns("status").Width = 60
-            dgvNumerosAPAC.Columns("responsavel").HeaderText = "Responsável"
-            dgvNumerosAPAC.Columns("responsavel").Width = 150
+            datagridview.Columns("id").Visible = False
+            datagridview.Columns("num_apac").HeaderText = "Número APAC"
+            datagridview.Columns("num_apac").Width = 90
+            datagridview.Columns("compet").HeaderText = "Comp"
+            datagridview.Columns("compet").Width = 60
+            datagridview.Columns("data").HeaderText = "Data"
+            datagridview.Columns("data").Width = 70
+            datagridview.Columns("oci").HeaderText = "OCI"
+            datagridview.Columns("oci").Width = 180
+            datagridview.Columns("nome").HeaderText = "Paciente"
+            datagridview.Columns("nome").Width = 220
+            datagridview.Columns("dtnasc").HeaderText = "Nascimento"
+            datagridview.Columns("dtnasc").Width = 80
+            datagridview.Columns("medico").HeaderText = "Médico"
+            datagridview.Columns("medico").Width = 200
+            datagridview.Columns("status").HeaderText = "Status"
+            datagridview.Columns("status").Width = 60
+            datagridview.Columns("responsavel").HeaderText = "Responsável"
+            datagridview.Columns("responsavel").Width = 150
 
             'Dim usarNomePaciente As Boolean = False
 
@@ -337,7 +337,7 @@ Public Class FormAMEOCINumAPAC
             '    dgvNumerosAPAC.Columns("paciente").Width = 200
             'End If
 
-            ToolStripStatusLabel1.Text = dgvNumerosAPAC.Rows.Count & " registros encontrados."
+            ToolStripStatusLabel1.Text = datagridview.Rows.Count & " registros encontrados."
 
         Catch ex As Exception
             MsgBox("Erro ao carregar números APAC: " & ex.Message)
@@ -358,7 +358,7 @@ Public Class FormAMEOCINumAPAC
             cbOCI.SelectedIndex = -1
             cbUsuarios.SelectedIndex = -1
             If tbAPACIni.Text.Length > 0 AndAlso tbAPACFim.Text > 0 Then
-                loadNUMAPAC(tbAPACIni.Text, tbAPACFim.Text)
+                loadNUMAPAC(dgvNumerosAPAC, tbAPACIni.Text, tbAPACFim.Text)
             End If
         End If
 
@@ -378,7 +378,7 @@ Public Class FormAMEOCINumAPAC
             cbOCI.SelectedIndex = -1
             cbUsuarios.SelectedIndex = -1
             cbStatus.SelectedIndex = -1
-            loadNUMAPAC(,, True)
+            loadNUMAPAC(dgvNumerosAPAC,,, True)
         Else
             dgvNumerosAPAC.DataSource = Nothing
         End If
@@ -391,7 +391,7 @@ Public Class FormAMEOCINumAPAC
         cbOCI.SelectedIndex = -1
         cbStatus.SelectedIndex = -1
         chkDisponiveis.Checked = False
-        loadNUMAPAC(,,, CInt(cbUsuarios.SelectedValue))
+        loadNUMAPAC(dgvNumerosAPAC,,,, CInt(cbUsuarios.SelectedValue))
     End Sub
     Private Sub loadByData()
         dgvNumerosAPAC.DataSource = Nothing
@@ -401,7 +401,7 @@ Public Class FormAMEOCINumAPAC
         cbUsuarios.SelectedIndex = -1
         cbStatus.SelectedIndex = -1
         chkDisponiveis.Checked = False
-        loadNUMAPAC(,,,, dtpIni.Value, dtpFim.Value,,)
+        loadNUMAPAC(dgvNumerosAPAC,,,,, dtpIni.Value, dtpFim.Value,,)
     End Sub
     Private Sub dtpIni_ValueChanged(sender As Object, e As EventArgs) Handles dtpIni.ValueChanged
         loadByData()
@@ -417,7 +417,7 @@ Public Class FormAMEOCINumAPAC
         cbUsuarios.SelectedIndex = -1
         cbStatus.SelectedIndex = -1
         chkDisponiveis.Checked = False
-        loadNUMAPAC(,,,,, , CStr(cbOCI.SelectedValue))
+        loadNUMAPAC(dgvNumerosAPAC,,,,,, , CStr(cbOCI.SelectedValue))
     End Sub
 
     Private Sub cbStatus_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbStatus.SelectionChangeCommitted
@@ -427,7 +427,7 @@ Public Class FormAMEOCINumAPAC
         cbUsuarios.SelectedIndex = -1
         cbOCI.SelectedIndex = -1
         chkDisponiveis.Checked = False
-        loadNUMAPAC(,,,,, , , CStr(cbStatus.SelectedItem))
+        loadNUMAPAC(dgvNumerosAPAC,,,,,, , , CStr(cbStatus.SelectedItem))
     End Sub
 
     Private Sub AlterarStatusToolStripMenuItem_Click_1(sender As Object, e As EventArgs) Handles AlterarStatusToolStripMenuItem.Click
