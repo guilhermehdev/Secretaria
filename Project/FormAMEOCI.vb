@@ -701,7 +701,8 @@ Public Class FormAMEOCI
     End Sub
 
     Private Sub loadAPACbyUser(idUser As Integer)
-        FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, , , , idUser)
+        FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, , , , idUser,,,, "CONC", "data_lanc DESC")
+        lbStatusCads.Text = $"{dgOCIcadastradas.Rows.Count} registros"
     End Sub
 
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -878,6 +879,8 @@ Public Class FormAMEOCI
             txtMotivoSaida.ValueMember = "Key"
             txtMotivoSaida.SelectedIndex = 1
 
+            FormAMEmain.loadComboBox("SELECT id, abrev FROM cod_oci_principal", cbSearchOCI, "abrev", "id")
+            cbSearchOCI.SelectedIndex = -1
             'FormAMEmain.loadComboBox("SELECT id, nome FROM pacientes WHERE id > 1 ORDER BY nome", txtNomePaciente, "nome", "id")
             'txtNomePaciente.Text = ""
 
@@ -1531,6 +1534,38 @@ Public Class FormAMEOCI
         Next
 
         MsgBox("Importação concluída!")
+    End Sub
+
+    Private Sub tbSearchApac_TextChanged(sender As Object, e As EventArgs) Handles tbSearchApac.TextChanged
+        Dim dv As DataView = CType(dgOCIcadastradas.Tag, DataView)
+        If String.IsNullOrWhiteSpace(tbSearchApac.Text) Then
+            dv.RowFilter = ""  ' Remove o filtro
+        Else
+            ' Filtra por uma ou mais colunas contendo o texto
+            dv.RowFilter = $"num_apac = '{tbSearchApac.Text}'"
+            lbStatusCads.Text = $"{dgOCIcadastradas.Rows.Count} registros"
+        End If
+    End Sub
+    Private Sub tbSearchNome_TextChanged(sender As Object, e As EventArgs) Handles tbSearchNome.TextChanged
+        Dim dv As DataView = CType(dgOCIcadastradas.Tag, DataView)
+        If String.IsNullOrWhiteSpace(tbSearchNome.Text) Then
+            dv.RowFilter = ""  ' Remove o filtro
+        Else
+            ' Filtra por uma ou mais colunas contendo o texto
+            dv.RowFilter = $"nome LIKE '%{tbSearchNome.Text}%'"
+            lbStatusCads.Text = $"{dgOCIcadastradas.Rows.Count} registros"
+        End If
+    End Sub
+
+    Private Sub cbSearchOCI_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSearchOCI.SelectedIndexChanged
+        Dim dv As DataView = CType(dgOCIcadastradas.Tag, DataView)
+        If String.IsNullOrWhiteSpace(cbSearchOCI.Text) Then
+            dv.RowFilter = ""  ' Remove o filtro
+        Else
+            ' Filtra por uma ou mais colunas contendo o texto
+            dv.RowFilter = $"oci LIKE '%{cbSearchOCI.Text}%'"
+            lbStatusCads.Text = $"{dgOCIcadastradas.Rows.Count} registros"
+        End If
     End Sub
 End Class
 

@@ -266,7 +266,7 @@ Public Class FormAMEOCINumAPAC
         End If
     End Sub
 
-    Public Sub loadNUMAPAC(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "")
+    Public Sub loadNUMAPAC(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "", Optional order As String = "id")
         Try
             Dim where As String = "WHERE 1=1 "
 
@@ -290,53 +290,35 @@ Public Class FormAMEOCINumAPAC
             End If
 
 
-            Dim data = FormAMEmain.getDataset($"SELECT oci.id, oci.num_apac, oci.`status`, oci.compet, oci.`data`, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc AS dtnasc, servidores.nome AS medico, usuarios.nome AS responsavel 
+            Dim data = FormAMEmain.getDataset($"SELECT oci.id, oci.num_apac, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc AS dtnasc, oci.`data`, oci.compet, servidores.nome AS medico 
                 FROM oci 
                LEFT JOIN pacientes ON pacientes.id = oci.id_paciente 
                LEFT JOIN servidores ON servidores.SUS = oci.id_medico
                LEFT JOIN cod_oci_principal ON cod_oci_principal.id = oci.id_cod_principal 
-               LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} ORDER BY id")
+               LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} ORDER BY {order}")
 
             datagridview.DataSource = data
+            datagridview.Tag = data.DefaultView
 
             datagridview.Columns("id").Visible = False
             datagridview.Columns("num_apac").HeaderText = "Número APAC"
-            datagridview.Columns("num_apac").Width = 90
-            datagridview.Columns("compet").HeaderText = "Comp"
-            datagridview.Columns("compet").Width = 60
-            datagridview.Columns("data").HeaderText = "Data"
-            datagridview.Columns("data").Width = 70
+            datagridview.Columns("num_apac").Width = 100
             datagridview.Columns("oci").HeaderText = "OCI"
-            datagridview.Columns("oci").Width = 180
+            datagridview.Columns("oci").Width = 200
             datagridview.Columns("nome").HeaderText = "Paciente"
-            datagridview.Columns("nome").Width = 220
+            datagridview.Columns("nome").Width = 250
             datagridview.Columns("dtnasc").HeaderText = "Nascimento"
             datagridview.Columns("dtnasc").Width = 80
+            datagridview.Columns("data").HeaderText = "Data"
+            datagridview.Columns("data").Width = 70
+            datagridview.Columns("compet").HeaderText = "Comp"
+            datagridview.Columns("compet").Width = 60
             datagridview.Columns("medico").HeaderText = "Médico"
             datagridview.Columns("medico").Width = 200
-            datagridview.Columns("status").HeaderText = "Status"
-            datagridview.Columns("status").Width = 60
-            datagridview.Columns("responsavel").HeaderText = "Responsável"
-            datagridview.Columns("responsavel").Width = 150
-
-            'Dim usarNomePaciente As Boolean = False
-
-            'If data.Columns.Contains("nome") AndAlso data.AsEnumerable().Any(Function(r) Not IsDBNull(r("nome")) AndAlso r("nome").ToString().Trim() <> "") Then
-            '    usarNomePaciente = True
-            'End If
-
-            'If usarNomePaciente Then
-            '    dgvNumerosAPAC.Columns("paciente").Visible = False
-            '    dgvNumerosAPAC.Columns("nome").Visible = True
-            '    dgvNumerosAPAC.Columns("nome").HeaderText = "Paciente"
-            '    dgvNumerosAPAC.Columns("nome").Width = 200
-            'Else
-            '    dgvNumerosAPAC.Columns("nome").Visible = False
-            '    dgvNumerosAPAC.Columns("paciente").Visible = True
-            '    dgvNumerosAPAC.Columns("paciente").HeaderText = "Paciente"
-            '    dgvNumerosAPAC.Columns("paciente").Width = 200
-            'End If
-
+            ' datagridview.Columns("status").HeaderText = "Status"
+            ' datagridview.Columns("status").Width = 60
+            ' datagridview.Columns("responsavel").HeaderText = "Responsável"
+            'datagridview.Columns("responsavel").Width = 150
             ToolStripStatusLabel1.Text = datagridview.Rows.Count & " registros encontrados."
 
         Catch ex As Exception
