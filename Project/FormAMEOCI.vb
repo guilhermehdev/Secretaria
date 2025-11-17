@@ -894,12 +894,7 @@ Public Class FormAMEOCI
             txtMotivoSaida.DisplayMember = "Value"   ' O que aparece para o usuário
             txtMotivoSaida.ValueMember = "Key"
             txtMotivoSaida.SelectedIndex = 1
-
             FormAMEmain.loadComboBox("SELECT id, abrev FROM cod_oci_principal", cbSearchOCI, "abrev", "id")
-            cbSearchOCI.SelectedIndex = -1
-            'FormAMEmain.loadComboBox("SELECT id, nome FROM pacientes WHERE id > 1 ORDER BY nome", txtNomePaciente, "nome", "id")
-            'txtNomePaciente.Text = ""
-
         Catch ex As Exception
             MsgBox(ex.Message)
             FormAMEOCIControleCompetencia.ShowDialog()
