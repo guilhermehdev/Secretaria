@@ -1403,7 +1403,7 @@ Public Class FormAMEOCI
         Dim linhas = File.ReadAllLines(caminhoArquivo, Encoding.GetEncoding("ISO-8859-1"))
 
         For Each linha As String In linhas
-            If linha.StartsWith("14") AndAlso linha.Length > 300 Then
+            If linha.StartsWith("14") Then
                 ' Número APAC
                 Dim numero As String = linha.Substring(8, 13).Trim()
 
@@ -1507,10 +1507,6 @@ Public Class FormAMEOCI
                 tel = apac.TelPaciente.Substring(2, apac.TelPaciente.Length - 2)
             End If
 
-            ' MsgBox(apac.NomePaciente & " / " & apac.CEPPaciente & " / " & apac.MaePaciente & " / " & apac.TelPaciente & " / " & apac.CPFPaciente & " / " & apac.numeroResPaciente & " / " & apac.complementoPaciente)
-            ' Return
-
-
             Dim dtLogra = cepObj.getAddress(apac.CEPPaciente.Insert(5, "-"))
             Dim idLogra As Integer = 0
             Dim idPac As Integer = 0
@@ -1520,17 +1516,25 @@ Public Class FormAMEOCI
                 Try
                     idLogra = FormAMEmain.doQuery($"INSERT INTO ceps_peruibe (cep, tipo, logradouro, bairro) VALUES ('{apac.CEPPaciente}', '{GetDescricaoLogradouro(apac.TipoLograPaciente)}', '{apac.LograPaciente}', '{apac.BairroPaciente}')")
                 Catch ex As Exception
-                    MsgBox(ex.Message)
+
                 End Try
             End If
 
             Try
                 idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{apac.NomePaciente}', '{m.mysqlDateFormat(apac.DtnascPaciente)}', '{apac.MaePaciente}', '{ddd}{tel}', '{apac.CPFPaciente}',{idLogra}, {apac.numeroResPaciente}, '{apac.complementoPaciente}')")
             Catch ex As Exception
-                Continue For
+                Try
+                    idPac = FormAMEmain.getDataset($"SELECT id FROM pacientes WHERE cpf='{apac.CPFPaciente}'").Rows(0).Item("id")
+                Catch exc As Exception
+                    idPac = FormAMEmain.getDataset($"SELECT id FROM pacientes WHERE dtnasc='{m.mysqlDateFormat(apac.DtnascPaciente)}' AND nome LIKE '%{apac.NomePaciente}%'").Rows(0).Item("id")
+                End Try
             End Try
 
-            FormAMEmain.doQuery($"UPDATE oci SET compet='{apac.competencia}', data='{m.mysqlDateFormat(apac.data)}', id_paciente='{idPac}', id_medico='{apac.SUSMedicoExecutante}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{apac.NumeroApac}'")
+            Try
+                FormAMEmain.doQuery($"UPDATE oci SET compet='{apac.competencia}', data='{m.mysqlDateFormat(apac.data)}', id_paciente='{idPac}', id_medico='{apac.SUSMedicoExecutante}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{apac.NumeroApac}'")
+            Catch ex As Exception
+                MsgBox(ex.Message)
+            End Try
         Next
 
         MsgBox("Importação concluída!")
