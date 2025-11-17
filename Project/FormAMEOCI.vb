@@ -66,7 +66,7 @@ Public Class FormAMEOCI
 
             If idPac Is DBNull.Value Then
                 Try
-                    idPacSQL = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{txtNomePaciente.Text}', '{m.mysqlDateFormat(dtValidadeIni.Value)}', '{txtNomeMae.Text}', '({txtDDD.Text}){txtTelefone.Text}', '{txtCpfPaciente.Text}',{endereco.Rows(0).Item("id")}, '{txtNumero.Text}', '{txtComplemento.Text}')")
+                    idPacSQL = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{txtNomePaciente.Text}', '{m.mysqlDateFormat(dtNascimento.Text)}', '{txtNomeMae.Text}', '({txtDDD.Text}){txtTelefone.Text}', '{txtCpfPaciente.Text}',{endereco.Rows(0).Item("id")}, '{txtNumero.Text}', '{txtComplemento.Text}')")
 
                 Catch ex As Exception
                     'MsgBox("Paciente já cadastrado!")
@@ -254,10 +254,14 @@ Public Class FormAMEOCI
             MessageBox.Show("✅ Paciente adicionado!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Dim selectedCNSExe As Integer = txtCNSMedicoExecutante.SelectedIndex
             Dim selectedAutorizador As Integer = txtNomeAutorizador.SelectedIndex
+            Dim selectedCIDP As Integer = txtCidPrincipal.SelectedIndex
+            Dim selectedCIDS As Integer = txtCidSecundario.SelectedIndex
             TabControl1.SelectedTab = TabControl1.TabPages(0)  ' ativa a terceira aba (0-based)
             txtProcedimentoPrincipal_SelectionChangeCommitted(sender, e) ' atualiza procedimentos)
             txtCNSMedicoExecutante.SelectedIndex = selectedCNSExe
             txtNomeAutorizador.SelectedIndex = selectedAutorizador
+            txtCidPrincipal.SelectedIndex = selectedCIDP
+            txtCidSecundario.SelectedIndex = selectedCIDS
         Catch ex As Exception
             MessageBox.Show("⚠️ Erro ao gerar arquivo: " & ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
@@ -1581,7 +1585,6 @@ Public Class FormAMEOCI
         Else
             ' Filtra por uma ou mais colunas contendo o texto
             dv.RowFilter = $"oci LIKE '%{cbSearchOCI.Text}%'"
-
         End If
     End Sub
 
