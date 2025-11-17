@@ -1282,7 +1282,7 @@ Partial Class FormAMEOCI
         'APACToolStripMenuItem
         '
         Me.APACToolStripMenuItem.Name = "APACToolStripMenuItem"
-        Me.APACToolStripMenuItem.Size = New System.Drawing.Size(104, 22)
+        Me.APACToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.APACToolStripMenuItem.Text = "APAC"
         '
         'dgvSugestoes

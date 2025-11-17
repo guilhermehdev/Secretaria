@@ -23,6 +23,15 @@ Public Class FormAMEOCI
     Private nameHasFocused As Boolean = False
     Public Property idUser As Integer
 
+    Private Function completeCPF(id As Integer)
+        Dim hasCPF = FormAMEmain.getDataset($"SELECT cpf FROM pacientes WHERE id={id}")
+        If hasCPF.Rows.Count = 0 Then
+            Return False
+        Else
+            Return True
+        End If
+    End Function
+
     Private Sub saveAPAC()
         If Not txtNumApac.Text.Length = 13 Then
             MessageBox.Show("Preencha o número da APAC corretamente.")
@@ -54,7 +63,6 @@ Public Class FormAMEOCI
 
             ' Se o valor for DBNull, precisa gravar NULL literal na query (sem aspas)
             Dim idPacSQL As String
-            Dim nomePac As String = ""
 
             If idPac Is DBNull.Value Then
                 Try
@@ -67,6 +75,9 @@ Public Class FormAMEOCI
 
             Else
                 idPacSQL = idPac.ToString()
+                If Not completeCPF(idPac) Then
+                    FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text}' WHERE id={idPac}")
+                End If
             End If
 
             Dim query = $"UPDATE oci Set compet='{My.Settings.OCIcompetencia}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPacSQL}, id_medico='{txtCNSMedicoExecutante.SelectedValue}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
@@ -383,6 +394,7 @@ Public Class FormAMEOCI
         CBOmed.DisplayMember = "Value"   ' O que aparece para o usuário
         CBOmed.ValueMember = "Key"
         CBOmed.SelectedIndex = 0
+        Quantidade.Text = "1"
 
         getServersSUS()
         Dim queryCID As String = $"SELECT cid.cid,cid.descricao FROM cid 
@@ -885,6 +897,7 @@ Public Class FormAMEOCI
             'txtNomePaciente.Text = ""
 
         Catch ex As Exception
+            MsgBox(ex.Message)
             FormAMEOCIControleCompetencia.ShowDialog()
         End Try
 
@@ -1547,7 +1560,7 @@ Public Class FormAMEOCI
         Else
             ' Filtra por uma ou mais colunas contendo o texto
             dv.RowFilter = $"num_apac = '{tbSearchApac.Text}'"
-            lbStatusCads.Text = $"{dgOCIcadastradas.Rows.Count} registros"
+
         End If
     End Sub
     Private Sub tbSearchNome_TextChanged(sender As Object, e As EventArgs) Handles tbSearchNome.TextChanged
@@ -1557,19 +1570,23 @@ Public Class FormAMEOCI
         Else
             ' Filtra por uma ou mais colunas contendo o texto
             dv.RowFilter = $"nome LIKE '%{tbSearchNome.Text}%'"
-            lbStatusCads.Text = $"{dgOCIcadastradas.Rows.Count} registros"
+
         End If
     End Sub
 
     Private Sub cbSearchOCI_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSearchOCI.SelectedIndexChanged
         Dim dv As DataView = CType(dgOCIcadastradas.Tag, DataView)
-        If String.IsNullOrWhiteSpace(cbSearchOCI.Text) Then
+        If cbSearchOCI.Text = "TODOS" Then
             dv.RowFilter = ""  ' Remove o filtro
         Else
             ' Filtra por uma ou mais colunas contendo o texto
             dv.RowFilter = $"oci LIKE '%{cbSearchOCI.Text}%'"
-            lbStatusCads.Text = $"{dgOCIcadastradas.Rows.Count} registros"
+
         End If
+    End Sub
+
+    Private Sub dgOCIcadastradas_RowsAdded(sender As Object, e As DataGridViewRowsAddedEventArgs) Handles dgOCIcadastradas.RowsAdded
+        lbStatusCads.Text = $"{dgOCIcadastradas.Rows.Count} registros"
     End Sub
 End Class
 
