@@ -5,6 +5,7 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Web
 Imports ClosedXML.Excel
+Imports Google.Protobuf.WellKnownTypes
 Imports MySql.Data.MySqlClient
 Imports Mysqlx.XDevAPI.Common
 
@@ -1533,11 +1534,20 @@ Public Class FormAMEOCI
             End If
 
             Try
-                idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{apac.NomePaciente}', '{m.mysqlDateFormat(apac.DtnascPaciente)}', '{apac.MaePaciente}', '{ddd}{tel}', '{apac.CPFPaciente}',{idLogra}, {apac.numeroResPaciente}, '{apac.complementoPaciente}')")
+                Dim num As Integer
+                If Not IsNumeric(apac.numeroResPaciente) Then
+                    num = 0
+                Else
+                    num = apac.numeroResPaciente
+                End If
+
+                idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{apac.NomePaciente}', '{m.mysqlDateFormat(apac.DtnascPaciente)}', '{apac.MaePaciente}', '{ddd}{tel}', '{apac.CPFPaciente}',{idLogra}, {num}, '{apac.complementoPaciente}')")
             Catch ex As Exception
+
                 Try
                     idPac = FormAMEmain.getDataset($"SELECT id FROM pacientes WHERE cpf='{apac.CPFPaciente}'").Rows(0).Item("id")
                 Catch exc As Exception
+
                     idPac = FormAMEmain.getDataset($"SELECT id FROM pacientes WHERE dtnasc='{m.mysqlDateFormat(apac.DtnascPaciente)}' AND nome LIKE '%{apac.NomePaciente}%'").Rows(0).Item("id")
                 End Try
             End Try
@@ -1545,7 +1555,7 @@ Public Class FormAMEOCI
             Try
                 FormAMEmain.doQuery($"UPDATE oci SET compet='{apac.competencia}', data='{m.mysqlDateFormat(apac.data)}', id_paciente='{idPac}', id_medico='{apac.SUSMedicoExecutante}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{apac.NumeroApac}'")
             Catch ex As Exception
-                MsgBox(ex.Message)
+
             End Try
         Next
 
