@@ -24,6 +24,13 @@ Public Class FormAMEOCI
     Private nameHasFocused As Boolean = False
     Public Property idUser As Integer
 
+    Private Function competencia(compet As String)
+        compet = MonthName(My.Settings.OCIcompetencia.Substring(4, 2), True).ToUpper & "/" & My.Settings.OCIcompetencia.Substring(0, 4)
+
+        Return compet
+
+    End Function
+
     Private Function completeCPF(id As Integer)
         Dim hasCPF = FormAMEmain.getDataset($"SELECT cpf FROM pacientes WHERE id={id}")
         If hasCPF.Rows.Count = 0 Then
@@ -81,7 +88,7 @@ Public Class FormAMEOCI
                 End If
             End If
 
-            Dim query = $"UPDATE oci Set compet='{My.Settings.OCIcompetencia}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPacSQL}, id_medico='{txtCNSMedicoExecutante.SelectedValue}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
+            Dim query = $"UPDATE oci Set compet='{competencia(My.Settings.OCIcompetencia)}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPacSQL}, id_medico='{txtCNSMedicoExecutante.SelectedValue}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
 
             ' Debug.Write(query)
 
@@ -738,6 +745,7 @@ Public Class FormAMEOCI
             Return
         End If
 
+        Me.Text = $"Gerenciamento de APACs OCI - Competência {competencia(My.Settings.OCIcompetencia)}"
         loadAPACbyUser(idUser)
         lbRestanteAPAC.Text = loadAPACdisp() & " restante(s)"
 
@@ -1552,7 +1560,7 @@ Public Class FormAMEOCI
                     num = apac.numeroResPaciente
                 End If
 
-                idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{apac.NomePaciente}', '{m.mysqlDateFormat(apac.DtnascPaciente)}', '{apac.MaePaciente}', '{ddd}{tel}', '{apac.CPFPaciente}',{idLogra}, {num}, '{apac.complementoPaciente}')")
+                idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{competencia(apac.NomePaciente)}', '{m.mysqlDateFormat(apac.DtnascPaciente)}', '{apac.MaePaciente}', '{ddd}{tel}', '{apac.CPFPaciente}',{idLogra}, {num}, '{apac.complementoPaciente}')")
             Catch ex As Exception
 
                 Try
