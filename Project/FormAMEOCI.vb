@@ -1538,7 +1538,7 @@ Public Class FormAMEOCI
                 idLogra = Convert.ToInt32(dtLogra.Rows(0)("id"))
             Else
                 Try
-                    idLogra = FormAMEmain.doQuery($"INSERT INTO ceps_peruibe (cep, tipo, logradouro, bairro) VALUES ('{apac.CEPPaciente}', '{GetDescricaoLogradouro(apac.TipoLograPaciente)}', '{apac.LograPaciente}', '{apac.BairroPaciente}')")
+                    idLogra = FormAMEmain.doQuery($"INSERT INTO ceps_peruibe (cep, tipo, logradouro, bairro) VALUES ('{apac.CEPPaciente}', '{GetDescricaoLogradouro(apac.TipoLograPaciente.ToUpper)}', '{apac.LograPaciente.ToUpper}', '{apac.BairroPaciente.ToUpper}')")
                 Catch ex As Exception
 
                 End Try
