@@ -38,6 +38,7 @@ Partial Class FormAMEOCI
         Me.dtValidadeFim = New System.Windows.Forms.DateTimePicker()
         Me.txtTipoApac = New System.Windows.Forms.ComboBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.lbRestanteAPAC = New System.Windows.Forms.Label()
         Me.btNovonumeroAPAC = New System.Windows.Forms.Button()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
@@ -145,6 +146,8 @@ Partial Class FormAMEOCI
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.dgOCIcadastradas = New System.Windows.Forms.DataGridView()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.Label28 = New System.Windows.Forms.Label()
+        Me.cbSearchComp = New System.Windows.Forms.ComboBox()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.cbSearchOCI = New System.Windows.Forms.ComboBox()
         Me.Label14 = New System.Windows.Forms.Label()
@@ -152,8 +155,6 @@ Partial Class FormAMEOCI
         Me.Label13 = New System.Windows.Forms.Label()
         Me.tbSearchApac = New System.Windows.Forms.TextBox()
         Me.lbStatusCads = New System.Windows.Forms.Label()
-        Me.cbSearchComp = New System.Windows.Forms.ComboBox()
-        Me.Label28 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -228,6 +229,7 @@ Partial Class FormAMEOCI
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.lbRestanteAPAC)
         Me.GroupBox1.Controls.Add(Me.btNovonumeroAPAC)
         Me.GroupBox1.Controls.Add(Me.Label9)
         Me.GroupBox1.Controls.Add(Me.Label8)
@@ -249,6 +251,16 @@ Partial Class FormAMEOCI
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Cabeçalho"
+        '
+        'lbRestanteAPAC
+        '
+        Me.lbRestanteAPAC.AutoSize = True
+        Me.lbRestanteAPAC.ForeColor = System.Drawing.Color.Green
+        Me.lbRestanteAPAC.Location = New System.Drawing.Point(170, 25)
+        Me.lbRestanteAPAC.Name = "lbRestanteAPAC"
+        Me.lbRestanteAPAC.Size = New System.Drawing.Size(59, 13)
+        Me.lbRestanteAPAC.TabIndex = 20
+        Me.lbRestanteAPAC.Text = "0 restantes"
         '
         'btNovonumeroAPAC
         '
@@ -276,7 +288,7 @@ Partial Class FormAMEOCI
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(10, 24)
+        Me.Label8.Location = New System.Drawing.Point(10, 25)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(35, 13)
         Me.Label8.TabIndex = 18
@@ -1284,7 +1296,7 @@ Partial Class FormAMEOCI
         'APACToolStripMenuItem
         '
         Me.APACToolStripMenuItem.Name = "APACToolStripMenuItem"
-        Me.APACToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.APACToolStripMenuItem.Size = New System.Drawing.Size(104, 22)
         Me.APACToolStripMenuItem.Text = "APAC"
         '
         'dgvSugestoes
@@ -1463,6 +1475,23 @@ Partial Class FormAMEOCI
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "OCI cadastradas"
         '
+        'Label28
+        '
+        Me.Label28.AutoSize = True
+        Me.Label28.Location = New System.Drawing.Point(442, 27)
+        Me.Label28.Name = "Label28"
+        Me.Label28.Size = New System.Drawing.Size(69, 13)
+        Me.Label28.TabIndex = 62
+        Me.Label28.Text = "Competência"
+        '
+        'cbSearchComp
+        '
+        Me.cbSearchComp.FormattingEnabled = True
+        Me.cbSearchComp.Location = New System.Drawing.Point(444, 42)
+        Me.cbSearchComp.Name = "cbSearchComp"
+        Me.cbSearchComp.Size = New System.Drawing.Size(81, 21)
+        Me.cbSearchComp.TabIndex = 61
+        '
         'Label15
         '
         Me.Label15.AutoSize = True
@@ -1527,23 +1556,6 @@ Partial Class FormAMEOCI
         Me.lbStatusCads.Size = New System.Drawing.Size(37, 13)
         Me.lbStatusCads.TabIndex = 56
         Me.lbStatusCads.Text = "Status"
-        '
-        'cbSearchComp
-        '
-        Me.cbSearchComp.FormattingEnabled = True
-        Me.cbSearchComp.Location = New System.Drawing.Point(444, 42)
-        Me.cbSearchComp.Name = "cbSearchComp"
-        Me.cbSearchComp.Size = New System.Drawing.Size(81, 21)
-        Me.cbSearchComp.TabIndex = 61
-        '
-        'Label28
-        '
-        Me.Label28.AutoSize = True
-        Me.Label28.Location = New System.Drawing.Point(442, 27)
-        Me.Label28.Name = "Label28"
-        Me.Label28.Size = New System.Drawing.Size(69, 13)
-        Me.Label28.TabIndex = 62
-        Me.Label28.Text = "Competência"
         '
         'FormAMEOCI
         '
@@ -1711,4 +1723,5 @@ Partial Class FormAMEOCI
     Friend WithEvents Label15 As Label
     Friend WithEvents cbSearchComp As ComboBox
     Friend WithEvents Label28 As Label
+    Friend WithEvents lbRestanteAPAC As Label
 End Class

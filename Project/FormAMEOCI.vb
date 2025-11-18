@@ -698,6 +698,8 @@ Public Class FormAMEOCI
             Dim p As New Dictionary(Of String, Object) From {{"@apac", apac}}
             FormAMEmain.doQuery(sqlUpdate, p)
 
+            lbRestanteAPAC.Text = dt.Rows.Count - 1 & " restante(s)"
+
             Return apac
 
         Catch ex As Exception
@@ -722,6 +724,13 @@ Public Class FormAMEOCI
         lbStatusCads.Text = $"{dgOCIcadastradas.Rows.Count} registros"
     End Sub
 
+    Private Function loadAPACdisp()
+        Dim apacDisp = FormAMEmain.getDataset("SELECT count(num_apac) AS apacs FROM oci WHERE status='DISP'").Rows(0).Item("apacs")
+
+        Return apacDisp
+
+    End Function
+
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If My.Settings.databaseAME = "" Then
             FormAMEbd.ShowDialog()
@@ -730,6 +739,7 @@ Public Class FormAMEOCI
         End If
 
         loadAPACbyUser(idUser)
+        lbRestanteAPAC.Text = loadAPACdisp() & " restante(s)"
 
         dtValidadeIni.Focus()
         Dim novoMes As Integer
@@ -798,7 +808,7 @@ Public Class FormAMEOCI
 
             Else
                 ' (Opcional) Tratamento de erro se a string não puder ser convertida
-                MessageBox.Show("A string do mês não é um número válido (01-12).", "Erro de Conversão", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show("A String Do mês não é um número válido (01-12).", "Erro de Conversão", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End If
 
             dgvProcedimentos.Columns.Clear()
@@ -895,7 +905,7 @@ Public Class FormAMEOCI
             txtMotivoSaida.DisplayMember = "Value"   ' O que aparece para o usuário
             txtMotivoSaida.ValueMember = "Key"
             txtMotivoSaida.SelectedIndex = 1
-            FormAMEmain.loadComboBox("SELECT id, abrev FROM cod_oci_principal", cbSearchOCI, "abrev", "id")
+            FormAMEmain.loadComboBox("Select id, abrev FROM cod_oci_principal", cbSearchOCI, "abrev", "id")
         Catch ex As Exception
             MsgBox(ex.Message)
             FormAMEOCIControleCompetencia.ShowDialog()
@@ -923,7 +933,7 @@ Public Class FormAMEOCI
             Case "08"
                 Return ".AGO"
             Case "09"
-                Return ".SET"
+                Return ".Set"
             Case "10"
                 Return ".OUT"
             Case "11"
@@ -1409,6 +1419,7 @@ Public Class FormAMEOCI
         txtNumApac.Text = GetAndLockNextApac()
         dtValidadeIni.Focus()
         btNovonumeroAPAC.Enabled = False
+        lbRestanteAPAC.Text = loadAPACdisp() & " restante(s)"
     End Sub
 
     Public Function importFromApacs(caminhoArquivo As String) As List(Of ApacRegistro)
