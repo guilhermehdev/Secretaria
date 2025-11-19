@@ -273,7 +273,7 @@ Public Class FormAMEOCINumAPAC
             If Not String.IsNullOrEmpty(faixaIni) AndAlso Not String.IsNullOrEmpty(faixaFim) Then
                 where &= $" AND oci.num_apac BETWEEN '{faixaIni}' AND '{faixaFim}' "
             End If
-            If available Then
+            If available = True Then
                 where &= " AND oci.status = 'DISP' "
             End If
             If user <> Nothing Then
@@ -304,7 +304,7 @@ Public Class FormAMEOCINumAPAC
             datagridview.Columns("num_apac").HeaderText = "Número APAC"
             datagridview.Columns("num_apac").Width = 100
             datagridview.Columns("oci").HeaderText = "OCI"
-            datagridview.Columns("oci").Width = 200
+            datagridview.Columns("oci").Width = 220
             datagridview.Columns("nome").HeaderText = "Paciente"
             datagridview.Columns("nome").Width = 250
             datagridview.Columns("dtnasc").HeaderText = "Nascimento"
@@ -312,7 +312,7 @@ Public Class FormAMEOCINumAPAC
             datagridview.Columns("data").HeaderText = "Data"
             datagridview.Columns("data").Width = 70
             datagridview.Columns("compet").HeaderText = "Comp"
-            datagridview.Columns("compet").Width = 60
+            datagridview.Columns("compet").Width = 80
             datagridview.Columns("medico").HeaderText = "Médico"
             datagridview.Columns("medico").Width = 200
             ' datagridview.Columns("status").HeaderText = "Status"

@@ -730,20 +730,38 @@ Public Class FormAMEOCI
         FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, , , , idUser,,,, "CONC", "data_lanc DESC")
         lbStatusCads.Text = $"{dgOCIcadastradas.Rows.Count} registros"
     End Sub
-
     Private Function loadAPACdisp()
         Dim apacDisp = FormAMEmain.getDataset("SELECT count(num_apac) AS apacs FROM oci WHERE status='DISP'").Rows(0).Item("apacs")
-
         Return apacDisp
-
     End Function
-
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If My.Settings.databaseAME = "" Then
             FormAMEbd.ShowDialog()
             Me.Close()
             Return
         End If
+
+        Dim comboComp = FormAMEmain.getDataset("SELECT DISTINCT id, compet FROM oci GROUP BY compet ORDER BY compet DESC")
+        Dim dtFinal As DataTable = comboComp.Clone()
+
+        ' Adiciona o item TODOS como primeira linha
+        Dim rowTodos As DataRow = dtFinal.NewRow()
+        rowTodos("id") = 0
+        rowTodos("compet") = "TODOS"
+        dtFinal.Rows.Add(rowTodos)
+
+        ' Copia os dados originais
+        For Each r As DataRow In comboComp.Rows
+            dtFinal.ImportRow(r)
+        Next
+
+        ' Joga no ComboBox
+        With cbSearchComp
+            .DataSource = dtFinal
+            .DisplayMember = "compet"
+            .ValueMember = "id"
+        End With
+        cbSearchComp.SelectedIndex = -1
 
         Me.Text = $"Gerenciamento de APACs OCI - Competência {competencia(My.Settings.OCIcompetencia)}"
         loadAPACbyUser(idUser)
@@ -1615,6 +1633,17 @@ Public Class FormAMEOCI
     Private Sub dgOCIcadastradas_RowsAdded(sender As Object, e As DataGridViewRowsAddedEventArgs) Handles dgOCIcadastradas.RowsAdded
         lbStatusCads.Text = $"{dgOCIcadastradas.Rows.Count} registros"
     End Sub
+    Private Sub cbSearchComp_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSearchComp.SelectedIndexChanged
+        Dim dv As DataView = TryCast(dgOCIcadastradas.Tag, DataView)
+        If dv Is Nothing Then Exit Sub
+
+        If cbSearchComp.Text = "TODOS" Then
+            dv.RowFilter = ""
+        Else
+            dv.RowFilter = $"compet = '{cbSearchComp.Text}'"
+        End If
+    End Sub
+
 End Class
 
 Public Class ApacRegistro
