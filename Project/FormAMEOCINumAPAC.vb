@@ -299,13 +299,6 @@ Public Class FormAMEOCINumAPAC
                LEFT JOIN cod_oci_principal ON cod_oci_principal.id = oci.id_cod_principal 
                LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} ORDER BY {order}")
 
-            MsgBox($"SELECT oci.id, oci.num_apac, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc AS dtnasc, oci.`data`, oci.compet, servidores.nome AS medico 
-                FROM oci 
-               LEFT JOIN pacientes ON pacientes.id = oci.id_paciente 
-               LEFT JOIN servidores ON servidores.SUS = oci.id_medico
-               LEFT JOIN cod_oci_principal ON cod_oci_principal.id = oci.id_cod_principal 
-               LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} ORDER BY {order}")
-
             datagridview.DataSource = data
             datagridview.Tag = data.DefaultView
 
