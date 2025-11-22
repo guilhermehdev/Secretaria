@@ -26,7 +26,6 @@ Public Class FormAMEOCI
 
     Private Function competencia(compet As String)
         compet = MonthName(My.Settings.OCIcompetencia.Substring(4, 2), True).ToUpper & "/" & My.Settings.OCIcompetencia.Substring(0, 4)
-
         Return compet
 
     End Function
@@ -332,22 +331,22 @@ Public Class FormAMEOCI
             procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
             procedSec.Add("0211070041", "0211070041 - Audiometria tonal limiar (via aérea/óssea)")
             cbo.Add("225275", "225275 - Médico Otorrinolaringologista")
-            dgvProcedimentos.Rows.Add("0301010072", "225275", "1")
-            dgvProcedimentos.Rows.Add("0211070041", "225275", "1")
+            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada")
+            dgvProcedimentos.Rows.Add("0211070041", "1", "Audiometria tonal limiar (via aérea/óssea)")
 
         ElseIf txtProcedimentoPrincipal.SelectedValue = "0902010026" Then
             procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
             procedSec.Add("0211020036", "0211020036 - Eletrocardiograma (ECG)")
             cbo.Add("225120", "225120 - Médico Cardiologista")
-            dgvProcedimentos.Rows.Add("0301010072", "225120", "1")
-            dgvProcedimentos.Rows.Add("0211020036", "225120", "1")
+            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada")
+            dgvProcedimentos.Rows.Add("0211020036", "1", "Eletrocardiograma (ECG)")
 
         ElseIf txtProcedimentoPrincipal.SelectedValue = "0902010018" Then
             procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
             procedSec.Add("0211020036", "0211020036 - Eletrocardiograma (ECG)")
             cbo.Add("225120", "225120 - Médico Cardiologista")
-            dgvProcedimentos.Rows.Add("0301010072", "225120", "1")
-            dgvProcedimentos.Rows.Add("0211020036", "225120", "1")
+            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada")
+            dgvProcedimentos.Rows.Add("0211020036", "1", "Eletrocardiograma (ECG)")
 
         ElseIf txtProcedimentoPrincipal.SelectedValue = "0905010035" Then
             procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
@@ -355,10 +354,10 @@ Public Class FormAMEOCI
             procedSec.Add("0211060127", "0211060127 - Mapeamento de retina")
             procedSec.Add("0211060259", "0211060259 - Tonometria")
             cbo.Add("225265", "225265 - Médico Oftalmologista")
-            dgvProcedimentos.Rows.Add("0301010072", "225265", "1")
-            dgvProcedimentos.Rows.Add("0211060020", "225265", "1")
-            dgvProcedimentos.Rows.Add("0211060127", "225265", "1")
-            dgvProcedimentos.Rows.Add("0211060259", "225265", "1")
+            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada")
+            dgvProcedimentos.Rows.Add("0211060020", "1", "Biomicroscopia de fundo de olho")
+            dgvProcedimentos.Rows.Add("0211060127", "1", "Mapeamento de retina")
+            dgvProcedimentos.Rows.Add("0211060259", "1", "Tonometria")
 
         ElseIf txtProcedimentoPrincipal.SelectedValue = "0903010011" Then
             cbo.Add("225270", "225270 - Médico ortopedista e traumatologista")
@@ -384,16 +383,16 @@ Public Class FormAMEOCI
             procedSec.Add("0204060150", "0204060150 - RADIOGRAFIA DE PÉ / DEDOS DO PÉ")
             procedSec.Add("0204060176", "0204060176 - RADIOGRAFIA PANORÂMICA DE MEMBROS INFERIORES")
             procedSec.Add("0301010307", "0301010307 - TELECONSULTA MÉDICA NA ATENÇÃO ESPECIALIZADA")
-            dgvProcedimentos.Rows.Add("0301010072", "225270", "1")
+            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada")
 
         ElseIf txtProcedimentoPrincipal.SelectedValue = "0904010031" Then
             procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
             procedSec.Add("0209040025", "0209040025 - Laringoscopia")
             procedSec.Add("0209040041", "0209040041 - Videolaringoscopia")
             cbo.Add("225275", "225275 - Médico Otorrinolaringologista")
-            dgvProcedimentos.Rows.Add("0301010072", "225275", "1")
-            dgvProcedimentos.Rows.Add("0209040025", "225275", "1")
-            dgvProcedimentos.Rows.Add("0209040041", "225275", "1")
+            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada")
+            dgvProcedimentos.Rows.Add("0209040025", "1", "Laringoscopia")
+            dgvProcedimentos.Rows.Add("0209040041", "1", "Videolaringoscopia")
 
         End If
 
@@ -424,9 +423,10 @@ Public Class FormAMEOCI
 
         Dim cbo As String = CBOmed.SelectedValue.Trim()
         Dim qtd As String = Quantidade.Text.Trim()
+        Dim desc As String = CodProcedimento.Text.Substring(13).Trim()
 
         ' Adiciona a linha com todas as colunas necessárias
-        dgvProcedimentos.Rows.Add(cod, cbo, qtd)
+        dgvProcedimentos.Rows.Add(cod, qtd, desc)
     End Sub
     Public Function CalcularCampoControle(apacNumber As String, codigosProcedimento As List(Of String), quantidadesProcedimento As List(Of Integer)) As String
         Dim total As Long = 0
@@ -840,12 +840,17 @@ Public Class FormAMEOCI
             dgvProcedimentos.Columns.Clear()
 
             dgvProcedimentos.Columns.Add("Codigo", "Procedimento")
-            dgvProcedimentos.Columns.Add("CBO", "CBO")
+            dgvProcedimentos.Columns("Codigo").Width = 80
             dgvProcedimentos.Columns.Add("Quantidade", "Qtd")
+            dgvProcedimentos.Columns("Quantidade").Width = 40
+            dgvProcedimentos.Columns.Add("Desc", "Descrição")
+            dgvProcedimentos.Columns("Desc").Width = 300
+            dgvProcedimentos.Columns.Add("CBO", "CBO")
+            dgvProcedimentos.Columns("CBO").Visible = False
 
             dgvProcedimentos.AllowUserToAddRows = True
             dgvProcedimentos.AllowUserToDeleteRows = True
-            dgvProcedimentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
+            ' dgvProcedimentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
 
             txtSexo.SelectedIndex = 0
 
@@ -1234,7 +1239,6 @@ Public Class FormAMEOCI
 
         Try
             isLoading = True
-
             result = getPacientes(, txtNomePaciente.Text,,)
 
             If result.Rows.Count > 0 Then
@@ -1642,6 +1646,10 @@ Public Class FormAMEOCI
         Else
             dv.RowFilter = $"compet = '{cbSearchComp.Text}'"
         End If
+    End Sub
+
+    Private Sub FormAMEOCI_Click(sender As Object, e As EventArgs) Handles MyBase.Click
+        popupGrid.Visible = False
     End Sub
 
 End Class
