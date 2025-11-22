@@ -6,7 +6,7 @@ Imports System.Text
 Imports System.Windows
 
 Public Class FormAMEOCINumAPAC
-
+    Dim m As New Main
     Private Function GerarNumerosAPAC_Padrao(inicio As String, fim As String, quantidade As Integer) As List(Of String)
         Dim lista As New List(Of String)
 
@@ -266,7 +266,7 @@ Public Class FormAMEOCINumAPAC
         End If
     End Sub
 
-    Public Sub loadNUMAPAC(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "", Optional order As String = "id")
+    Public Sub loadNUMAPAC(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "", Optional dtlanc As Date = Nothing, Optional order As String = "id")
         Try
             Dim where As String = "WHERE 1=1 "
 
@@ -288,9 +288,18 @@ Public Class FormAMEOCINumAPAC
             If Not String.IsNullOrWhiteSpace(status) Then
                 where &= $" AND oci.status ='{status}' "
             End If
-
+            If dtlanc <> Nothing Then
+                where &= $" AND DATE(oci.data_lanc) ='{m.mysqlDateFormat(dtlanc)}' "
+            End If
 
             Dim data = FormAMEmain.getDataset($"SELECT oci.id, oci.num_apac, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc AS dtnasc, oci.`data`, oci.compet, servidores.nome AS medico 
+                FROM oci 
+               LEFT JOIN pacientes ON pacientes.id = oci.id_paciente 
+               LEFT JOIN servidores ON servidores.SUS = oci.id_medico
+               LEFT JOIN cod_oci_principal ON cod_oci_principal.id = oci.id_cod_principal 
+               LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} ORDER BY {order}")
+
+            MsgBox($"SELECT oci.id, oci.num_apac, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc AS dtnasc, oci.`data`, oci.compet, servidores.nome AS medico 
                 FROM oci 
                LEFT JOIN pacientes ON pacientes.id = oci.id_paciente 
                LEFT JOIN servidores ON servidores.SUS = oci.id_medico

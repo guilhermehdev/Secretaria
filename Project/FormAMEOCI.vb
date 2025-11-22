@@ -727,7 +727,7 @@ Public Class FormAMEOCI
     End Sub
 
     Private Sub loadAPACbyUser(idUser As Integer)
-        FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, , , , idUser,,,, "CONC", "data_lanc DESC")
+        FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, , , , idUser,,,, "CONC", Nothing, "data_lanc DESC")
         lbStatusCads.Text = $"{dgOCIcadastradas.Rows.Count} registros"
     End Sub
     Private Function loadAPACdisp()
@@ -1651,7 +1651,9 @@ Public Class FormAMEOCI
     Private Sub FormAMEOCI_Click(sender As Object, e As EventArgs) Handles MyBase.Click
         popupGrid.Visible = False
     End Sub
-
+    Private Sub dtpSearchData_ValueChanged(sender As Object, e As EventArgs) Handles dtpSearchData.ValueChanged
+        FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC")
+    End Sub
 End Class
 
 Public Class ApacRegistro
