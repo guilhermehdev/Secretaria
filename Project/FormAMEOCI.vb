@@ -249,8 +249,8 @@ Public Class FormAMEOCI
                         r13.Append(competencia)
                         r13.Append(txtNumApac.Text.PadLeft(13, "0"c))
                         r13.Append(row.Cells(0).Value.ToString().PadLeft(10, "0"c))
-                        r13.Append(row.Cells(1).Value.ToString().PadLeft(6, "0"c))
-                        r13.Append(row.Cells(2).Value.ToString().PadLeft(7, "0"c))
+                        r13.Append(row.Cells(3).Value.ToString().PadLeft(6, "0"c))
+                        r13.Append(row.Cells(1).Value.ToString().PadLeft(7, "0"c))
                         r13.Append(New String(" "c, 53))
                         sw.WriteLine(r13.ToString())
                     Next
@@ -331,22 +331,22 @@ Public Class FormAMEOCI
             procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
             procedSec.Add("0211070041", "0211070041 - Audiometria tonal limiar (via aérea/óssea)")
             cbo.Add("225275", "225275 - Médico Otorrinolaringologista")
-            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada")
-            dgvProcedimentos.Rows.Add("0211070041", "1", "Audiometria tonal limiar (via aérea/óssea)")
+            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225275")
+            dgvProcedimentos.Rows.Add("0211070041", "1", "Audiometria tonal limiar (via aérea/óssea)", "225275")
 
         ElseIf txtProcedimentoPrincipal.SelectedValue = "0902010026" Then
             procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
             procedSec.Add("0211020036", "0211020036 - Eletrocardiograma (ECG)")
             cbo.Add("225120", "225120 - Médico Cardiologista")
-            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada")
-            dgvProcedimentos.Rows.Add("0211020036", "1", "Eletrocardiograma (ECG)")
+            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225120")
+            dgvProcedimentos.Rows.Add("0211020036", "1", "Eletrocardiograma (ECG)", "225120")
 
         ElseIf txtProcedimentoPrincipal.SelectedValue = "0902010018" Then
             procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
             procedSec.Add("0211020036", "0211020036 - Eletrocardiograma (ECG)")
             cbo.Add("225120", "225120 - Médico Cardiologista")
-            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada")
-            dgvProcedimentos.Rows.Add("0211020036", "1", "Eletrocardiograma (ECG)")
+            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225120")
+            dgvProcedimentos.Rows.Add("0211020036", "1", "Eletrocardiograma (ECG)", "225120")
 
         ElseIf txtProcedimentoPrincipal.SelectedValue = "0905010035" Then
             procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
@@ -354,10 +354,10 @@ Public Class FormAMEOCI
             procedSec.Add("0211060127", "0211060127 - Mapeamento de retina")
             procedSec.Add("0211060259", "0211060259 - Tonometria")
             cbo.Add("225265", "225265 - Médico Oftalmologista")
-            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada")
-            dgvProcedimentos.Rows.Add("0211060020", "1", "Biomicroscopia de fundo de olho")
-            dgvProcedimentos.Rows.Add("0211060127", "1", "Mapeamento de retina")
-            dgvProcedimentos.Rows.Add("0211060259", "1", "Tonometria")
+            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225265")
+            dgvProcedimentos.Rows.Add("0211060020", "1", "Biomicroscopia de fundo de olho", "225265")
+            dgvProcedimentos.Rows.Add("0211060127", "1", "Mapeamento de retina", "225265")
+            dgvProcedimentos.Rows.Add("0211060259", "1", "Tonometria", "225265")
 
         ElseIf txtProcedimentoPrincipal.SelectedValue = "0903010011" Then
             cbo.Add("225270", "225270 - Médico ortopedista e traumatologista")
@@ -383,16 +383,16 @@ Public Class FormAMEOCI
             procedSec.Add("0204060150", "0204060150 - RADIOGRAFIA DE PÉ / DEDOS DO PÉ")
             procedSec.Add("0204060176", "0204060176 - RADIOGRAFIA PANORÂMICA DE MEMBROS INFERIORES")
             procedSec.Add("0301010307", "0301010307 - TELECONSULTA MÉDICA NA ATENÇÃO ESPECIALIZADA")
-            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada")
+            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225270")
 
         ElseIf txtProcedimentoPrincipal.SelectedValue = "0904010031" Then
             procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
             procedSec.Add("0209040025", "0209040025 - Laringoscopia")
             procedSec.Add("0209040041", "0209040041 - Videolaringoscopia")
             cbo.Add("225275", "225275 - Médico Otorrinolaringologista")
-            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada")
-            dgvProcedimentos.Rows.Add("0209040025", "1", "Laringoscopia")
-            dgvProcedimentos.Rows.Add("0209040041", "1", "Videolaringoscopia")
+            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225275")
+            dgvProcedimentos.Rows.Add("0209040025", "1", "Laringoscopia", "225275")
+            dgvProcedimentos.Rows.Add("0209040041", "1", "Videolaringoscopia", "225275")
 
         End If
 
@@ -426,7 +426,7 @@ Public Class FormAMEOCI
         Dim desc As String = CodProcedimento.Text.Substring(13).Trim()
 
         ' Adiciona a linha com todas as colunas necessárias
-        dgvProcedimentos.Rows.Add(cod, qtd, desc)
+        dgvProcedimentos.Rows.Add(cod, qtd, desc, cbo)
     End Sub
     Public Function CalcularCampoControle(apacNumber As String, codigosProcedimento As List(Of String), quantidadesProcedimento As List(Of Integer)) As String
         Dim total As Long = 0
@@ -846,7 +846,7 @@ Public Class FormAMEOCI
             dgvProcedimentos.Columns.Add("Desc", "Descrição")
             dgvProcedimentos.Columns("Desc").Width = 300
             dgvProcedimentos.Columns.Add("CBO", "CBO")
-            dgvProcedimentos.Columns("CBO").Visible = False
+            dgvProcedimentos.Columns("CBO").Width = 40
 
             dgvProcedimentos.AllowUserToAddRows = True
             dgvProcedimentos.AllowUserToDeleteRows = True
