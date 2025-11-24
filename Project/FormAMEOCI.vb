@@ -39,21 +39,26 @@ Public Class FormAMEOCI
         End If
     End Function
 
-    Private Sub saveAPAC()
+    Private Function saveAPAC()
         If Not txtNumApac.Text.Length = 13 Then
-            MessageBox.Show("Preencha o número da APAC corretamente.")
+            MessageBox.Show("Preencha o número da APAC corretamente.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
             txtNumApac.Focus()
-            Return
+            Return False
         End If
         If txtCNSMedicoExecutante.SelectedIndex = -1 Then
-            MessageBox.Show("Selecione o médico.")
+            MessageBox.Show("Selecione o médico.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
             txtCNSMedicoExecutante.Focus()
-            Return
+            Return False
         End If
         If txtProcedimentoPrincipal.SelectedIndex = -1 Then
-            MessageBox.Show("Selecione o procedimento principal.")
-            txtCNSMedicoExecutante.Focus()
-            Return
+            MessageBox.Show("Selecione o procedimento principal.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            txtProcedimentoPrincipal.Focus()
+            Return False
+        End If
+        If dgvProcedimentos.Rows.Count <= 1 Then
+            MessageBox.Show("Adicione um procedimento secundário.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            CodProcedimento.Focus()
+            Return False
         End If
 
         Dim dictProceds As Dictionary(Of String, Integer) = CarregarProcedimentosCodId()
@@ -98,12 +103,15 @@ Public Class FormAMEOCI
                 'txtNumApac.Text = GetAndLockNextApac()
             End If
 
+            Return True
+
         Catch ex As Exception
             UnlockApac(txtNumApac.Text)
             MsgBox("Erro ao salvar APAC: " & ex.Message)
+            Return False
         End Try
 
-    End Sub
+    End Function
     Private Sub btnAddPacAPAC_Click(sender As Object, e As EventArgs) Handles btnGerarArquivo.Click
         Try
             ' ==================== VALIDAÇÕES ====================
@@ -113,9 +121,9 @@ Public Class FormAMEOCI
                 MessageBox.Show("CPF inválido. Verifique e tente novamente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 Return
             End If
-            chkResponsavel()
 
             If dtNascimento.Text.Trim() = "" Then Throw New Exception("Informe a data de nascimento Do paciente.")
+            chkResponsavel()
             If txtNomePaciente.Text.Trim() = "" Then Throw New Exception("Informe o nome Do paciente.")
             If txtNomeMae.Text.Trim() = "" Then Throw New Exception("Informe o nome da mãe.")
             If txtNomeRespPaciente.Text.Trim() = "" Then Throw New Exception("Informe o nome Do responsável.")
@@ -257,18 +265,19 @@ Public Class FormAMEOCI
                 End Using
             End Using
 
-            saveAPAC()
-            MessageBox.Show("✅ Paciente adicionado!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            Dim selectedCNSExe As Integer = txtCNSMedicoExecutante.SelectedIndex
-            Dim selectedAutorizador As Integer = txtNomeAutorizador.SelectedIndex
-            Dim selectedCIDP As Integer = txtCidPrincipal.SelectedIndex
-            Dim selectedCIDS As Integer = txtCidSecundario.SelectedIndex
-            TabControl1.SelectedTab = TabControl1.TabPages(0)  ' ativa a terceira aba (0-based)
-            txtProcedimentoPrincipal_SelectionChangeCommitted(sender, e) ' atualiza procedimentos)
-            txtCNSMedicoExecutante.SelectedIndex = selectedCNSExe
-            txtNomeAutorizador.SelectedIndex = selectedAutorizador
-            txtCidPrincipal.SelectedIndex = selectedCIDP
-            txtCidSecundario.SelectedIndex = selectedCIDS
+            If saveAPAC() Then
+                MessageBox.Show("✅ Paciente adicionado!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Dim selectedCNSExe As Integer = txtCNSMedicoExecutante.SelectedIndex
+                Dim selectedAutorizador As Integer = txtNomeAutorizador.SelectedIndex
+                Dim selectedCIDP As Integer = txtCidPrincipal.SelectedIndex
+                Dim selectedCIDS As Integer = txtCidSecundario.SelectedIndex
+                TabControl1.SelectedTab = TabControl1.TabPages(0)  ' ativa a terceira aba (0-based)
+                txtProcedimentoPrincipal_SelectionChangeCommitted(sender, e) ' atualiza procedimentos)
+                txtCNSMedicoExecutante.SelectedIndex = selectedCNSExe
+                txtNomeAutorizador.SelectedIndex = selectedAutorizador
+                txtCidPrincipal.SelectedIndex = selectedCIDP
+                txtCidSecundario.SelectedIndex = selectedCIDS
+            End If
         Catch ex As Exception
             MessageBox.Show("⚠️ Erro ao gerar arquivo: " & ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
@@ -734,6 +743,10 @@ Public Class FormAMEOCI
         Dim apacDisp = FormAMEmain.getDataset("SELECT count(num_apac) AS apacs FROM oci WHERE status='DISP'").Rows(0).Item("apacs")
         Return apacDisp
     End Function
+    Private Sub LimparData()
+        dtpSearchData.Format = DateTimePickerFormat.Custom
+        dtpSearchData.CustomFormat = ""
+    End Sub
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If My.Settings.databaseAME = "" Then
             FormAMEbd.ShowDialog()
@@ -846,9 +859,9 @@ Public Class FormAMEOCI
             dgvProcedimentos.Columns.Add("Desc", "Descrição")
             dgvProcedimentos.Columns("Desc").Width = 300
             dgvProcedimentos.Columns.Add("CBO", "CBO")
-            dgvProcedimentos.Columns("CBO").Width = 40
+            dgvProcedimentos.Columns("CBO").Width = 90
 
-            dgvProcedimentos.AllowUserToAddRows = True
+            'dgvProcedimentos.AllowUserToAddRows = True
             dgvProcedimentos.AllowUserToDeleteRows = True
             ' dgvProcedimentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
 
@@ -1410,17 +1423,6 @@ Public Class FormAMEOCI
             Next
         End Using
     End Sub
-
-    Private Sub APACToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles APACToolStripMenuItem.Click
-        Dim desktop As String = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
-
-        If OpenFileDialog1.ShowDialog Then
-            Dim itens = (importFromApacs(OpenFileDialog1.FileName))
-            'ExportarApacsExcel(itens, desktop & "\APAC.xlsx")
-            APACtoDB(itens)
-
-        End If
-    End Sub
     Public Function CarregarProcedimentosCodId() As Dictionary(Of String, Integer)
         Dim procedimentos As New Dictionary(Of String, Integer)
 
@@ -1604,6 +1606,7 @@ Public Class FormAMEOCI
     End Sub
 
     Private Sub tbSearchApac_TextChanged(sender As Object, e As EventArgs) Handles tbSearchApac.TextChanged
+        LimparData()
         Dim dv As DataView = CType(dgOCIcadastradas.Tag, DataView)
         If String.IsNullOrWhiteSpace(tbSearchApac.Text) Then
             dv.RowFilter = ""  ' Remove o filtro
@@ -1614,6 +1617,7 @@ Public Class FormAMEOCI
         End If
     End Sub
     Private Sub tbSearchNome_TextChanged(sender As Object, e As EventArgs) Handles tbSearchNome.TextChanged
+        LimparData()
         Dim dv As DataView = CType(dgOCIcadastradas.Tag, DataView)
         If String.IsNullOrWhiteSpace(tbSearchNome.Text) Then
             dv.RowFilter = ""  ' Remove o filtro
@@ -1625,6 +1629,7 @@ Public Class FormAMEOCI
     End Sub
 
     Private Sub cbSearchOCI_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSearchOCI.SelectedIndexChanged
+        LimparData()
         Dim dv As DataView = CType(dgOCIcadastradas.Tag, DataView)
         If cbSearchOCI.Text = "TODOS" Then
             dv.RowFilter = ""  ' Remove o filtro
@@ -1638,6 +1643,7 @@ Public Class FormAMEOCI
         lbStatusCads.Text = $"{dgOCIcadastradas.Rows.Count} registros"
     End Sub
     Private Sub cbSearchComp_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSearchComp.SelectedIndexChanged
+        LimparData()
         Dim dv As DataView = TryCast(dgOCIcadastradas.Tag, DataView)
         If dv Is Nothing Then Exit Sub
 
@@ -1652,8 +1658,46 @@ Public Class FormAMEOCI
         popupGrid.Visible = False
     End Sub
     Private Sub dtpSearchData_ValueChanged(sender As Object, e As EventArgs) Handles dtpSearchData.ValueChanged
+        dtpSearchData.CustomFormat = "dd/MM/yyyy"
         FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC")
     End Sub
+    Private Sub ckbSearchTodos_CheckedChanged(sender As Object, e As EventArgs) Handles ckbSearchTodos.CheckedChanged
+        FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas,,,, idUser,,,, "CONC",, "oci.data_lanc DESC, pacientes.nome")
+    End Sub
+    Private Sub ImportarAPACToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportarAPACToolStripMenuItem.Click
+        Dim desktop As String = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+
+        If OpenFileDialog1.ShowDialog Then
+            Dim itens = (importFromApacs(OpenFileDialog1.FileName))
+            'ExportarApacsExcel(itens, desktop & "\APAC.xlsx")
+            APACtoDB(itens)
+        End If
+    End Sub
+
+    Private Sub TabControl1_Click(sender As Object, e As EventArgs) Handles TabControl1.Click
+        popupGrid.Visible = False
+    End Sub
+    Private Sub GroupBox1_MouseHover(sender As Object, e As EventArgs) Handles GroupBox1.MouseHover
+        popupGrid.Visible = False
+    End Sub
+    Private Sub GroupBox2_MouseHover(sender As Object, e As EventArgs) Handles GroupBox2.MouseHover
+        popupGrid.Visible = False
+    End Sub
+    Private Sub TabPage1_Click(sender As Object, e As EventArgs) Handles TabPage1.Click
+        popupGrid.Visible = False
+    End Sub
+    Private Sub GroupBox5_MouseHover(sender As Object, e As EventArgs) Handles GroupBox5.MouseHover
+        popupGrid.Visible = False
+    End Sub
+    Private Sub dtNascimento_TextChanged(sender As Object, e As EventArgs) Handles dtNascimento.TextChanged
+        If dtNascimento.Text.Length = 10 Then
+            chkResponsavel()
+        End If
+    End Sub
+    Private Sub txtNomeMae_Leave(sender As Object, e As EventArgs) Handles txtNomeMae.Leave
+        chkResponsavel()
+    End Sub
+
 End Class
 
 Public Class ApacRegistro

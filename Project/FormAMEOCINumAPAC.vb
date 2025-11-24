@@ -288,7 +288,7 @@ Public Class FormAMEOCINumAPAC
             If Not String.IsNullOrWhiteSpace(status) Then
                 where &= $" AND oci.status ='{status}' "
             End If
-            If dtlanc <> Nothing Then
+            If FormAMEOCI.dtpSearchData.CustomFormat <> "" Then
                 where &= $" AND DATE(oci.data_lanc) ='{m.mysqlDateFormat(dtlanc)}' "
             End If
 
