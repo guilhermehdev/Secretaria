@@ -1414,7 +1414,7 @@ Public Class FormAMEOCI
     End Sub
 
     Private Sub FormAMEOCI_KeyPress(sender As Object, e As KeyPressEventArgs) Handles MyBase.KeyPress
-        If e.KeyChar = ChrW(Keys.Escape) Then
+        If e.KeyChar = ChrW(Keys.Escape) OrElse e.KeyChar = ChrW(Keys.Tab) Then
             dgvSugestoes.Visible = False
             popupGrid.Visible = False
         End If
