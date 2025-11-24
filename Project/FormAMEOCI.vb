@@ -99,11 +99,16 @@ Public Class FormAMEOCI
             If FormAMEmain.doQuery(query) Then
                 clearFields()
                 btNovonumeroAPAC.Enabled = True
-                loadAPACbyUser(idUser)
+                If dtpSearchData.CustomFormat = "" Then
+                    loadAPACbyUser(idUser)
+                Else
+                    FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC")
+                End If
+
                 'txtNumApac.Text = GetAndLockNextApac()
             End If
 
-            Return True
+                Return True
 
         Catch ex As Exception
             UnlockApac(txtNumApac.Text)
