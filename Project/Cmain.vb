@@ -403,7 +403,7 @@ Public Class Main
 
             Return dados
         Catch ex As Exception
-
+            msgAlert(ex.Message)
         End Try
 
         Return False

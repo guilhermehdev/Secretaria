@@ -512,7 +512,7 @@ Public Class FormAMEOCI
             MessageBox.Show("Selecione um procedimento para remover.")
         End If
     End Sub
-    Private Sub getServersSUS()
+    Public Sub getServersSUS()
         Dim main As New FormAMEmain
         Dim comboList As New List(Of System.Windows.Forms.ComboBox) From {
             txtCNSMedicoExecutante,
@@ -754,7 +754,7 @@ Public Class FormAMEOCI
     End Sub
 
     Public Sub loadComp(combobox As ComboBox)
-        Dim comboComp = FormAMEmain.getDataset("SELECT DISTINCT id, compet FROM oci GROUP BY compet ORDER BY compet DESC")
+        Dim comboComp = FormAMEmain.getDataset("SELECT id, compet FROM oci WHERE compet IS NOT NULL AND compet <> '' GROUP BY compet ORDER BY compet DESC")
         Dim dtFinal As DataTable = comboComp.Clone()
 
         ' Adiciona o item TODOS como primeira linha
@@ -774,7 +774,7 @@ Public Class FormAMEOCI
             .DisplayMember = "compet"
             .ValueMember = "id"
         End With
-        combobox.SelectedIndex = -1
+
     End Sub
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If My.Settings.databaseAME = "" Then
@@ -786,7 +786,7 @@ Public Class FormAMEOCI
         loadComp(cbSearchComp)
 
         Me.Text = $"Gerenciamento de APACs OCI - Competência {competencia(My.Settings.OCIcompetencia)}"
-        loadAPACbyUser(idUser)
+        ' loadAPACbyUser(idUser)
         lbRestanteAPAC.Text = loadAPACdisp() & " restante(s)"
 
         dtValidadeIni.Focus()

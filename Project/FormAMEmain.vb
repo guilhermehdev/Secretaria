@@ -713,7 +713,7 @@ Public Class FormAMEmain
 
             Return dados
         Catch ex As Exception
-
+            'MsgBox(ex.Message, MsgBoxStyle.Critical)
         End Try
 
         Return False

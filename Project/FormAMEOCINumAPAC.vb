@@ -7,114 +7,6 @@ Imports System.Windows
 
 Public Class FormAMEOCINumAPAC
     Dim m As New Main
-    Private Function GerarNumerosAPAC_Padrao(inicio As String, fim As String, quantidade As Integer) As List(Of String)
-        Dim lista As New List(Of String)
-
-        If String.IsNullOrWhiteSpace(inicio) Or String.IsNullOrWhiteSpace(fim) Then
-            Throw New ArgumentException("Inicio e fim devem ser informados.")
-        End If
-        If inicio.Length <> 13 OrElse fim.Length <> 13 Then
-            Throw New ArgumentException("Os números devem ter 13 dígitos.")
-        End If
-        If quantidade <= 0 Then
-            Throw New ArgumentException("Quantidade deve ser maior que zero.")
-        End If
-
-        Dim atual As Long = CLng(inicio)
-        Dim limite As Long = CLng(fim)
-        Dim count As Integer = 0
-
-        ' Flag para evitar aplicar +10 repetidamente quando estamos em uma dezena (último dígito 0)
-        Dim lastWasPlus10 As Boolean = False
-
-        While atual <= limite AndAlso count < quantidade
-            lista.Add(atual.ToString().PadLeft(13, "0"c))
-            count += 1
-
-            If atual >= limite OrElse count >= quantidade Then Exit While
-
-            Dim s As String = atual.ToString().PadLeft(13, "0"c)
-            Dim ultimoDigito As Integer = Integer.Parse(s.Substring(s.Length - 1, 1))
-
-            If ultimoDigito = 0 Then
-                ' Se ainda não aplicamos +10 para esta dezena, aplicamos agora.
-                ' Caso contrário (já aplicamos +10 na iteração anterior), voltamos para +11.
-                If Not lastWasPlus10 Then
-                    atual += 10
-                    lastWasPlus10 = True
-                Else
-                    atual += 11
-                    lastWasPlus10 = False
-                End If
-            ElseIf ultimoDigito = 9 Then
-                ' 9 -> soma 1 para ir para a dezena cheia (ex: ...899 -> ...900)
-                atual += 1
-                lastWasPlus10 = False
-            Else
-                ' regra geral: soma 11
-                atual += 11
-                lastWasPlus10 = False
-            End If
-        End While
-
-        ' Garante incluir o fim exato (autoridade fornecida), se ainda houver espaço
-        If lista.Count < quantidade AndAlso lista.Last() <> fim Then
-            lista.Add(fim)
-        End If
-
-        Return lista
-    End Function
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        If tbFaixaInicio.Text.Length < 13 OrElse tbFaixaFim.Text.Length < 13 OrElse numQtd.Value < 1 Then
-            MessageBox.Show("Preencha todos os campos.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Return
-        End If
-        Dim numeros
-        SaveFileDialog1.ShowDialog()
-        SaveFileDialog1.Filter = "Arquivos Excel|*.xlsx"
-        SaveFileDialog1.AddExtension = True
-        SaveFileDialog1.DefaultExt = "xlsx"
-        ' SaveFileDialog1.FileName = "OCIAPAC.xlsx"
-
-        If tbFaixaInicio.Text.Length = 13 AndAlso tbFaixaFim.Text.Length = 13 Then
-            numeros = GerarNumerosAPAC_Padrao(tbFaixaInicio.Text, tbFaixaFim.Text, CInt(numQtd.Value))
-
-            ' Cria o workbook
-            Dim wb As New XLWorkbook()
-            Dim ws = wb.Worksheets.Add("APACs")
-
-            ' Cabeçalho
-            'ws.Cell(1, 1).Value = "NÚMEROS APAC"
-            'ws.Cell(1, 1).Style.Font.Bold = True
-
-            ' Insere os números
-            Dim linha As Integer = 1
-            For Each n In numeros
-                FormAMEmain.doQuery("INSERT INTO oci (num_apac) VALUES ('" & n.ToString() & "')")
-                ws.Cell(linha, 1).Value = n.ToString()
-                linha += 1
-            Next
-
-            ' Ajusta largura da coluna
-            ws.Column(1).AdjustToContents()
-
-            ' Salva o arquivo
-            Dim caminho = SaveFileDialog1.FileName & ".xlsx"
-            'IO.Path.Combine(Application.StartupPath, "numeros_apac.xlsx")
-            wb.SaveAs(caminho)
-
-            MessageBox.Show("Arquivo gerado com sucesso em:" & vbCrLf & caminho, "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
-
-        Else
-            MessageBox.Show("Os números devem ter 13 dígitos.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Return
-        End If
-
-        For Each n In numeros
-
-        Next
-
-    End Sub
 
     Public Sub substituirNumAPAC(caminhoArquivo As String)
         ' Dicionário de números errados → certos
@@ -266,7 +158,7 @@ Public Class FormAMEOCINumAPAC
         End If
     End Sub
 
-    Public Sub loadNUMAPAC(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "", Optional dtlanc As Date = Nothing, Optional order As String = "id", Optional custom As String = "")
+    Public Sub loadNUMAPAC(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "", Optional dtlanc As Date = Nothing, Optional order As String = "id", Optional custom As String = "", Optional medico As String = "")
         Try
             Dim where As String = "WHERE 1=1 "
 
@@ -290,6 +182,9 @@ Public Class FormAMEOCINumAPAC
             End If
             If FormAMEOCI.dtpSearchData.CustomFormat <> "" Then
                 where &= $" AND DATE(oci.data_lanc) ='{m.mysqlDateFormat(dtlanc)}' "
+            End If
+            If Not String.IsNullOrWhiteSpace(medico) Then
+                where &= $" AND oci.id_medico ='{medico}' "
             End If
 
             Dim data = FormAMEmain.getDataset($"SELECT oci.id, oci.num_apac, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc AS dtnasc, oci.`data`, oci.compet, servidores.nome AS medico, oci.status 
@@ -330,12 +225,15 @@ Public Class FormAMEOCINumAPAC
 
     Private Sub FormAMEOCINumAPAC_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         FormAMEmain.loadComboBox("SELECT id, abrev FROM cod_oci_principal", cbOCI, "abrev", "id")
-        cbOCI.SelectedIndex = 0
         FormAMEmain.loadComboBox("SELECT id, nome FROM usuarios ORDER BY nome", cbUsuarios, "nome", "id")
-        cbUsuarios.SelectedIndex = -1
         FormAMEOCI.loadComp(cbSearchComp)
-        cbSearchComp.SelectedIndex = 0
         ToolStripStatusLabel1.Text = ""
+        FormAMEmain.loadComboBox("SELECT SUS AS id, nome AS medico FROM servidores WHERE SUS IS NOT NULL", cbMedico, "medico", "id", True)
+        cbMedico.SelectedIndex = 0
+        cbOCI.SelectedIndex = 0
+        cbUsuarios.SelectedIndex = -1
+        cbSearchComp.SelectedIndex = 0
+        rbTodos.Checked = True
     End Sub
 
     Private Sub loadByAPACinterval()
@@ -358,11 +256,11 @@ Public Class FormAMEOCINumAPAC
         loadByAPACinterval()
     End Sub
 
-    Private Sub cbUsuarios_SelectionChangeCommitted(sender As Object, e As EventArgs)
+    Private Sub cbUsuarios_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbUsuarios.SelectionChangeCommitted
         dgvNumerosAPAC.DataSource = Nothing
         tbAPACIni.Text = ""
         tbAPACFim.Text = ""
-        cbOCI.SelectedIndex = -1
+        cbOCI.SelectedIndex = 0
         cbStatus.SelectedIndex = -1
         chkDisponiveis.Checked = False
         loadNUMAPAC(dgvNumerosAPAC,,,, CInt(cbUsuarios.SelectedValue))
@@ -371,7 +269,7 @@ Public Class FormAMEOCINumAPAC
         dgvNumerosAPAC.DataSource = Nothing
         tbAPACIni.Text = ""
         tbAPACFim.Text = ""
-        cbOCI.SelectedIndex = -1
+        cbOCI.SelectedIndex = 0
         cbUsuarios.SelectedIndex = -1
         cbStatus.SelectedIndex = -1
         chkDisponiveis.Checked = False
@@ -384,7 +282,7 @@ Public Class FormAMEOCINumAPAC
         loadByData()
     End Sub
 
-    Private Sub cbOCI_SelectionChangeCommitted(sender As Object, e As EventArgs)
+    Private Sub cbOCI_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbOCI.SelectionChangeCommitted
         dgvNumerosAPAC.DataSource = Nothing
         tbAPACIni.Text = ""
         tbAPACFim.Text = ""
@@ -392,15 +290,22 @@ Public Class FormAMEOCINumAPAC
         cbStatus.SelectedIndex = -1
         chkDisponiveis.Checked = False
         Dim oci As String = cbOCI.SelectedValue
+        Dim medico As String = cbMedico.SelectedValue
         If oci > 0 Then
             oci = oci
         Else
             oci = ""
         End If
 
+        If medico > 0 Then
+            medico = medico
+        Else
+            medico = ""
+        End If
+
         If rbTodos.Checked Then
             If cbSearchComp.SelectedValue > 0 Then
-                loadNUMAPAC(dgvNumerosAPAC,,, False,,,, oci, "CONC",,, $"AND compet='{cbSearchComp.Text}'")
+                loadNUMAPAC(dgvNumerosAPAC,,, False,,,, oci, "CONC",,, $"AND compet='{cbSearchComp.Text}'", medico)
             Else
                 loadNUMAPAC(dgvNumerosAPAC,,, False,,,, oci, "CONC")
             End If
@@ -410,12 +315,12 @@ Public Class FormAMEOCINumAPAC
 
     End Sub
 
-    Private Sub cbStatus_SelectionChangeCommitted(sender As Object, e As EventArgs)
+    Private Sub cbStatus_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbStatus.SelectionChangeCommitted
         dgvNumerosAPAC.DataSource = Nothing
         tbAPACIni.Text = ""
         tbAPACFim.Text = ""
         cbUsuarios.SelectedIndex = -1
-        cbOCI.SelectedIndex = -1
+        cbOCI.SelectedIndex = 0
         chkDisponiveis.Checked = False
         loadNUMAPAC(dgvNumerosAPAC,,,,,, , , CStr(cbStatus.SelectedItem))
     End Sub
@@ -473,21 +378,21 @@ Public Class FormAMEOCINumAPAC
             Dim row As DataGridViewRow = dgvNumerosAPAC.Rows(e.RowIndex)
 
             Select Case valor
-                Case "DISP"
-                    row.DefaultCellStyle.BackColor = Color.LightGreen
-                    row.DefaultCellStyle.ForeColor = Color.DarkGreen
+                'Case "DISP"
+                '    row.DefaultCellStyle.BackColor = Color.LightGreen
+                '    row.DefaultCellStyle.ForeColor = Color.DarkGreen
 
-                Case "CONC"
-                    row.DefaultCellStyle.BackColor = Color.SteelBlue
-                    row.DefaultCellStyle.ForeColor = Color.White
+                'Case "CONC"
+                '    row.DefaultCellStyle.BackColor = Color.SteelBlue
+                '    row.DefaultCellStyle.ForeColor = Color.White
 
-                Case "CANC"
-                    row.DefaultCellStyle.BackColor = Color.DarkGray
-                    row.DefaultCellStyle.ForeColor = Color.White
+                'Case "CANC"
+                '    row.DefaultCellStyle.BackColor = Color.DarkGray
+                '    row.DefaultCellStyle.ForeColor = Color.White
 
-                Case "BLOQ"
-                    row.DefaultCellStyle.BackColor = Color.Maroon
-                    row.DefaultCellStyle.ForeColor = Color.White
+                'Case "BLOQ"
+                '    row.DefaultCellStyle.BackColor = Color.Maroon
+                '    row.DefaultCellStyle.ForeColor = Color.White
             End Select
         End If
     End Sub
@@ -514,10 +419,45 @@ Public Class FormAMEOCINumAPAC
             loadNUMAPAC(dgvNumerosAPAC,,,,,,,, "CONC")
         End If
     End Sub
-    Private Sub cbSearchComp_SelectedIndexChanged(sender As Object, e As EventArgs)
+    Private Sub cbSearchComp_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSearchComp.SelectedIndexChanged
+        If rbTodos.Checked Then
+
+            Dim comp As String = ""
+            Dim oci As String = cbOCI.SelectedValue
+            Dim medico As String = cbMedico.SelectedValue
+
+            If cbSearchComp.SelectedValue > 0 Then
+                comp = $"AND compet='{cbSearchComp.Text}'"
+            Else
+                comp = ""
+            End If
+
+            If oci > 0 Then
+                oci = oci
+            Else
+                oci = ""
+            End If
+
+            If medico > 0 Then
+                medico = medico
+            Else
+                medico = ""
+            End If
+
+            loadNUMAPAC(dgvNumerosAPAC,,, False,,,, oci, "CONC",,, comp, medico)
+        Else
+            dgvNumerosAPAC.DataSource = Nothing
+        End If
+    End Sub
+
+    Private Sub GeradorNumeraçãoAPACToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles GeradorNumeraçãoAPACToolStripMenuItem.Click
+        FormAMEOCIGeradorAPAC.ShowDialog()
+    End Sub
+    Private Sub cbMedico_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbMedico.SelectedIndexChanged
         If rbTodos.Checked Then
             Dim oci As String = cbOCI.SelectedValue
             Dim comp As String = ""
+
             If oci > 0 Then
                 oci = oci
             Else
@@ -530,10 +470,11 @@ Public Class FormAMEOCINumAPAC
                 comp = ""
             End If
 
-            loadNUMAPAC(dgvNumerosAPAC,,, False,,,, oci, "CONC",,, comp)
+            loadNUMAPAC(dgvNumerosAPAC,,, False,,,, oci, "CONC",,, comp, cbMedico.SelectedValue)
         Else
-            dgvNumerosAPAC.DataSource = Nothing
+            loadNUMAPAC(dgvNumerosAPAC,,, False,,,,, "CONC",,,, cbMedico.SelectedValue.ToString)
         End If
     End Sub
+
 
 End Class

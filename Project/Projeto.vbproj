@@ -492,6 +492,12 @@
     <Compile Include="FormAMEOCIControleCompetencia.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormAMEOCIGeradorAPAC.Designer.vb">
+      <DependentUpon>FormAMEOCIGeradorAPAC.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormAMEOCIGeradorAPAC.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormAMEOCINumAPAC.Designer.vb">
       <DependentUpon>FormAMEOCINumAPAC.vb</DependentUpon>
     </Compile>
@@ -702,6 +708,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormAMEOCIControleCompetencia.resx">
       <DependentUpon>FormAMEOCIControleCompetencia.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAMEOCIGeradorAPAC.resx">
+      <DependentUpon>FormAMEOCIGeradorAPAC.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormAMEOCINumAPAC.resx">
       <DependentUpon>FormAMEOCINumAPAC.vb</DependentUpon>
