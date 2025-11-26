@@ -266,7 +266,7 @@ Public Class FormAMEOCINumAPAC
         End If
     End Sub
 
-    Public Sub loadNUMAPAC(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "", Optional dtlanc As Date = Nothing, Optional order As String = "id")
+    Public Sub loadNUMAPAC(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "", Optional dtlanc As Date = Nothing, Optional order As String = "id", Optional custom As String = "")
         Try
             Dim where As String = "WHERE 1=1 "
 
@@ -292,12 +292,12 @@ Public Class FormAMEOCINumAPAC
                 where &= $" AND DATE(oci.data_lanc) ='{m.mysqlDateFormat(dtlanc)}' "
             End If
 
-            Dim data = FormAMEmain.getDataset($"SELECT oci.id, oci.num_apac, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc AS dtnasc, oci.`data`, oci.compet, servidores.nome AS medico 
+            Dim data = FormAMEmain.getDataset($"SELECT oci.id, oci.num_apac, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc AS dtnasc, oci.`data`, oci.compet, servidores.nome AS medico, oci.status 
                 FROM oci 
                LEFT JOIN pacientes ON pacientes.id = oci.id_paciente 
                LEFT JOIN servidores ON servidores.SUS = oci.id_medico
                LEFT JOIN cod_oci_principal ON cod_oci_principal.id = oci.id_cod_principal 
-               LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} ORDER BY {order}")
+               LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} {custom} ORDER BY {order}")
 
             datagridview.DataSource = data
             datagridview.Tag = data.DefaultView
@@ -317,8 +317,8 @@ Public Class FormAMEOCINumAPAC
             datagridview.Columns("compet").Width = 80
             datagridview.Columns("medico").HeaderText = "Médico"
             datagridview.Columns("medico").Width = 200
-            ' datagridview.Columns("status").HeaderText = "Status"
-            ' datagridview.Columns("status").Width = 60
+            datagridview.Columns("status").HeaderText = "Status"
+            datagridview.Columns("status").Width = 60
             ' datagridview.Columns("responsavel").HeaderText = "Responsável"
             'datagridview.Columns("responsavel").Width = 150
             ToolStripStatusLabel1.Text = datagridview.Rows.Count & " registros encontrados."
@@ -330,9 +330,12 @@ Public Class FormAMEOCINumAPAC
 
     Private Sub FormAMEOCINumAPAC_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         FormAMEmain.loadComboBox("SELECT id, abrev FROM cod_oci_principal", cbOCI, "abrev", "id")
-        cbOCI.SelectedIndex = -1
+        cbOCI.SelectedIndex = 0
         FormAMEmain.loadComboBox("SELECT id, nome FROM usuarios ORDER BY nome", cbUsuarios, "nome", "id")
         cbUsuarios.SelectedIndex = -1
+        FormAMEOCI.loadComp(cbSearchComp)
+        cbSearchComp.SelectedIndex = 0
+        ToolStripStatusLabel1.Text = ""
     End Sub
 
     Private Sub loadByAPACinterval()
@@ -348,27 +351,14 @@ Public Class FormAMEOCINumAPAC
 
     End Sub
 
-    Private Sub tbAPACFim_TextChanged(sender As Object, e As EventArgs) Handles tbAPACFim.TextChanged
+    Private Sub tbAPACFim_TextChanged(sender As Object, e As EventArgs)
         loadByAPACinterval()
     End Sub
-    Private Sub tbAPACIni_TextChanged(sender As Object, e As EventArgs) Handles tbAPACIni.TextChanged
+    Private Sub tbAPACIni_TextChanged(sender As Object, e As EventArgs)
         loadByAPACinterval()
     End Sub
-    Private Sub chkDisponiveis_CheckedChanged(sender As Object, e As EventArgs) Handles chkDisponiveis.CheckedChanged
-        dgvNumerosAPAC.DataSource = Nothing
-        If chkDisponiveis.Checked Then
-            tbAPACFim.Text = ""
-            tbAPACIni.Text = ""
-            cbOCI.SelectedIndex = -1
-            cbUsuarios.SelectedIndex = -1
-            cbStatus.SelectedIndex = -1
-            loadNUMAPAC(dgvNumerosAPAC,,, True)
-        Else
-            dgvNumerosAPAC.DataSource = Nothing
-        End If
 
-    End Sub
-    Private Sub cbUsuarios_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbUsuarios.SelectionChangeCommitted
+    Private Sub cbUsuarios_SelectionChangeCommitted(sender As Object, e As EventArgs)
         dgvNumerosAPAC.DataSource = Nothing
         tbAPACIni.Text = ""
         tbAPACFim.Text = ""
@@ -387,24 +377,40 @@ Public Class FormAMEOCINumAPAC
         chkDisponiveis.Checked = False
         loadNUMAPAC(dgvNumerosAPAC,,,,, dtpIni.Value, dtpFim.Value,,)
     End Sub
-    Private Sub dtpIni_ValueChanged(sender As Object, e As EventArgs) Handles dtpIni.ValueChanged
+    Private Sub dtpIni_ValueChanged(sender As Object, e As EventArgs)
         loadByData()
     End Sub
-    Private Sub dtpFim_ValueChanged(sender As Object, e As EventArgs) Handles dtpFim.ValueChanged
+    Private Sub dtpFim_ValueChanged(sender As Object, e As EventArgs)
         loadByData()
     End Sub
 
-    Private Sub cbOCI_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbOCI.SelectionChangeCommitted
+    Private Sub cbOCI_SelectionChangeCommitted(sender As Object, e As EventArgs)
         dgvNumerosAPAC.DataSource = Nothing
         tbAPACIni.Text = ""
         tbAPACFim.Text = ""
         cbUsuarios.SelectedIndex = -1
         cbStatus.SelectedIndex = -1
         chkDisponiveis.Checked = False
-        loadNUMAPAC(dgvNumerosAPAC,,,,,, , CStr(cbOCI.SelectedValue))
+        Dim oci As String = cbOCI.SelectedValue
+        If oci > 0 Then
+            oci = oci
+        Else
+            oci = ""
+        End If
+
+        If rbTodos.Checked Then
+            If cbSearchComp.SelectedValue > 0 Then
+                loadNUMAPAC(dgvNumerosAPAC,,, False,,,, oci, "CONC",,, $"AND compet='{cbSearchComp.Text}'")
+            Else
+                loadNUMAPAC(dgvNumerosAPAC,,, False,,,, oci, "CONC")
+            End If
+        Else
+            loadNUMAPAC(dgvNumerosAPAC,,,,,, , CStr(cbOCI.SelectedValue))
+        End If
+
     End Sub
 
-    Private Sub cbStatus_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbStatus.SelectionChangeCommitted
+    Private Sub cbStatus_SelectionChangeCommitted(sender As Object, e As EventArgs)
         dgvNumerosAPAC.DataSource = Nothing
         tbAPACIni.Text = ""
         tbAPACFim.Text = ""
@@ -483,6 +489,50 @@ Public Class FormAMEOCINumAPAC
                     row.DefaultCellStyle.BackColor = Color.Maroon
                     row.DefaultCellStyle.ForeColor = Color.White
             End Select
+        End If
+    End Sub
+
+    Private Sub RadioButton2_CheckedChanged(sender As Object, e As EventArgs) Handles chkDisponiveis.CheckedChanged
+        dgvNumerosAPAC.DataSource = Nothing
+        If chkDisponiveis.Checked Then
+            gbSearch.Enabled = False
+            loadNUMAPAC(dgvNumerosAPAC,,, True)
+        Else
+            dgvNumerosAPAC.DataSource = Nothing
+            gbSearch.Enabled = True
+        End If
+    End Sub
+    Private Sub rbTodos_CheckedChanged(sender As Object, e As EventArgs) Handles rbTodos.CheckedChanged
+        If rbTodos.Checked Then
+            dgvNumerosAPAC.DataSource = Nothing
+            tbAPACFim.Text = ""
+            tbAPACIni.Text = ""
+            cbOCI.SelectedIndex = 0
+            cbUsuarios.SelectedIndex = -1
+            cbStatus.SelectedIndex = -1
+            chkDisponiveis.Checked = False
+            loadNUMAPAC(dgvNumerosAPAC,,,,,,,, "CONC")
+        End If
+    End Sub
+    Private Sub cbSearchComp_SelectedIndexChanged(sender As Object, e As EventArgs)
+        If rbTodos.Checked Then
+            Dim oci As String = cbOCI.SelectedValue
+            Dim comp As String = ""
+            If oci > 0 Then
+                oci = oci
+            Else
+                oci = ""
+            End If
+
+            If cbSearchComp.SelectedValue > 0 Then
+                comp = $"AND compet='{cbSearchComp.Text}'"
+            Else
+                comp = ""
+            End If
+
+            loadNUMAPAC(dgvNumerosAPAC,,, False,,,, oci, "CONC",,, comp)
+        Else
+            dgvNumerosAPAC.DataSource = Nothing
         End If
     End Sub
 

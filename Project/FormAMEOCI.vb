@@ -24,7 +24,7 @@ Public Class FormAMEOCI
     Private nameHasFocused As Boolean = False
     Public Property idUser As Integer
 
-    Private Function competencia(compet As String)
+    Public Function competencia(compet As String)
         compet = MonthName(My.Settings.OCIcompetencia.Substring(4, 2), True).ToUpper & "/" & My.Settings.OCIcompetencia.Substring(0, 4)
         Return compet
 
@@ -752,13 +752,8 @@ Public Class FormAMEOCI
         dtpSearchData.Format = DateTimePickerFormat.Custom
         dtpSearchData.CustomFormat = ""
     End Sub
-    Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        If My.Settings.databaseAME = "" Then
-            FormAMEbd.ShowDialog()
-            Me.Close()
-            Return
-        End If
 
+    Public Sub loadComp(combobox As ComboBox)
         Dim comboComp = FormAMEmain.getDataset("SELECT DISTINCT id, compet FROM oci GROUP BY compet ORDER BY compet DESC")
         Dim dtFinal As DataTable = comboComp.Clone()
 
@@ -774,12 +769,21 @@ Public Class FormAMEOCI
         Next
 
         ' Joga no ComboBox
-        With cbSearchComp
+        With combobox
             .DataSource = dtFinal
             .DisplayMember = "compet"
             .ValueMember = "id"
         End With
-        cbSearchComp.SelectedIndex = -1
+        combobox.SelectedIndex = -1
+    End Sub
+    Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        If My.Settings.databaseAME = "" Then
+            FormAMEbd.ShowDialog()
+            Me.Close()
+            Return
+        End If
+
+        loadComp(cbSearchComp)
 
         Me.Text = $"Gerenciamento de APACs OCI - Competência {competencia(My.Settings.OCIcompetencia)}"
         loadAPACbyUser(idUser)
@@ -1589,7 +1593,7 @@ Public Class FormAMEOCI
                     num = apac.numeroResPaciente
                 End If
 
-                idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{competencia(apac.NomePaciente)}', '{m.mysqlDateFormat(apac.DtnascPaciente)}', '{apac.MaePaciente}', '{ddd}{tel}', '{apac.CPFPaciente}',{idLogra}, {num}, '{apac.complementoPaciente}')")
+                idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{apac.NomePaciente.ToUpper}', '{m.mysqlDateFormat(apac.DtnascPaciente)}', '{apac.MaePaciente.ToUpper}', '{ddd}{tel}', '{apac.CPFPaciente}',{idLogra}, {num}, '{apac.complementoPaciente.ToUpper}')")
             Catch ex As Exception
 
                 Try
@@ -1601,7 +1605,7 @@ Public Class FormAMEOCI
             End Try
 
             Try
-                FormAMEmain.doQuery($"UPDATE oci SET compet='{apac.competencia}', data='{m.mysqlDateFormat(apac.data)}', id_paciente='{idPac}', id_medico='{apac.SUSMedicoExecutante}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{apac.NumeroApac}'")
+                FormAMEmain.doQuery($"UPDATE oci SET compet='{competencia(apac.competencia)}', data='{m.mysqlDateFormat(apac.data)}', id_paciente='{idPac}', id_medico='{apac.SUSMedicoExecutante}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{apac.NumeroApac}'")
             Catch ex As Exception
 
             End Try

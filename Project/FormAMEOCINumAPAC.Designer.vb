@@ -23,9 +23,9 @@ Partial Class FormAMEOCINumAPAC
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.tbFaixaInicio = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -35,22 +35,10 @@ Partial Class FormAMEOCINumAPAC
         Me.dgvNumerosAPAC = New System.Windows.Forms.DataGridView()
         Me.ctxMenuAPAC = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.AlterarStatusToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CopiarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.Label10 = New System.Windows.Forms.Label()
-        Me.cbStatus = New System.Windows.Forms.ComboBox()
-        Me.Label9 = New System.Windows.Forms.Label()
-        Me.cbOCI = New System.Windows.Forms.ComboBox()
-        Me.Label8 = New System.Windows.Forms.Label()
-        Me.Label7 = New System.Windows.Forms.Label()
-        Me.dtpFim = New System.Windows.Forms.DateTimePicker()
-        Me.dtpIni = New System.Windows.Forms.DateTimePicker()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.cbUsuarios = New System.Windows.Forms.ComboBox()
-        Me.Label5 = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.chkDisponiveis = New System.Windows.Forms.CheckBox()
-        Me.tbAPACFim = New System.Windows.Forms.TextBox()
-        Me.tbAPACIni = New System.Windows.Forms.TextBox()
+        Me.chkDisponiveis = New System.Windows.Forms.RadioButton()
+        Me.rbTodos = New System.Windows.Forms.RadioButton()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         Me.Button1 = New System.Windows.Forms.Button()
@@ -58,12 +46,29 @@ Partial Class FormAMEOCINumAPAC
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.statusLabelRegistros = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.CopiarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.gbSearch = New System.Windows.Forms.GroupBox()
+        Me.Label28 = New System.Windows.Forms.Label()
+        Me.cbSearchComp = New System.Windows.Forms.ComboBox()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.cbStatus = New System.Windows.Forms.ComboBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.cbOCI = New System.Windows.Forms.ComboBox()
+        Me.dtpFim = New System.Windows.Forms.DateTimePicker()
+        Me.dtpIni = New System.Windows.Forms.DateTimePicker()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.cbUsuarios = New System.Windows.Forms.ComboBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.tbAPACFim = New System.Windows.Forms.TextBox()
+        Me.tbAPACIni = New System.Windows.Forms.TextBox()
         CType(Me.numQtd, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvNumerosAPAC, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ctxMenuAPAC.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
+        Me.gbSearch.SuspendLayout()
         Me.SuspendLayout()
         '
         'Button2
@@ -131,37 +136,37 @@ Partial Class FormAMEOCINumAPAC
         Me.dgvNumerosAPAC.BackgroundColor = System.Drawing.Color.White
         Me.dgvNumerosAPAC.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvNumerosAPAC.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvNumerosAPAC.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvNumerosAPAC.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvNumerosAPAC.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvNumerosAPAC.ContextMenuStrip = Me.ctxMenuAPAC
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle5.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.SteelBlue
-        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvNumerosAPAC.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.SteelBlue
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvNumerosAPAC.DefaultCellStyle = DataGridViewCellStyle2
         Me.dgvNumerosAPAC.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
         Me.dgvNumerosAPAC.Location = New System.Drawing.Point(6, 66)
         Me.dgvNumerosAPAC.Name = "dgvNumerosAPAC"
         Me.dgvNumerosAPAC.ReadOnly = True
         Me.dgvNumerosAPAC.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
-        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.ControlDark
-        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvNumerosAPAC.RowHeadersDefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.ControlDark
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvNumerosAPAC.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvNumerosAPAC.RowHeadersWidth = 4
         Me.dgvNumerosAPAC.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgvNumerosAPAC.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
@@ -181,23 +186,17 @@ Partial Class FormAMEOCINumAPAC
         Me.AlterarStatusToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
         Me.AlterarStatusToolStripMenuItem.Text = "Alterar Status"
         '
+        'CopiarToolStripMenuItem
+        '
+        Me.CopiarToolStripMenuItem.Name = "CopiarToolStripMenuItem"
+        Me.CopiarToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
+        Me.CopiarToolStripMenuItem.Text = "Copiar"
+        '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.Label10)
-        Me.GroupBox1.Controls.Add(Me.cbStatus)
-        Me.GroupBox1.Controls.Add(Me.Label9)
-        Me.GroupBox1.Controls.Add(Me.cbOCI)
-        Me.GroupBox1.Controls.Add(Me.Label8)
-        Me.GroupBox1.Controls.Add(Me.Label7)
-        Me.GroupBox1.Controls.Add(Me.dtpFim)
-        Me.GroupBox1.Controls.Add(Me.dtpIni)
-        Me.GroupBox1.Controls.Add(Me.Label6)
-        Me.GroupBox1.Controls.Add(Me.cbUsuarios)
-        Me.GroupBox1.Controls.Add(Me.Label5)
-        Me.GroupBox1.Controls.Add(Me.Label4)
+        Me.GroupBox1.Controls.Add(Me.gbSearch)
         Me.GroupBox1.Controls.Add(Me.chkDisponiveis)
-        Me.GroupBox1.Controls.Add(Me.tbAPACFim)
-        Me.GroupBox1.Controls.Add(Me.tbAPACIni)
+        Me.GroupBox1.Controls.Add(Me.rbTodos)
         Me.GroupBox1.Controls.Add(Me.dgvNumerosAPAC)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 64)
         Me.GroupBox1.Name = "GroupBox1"
@@ -206,135 +205,25 @@ Partial Class FormAMEOCINumAPAC
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Números gerados"
         '
-        'Label10
-        '
-        Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(857, 24)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(37, 13)
-        Me.Label10.TabIndex = 48
-        Me.Label10.Text = "Status"
-        '
-        'cbStatus
-        '
-        Me.cbStatus.FormattingEnabled = True
-        Me.cbStatus.Items.AddRange(New Object() {"DISP", "CONC", "CANC", "BLOQ"})
-        Me.cbStatus.Location = New System.Drawing.Point(860, 40)
-        Me.cbStatus.Name = "cbStatus"
-        Me.cbStatus.Size = New System.Drawing.Size(76, 21)
-        Me.cbStatus.TabIndex = 47
-        '
-        'Label9
-        '
-        Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(597, 24)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(25, 13)
-        Me.Label9.TabIndex = 46
-        Me.Label9.Text = "OCI"
-        '
-        'cbOCI
-        '
-        Me.cbOCI.FormattingEnabled = True
-        Me.cbOCI.Location = New System.Drawing.Point(600, 40)
-        Me.cbOCI.Name = "cbOCI"
-        Me.cbOCI.Size = New System.Drawing.Size(254, 21)
-        Me.cbOCI.TabIndex = 45
-        '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(422, 25)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(30, 13)
-        Me.Label8.TabIndex = 44
-        Me.Label8.Text = "Data"
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(505, 43)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(13, 13)
-        Me.Label7.TabIndex = 43
-        Me.Label7.Text = "à"
-        '
-        'dtpFim
-        '
-        Me.dtpFim.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtpFim.Location = New System.Drawing.Point(519, 40)
-        Me.dtpFim.Name = "dtpFim"
-        Me.dtpFim.Size = New System.Drawing.Size(78, 20)
-        Me.dtpFim.TabIndex = 42
-        '
-        'dtpIni
-        '
-        Me.dtpIni.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtpIni.Location = New System.Drawing.Point(425, 40)
-        Me.dtpIni.Name = "dtpIni"
-        Me.dtpIni.Size = New System.Drawing.Size(78, 20)
-        Me.dtpIni.TabIndex = 41
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(284, 25)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(43, 13)
-        Me.Label6.TabIndex = 40
-        Me.Label6.Text = "Usuário"
-        '
-        'cbUsuarios
-        '
-        Me.cbUsuarios.FormattingEnabled = True
-        Me.cbUsuarios.Location = New System.Drawing.Point(287, 40)
-        Me.cbUsuarios.Name = "cbUsuarios"
-        Me.cbUsuarios.Size = New System.Drawing.Size(135, 21)
-        Me.cbUsuarios.TabIndex = 39
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(85, 24)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(48, 13)
-        Me.Label5.TabIndex = 38
-        Me.Label5.Text = "Intervalo"
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(180, 43)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(13, 13)
-        Me.Label4.TabIndex = 37
-        Me.Label4.Text = "e"
-        '
         'chkDisponiveis
         '
         Me.chkDisponiveis.AutoSize = True
-        Me.chkDisponiveis.Location = New System.Drawing.Point(7, 42)
+        Me.chkDisponiveis.Location = New System.Drawing.Point(8, 43)
         Me.chkDisponiveis.Name = "chkDisponiveis"
-        Me.chkDisponiveis.Size = New System.Drawing.Size(80, 17)
-        Me.chkDisponiveis.TabIndex = 34
+        Me.chkDisponiveis.Size = New System.Drawing.Size(79, 17)
+        Me.chkDisponiveis.TabIndex = 50
         Me.chkDisponiveis.Text = "Disponiveis"
         Me.chkDisponiveis.UseVisualStyleBackColor = True
         '
-        'tbAPACFim
+        'rbTodos
         '
-        Me.tbAPACFim.Location = New System.Drawing.Point(193, 40)
-        Me.tbAPACFim.MaxLength = 13
-        Me.tbAPACFim.Name = "tbAPACFim"
-        Me.tbAPACFim.Size = New System.Drawing.Size(91, 20)
-        Me.tbAPACFim.TabIndex = 36
-        '
-        'tbAPACIni
-        '
-        Me.tbAPACIni.Location = New System.Drawing.Point(88, 40)
-        Me.tbAPACIni.MaxLength = 13
-        Me.tbAPACIni.Name = "tbAPACIni"
-        Me.tbAPACIni.Size = New System.Drawing.Size(91, 20)
-        Me.tbAPACIni.TabIndex = 35
+        Me.rbTodos.AutoSize = True
+        Me.rbTodos.Location = New System.Drawing.Point(8, 25)
+        Me.rbTodos.Name = "rbTodos"
+        Me.rbTodos.Size = New System.Drawing.Size(55, 17)
+        Me.rbTodos.TabIndex = 49
+        Me.rbTodos.Text = "Todos"
+        Me.rbTodos.UseVisualStyleBackColor = True
         '
         'Label3
         '
@@ -378,11 +267,166 @@ Partial Class FormAMEOCINumAPAC
         Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(32, 17)
         Me.ToolStripStatusLabel1.Text = "Regs"
         '
-        'CopiarToolStripMenuItem
+        'gbSearch
         '
-        Me.CopiarToolStripMenuItem.Name = "CopiarToolStripMenuItem"
-        Me.CopiarToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
-        Me.CopiarToolStripMenuItem.Text = "Copiar"
+        Me.gbSearch.Controls.Add(Me.Label28)
+        Me.gbSearch.Controls.Add(Me.cbSearchComp)
+        Me.gbSearch.Controls.Add(Me.Label10)
+        Me.gbSearch.Controls.Add(Me.cbStatus)
+        Me.gbSearch.Controls.Add(Me.Label9)
+        Me.gbSearch.Controls.Add(Me.Label8)
+        Me.gbSearch.Controls.Add(Me.Label7)
+        Me.gbSearch.Controls.Add(Me.cbOCI)
+        Me.gbSearch.Controls.Add(Me.dtpFim)
+        Me.gbSearch.Controls.Add(Me.dtpIni)
+        Me.gbSearch.Controls.Add(Me.Label6)
+        Me.gbSearch.Controls.Add(Me.cbUsuarios)
+        Me.gbSearch.Controls.Add(Me.Label5)
+        Me.gbSearch.Controls.Add(Me.Label4)
+        Me.gbSearch.Controls.Add(Me.tbAPACFim)
+        Me.gbSearch.Controls.Add(Me.tbAPACIni)
+        Me.gbSearch.Location = New System.Drawing.Point(93, 0)
+        Me.gbSearch.Name = "gbSearch"
+        Me.gbSearch.Size = New System.Drawing.Size(849, 64)
+        Me.gbSearch.TabIndex = 51
+        Me.gbSearch.TabStop = False
+        '
+        'Label28
+        '
+        Me.Label28.AutoSize = True
+        Me.Label28.Location = New System.Drawing.Point(4, 14)
+        Me.Label28.Name = "Label28"
+        Me.Label28.Size = New System.Drawing.Size(69, 13)
+        Me.Label28.TabIndex = 79
+        Me.Label28.Text = "Competência"
+        '
+        'cbSearchComp
+        '
+        Me.cbSearchComp.FormattingEnabled = True
+        Me.cbSearchComp.Location = New System.Drawing.Point(7, 30)
+        Me.cbSearchComp.Name = "cbSearchComp"
+        Me.cbSearchComp.Size = New System.Drawing.Size(76, 21)
+        Me.cbSearchComp.TabIndex = 78
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(766, 14)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(37, 13)
+        Me.Label10.TabIndex = 77
+        Me.Label10.Text = "Status"
+        '
+        'cbStatus
+        '
+        Me.cbStatus.FormattingEnabled = True
+        Me.cbStatus.Items.AddRange(New Object() {"DISP", "CONC", "CANC", "BLOQ"})
+        Me.cbStatus.Location = New System.Drawing.Point(769, 30)
+        Me.cbStatus.Name = "cbStatus"
+        Me.cbStatus.Size = New System.Drawing.Size(76, 21)
+        Me.cbStatus.TabIndex = 76
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(81, 15)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(25, 13)
+        Me.Label9.TabIndex = 75
+        Me.Label9.Text = "OCI"
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(593, 15)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(30, 13)
+        Me.Label8.TabIndex = 73
+        Me.Label8.Text = "Data"
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(676, 33)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(13, 13)
+        Me.Label7.TabIndex = 72
+        Me.Label7.Text = "à"
+        '
+        'cbOCI
+        '
+        Me.cbOCI.FormattingEnabled = True
+        Me.cbOCI.Location = New System.Drawing.Point(84, 30)
+        Me.cbOCI.Name = "cbOCI"
+        Me.cbOCI.Size = New System.Drawing.Size(178, 21)
+        Me.cbOCI.TabIndex = 74
+        '
+        'dtpFim
+        '
+        Me.dtpFim.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.dtpFim.Location = New System.Drawing.Point(690, 30)
+        Me.dtpFim.Name = "dtpFim"
+        Me.dtpFim.Size = New System.Drawing.Size(78, 20)
+        Me.dtpFim.TabIndex = 71
+        '
+        'dtpIni
+        '
+        Me.dtpIni.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.dtpIni.Location = New System.Drawing.Point(596, 30)
+        Me.dtpIni.Name = "dtpIni"
+        Me.dtpIni.Size = New System.Drawing.Size(78, 20)
+        Me.dtpIni.TabIndex = 70
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(457, 15)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(43, 13)
+        Me.Label6.TabIndex = 69
+        Me.Label6.Text = "Usuário"
+        '
+        'cbUsuarios
+        '
+        Me.cbUsuarios.FormattingEnabled = True
+        Me.cbUsuarios.Location = New System.Drawing.Point(460, 30)
+        Me.cbUsuarios.Name = "cbUsuarios"
+        Me.cbUsuarios.Size = New System.Drawing.Size(135, 21)
+        Me.cbUsuarios.TabIndex = 68
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(260, 14)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(48, 13)
+        Me.Label5.TabIndex = 67
+        Me.Label5.Text = "Intervalo"
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(355, 33)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(13, 13)
+        Me.Label4.TabIndex = 66
+        Me.Label4.Text = "e"
+        '
+        'tbAPACFim
+        '
+        Me.tbAPACFim.Location = New System.Drawing.Point(368, 30)
+        Me.tbAPACFim.MaxLength = 13
+        Me.tbAPACFim.Name = "tbAPACFim"
+        Me.tbAPACFim.Size = New System.Drawing.Size(91, 20)
+        Me.tbAPACFim.TabIndex = 65
+        '
+        'tbAPACIni
+        '
+        Me.tbAPACIni.Location = New System.Drawing.Point(263, 30)
+        Me.tbAPACIni.MaxLength = 13
+        Me.tbAPACIni.Name = "tbAPACIni"
+        Me.tbAPACIni.Size = New System.Drawing.Size(91, 20)
+        Me.tbAPACIni.TabIndex = 64
         '
         'FormAMEOCINumAPAC
         '
@@ -411,6 +455,8 @@ Partial Class FormAMEOCINumAPAC
         Me.GroupBox1.PerformLayout()
         Me.StatusStrip1.ResumeLayout(False)
         Me.StatusStrip1.PerformLayout()
+        Me.gbSearch.ResumeLayout(False)
+        Me.gbSearch.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -427,25 +473,29 @@ Partial Class FormAMEOCINumAPAC
     Friend WithEvents SaveFileDialog1 As SaveFileDialog
     Friend WithEvents Button1 As Button
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
-    Friend WithEvents chkDisponiveis As CheckBox
-    Friend WithEvents Label5 As Label
-    Friend WithEvents Label4 As Label
-    Friend WithEvents tbAPACFim As TextBox
-    Friend WithEvents tbAPACIni As TextBox
-    Friend WithEvents Label6 As Label
-    Friend WithEvents cbUsuarios As ComboBox
-    Friend WithEvents Label8 As Label
-    Friend WithEvents Label7 As Label
-    Friend WithEvents dtpFim As DateTimePicker
-    Friend WithEvents dtpIni As DateTimePicker
-    Friend WithEvents Label9 As Label
-    Friend WithEvents cbOCI As ComboBox
     Friend WithEvents StatusStrip1 As StatusStrip
-    Friend WithEvents cbStatus As ComboBox
-    Friend WithEvents Label10 As Label
     Friend WithEvents statusLabelRegistros As ToolStripStatusLabel
     Friend WithEvents ToolStripStatusLabel1 As ToolStripStatusLabel
     Friend WithEvents ctxMenuAPAC As ContextMenuStrip
     Friend WithEvents AlterarStatusToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CopiarToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents rbTodos As RadioButton
+    Friend WithEvents chkDisponiveis As RadioButton
+    Friend WithEvents gbSearch As GroupBox
+    Friend WithEvents Label28 As Label
+    Friend WithEvents cbSearchComp As ComboBox
+    Friend WithEvents Label10 As Label
+    Friend WithEvents cbStatus As ComboBox
+    Friend WithEvents Label9 As Label
+    Friend WithEvents Label8 As Label
+    Friend WithEvents Label7 As Label
+    Friend WithEvents cbOCI As ComboBox
+    Friend WithEvents dtpFim As DateTimePicker
+    Friend WithEvents dtpIni As DateTimePicker
+    Friend WithEvents Label6 As Label
+    Friend WithEvents cbUsuarios As ComboBox
+    Friend WithEvents Label5 As Label
+    Friend WithEvents Label4 As Label
+    Friend WithEvents tbAPACFim As TextBox
+    Friend WithEvents tbAPACIni As TextBox
 End Class
