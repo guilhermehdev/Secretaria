@@ -454,9 +454,11 @@ Public Class FormAMEOCINumAPAC
         FormAMEOCIGeradorAPAC.ShowDialog()
     End Sub
     Private Sub cbMedico_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbMedico.SelectedIndexChanged
+        Dim oci As String = cbOCI.SelectedValue
+        Dim comp As String = ""
+        Dim medico As String = cbMedico.SelectedValue.ToString
+
         If rbTodos.Checked Then
-            Dim oci As String = cbOCI.SelectedValue
-            Dim comp As String = ""
 
             If oci > 0 Then
                 oci = oci
@@ -470,9 +472,15 @@ Public Class FormAMEOCINumAPAC
                 comp = ""
             End If
 
-            loadNUMAPAC(dgvNumerosAPAC,,, False,,,, oci, "CONC",,, comp, cbMedico.SelectedValue)
+            If medico > 0 Then
+                medico = medico
+            Else
+                medico = ""
+            End If
+
+            loadNUMAPAC(dgvNumerosAPAC,,, False,,,, oci, "CONC",,, comp, medico)
         Else
-            loadNUMAPAC(dgvNumerosAPAC,,, False,,,,, "CONC",,,, cbMedico.SelectedValue.ToString)
+            loadNUMAPAC(dgvNumerosAPAC,,, False,,,,, "CONC",,,, medico)
         End If
     End Sub
 
