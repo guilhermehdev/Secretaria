@@ -881,7 +881,29 @@ Public Class Main
         ' Retorna o valor real
         Return val
     End Function
+    Public Sub setCursorStart(ctrl As Object)
+        Dim tbBase As TextBoxBase = TryCast(ctrl, TextBoxBase)
+        If tbBase Is Nothing Then Exit Sub
 
+        Dim textoDigitado As String = ""
+
+        ' MaskedTextBox: pega só o que o usuário digitou (sem máscara)
+        Dim m As MaskedTextBox = TryCast(ctrl, MaskedTextBox)
+        If m IsNot Nothing Then
+            Dim oldFormat = m.TextMaskFormat
+            m.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals
+            textoDigitado = m.Text
+            m.TextMaskFormat = oldFormat
+        Else
+            ' TextBox normal
+            textoDigitado = tbBase.Text
+        End If
+
+        ' Se NÃO tem nada digitado → cursor no início
+        If String.IsNullOrWhiteSpace(textoDigitado) Then
+            tbBase.SelectionStart = 0
+        End If
+    End Sub
 
 End Class
 

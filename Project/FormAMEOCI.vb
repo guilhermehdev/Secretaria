@@ -776,6 +776,10 @@ Public Class FormAMEOCI
         End With
 
     End Sub
+    Private Sub popupGrid_MouseLeave()
+        popupGrid.Visible = False
+    End Sub
+
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If My.Settings.databaseAME = "" Then
             FormAMEbd.ShowDialog()
@@ -818,6 +822,7 @@ Public Class FormAMEOCI
         Me.Controls.Add(popupGrid)
         popupGrid.BringToFront()
 
+        AddHandler popupGrid.MouseLeave, AddressOf popupGrid_MouseLeave
         ' Timer debounce
         AddHandler debounceTimer.Tick, AddressOf BuscarPacientes
         AddHandler popupGrid.CellClick, AddressOf popupGrid_CellClick
@@ -1705,6 +1710,26 @@ Public Class FormAMEOCI
     End Sub
     Private Sub txtNomeMae_Leave(sender As Object, e As EventArgs) Handles txtNomeMae.Leave
         chkResponsavel()
+    End Sub
+
+    Private Sub dtNascimento_Enter(sender As Object, e As EventArgs) Handles dtNascimento.Enter
+        m.setCursorStart(dtNascimento)
+    End Sub
+
+    Private Sub txtCep_Enter(sender As Object, e As EventArgs) Handles txtCep.Enter
+        m.setCursorStart(txtCep)
+    End Sub
+    Private Sub txtCpfPaciente_Enter(sender As Object, e As EventArgs) Handles txtCpfPaciente.Enter
+        m.setCursorStart(txtCpfPaciente)
+    End Sub
+    Private Sub dtNascimento_Click(sender As Object, e As EventArgs) Handles dtNascimento.Click
+        m.setCursorStart(dtNascimento)
+    End Sub
+    Private Sub txtCep_Click(sender As Object, e As EventArgs) Handles txtCep.Click
+        m.setCursorStart(txtCep)
+    End Sub
+    Private Sub txtCpfPaciente_Click(sender As Object, e As EventArgs) Handles txtCpfPaciente.Click
+        m.setCursorStart(txtCpfPaciente)
     End Sub
 
 End Class
