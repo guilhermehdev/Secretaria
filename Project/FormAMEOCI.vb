@@ -108,7 +108,7 @@ Public Class FormAMEOCI
             ' If idPac Is DBNull.Value Then
             If idPac < 0 Then
                 Try
-                    idPacSQL = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{txtNomePaciente.Text}', '{m.mysqlDateFormat(dtNascimento.Text)}', '{txtNomeMae.Text}', '({txtDDD.Text}){txtTelefone.Text}', '{txtCpfPaciente.Text}',{endereco.Rows(0).Item("id")}, '{txtNumero.Text}', '{txtComplemento.Text}')")
+                    idPacSQL = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{txtNomePaciente.Text}', '{m.mysqlDateFormat(dtNascimento.Text)}', '{txtNomeMae.Text}', '({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', '{txtCpfPaciente.Text}',{endereco.Rows(0).Item("id")}, '{txtNumero.Text}', '{txtComplemento.Text}')")
 
                 Catch ex As Exception
                     Dim queryCPF = FormAMEmain.getDataset($"SELECT id FROM pacientes WHERE cpf='{txtCpfPaciente.Text}'").Rows(0).Item("id").ToString()
@@ -121,11 +121,10 @@ Public Class FormAMEOCI
             Else
                 idPacSQL = idPac.ToString()
                 If completeCPF(idPacSQL) Then
-                    FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text}' WHERE id={idPac}")
-                End If
-            End If
 
-            Exit Function
+                End If
+                FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text}', mae='{txtNomeMae.Text}', tel='({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', id_logradouro={endereco.Rows(0).Item("id")}, numero='{txtNumero.Text}', complemento='{txtComplemento.Text}' WHERE id={idPac}")
+            End If
 
             Dim query = $"UPDATE oci Set compet='{competencia(My.Settings.OCIcompetencia)}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPacSQL}, id_medico='{txtCNSMedicoExecutante.SelectedValue}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
 
