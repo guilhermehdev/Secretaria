@@ -30,12 +30,42 @@ Public Class FormAMEOCI
 
     End Function
 
-    Private Function completeCPF(id As Integer)
-        Dim hasCPF = FormAMEmain.getDataset($"SELECT cpf FROM pacientes WHERE id={id}")
-        If hasCPF.Rows.Count = 0 Then
+    Private Function hasCPF(cpfValue As Object) As Boolean
+
+        ' 1. Trata NULO vindo do banco (DBNull)
+        If cpfValue Is DBNull.Value Then
             Return False
+        End If
+
+        ' 2. Trata Nothing do VB
+        If cpfValue Is Nothing Then
+            Return False
+        End If
+
+        ' 3. Converte pra string
+        Dim cpf As String = cpfValue.ToString().Trim()
+
+        ' 4. Se string vazia → não tem CPF
+        If cpf = "" Then
+            Return False
+        End If
+
+        ' 5. Se chegou aqui → tem CPF
+        Return True
+    End Function
+
+
+    Private Function completeCPF(id As Integer)
+        Dim dt = FormAMEmain.getDataset($"SELECT cpf FROM pacientes WHERE id={id}")
+
+        If dt.Rows.Count > 0 Then
+            If hasCPF(dt.Rows(0)("cpf")) Then
+                Return False
+            Else
+                Return True
+            End If
         Else
-            Return True
+            Return False
         End If
     End Function
 
@@ -71,30 +101,33 @@ Public Class FormAMEOCI
 
         Try
             ' Obtem ID do paciente de forma segura
-            Dim idPac As Object = m.SafeValue(result, "id", 0)
-
+            Dim idPac As Object = IDpacienteSelecionado
             ' Se o valor for DBNull, precisa gravar NULL literal na query (sem aspas)
-            Dim idPacSQL As String
+            Dim idPacSQL As String = "NULL"
 
-            If idPac Is DBNull.Value Then
+            ' If idPac Is DBNull.Value Then
+            If idPac < 0 Then
                 Try
                     idPacSQL = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{txtNomePaciente.Text}', '{m.mysqlDateFormat(dtNascimento.Text)}', '{txtNomeMae.Text}', '({txtDDD.Text}){txtTelefone.Text}', '{txtCpfPaciente.Text}',{endereco.Rows(0).Item("id")}, '{txtNumero.Text}', '{txtComplemento.Text}')")
 
                 Catch ex As Exception
-                    'MsgBox("Paciente já cadastrado!")
-                    idPacSQL = FormAMEmain.getDataset($"SELECT id FROM pacientes WHERE cpf='{txtCpfPaciente.Text}'").Rows(0).Item("id").ToString()
+                    Dim queryCPF = FormAMEmain.getDataset($"SELECT id FROM pacientes WHERE cpf='{txtCpfPaciente.Text}'").Rows(0).Item("id").ToString()
+                    If queryCPF.Count > 0 Then
+                        idPacSQL = queryCPF
+                    End If
+
                 End Try
 
             Else
                 idPacSQL = idPac.ToString()
-                If Not completeCPF(idPac) Then
+                If completeCPF(idPacSQL) Then
                     FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text}' WHERE id={idPac}")
                 End If
             End If
 
-            Dim query = $"UPDATE oci Set compet='{competencia(My.Settings.OCIcompetencia)}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPacSQL}, id_medico='{txtCNSMedicoExecutante.SelectedValue}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
+            Exit Function
 
-            ' Debug.Write(query)
+            Dim query = $"UPDATE oci Set compet='{competencia(My.Settings.OCIcompetencia)}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPacSQL}, id_medico='{txtCNSMedicoExecutante.SelectedValue}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
 
             If FormAMEmain.doQuery(query) Then
                 clearFields()
@@ -118,6 +151,7 @@ Public Class FormAMEOCI
 
     End Function
     Private Sub btnAddPacAPAC_Click(sender As Object, e As EventArgs) Handles btnGerarArquivo.Click
+
         Try
             ' ==================== VALIDAÇÕES ====================
             If txtNumApac.Text.Trim() = "" Then Throw New Exception("Informe o número da APAC.")
@@ -1314,6 +1348,9 @@ Public Class FormAMEOCI
     Private Sub popupGrid_CellClick(sender As Object, e As DataGridViewCellEventArgs)
         If e.RowIndex >= 0 Then
             IDpacienteSelecionado = CInt(popupGrid.Rows(e.RowIndex).Cells("id").Value)
+
+            ' MsgBox(IDpacienteSelecionado)
+
             Try
                 isLoading = True ' 🔒 bloqueia o TextChanged durante a seleção
                 debounceTimer.Stop()
@@ -1324,8 +1361,8 @@ Public Class FormAMEOCI
                 Dim dtSelecionado As DataTable = result.Clone()
                 dtSelecionado.ImportRow(linhas(0))
                 popupGrid.Visible = False
-
                 resultPacientes(dtSelecionado)
+
             Finally
                 isLoading = False ' 🔓 libera novamente
             End Try
@@ -1334,7 +1371,7 @@ Public Class FormAMEOCI
 
     Private Sub resultPacientes(result As DataTable)
         Try
-
+            'MsgBox(result.Rows(0).Item("id"))
             If result.Rows.Count > 0 Then
                 ' txtNomePaciente.Text = result.Rows(0).Item("nome").ToString
                 If result.Rows(0).Item("id_logradouro") <> 0 Then
@@ -1388,6 +1425,7 @@ Public Class FormAMEOCI
     End Sub
     Private Sub txtNomePaciente_Leave(sender As Object, e As EventArgs) Handles txtNomePaciente.Leave
         chkResponsavel()
+        'MsgBox(m.SafeValue(result, "id", 0))
     End Sub
 
     Private Sub txtCNSMedicoExecutante_SelectedIndexChanged(sender As Object, e As EventArgs) Handles txtCNSMedicoExecutante.SelectedIndexChanged

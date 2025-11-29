@@ -862,6 +862,8 @@ Public Class Main
         Return cpf.EndsWith(digito1.ToString() & digito2.ToString())
     End Function
     Public Function SafeValue(dt As DataTable, columnName As String, Optional rowIndex As Integer = 0) As Object
+
+        ' msgAlert(dt.Rows(0).Item(0).ToString)
         ' Se DataTable é Nothing ou sem linhas → retorna DBNull
         If dt Is Nothing OrElse dt.Rows.Count = 0 Then
             Return DBNull.Value
