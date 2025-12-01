@@ -20,7 +20,7 @@ Public Class FormAMEOCI
     Private popupGrid As DataGridView
     Private debounceTimer As New Timer() With {.Interval = 300}
     Private isLoading As Boolean = False
-    Private IDpacienteSelecionado As Integer = -1
+    Private IDpacienteSelecionado As Integer = Nothing
     Private nameHasFocused As Boolean = False
     Public Property idUser As Integer
 
@@ -102,46 +102,38 @@ Public Class FormAMEOCI
         Try
             ' Obtem ID do paciente de forma segura
             Dim idPac As Object = IDpacienteSelecionado
-            ' Se o valor for DBNull, precisa gravar NULL literal na query (sem aspas)
-            Dim idPacSQL As String = "NULL"
 
-            ' If idPac Is DBNull.Value Then
-            If idPac < 0 Then
+            If idPac = Nothing Then
                 Try
-                    idPacSQL = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{txtNomePaciente.Text}', '{m.mysqlDateFormat(dtNascimento.Text)}', '{txtNomeMae.Text}', '({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', '{txtCpfPaciente.Text}',{endereco.Rows(0).Item("id")}, '{txtNumero.Text}', '{txtComplemento.Text}')")
+                    idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{txtNomePaciente.Text.Trim()}', '{m.mysqlDateFormat(dtNascimento.Text)}', '{txtNomeMae.Text.Trim()}', '({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', '{txtCpfPaciente.Text.Trim()}',{endereco.Rows(0).Item("id")}, '{txtNumero.Text.Trim()}', '{txtComplemento.Text.Trim()}')")
 
                 Catch ex As Exception
                     Dim queryCPF = FormAMEmain.getDataset($"SELECT id FROM pacientes WHERE cpf='{txtCpfPaciente.Text}'").Rows(0).Item("id").ToString()
                     If queryCPF.Count > 0 Then
-                        idPacSQL = queryCPF
+                        idPac = queryCPF
                     End If
 
                 End Try
 
             Else
-                idPacSQL = idPac.ToString()
-                If completeCPF(idPacSQL) Then
-
-                End If
-                FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text}', mae='{txtNomeMae.Text}', tel='({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', id_logradouro={endereco.Rows(0).Item("id")}, numero='{txtNumero.Text}', complemento='{txtComplemento.Text}' WHERE id={idPac}")
+                'Dim newCPF As String = ""
+                'If completeCPF(idPacSQL) Then
+                '    newCPF = txtCpfPaciente.Text.Trim()
+                'End If
+                FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text.Trim()}', mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', id_logradouro={endereco.Rows(0).Item("id")}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}' WHERE id={idPac}")
             End If
 
-            Dim query = $"UPDATE oci Set compet='{competencia(My.Settings.OCIcompetencia)}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPacSQL}, id_medico='{txtCNSMedicoExecutante.SelectedValue}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
+            Dim query = $"UPDATE oci Set compet='{competencia(My.Settings.OCIcompetencia)}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPac}, id_medico='{txtCNSMedicoExecutante.SelectedValue}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
 
             If FormAMEmain.doQuery(query) Then
                 clearFields()
                 btNovonumeroAPAC.Enabled = True
-                If dtpSearchData.CustomFormat = "" Then
-                    loadAPACbyUser(idUser)
-                Else
-                    FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC")
-                End If
 
+                FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC")
                 'txtNumApac.Text = GetAndLockNextApac()
+                IDpacienteSelecionado = Nothing
             End If
-
-                Return True
-
+            Return True
         Catch ex As Exception
             UnlockApac(txtNumApac.Text)
             MsgBox("Erro ao salvar APAC: " & ex.Message)
@@ -996,9 +988,12 @@ Public Class FormAMEOCI
             txtMotivoSaida.DisplayMember = "Value"   ' O que aparece para o usuário
             txtMotivoSaida.ValueMember = "Key"
             txtMotivoSaida.SelectedIndex = 1
-            FormAMEmain.loadComboBox("Select id, abrev FROM cod_oci_principal", cbSearchOCI, "abrev", "id")
+
+            FormAMEmain.loadComboBox("SELECT id, abrev FROM cod_oci_principal ORDER BY ID", cbSearchOCI, "id", "abrev", True)
+            ckbSearchTodos.Checked = True
+
         Catch ex As Exception
-            MsgBox(ex.Message)
+            ' MsgBox(ex.Message)
             FormAMEOCIControleCompetencia.ShowDialog()
         End Try
 
@@ -1682,7 +1677,7 @@ Public Class FormAMEOCI
     Private Sub cbSearchOCI_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSearchOCI.SelectedIndexChanged
         LimparData()
         Dim dv As DataView = CType(dgOCIcadastradas.Tag, DataView)
-        If cbSearchOCI.Text = "TODOS" Then
+        If cbSearchOCI.Text.ToString = "TODOS" Then
             dv.RowFilter = ""  ' Remove o filtro
         Else
             ' Filtra por uma ou mais colunas contendo o texto
