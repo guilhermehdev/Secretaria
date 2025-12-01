@@ -848,7 +848,6 @@ Public Class FormAMEOCI
         popupGrid.BringToFront()
 
         AddHandler popupGrid.MouseLeave, AddressOf popupGrid_MouseLeave
-        ' Timer debounce
         AddHandler debounceTimer.Tick, AddressOf BuscarPacientes
         AddHandler popupGrid.CellClick, AddressOf popupGrid_CellClick
 
