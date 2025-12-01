@@ -831,7 +831,7 @@ Public Class FormAMEOCI
         .SelectionMode = DataGridViewSelectionMode.FullRowSelect,
         .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
         .BackgroundColor = Color.White,
-        .BorderStyle = BorderStyle.None,
+        .BorderStyle = BorderStyle.FixedSingle,
         .Width = 500,
         .Height = 250
     }
