@@ -1283,18 +1283,23 @@ Public Class FormAMEOCI
 
     End Sub
 
-    Private Sub BuscarPacientes(sender As Object, e As EventArgs)
+    Private Sub BuscarPacientes(sender As Object, e As EventArgs, Optional parameter As String = "nome")
         debounceTimer.Stop()
         Dim texto As String = txtNomePaciente.Text.Trim()
 
-        If texto.Length < 4 Then
-            popupGrid.Visible = False
-            Exit Sub
-        End If
-
         Try
             isLoading = True
-            result = getPacientes(, txtNomePaciente.Text,,)
+            If parameter = "nome" Then
+                If texto.Length < 4 Then
+                    popupGrid.Visible = False
+                    Exit Sub
+                End If
+                result = getPacientes(, txtNomePaciente.Text,,)
+            ElseIf parameter = "cpf" Then
+                result = getPacientes(txtCpfPaciente.Text)
+            ElseIf parameter = "dtnasc" Then
+                result = getPacientes(, , m.mysqlDateFormat(dtNascimento.Text))
+            End If
 
             If result.Rows.Count > 0 Then
                 popupGrid.DataSource = result
@@ -1736,9 +1741,18 @@ Public Class FormAMEOCI
         popupGrid.Visible = False
     End Sub
     Private Sub dtNascimento_TextChanged(sender As Object, e As EventArgs) Handles dtNascimento.TextChanged
-        If dtNascimento.Text.Length = 10 Then
-            chkResponsavel()
-        End If
+        Try
+            If dtNascimento.Text.Length = 10 Then
+
+                popupGrid.Visible = True
+                BuscarPacientes(sender, e, "dtnasc")
+                chkResponsavel()
+            Else
+                popupGrid.Visible = False
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
     End Sub
     Private Sub txtNomeMae_Leave(sender As Object, e As EventArgs) Handles txtNomeMae.Leave
         chkResponsavel()
