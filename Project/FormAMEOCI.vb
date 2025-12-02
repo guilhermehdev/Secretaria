@@ -1750,7 +1750,7 @@ Public Class FormAMEOCI
                 popupGrid.Visible = False
             End If
         Catch ex As Exception
-            MsgBox(ex.Message)
+            'MsgBox(ex.Message)
         End Try
     End Sub
     Private Sub txtNomeMae_Leave(sender As Object, e As EventArgs) Handles txtNomeMae.Leave
