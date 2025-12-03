@@ -133,6 +133,7 @@ Public Class FormAMEOCI
                 'txtNumApac.Text = GetAndLockNextApac()
                 IDpacienteSelecionado = Nothing
             End If
+            result.Clear()
             Return True
         Catch ex As Exception
             UnlockApac(txtNumApac.Text)
@@ -142,7 +143,6 @@ Public Class FormAMEOCI
 
     End Function
     Private Sub btnAddPacAPAC_Click(sender As Object, e As EventArgs) Handles btnGerarArquivo.Click
-
         Try
             ' ==================== VALIDAÇÕES ====================
             If txtNumApac.Text.Trim() = "" Then Throw New Exception("Informe o número da APAC.")
@@ -153,7 +153,13 @@ Public Class FormAMEOCI
             End If
 
             If dtNascimento.Text.Trim() = "" Then Throw New Exception("Informe a data de nascimento Do paciente.")
+
             chkResponsavel()
+
+            If txtProcedimentoPrincipal.SelectedValue = "0905010035" AndAlso CInt(m.AgeInMonths(m.mysqlDateFormat(dtNascimento.Text), m.mysqlDateFormat(dtValidadeIni.Value))) < 108 Then
+                Throw New Exception("Paciente com idade inferior a 9 anos não permitido para procedimento 0905010035.")
+            End If
+
             If txtNomePaciente.Text.Trim() = "" Then Throw New Exception("Informe o nome Do paciente.")
             If txtNomeMae.Text.Trim() = "" Then Throw New Exception("Informe o nome da mãe.")
             If txtNomeRespPaciente.Text.Trim() = "" Then Throw New Exception("Informe o nome Do responsável.")
@@ -309,7 +315,7 @@ Public Class FormAMEOCI
                 txtCidSecundario.SelectedIndex = selectedCIDS
             End If
         Catch ex As Exception
-            MessageBox.Show("⚠️ Erro ao gerar arquivo: " & ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("⚠️ Erro ao gravar registro: " & ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
@@ -1332,6 +1338,9 @@ Public Class FormAMEOCI
                     popupGrid.Visible = True
                 End If
 
+            Else
+                result.Clear()
+                popupGrid.Visible = False
             End If
 
         Catch ex As Exception
@@ -1748,6 +1757,7 @@ Public Class FormAMEOCI
                 chkResponsavel()
             Else
                 popupGrid.Visible = False
+                result.Clear()
             End If
         Catch ex As Exception
             'MsgBox(ex.Message)
@@ -1775,6 +1785,12 @@ Public Class FormAMEOCI
     End Sub
     Private Sub txtCpfPaciente_Click(sender As Object, e As EventArgs) Handles txtCpfPaciente.Click
         m.setCursorStart(txtCpfPaciente)
+    End Sub
+    Private Sub txtDDD_TextChanged(sender As Object, e As EventArgs) Handles txtDDD.TextChanged
+        If txtDDD.Text.Length >= 2 Then
+            txtTelefone.Focus()
+            txtTelefone.SelectionStart = 0
+        End If
     End Sub
 
 End Class

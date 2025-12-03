@@ -906,6 +906,19 @@ Public Class Main
             tbBase.SelectionStart = 0
         End If
     End Sub
+    Public Function AgeInMonths(dtNasc As Date, dataFinal As Date) As Integer
+        Dim meses As Integer = (dataFinal.Year - dtNasc.Year) * 12 +
+                               (dataFinal.Month - dtNasc.Month)
+
+        ' Ajusta se ainda não completou o "dia" no mês final
+        If dataFinal.Day < dtNasc.Day Then
+            meses -= 1
+        End If
+
+        Return meses
+
+    End Function
+
 
 End Class
 
