@@ -275,10 +275,10 @@ Public Class FormAMEOCINumAPAC
         chkDisponiveis.Checked = False
         loadNUMAPAC(dgvNumerosAPAC,,,,, dtpIni.Value, dtpFim.Value,,)
     End Sub
-    Private Sub dtpIni_ValueChanged(sender As Object, e As EventArgs)
+    Private Sub dtpIni_ValueChanged(sender As Object, e As EventArgs) Handles dtpIni.ValueChanged
         loadByData()
     End Sub
-    Private Sub dtpFim_ValueChanged(sender As Object, e As EventArgs)
+    Private Sub dtpFim_ValueChanged(sender As Object, e As EventArgs) Handles dtpFim.ValueChanged
         loadByData()
     End Sub
 
@@ -355,19 +355,37 @@ Public Class FormAMEOCINumAPAC
             Exit Sub
         End If
 
-        ' Descobre a coluna da primeira célula selecionada
-        Dim colIndex As Integer = dgvNumerosAPAC.SelectedCells(0).ColumnIndex
         Dim sb As New Text.StringBuilder()
 
-        ' Copia só as células da mesma coluna
-        For Each cell As DataGridViewCell In dgvNumerosAPAC.SelectedCells
-            If cell.ColumnIndex = 1 Then
+        ' Percorre as linhas NA ORDEM VISUAL
+        For Each row As DataGridViewRow In dgvNumerosAPAC.Rows
+            ' Pega somente o que está selecionado na coluna 1
+            Dim cell = row.Cells(1)
+            If cell.Selected AndAlso cell.Value IsNot Nothing Then
                 sb.AppendLine(cell.Value.ToString())
             End If
         Next
 
-        ' Copia para área de transferência
         Clipboard.SetText(sb.ToString())
+
+        'If dgvNumerosAPAC.SelectedCells.Count = 0 Then
+        '    MsgBox("Nenhuma célula selecionada.")
+        '    Exit Sub
+        'End If
+
+        '' Descobre a coluna da primeira célula selecionada
+        'Dim colIndex As Integer = dgvNumerosAPAC.SelectedCells(0).ColumnIndex
+        'Dim sb As New Text.StringBuilder()
+
+        '' Copia só as células da mesma coluna
+        'For Each cell As DataGridViewCell In dgvNumerosAPAC.SelectedCells
+        '    If cell.ColumnIndex = 1 Then
+        '        sb.AppendLine(cell.Value.ToString())
+        '    End If
+        'Next
+
+        ' Copia para área de transferência
+        ' Clipboard.SetText(sb.ToString())
         ' MsgBox("Dados copiados da coluna '" & dgvNumerosAPAC.Columns(colIndex).HeaderText & "'.", MsgBoxStyle.Information)
     End Sub
 
@@ -416,7 +434,7 @@ Public Class FormAMEOCINumAPAC
             cbUsuarios.SelectedIndex = -1
             cbStatus.SelectedIndex = -1
             chkDisponiveis.Checked = False
-            loadNUMAPAC(dgvNumerosAPAC,,,,,,,, "CONC")
+            loadNUMAPAC(dgvNumerosAPAC,,,,,,,, "CONC",, "num_apac")
         End If
     End Sub
     Private Sub cbSearchComp_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSearchComp.SelectedIndexChanged
