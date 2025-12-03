@@ -105,7 +105,7 @@ Public Class FormAMEOCI
 
             If idPac = Nothing Then
                 Try
-                    idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{txtNomePaciente.Text.Trim()}', '{m.mysqlDateFormat(dtNascimento.Text)}', '{txtNomeMae.Text.Trim()}', '({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', '{txtCpfPaciente.Text.Trim()}',{endereco.Rows(0).Item("id")}, '{txtNumero.Text.Trim()}', '{txtComplemento.Text.Trim()}')")
+                    idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento, sexo) VALUES ('{txtNomePaciente.Text.Trim()}', '{m.mysqlDateFormat(dtNascimento.Text)}', '{txtNomeMae.Text.Trim()}', '({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', '{txtCpfPaciente.Text.Trim()}',{endereco.Rows(0).Item("id")}, '{txtNumero.Text.Trim()}', '{txtComplemento.Text.Trim()}', '{txtSexo.Text}')")
 
                 Catch ex As Exception
                     Dim queryCPF = FormAMEmain.getDataset($"SELECT id FROM pacientes WHERE cpf='{txtCpfPaciente.Text}'").Rows(0).Item("id").ToString()
@@ -120,7 +120,7 @@ Public Class FormAMEOCI
                 'If completeCPF(idPacSQL) Then
                 '    newCPF = txtCpfPaciente.Text.Trim()
                 'End If
-                FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text.Trim()}', mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', id_logradouro={endereco.Rows(0).Item("id")}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}' WHERE id={idPac}")
+                FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text.Trim()}', mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', id_logradouro={endereco.Rows(0).Item("id")}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}' WHERE id={idPac}")
             End If
 
             Dim query = $"UPDATE oci Set compet='{competencia(My.Settings.OCIcompetencia)}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPac}, id_medico='{txtCNSMedicoExecutante.SelectedValue}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
@@ -1299,6 +1299,7 @@ Public Class FormAMEOCI
                     popupGrid.Visible = False
                     Exit Sub
                 End If
+
                 result = getPacientes(, txtNomePaciente.Text,,)
             ElseIf parameter = "cpf" Then
                 result = getPacientes(txtCpfPaciente.Text)
@@ -1377,6 +1378,7 @@ Public Class FormAMEOCI
     End Sub
 
     Private Sub resultPacientes(result As DataTable)
+
         Try
             'MsgBox(result.Rows(0).Item("id"))
             If result.Rows.Count > 0 Then
@@ -1397,6 +1399,7 @@ Public Class FormAMEOCI
                 txtCpfPaciente.Text = result.Rows(0).Item("cpf").ToString
                 dtNascimento.Text = result.Rows(0).Item("dtnasc").ToString
                 txtNomeMae.Text = result.Rows(0).Item("mae").ToString
+                txtSexo.Text = result.Rows(0).Item("sexo").ToString
                 chkResponsavel()
 
                 If result.Rows(0).Item("tel").ToString.Length >= 13 Then
@@ -1409,7 +1412,7 @@ Public Class FormAMEOCI
             End If
 
         Catch ex As Exception
-
+            MsgBox(ex.Message)
         End Try
     End Sub
     Private Sub chkResponsavel()
@@ -1625,6 +1628,7 @@ Public Class FormAMEOCI
             Dim dtLogra = cepObj.getAddress(apac.CEPPaciente.Insert(5, "-"))
             Dim idLogra As Integer = 0
             Dim idPac As Integer = 0
+
             If dtLogra IsNot Nothing AndAlso dtLogra.Rows.Count > 0 Then
                 idLogra = Convert.ToInt32(dtLogra.Rows(0)("id"))
             Else
@@ -1643,7 +1647,7 @@ Public Class FormAMEOCI
                     num = apac.numeroResPaciente
                 End If
 
-                idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento) VALUES ('{apac.NomePaciente.ToUpper}', '{m.mysqlDateFormat(apac.DtnascPaciente)}', '{apac.MaePaciente.ToUpper}', '{ddd}{tel}', '{apac.CPFPaciente}',{idLogra}, {num}, '{apac.complementoPaciente.ToUpper}')")
+                idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento, sexo) VALUES ('{apac.NomePaciente.ToUpper}', '{m.mysqlDateFormat(apac.DtnascPaciente)}', '{apac.MaePaciente.ToUpper}', '{ddd}{tel}', '{apac.CPFPaciente}',{idLogra}, {num}, '{apac.complementoPaciente.ToUpper}', '{txtSexo.Text}')")
             Catch ex As Exception
 
                 Try
@@ -1750,8 +1754,7 @@ Public Class FormAMEOCI
     End Sub
     Private Sub dtNascimento_TextChanged(sender As Object, e As EventArgs) Handles dtNascimento.TextChanged
         Try
-            If dtNascimento.Text.Length = 10 Then
-
+            If dtNascimento.Text.Length = 10 AndAlso txtNomePaciente.Text.Length = 0 Then
                 popupGrid.Visible = True
                 BuscarPacientes(sender, e, "dtnasc")
                 chkResponsavel()
