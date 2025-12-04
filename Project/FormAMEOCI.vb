@@ -146,6 +146,7 @@ Public Class FormAMEOCI
         Try
             ' ==================== VALIDAÇÕES ====================
             If txtNumApac.Text.Trim() = "" Then Throw New Exception("Informe o número da APAC.")
+            TabControl1.SelectedTab = TabControl1.TabPages(0)
             txtNumApac.Focus()
             If Not m.ValidarCPF(txtCpfPaciente.Text) Then
                 MessageBox.Show("CPF inválido. Verifique e tente novamente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
@@ -153,21 +154,43 @@ Public Class FormAMEOCI
             End If
 
             If dtNascimento.Text.Trim() = "" Then Throw New Exception("Informe a data de nascimento Do paciente.")
-
+            TabControl1.SelectedTab = TabControl1.TabPages(0)
+            dtNascimento.Focus()
             chkResponsavel()
 
             If txtProcedimentoPrincipal.SelectedValue = "0905010035" AndAlso CInt(m.AgeInMonths(m.mysqlDateFormat(dtNascimento.Text), m.mysqlDateFormat(dtValidadeIni.Value))) < 108 Then
                 Throw New Exception("Paciente com idade inferior a 9 anos não permitido para procedimento 0905010035.")
+                TabControl1.SelectedTab = TabControl1.TabPages(0)
             End If
 
             If txtNomePaciente.Text.Trim() = "" Then Throw New Exception("Informe o nome Do paciente.")
+            TabControl1.SelectedTab = TabControl1.TabPages(0)
+            txtNomePaciente.Focus()
             If txtNomeMae.Text.Trim() = "" Then Throw New Exception("Informe o nome da mãe.")
+            TabControl1.SelectedTab = TabControl1.TabPages(0)
+            txtNomeMae.Focus()
+            If txtSexo.Text = "" Then Throw New Exception("Informe o sexo.")
+            TabControl1.SelectedTab = TabControl1.TabPages(0)
+            txtSexo.Focus()
             If txtNomeRespPaciente.Text.Trim() = "" Then Throw New Exception("Informe o nome Do responsável.")
+            TabControl1.SelectedTab = TabControl1.TabPages(0)
+            txtNomeRespPaciente.Focus()
             If txtDDD.Text.Trim() = "" Then Throw New Exception("Informe o DDD.")
+            TabControl1.SelectedTab = TabControl1.TabPages(0)
+            txtDDD.Focus()
             If txtTelefone.Text.Trim() = "" Then Throw New Exception("Informe o telefone.")
+            TabControl1.SelectedTab = TabControl1.TabPages(0)
+            txtTelefone.Focus()
             If txtCep.Text.Length < 8 Then Throw New Exception("Informe o CEP corretamente.")
+            TabControl1.SelectedTab = TabControl1.TabPages(0)
+            txtCep.Focus()
             If txtNumero.Text.Trim() = "" Then Throw New Exception("Informe o número Do logradouro.")
+            TabControl1.SelectedTab = TabControl1.TabPages(0)
+            txtNumero.Focus()
             If txtProcedimentoPrincipal.SelectedIndex < 0 Then Throw New Exception("Selecione o procedimento principal.")
+            TabControl1.SelectedTab = TabControl1.TabPages(1)
+            txtProcedimentoPrincipal.Focus()
+            txtProcedimentoPrincipal.DroppedDown = True
 
             ' ==================== CONFIGURAÇÕES ====================
             Dim competencia As String = My.Settings.OCIcompetencia

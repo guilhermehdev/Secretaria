@@ -356,6 +356,7 @@ Partial Class FormAMEOCINumAPAC
         Me.Button1.TabIndex = 36
         Me.Button1.Text = "Correção"
         Me.Button1.UseVisualStyleBackColor = True
+        Me.Button1.Visible = False
         '
         'OpenFileDialog1
         '

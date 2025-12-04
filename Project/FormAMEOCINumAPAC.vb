@@ -140,7 +140,7 @@ Public Class FormAMEOCINumAPAC
                 where &= $" AND oci.id_medico ='{medico}' "
             End If
 
-            Dim data = FormAMEmain.getDataset($"SELECT oci.id, oci.num_apac, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc AS dtnasc, oci.`data`, oci.compet, servidores.nome AS medico, oci.status 
+            Dim data = FormAMEmain.getDataset($"SELECT oci.id, oci.num_apac, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc AS dtnasc, oci.`data`, oci.compet, servidores.nome AS medico, oci.status, usuarios.nome AS responsavel 
                 FROM oci 
                LEFT JOIN pacientes ON pacientes.id = oci.id_paciente 
                LEFT JOIN servidores ON servidores.SUS = oci.id_medico
@@ -167,8 +167,8 @@ Public Class FormAMEOCINumAPAC
             datagridview.Columns("medico").Width = 200
             datagridview.Columns("status").HeaderText = "Status"
             datagridview.Columns("status").Width = 60
-            ' datagridview.Columns("responsavel").HeaderText = "Responsável"
-            'datagridview.Columns("responsavel").Width = 150
+            datagridview.Columns("responsavel").HeaderText = "Responsável"
+            datagridview.Columns("responsavel").Width = 150
             ToolStripStatusLabel1.Text = datagridview.Rows.Count & " registros encontrados."
 
         Catch ex As Exception
@@ -387,6 +387,7 @@ Public Class FormAMEOCINumAPAC
             cbUsuarios.SelectedIndex = -1
             cbStatus.SelectedIndex = -1
             chkDisponiveis.Checked = False
+            cbSearchComp.SelectedIndex = 0
             loadNUMAPAC(dgvNumerosAPAC,,,,,,,, "CONC",, "num_apac")
         End If
     End Sub
