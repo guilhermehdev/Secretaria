@@ -1412,7 +1412,7 @@ Public Class FormAMEOCI
             End If
 
         Catch ex As Exception
-            MsgBox(ex.Message)
+            'MsgBox(ex.Message)
         End Try
     End Sub
     Private Sub chkResponsavel()
