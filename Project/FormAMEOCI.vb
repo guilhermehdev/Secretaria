@@ -163,34 +163,52 @@ Public Class FormAMEOCI
                 TabControl1.SelectedTab = TabControl1.TabPages(0)
             End If
 
-            If txtNomePaciente.Text.Trim() = "" Then Throw New Exception("Informe o nome Do paciente.")
-            TabControl1.SelectedTab = TabControl1.TabPages(0)
-            txtNomePaciente.Focus()
-            If txtNomeMae.Text.Trim() = "" Then Throw New Exception("Informe o nome da mãe.")
-            TabControl1.SelectedTab = TabControl1.TabPages(0)
-            txtNomeMae.Focus()
-            If txtSexo.Text = "" Then Throw New Exception("Informe o sexo.")
-            TabControl1.SelectedTab = TabControl1.TabPages(0)
-            txtSexo.Focus()
-            If txtNomeRespPaciente.Text.Trim() = "" Then Throw New Exception("Informe o nome Do responsável.")
-            TabControl1.SelectedTab = TabControl1.TabPages(0)
-            txtNomeRespPaciente.Focus()
-            If txtDDD.Text.Trim() = "" Then Throw New Exception("Informe o DDD.")
-            TabControl1.SelectedTab = TabControl1.TabPages(0)
-            txtDDD.Focus()
-            If txtTelefone.Text.Trim() = "" Then Throw New Exception("Informe o telefone.")
-            TabControl1.SelectedTab = TabControl1.TabPages(0)
-            txtTelefone.Focus()
-            If txtCep.Text.Length < 8 Then Throw New Exception("Informe o CEP corretamente.")
-            TabControl1.SelectedTab = TabControl1.TabPages(0)
-            txtCep.Focus()
-            If txtNumero.Text.Trim() = "" Then Throw New Exception("Informe o número Do logradouro.")
-            TabControl1.SelectedTab = TabControl1.TabPages(0)
-            txtNumero.Focus()
-            If txtProcedimentoPrincipal.SelectedIndex < 0 Then Throw New Exception("Selecione o procedimento principal.")
-            TabControl1.SelectedTab = TabControl1.TabPages(1)
-            txtProcedimentoPrincipal.Focus()
-            txtProcedimentoPrincipal.DroppedDown = True
+            If txtNomePaciente.Text.Trim() = "" Then
+                TabControl1.SelectedTab = TabControl1.TabPages(0)
+                txtNomePaciente.Focus()
+                Throw New Exception("Informe o nome Do paciente.")
+            End If
+            If txtNomeMae.Text.Trim() = "" Then
+                TabControl1.SelectedTab = TabControl1.TabPages(0)
+                txtNomeMae.Focus()
+                Throw New Exception("Informe o nome da mãe.")
+            End If
+            If txtSexo.Text = "" Then
+                TabControl1.SelectedTab = TabControl1.TabPages(0)
+                txtSexo.Focus()
+                Throw New Exception("Informe o sexo.")
+            End If
+            If txtNomeRespPaciente.Text.Trim() = "" Then
+                TabControl1.SelectedTab = TabControl1.TabPages(0)
+                txtNomeRespPaciente.Focus()
+                Throw New Exception("Informe o nome Do responsável.")
+            End If
+            If txtDDD.Text.Trim() = "" Then
+                TabControl1.SelectedTab = TabControl1.TabPages(0)
+                txtDDD.Focus()
+                Throw New Exception("Informe o DDD.")
+            End If
+            If txtTelefone.Text.Trim() = "" Then
+                TabControl1.SelectedTab = TabControl1.TabPages(0)
+                txtTelefone.Focus()
+                Throw New Exception("Informe o telefone.")
+            End If
+            If txtCep.Text.Length < 8 Then
+                TabControl1.SelectedTab = TabControl1.TabPages(0)
+                txtCep.Focus()
+                Throw New Exception("Informe o CEP corretamente.")
+            End If
+            If txtNumero.Text.Trim() = "" Then
+                TabControl1.SelectedTab = TabControl1.TabPages(0)
+                txtNumero.Focus()
+                Throw New Exception("Informe o número Do logradouro.")
+            End If
+            If txtProcedimentoPrincipal.SelectedIndex < 0 Then
+                TabControl1.SelectedTab = TabControl1.TabPages(1)
+                txtProcedimentoPrincipal.Focus()
+                txtProcedimentoPrincipal.DroppedDown = True
+                Throw New Exception("Selecione o procedimento principal.")
+            End If
 
             ' ==================== CONFIGURAÇÕES ====================
             Dim competencia As String = My.Settings.OCIcompetencia

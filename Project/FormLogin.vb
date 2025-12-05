@@ -4,7 +4,7 @@ Public Class FormLogin
     Dim m As New Main
     Public system As String
     Private Sub btFechar_Click(sender As Object, e As EventArgs) Handles btFechar.Click
-        Me.Close()
+        Application.Exit()
     End Sub
     Private Sub FormLogin_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         If Application.OpenForms.Count = 1 AndAlso Application.OpenForms(0) Is Me Then
