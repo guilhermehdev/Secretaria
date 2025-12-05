@@ -297,7 +297,7 @@ Public Class FormAMEOCI
                     r14.Append(txtTelefone.Text.PadLeft(9, " "c))
                     r14.Append(txtEmail.Text.PadRight(40, " "c))
                     r14.Append(txtCNSMedicoExecutante.SelectedValue.PadLeft(15, "0"c))
-                    r14.Append(txtCpfPaciente.Text.PadLeft(11, "0"c))
+                    r14.Append(txtCpfPaciente.Text.Trim)
                     r14.Append(txtEquipe.Text.PadLeft(10, " "c))
                     r14.Append(If(chkSituacaoRua.Checked, "S", "N"))
                     sw.WriteLine(r14.ToString())
