@@ -874,20 +874,23 @@ Public Class FormAMEOCI
         .ReadOnly = True,
         .AllowUserToAddRows = False,
         .AllowUserToDeleteRows = False,
+        .AllowUserToResizeRows = False,
         .RowHeadersVisible = False,
         .SelectionMode = DataGridViewSelectionMode.FullRowSelect,
         .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
         .BackgroundColor = Color.White,
         .BorderStyle = BorderStyle.FixedSingle,
         .Width = 500,
-        .Height = 250
+        .Height = 250,
+        .MultiSelect = False,
+        .TabStop = True
     }
 
         popupGrid.ColumnHeadersDefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
         popupGrid.CellBorderStyle = DataGridViewCellBorderStyle.Sunken
         popupGrid.DefaultCellStyle.Font = New Font("Segoe UI", 9)
-        popupGrid.DefaultCellStyle.SelectionBackColor = Color.LightSteelBlue
-        popupGrid.DefaultCellStyle.SelectionForeColor = Color.Black
+        popupGrid.DefaultCellStyle.SelectionBackColor = Color.DarkOrange
+        popupGrid.DefaultCellStyle.SelectionForeColor = Color.White
         popupGrid.RowHeadersVisible = False
 
         ' Adiciona ao formulário
@@ -896,7 +899,7 @@ Public Class FormAMEOCI
 
         AddHandler popupGrid.MouseLeave, AddressOf popupGrid_MouseLeave
         AddHandler debounceTimer.Tick, AddressOf BuscarPacientes
-        AddHandler popupGrid.CellClick, AddressOf popupGrid_CellClick
+        AddHandler popupGrid.CellDoubleClick, AddressOf popupGrid_CellClick
 
         Try
             ' 1. Converter a string para um número inteiro
