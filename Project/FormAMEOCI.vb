@@ -1036,7 +1036,9 @@ Public Class FormAMEOCI
             txtMotivoSaida.SelectedIndex = 1
 
             FormAMEmain.loadComboBox("SELECT id, abrev FROM cod_oci_principal ORDER BY ID", cbSearchOCI, "id", "abrev", True)
-            ckbSearchTodos.Checked = True
+
+            dtpSearchData.CustomFormat = "dd/MM/yyyy"
+            FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC")
 
         Catch ex As Exception
             ' MsgBox(ex.Message)
@@ -1149,6 +1151,7 @@ Public Class FormAMEOCI
 
                 txtLogradouro.Text = logra
                 txtBairro.Text = bairro
+                txtNumero.Focus()
             Else
                 MsgBox("CEP não encontrado ou erro na consulta.")
             End If
@@ -1758,15 +1761,31 @@ Public Class FormAMEOCI
         End If
     End Sub
 
+    Private Sub searchByDate()
+        dtpSearchData.CustomFormat = "dd/MM/yyyy"
+        FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC")
+        ckbSearchTodos.Checked = False
+        cbSearchComp.SelectedIndex = 0
+        cbSearchOCI.SelectedIndex = 0
+        tbSearchNome.Clear()
+        tbSearchApac.Clear()
+    End Sub
+
     Private Sub FormAMEOCI_Click(sender As Object, e As EventArgs) Handles MyBase.Click
         popupGrid.Visible = False
     End Sub
     Private Sub dtpSearchData_ValueChanged(sender As Object, e As EventArgs) Handles dtpSearchData.ValueChanged
-        dtpSearchData.CustomFormat = "dd/MM/yyyy"
-        FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC")
+        searchByDate()
     End Sub
     Private Sub ckbSearchTodos_CheckedChanged(sender As Object, e As EventArgs) Handles ckbSearchTodos.CheckedChanged
-        FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas,,,, idUser,,,, "CONC",, "oci.data_lanc DESC, pacientes.nome")
+        If ckbSearchTodos.Checked Then
+            LimparData()
+            FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas,,,, idUser,,,, "CONC",, "oci.data_lanc DESC, pacientes.nome")
+        Else
+            dgOCIcadastradas.DataSource = Nothing
+            lbStatusCads.Text = "0 registros"
+        End If
+
     End Sub
     Private Sub ImportarAPACToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportarAPACToolStripMenuItem.Click
         Dim desktop As String = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
@@ -1835,6 +1854,9 @@ Public Class FormAMEOCI
             txtTelefone.Focus()
             txtTelefone.SelectionStart = 0
         End If
+    End Sub
+    Private Sub dtpSearchData_MouseDown(sender As Object, e As MouseEventArgs) Handles dtpSearchData.MouseDown
+        searchByDate()
     End Sub
 
 End Class
