@@ -918,6 +918,94 @@ Public Class Main
         Return meses
 
     End Function
+    Public Sub PasteTelefone(txtDDD As TextBox, txtNumero As TextBox)
+        ' Lê da área de transferência
+        Dim raw As String = Clipboard.GetText()
+
+        If String.IsNullOrWhiteSpace(raw) Then
+            MessageBox.Show("A área de transferência está vazia.")
+            Exit Sub
+        End If
+
+        ' Mantém apenas números
+        Dim digits As String = New String(raw.Where(Function(c) Char.IsDigit(c)).ToArray())
+
+        ' Remove DDI +55 se existir
+        If digits.StartsWith("55") AndAlso digits.Length > 11 Then
+            digits = digits.Substring(2)
+        End If
+
+        ' Agora deve restar: DDD (2) + Número (8 ou 9 dígitos)
+        If digits.Length < 10 Then
+            MessageBox.Show("Número inválido: " & digits)
+            Exit Sub
+        End If
+
+        ' Separa DDD e número
+        Dim ddd As String = digits.Substring(0, 2)
+        Dim numero As String = digits.Substring(2)
+
+        txtDDD.Focus()
+        ' Preenche os textboxes
+        txtDDD.Text = ddd
+        txtNumero.Text = numero
+
+    End Sub
+
+    Public Function TelefoneValido(numero As String) As Boolean
+        ' Remove tudo que não é número
+        Dim digits As String = New String(numero.Where(Function(c) Char.IsDigit(c)).ToArray())
+
+        ' Remove DDI +55
+        If digits.StartsWith("55") AndAlso digits.Length > 11 Then
+            digits = digits.Substring(2)
+        End If
+
+        ' Só aceita 10 ou 11 dígitos
+        If digits.Length <> 10 AndAlso digits.Length <> 11 Then
+            Return False
+        End If
+
+        ' Separa DDD e número
+        Dim ddd As String = digits.Substring(0, 2)
+        Dim num As String = digits.Substring(2)
+
+        ' Lista de DDDs válidos
+        Dim dddsValidos As HashSet(Of String) = New HashSet(Of String) From {
+        "11", "12", "13", "14", "15", "16", "17", "18", "19",
+        "21", "22", "24", "27", "28",
+        "31", "32", "33", "34", "35", "37", "38",
+        "41", "42", "43", "44", "45", "46",
+        "47", "48", "49",
+        "51", "53", "54", "55",
+        "61", "62", "64", "65", "66", "67",
+        "68", "69",
+        "71", "73", "74", "75", "77",
+        "79",
+        "81", "82", "83", "84", "85", "86", "87", "88", "89",
+        "91", "92", "93", "94", "95", "96", "97", "98", "99"
+    }
+
+        ' Verifica DDD
+        If Not dddsValidos.Contains(ddd) Then Return False
+
+        ' Telefones inválidos óbvios
+        If num.Distinct.Count = 1 Then Return False ' ex: 999999999
+
+        ' Validação celular (11 dígitos)
+        If digits.Length = 11 Then
+            If Not num.StartsWith("9") Then Return False
+            Return True
+        End If
+
+        ' Validação telefone fixo (10 dígitos)
+        If digits.Length = 10 Then
+            If Not "2345".Contains(num(0)) Then Return False
+            Return True
+        End If
+
+        Return False
+    End Function
 
 
 End Class

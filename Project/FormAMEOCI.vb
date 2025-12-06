@@ -412,6 +412,8 @@ Public Class FormAMEOCI
         Dim cbo As New Dictionary(Of String, String)
 
         dgvProcedimentos.Rows.Clear()
+        procedSec.Clear()
+        cbo.Clear()
 
         If txtProcedimentoPrincipal.SelectedValue = "0904010015" Then
             procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
@@ -447,7 +449,6 @@ Public Class FormAMEOCI
 
         ElseIf txtProcedimentoPrincipal.SelectedValue = "0903010011" Then
             cbo.Add("225270", "225270 - Médico ortopedista e traumatologista")
-            procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
             procedSec.Add("0204020034", "0204020034 - RADIOGRAFIA DE COLUNA CERVICAL (AP + LATERAL + TO + OBLÍQUAS)")
             procedSec.Add("0204020042", "0204020042 - RADIOGRAFIA DE COLUNA CERVICAL (AP + LATERAL + TO / FLEXÃO)")
             procedSec.Add("0204020077", "0204020077 - RADIOGRAFIA DE COLUNA LOMBO-SACRA (C/ OBLÍQUAS)")
@@ -455,11 +456,13 @@ Public Class FormAMEOCI
             procedSec.Add("0204020093", "0204020093 - RADIOGRAFIA DE COLUNA TORÁCICA (AP + LATERAL)")
             procedSec.Add("0204020107", "0204020107 - RADIOGRAFIA DE COLUNA TORACO-LOMBAR")
             procedSec.Add("0204020131", "0204020131 - RADIOGRAFIA PANORÂMICA DE COLUNA TOTAL - TELESPONDILOGRAFIA")
+
             procedSec.Add("0204040035", "0204040035 - RADIOGRAFIA DE ARTICULAÇÃO ESCÁPULO-UMERAL")
             procedSec.Add("0204040078", "0204040078 - RADIOGRAFIA DE COTOVELO")
             procedSec.Add("0204040094", "0204040094 - RADIOGRAFIA DE MÃO")
             procedSec.Add("0204040116", "0204040116 - RADIOGRAFIA DE ESCÁPULA/OMBRO (TRÊS POSIÇÕES)")
             procedSec.Add("0204040124", "0204040124 - RADIOGRAFIA DE PUNHO (AP + LATERAL + OBLÍQUA)")
+
             procedSec.Add("0204060060", "0204060060 - RADIOGRAFIA DE ARTICULAÇÃO COXO-FEMORAL")
             procedSec.Add("0204060095", "0204060095 - RADIOGRAFIA DE BACIA")
             procedSec.Add("0204060109", "0204060109 - RADIOGRAFIA DE CALCÂNEO")
@@ -468,7 +471,10 @@ Public Class FormAMEOCI
             procedSec.Add("0204060141", "0204060141 - RADIOGRAFIA DE JOELHO OU PATELA (AP + LATERAL + OBLÍQUA + 3)")
             procedSec.Add("0204060150", "0204060150 - RADIOGRAFIA DE PÉ / DEDOS DO PÉ")
             procedSec.Add("0204060176", "0204060176 - RADIOGRAFIA PANORÂMICA DE MEMBROS INFERIORES")
+
+            procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
             procedSec.Add("0301010307", "0301010307 - TELECONSULTA MÉDICA NA ATENÇÃO ESPECIALIZADA")
+
             dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225270")
 
         ElseIf txtProcedimentoPrincipal.SelectedValue = "0904010031" Then
@@ -547,27 +553,7 @@ Public Class FormAMEOCI
         ' Retorna a quantidade de APACs do lote com 6 dígitos
         Return qtdApacs.ToString().PadLeft(6, "0"c)
     End Function
-    Private Function ComputeControlField(apacNumber As String, procCodes As List(Of String), procQuantities As List(Of Integer)) As String
-        Dim total As Long = 0
 
-        ' soma códigos numéricos
-        For Each code In procCodes
-            Dim digits = New String(code.Where(Function(c) Char.IsDigit(c)).ToArray())
-            If digits <> "" Then total += CLng(digits)
-        Next
-
-        ' soma quantidades
-        total += procQuantities.Sum(Function(x) CLng(x))
-
-        ' soma número da APAC
-        Dim apacDigits = New String(apacNumber.Where(Function(c) Char.IsDigit(c)).ToArray())
-        If apacDigits <> "" Then total += CLng(apacDigits)
-
-        ' calcula controle
-        Dim resto As Integer = CInt(total Mod 1111)
-        Dim campo As Integer = resto + 1111
-        Return campo.ToString().PadLeft(4, "0"c)
-    End Function
     Private Function Fmt(valor As String, tamanho As Integer) As String
         If valor Is Nothing Then valor = ""
         valor = valor.Trim()
@@ -883,7 +869,8 @@ Public Class FormAMEOCI
         .Width = 500,
         .Height = 250,
         .MultiSelect = False,
-        .TabStop = True
+        .TabStop = True,
+        .Cursor = Cursors.Hand
     }
 
         popupGrid.ColumnHeadersDefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
@@ -1817,7 +1804,8 @@ Public Class FormAMEOCI
     End Sub
     Private Sub dtNascimento_TextChanged(sender As Object, e As EventArgs) Handles dtNascimento.TextChanged
         Try
-            If dtNascimento.Text.Length = 10 AndAlso txtNomePaciente.Text.Length = 0 Then
+
+            If dtNascimento.Text.Length = 10 Then
                 popupGrid.Visible = True
                 BuscarPacientes(sender, e, "dtnasc")
                 chkResponsavel()
@@ -1860,6 +1848,14 @@ Public Class FormAMEOCI
     End Sub
     Private Sub dtpSearchData_MouseDown(sender As Object, e As MouseEventArgs) Handles dtpSearchData.MouseDown
         searchByDate()
+    End Sub
+    Private Sub FormAMEOCI_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
+        If e.Control AndAlso e.KeyCode = Keys.V Then
+            If m.TelefoneValido(Clipboard.GetText) Then
+                txtDDD.Focus()
+                m.PasteTelefone(txtDDD, txtTelefone)
+            End If
+        End If
     End Sub
 
 End Class
