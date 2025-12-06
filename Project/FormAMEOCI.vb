@@ -9,7 +9,6 @@ Imports Google.Protobuf.WellKnownTypes
 Imports MySql.Data.MySqlClient
 Imports Mysqlx.XDevAPI.Common
 
-
 Public Class FormAMEOCI
     Private linhas As New List(Of String)
     Dim m As New Main
@@ -87,7 +86,9 @@ Public Class FormAMEOCI
         End If
         If dgvProcedimentos.Rows.Count <= 1 Then
             MessageBox.Show("Adicione um procedimento secundário.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            TabControl1.SelectedTab = TabControl1.TabPages(1)
             CodProcedimento.Focus()
+            CodProcedimento.DroppedDown = True
             Return False
         End If
 
