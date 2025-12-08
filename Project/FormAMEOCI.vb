@@ -1142,7 +1142,7 @@ Public Class FormAMEOCI
 
                 txtLogradouro.Text = logra
                 txtBairro.Text = bairro
-                txtNumero.Focus()
+
             Else
                 MsgBox("CEP não encontrado ou erro na consulta.")
             End If
@@ -1160,6 +1160,7 @@ Public Class FormAMEOCI
         If e.KeyCode = Keys.Enter Then
             cep(txtCep.Text.Trim())
             dgvSugestoes.Visible = False
+            txtNumero.Focus()
         End If
     End Sub
     Private Sub formatGrid()
@@ -1286,6 +1287,17 @@ Public Class FormAMEOCI
         If txtCep.Text.Length = 9 Then
             cep(txtCep.Text.Trim())
             dgvSugestoes.Visible = False
+        Else
+            Try
+                cbTipoLogradouro.SelectedIndex = 0
+                txtLogradouro.Text = ""
+                txtBairro.Text = ""
+                txtNumero.Text = ""
+                txtComplemento.Text = ""
+            Catch ex As Exception
+
+            End Try
+
         End If
     End Sub
 
