@@ -1303,12 +1303,10 @@ Public Class FormAMEOCI
 
     ' nível de classe:
     Private _upperLock As Boolean = False
-
     Private Sub cbo_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtNomePaciente.KeyPress
         ' já sobe letras na digitação (evita mexer em Text)
         If Char.IsLetter(e.KeyChar) Then e.KeyChar = Char.ToUpper(e.KeyChar)
     End Sub
-
     Private Sub cbo_TextChanged(sender As Object, e As EventArgs) Handles txtNomePaciente.TextChanged
         If _upperLock Then Return
         Dim cb = DirectCast(sender, ComboBox)
