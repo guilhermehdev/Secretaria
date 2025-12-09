@@ -100,28 +100,18 @@ Public Class FormAMEOCI
             idProced = dictProceds(codigoBusca)
         End If
 
+        Dim idPac As Object = IDpacienteSelecionado
+
         Try
-            ' Obtem ID do paciente de forma segura
-            Dim idPac As Object = IDpacienteSelecionado
 
             If idPac = Nothing Then
                 Try
                     idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento, sexo) VALUES ('{txtNomePaciente.Text.Trim()}', '{m.mysqlDateFormat(dtNascimento.Text)}', '{txtNomeMae.Text.Trim()}', '({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', '{txtCpfPaciente.Text.Trim()}',{endereco.Rows(0).Item("id")}, '{txtNumero.Text.Trim()}', '{txtComplemento.Text.Trim()}', '{txtSexo.Text}')")
 
                 Catch ex As Exception
-                    Dim queryCPF = FormAMEmain.getDataset($"SELECT id FROM pacientes WHERE cpf='{txtCpfPaciente.Text}'").Rows(0).Item("id").ToString()
-                    If queryCPF.Count > 0 Then
-                        idPac = queryCPF
-                    End If
 
                 End Try
 
-            Else
-                'Dim newCPF As String = ""
-                'If completeCPF(idPacSQL) Then
-                '    newCPF = txtCpfPaciente.Text.Trim()
-                'End If
-                FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text.Trim()}', mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', id_logradouro={endereco.Rows(0).Item("id")}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}' WHERE id={idPac}")
             End If
 
             Dim query = $"UPDATE oci Set compet='{competencia(My.Settings.OCIcompetencia)}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPac}, id_medico='{txtCNSMedicoExecutante.SelectedValue}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
@@ -137,8 +127,16 @@ Public Class FormAMEOCI
             result.Clear()
             Return True
         Catch ex As Exception
-            UnlockApac(txtNumApac.Text)
             MsgBox("Erro ao salvar APAC: " & ex.Message)
+            Dim queryCPF = FormAMEmain.getDataset($"SELECT id FROM pacientes WHERE cpf='{txtCpfPaciente.Text}'").Rows(0).Item("id").ToString()
+            If queryCPF.Count > 0 Then
+                idPac = queryCPF
+            End If
+
+            FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text.Trim()}', mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', id_logradouro={endereco.Rows(0).Item("id")}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}' WHERE id={idPac}")
+
+            UnlockApac(txtNumApac.Text)
+
             Return False
         End Try
 
