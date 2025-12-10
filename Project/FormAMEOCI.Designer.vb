@@ -158,6 +158,7 @@ Partial Class FormAMEOCI
         Me.Label13 = New System.Windows.Forms.Label()
         Me.tbSearchApac = New System.Windows.Forms.TextBox()
         Me.lbStatusCads = New System.Windows.Forms.Label()
+        Me.ConsistênciaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -1314,6 +1315,7 @@ Partial Class FormAMEOCI
         '
         'RelatóriosToolStripMenuItem
         '
+        Me.RelatóriosToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConsistênciaToolStripMenuItem})
         Me.RelatóriosToolStripMenuItem.Name = "RelatóriosToolStripMenuItem"
         Me.RelatóriosToolStripMenuItem.Size = New System.Drawing.Size(71, 20)
         Me.RelatóriosToolStripMenuItem.Text = "Relatórios"
@@ -1607,6 +1609,12 @@ Partial Class FormAMEOCI
         Me.lbStatusCads.TabIndex = 56
         Me.lbStatusCads.Text = "0 registros"
         '
+        'ConsistênciaToolStripMenuItem
+        '
+        Me.ConsistênciaToolStripMenuItem.Name = "ConsistênciaToolStripMenuItem"
+        Me.ConsistênciaToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.ConsistênciaToolStripMenuItem.Text = "Consistência"
+        '
         'FormAMEOCI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1777,4 +1785,5 @@ Partial Class FormAMEOCI
     Friend WithEvents ckbSearchTodos As CheckBox
     Friend WithEvents RelatóriosToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ImportarAPACToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ConsistênciaToolStripMenuItem As ToolStripMenuItem
 End Class

@@ -1867,6 +1867,10 @@ Public Class FormAMEOCI
         End If
     End Sub
 
+    Private Sub ConsistênciaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConsistênciaToolStripMenuItem.Click
+        Process.Start($"C:\Program Files (x86)\Datasus\APAC\RCONSIST{chkMonthEXT()}")
+    End Sub
+
 End Class
 
 Public Class ApacRegistro
