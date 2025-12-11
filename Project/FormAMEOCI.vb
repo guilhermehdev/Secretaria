@@ -342,11 +342,13 @@ Public Class FormAMEOCI
                 Dim selectedAutorizador As Integer = txtNomeAutorizador.SelectedIndex
                 Dim selectedCIDP As Integer = txtCidPrincipal.SelectedIndex
                 Dim selectedCIDS As Integer = txtCidSecundario.SelectedIndex
+                txtProcedimentoPrincipal_SelectionChangeCommitted(Nothing, Nothing) ' atualiza procedimentos)
                 TabControl1.SelectedTab = TabControl1.TabPages(0)  ' ativa a terceira aba (0-based)
                 txtCNSMedicoExecutante.SelectedIndex = selectedCNSExe
                 txtNomeAutorizador.SelectedIndex = selectedAutorizador
                 txtCidPrincipal.SelectedIndex = selectedCIDP
                 txtCidSecundario.SelectedIndex = selectedCIDS
+
             End If
         Catch ex As Exception
             MessageBox.Show("⚠️ Erro ao gravar registro: " & ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -398,7 +400,6 @@ Public Class FormAMEOCI
         txtComplemento.Clear()
         txtNumApac.Clear()
         txtNumApac.Focus()
-        txtProcedimentoPrincipal_SelectionChangeCommitted(Nothing, Nothing) ' atualiza procedimentos)
 
     End Sub
     Private Sub txtProcedimentoPrincipal_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles txtProcedimentoPrincipal.SelectionChangeCommitted
