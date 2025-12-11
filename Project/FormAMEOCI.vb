@@ -103,11 +103,9 @@ Public Class FormAMEOCI
         Dim idPac As Object = IDpacienteSelecionado
 
         Try
-
             If idPac = Nothing Then
                 Try
                     idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento, sexo) VALUES ('{txtNomePaciente.Text.Trim()}', '{m.mysqlDateFormat(dtNascimento.Text)}', '{txtNomeMae.Text.Trim()}', '({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', '{txtCpfPaciente.Text.Trim()}',{endereco.Rows(0).Item("id")}, '{txtNumero.Text.Trim()}', '{txtComplemento.Text.Trim()}', '{txtSexo.Text}')")
-
                 Catch ex As Exception
 
                 End Try
@@ -117,14 +115,13 @@ Public Class FormAMEOCI
             Dim query = $"UPDATE oci Set compet='{competencia(My.Settings.OCIcompetencia)}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPac}, id_medico='{txtCNSMedicoExecutante.SelectedValue}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
 
             If FormAMEmain.doQuery(query) Then
-                clearFields()
                 btNovonumeroAPAC.Enabled = True
-
                 FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC")
                 'txtNumApac.Text = GetAndLockNextApac()
                 IDpacienteSelecionado = Nothing
             End If
             result.Clear()
+            clearFields()
             Return True
         Catch ex As Exception
             MsgBox("Erro ao salvar APAC: " & ex.Message)
@@ -134,9 +131,7 @@ Public Class FormAMEOCI
             End If
 
             FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text.Trim()}', mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', id_logradouro={endereco.Rows(0).Item("id")}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}' WHERE id={idPac}")
-
             UnlockApac(txtNumApac.Text)
-
             Return False
         End Try
 
@@ -348,7 +343,6 @@ Public Class FormAMEOCI
                 Dim selectedCIDP As Integer = txtCidPrincipal.SelectedIndex
                 Dim selectedCIDS As Integer = txtCidSecundario.SelectedIndex
                 TabControl1.SelectedTab = TabControl1.TabPages(0)  ' ativa a terceira aba (0-based)
-                txtProcedimentoPrincipal_SelectionChangeCommitted(sender, e) ' atualiza procedimentos)
                 txtCNSMedicoExecutante.SelectedIndex = selectedCNSExe
                 txtNomeAutorizador.SelectedIndex = selectedAutorizador
                 txtCidPrincipal.SelectedIndex = selectedCIDP
@@ -404,6 +398,7 @@ Public Class FormAMEOCI
         txtComplemento.Clear()
         txtNumApac.Clear()
         txtNumApac.Focus()
+        txtProcedimentoPrincipal_SelectionChangeCommitted(Nothing, Nothing) ' atualiza procedimentos)
 
     End Sub
     Private Sub txtProcedimentoPrincipal_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles txtProcedimentoPrincipal.SelectionChangeCommitted
