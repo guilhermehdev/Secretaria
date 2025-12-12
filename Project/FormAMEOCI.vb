@@ -762,6 +762,8 @@ Public Class FormAMEOCI
             Dim dt As DataTable = FormAMEmain.getDataset("SELECT num_apac FROM oci WHERE status='DISP' ORDER BY id LIMIT 1")
 
             If dt.Rows.Count = 0 Then
+                btNovonumeroAPAC.Enabled = False
+                lbRestanteAPAC.Text = "0"
                 Return Nothing
             End If
 
@@ -799,6 +801,11 @@ Public Class FormAMEOCI
     End Sub
     Private Function loadAPACdisp()
         Dim apacDisp = FormAMEmain.getDataset("SELECT count(num_apac) AS apacs FROM oci WHERE status='DISP'").Rows(0).Item("apacs")
+        If apacDisp = 0 Then
+            btNovonumeroAPAC.Enabled = False
+            lbRestanteAPAC.Text = "0"
+            Return 0
+        End If
         Return apacDisp
     End Function
     Private Sub LimparData()
@@ -1772,10 +1779,13 @@ Public Class FormAMEOCI
     Private Sub dtpSearchData_ValueChanged(sender As Object, e As EventArgs) Handles dtpSearchData.ValueChanged
         searchByDate()
     End Sub
+    Private sub loadAllOCI()
+        FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas,,,, idUser,,,, "CONC",, "oci.data_lanc DESC, id_cod_principal, pacientes.nome")
+    End Sub
     Private Sub ckbSearchTodos_CheckedChanged(sender As Object, e As EventArgs) Handles ckbSearchTodos.CheckedChanged
         If ckbSearchTodos.Checked Then
             LimparData()
-            FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas,,,, idUser,,,, "CONC",, "oci.data_lanc DESC, pacientes.nome")
+            loadAllOCI()
         Else
             dgOCIcadastradas.DataSource = Nothing
             lbStatusCads.Text = "0 registros"

@@ -137,6 +137,7 @@ Partial Class FormAMEOCI
         Me.NúmerosAPACToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ImportarAPACToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.RelatóriosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ConsistênciaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.dgvSugestoes = New System.Windows.Forms.DataGridView()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
@@ -158,7 +159,6 @@ Partial Class FormAMEOCI
         Me.Label13 = New System.Windows.Forms.Label()
         Me.tbSearchApac = New System.Windows.Forms.TextBox()
         Me.lbStatusCads = New System.Windows.Forms.Label()
-        Me.ConsistênciaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -274,7 +274,7 @@ Partial Class FormAMEOCI
         '
         Me.txtNumApac.BackColor = System.Drawing.SystemColors.Desktop
         Me.txtNumApac.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtNumApac.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.txtNumApac.Cursor = System.Windows.Forms.Cursors.Arrow
         Me.txtNumApac.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtNumApac.ForeColor = System.Drawing.Color.LawnGreen
         Me.txtNumApac.Location = New System.Drawing.Point(13, 38)
@@ -1320,6 +1320,12 @@ Partial Class FormAMEOCI
         Me.RelatóriosToolStripMenuItem.Size = New System.Drawing.Size(71, 20)
         Me.RelatóriosToolStripMenuItem.Text = "Relatórios"
         '
+        'ConsistênciaToolStripMenuItem
+        '
+        Me.ConsistênciaToolStripMenuItem.Name = "ConsistênciaToolStripMenuItem"
+        Me.ConsistênciaToolStripMenuItem.Size = New System.Drawing.Size(141, 22)
+        Me.ConsistênciaToolStripMenuItem.Text = "Consistência"
+        '
         'dgvSugestoes
         '
         Me.dgvSugestoes.AllowUserToAddRows = False
@@ -1608,12 +1614,6 @@ Partial Class FormAMEOCI
         Me.lbStatusCads.Size = New System.Drawing.Size(55, 13)
         Me.lbStatusCads.TabIndex = 56
         Me.lbStatusCads.Text = "0 registros"
-        '
-        'ConsistênciaToolStripMenuItem
-        '
-        Me.ConsistênciaToolStripMenuItem.Name = "ConsistênciaToolStripMenuItem"
-        Me.ConsistênciaToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.ConsistênciaToolStripMenuItem.Text = "Consistência"
         '
         'FormAMEOCI
         '
