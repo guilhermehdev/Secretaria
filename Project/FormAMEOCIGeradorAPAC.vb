@@ -4,7 +4,6 @@ Public Class FormAMEOCIGeradorAPAC
     Private Sub btFechar_Click(sender As Object, e As EventArgs) Handles btFechar.Click
         Me.Close()
     End Sub
-
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         If tbFaixaInicio.Text.Length < 13 OrElse tbFaixaFim.Text.Length < 13 OrElse numQtd.Value < 1 Then
             MessageBox.Show("Preencha todos os campos.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -45,15 +44,13 @@ Public Class FormAMEOCIGeradorAPAC
             wb.SaveAs(caminho)
 
             MessageBox.Show("Arquivo gerado com sucesso em:" & vbCrLf & caminho, "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
-
+            FormAMEOCINumAPAC.loadAPACAvailable()
+            FormAMEOCI.loadAPACdisp()
         Else
             MessageBox.Show("Os números devem ter 13 dígitos.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Return
         End If
 
-        For Each n In numeros
-
-        Next
     End Sub
     Private Function GerarNumerosAPAC_Padrao(inicio As String, fim As String, quantidade As Integer) As List(Of String)
         Dim lista As New List(Of String)

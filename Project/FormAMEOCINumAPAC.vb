@@ -368,11 +368,15 @@ Public Class FormAMEOCINumAPAC
         End If
     End Sub
 
-    Private Sub RadioButton2_CheckedChanged(sender As Object, e As EventArgs) Handles chkDisponiveis.CheckedChanged
+    Public Sub loadAPACAvailable()
         dgvNumerosAPAC.DataSource = Nothing
+        chkDisponiveis.Checked = True
+        gbSearch.Enabled = False
+        loadNUMAPAC(dgvNumerosAPAC,,, True)
+    End Sub
+    Private Sub RadioButton2_CheckedChanged(sender As Object, e As EventArgs) Handles chkDisponiveis.CheckedChanged
         If chkDisponiveis.Checked Then
-            gbSearch.Enabled = False
-            loadNUMAPAC(dgvNumerosAPAC,,, True)
+            loadAPACAvailable()
         Else
             dgvNumerosAPAC.DataSource = Nothing
             gbSearch.Enabled = True

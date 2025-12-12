@@ -799,14 +799,15 @@ Public Class FormAMEOCI
         FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, , , , idUser,,,, "CONC", Nothing, "data_lanc DESC")
         lbStatusCads.Text = $"{dgOCIcadastradas.Rows.Count} registros"
     End Sub
-    Private Function loadAPACdisp()
+    Public Function loadAPACdisp()
         Dim apacDisp = FormAMEmain.getDataset("SELECT count(num_apac) AS apacs FROM oci WHERE status='DISP'").Rows(0).Item("apacs")
         If apacDisp = 0 Then
             btNovonumeroAPAC.Enabled = False
-            lbRestanteAPAC.Text = "0"
-            Return 0
+            Return "0 restante(s)"
+        Else
+            btNovonumeroAPAC.Enabled = True
+            Return apacDisp & " restante(s)"
         End If
-        Return apacDisp
     End Function
     Private Sub LimparData()
         dtpSearchData.Format = DateTimePickerFormat.Custom
@@ -851,7 +852,7 @@ Public Class FormAMEOCI
 
         Me.Text = $"Gerenciamento de APACs OCI - Competência {competencia(My.Settings.OCIcompetencia)}"
         ' loadAPACbyUser(idUser)
-        lbRestanteAPAC.Text = loadAPACdisp() & " restante(s)"
+        lbRestanteAPAC.Text = loadAPACdisp()
 
         dtValidadeIni.Focus()
         Dim novoMes As Integer
@@ -1559,7 +1560,7 @@ Public Class FormAMEOCI
         txtNumApac.Text = GetAndLockNextApac()
         dtValidadeIni.Focus()
         btNovonumeroAPAC.Enabled = False
-        lbRestanteAPAC.Text = loadAPACdisp() & " restante(s)"
+        lbRestanteAPAC.Text = loadAPACdisp()
     End Sub
 
     Public Function importFromApacs(caminhoArquivo As String) As List(Of ApacRegistro)
@@ -1710,7 +1711,6 @@ Public Class FormAMEOCI
 
             End Try
         Next
-
         MsgBox("Importação concluída!")
     End Sub
 
@@ -1736,7 +1736,6 @@ Public Class FormAMEOCI
 
         End If
     End Sub
-
     Private Sub cbSearchOCI_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSearchOCI.SelectedIndexChanged
         LimparData()
         Dim dv As DataView = CType(dgOCIcadastradas.Tag, DataView)
@@ -1747,7 +1746,6 @@ Public Class FormAMEOCI
             dv.RowFilter = $"oci LIKE '%{cbSearchOCI.Text}%'"
         End If
     End Sub
-
     Private Sub dgOCIcadastradas_RowsAdded(sender As Object, e As DataGridViewRowsAddedEventArgs) Handles dgOCIcadastradas.RowsAdded
         lbStatusCads.Text = $"{dgOCIcadastradas.Rows.Count} registros"
     End Sub
@@ -1762,7 +1760,6 @@ Public Class FormAMEOCI
             dv.RowFilter = $"compet = '{cbSearchComp.Text}'"
         End If
     End Sub
-
     Private Sub searchByDate()
         dtpSearchData.CustomFormat = "dd/MM/yyyy"
         FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC")
