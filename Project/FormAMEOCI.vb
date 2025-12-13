@@ -91,6 +91,13 @@ Public Class FormAMEOCI
             CodProcedimento.DroppedDown = True
             Return False
         End If
+        If txtNomeMedicoSolicitante.Text = txtNomeAutorizador.Text Then
+            MessageBox.Show("Os medicos Solicitante e Autorizador nao podem ser os mesmos.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            TabControl1.SelectedTab = TabControl1.TabPages(1)
+            txtNomeAutorizador.Focus()
+            txtNomeAutorizador.DroppedDown = True
+            Return False
+        End If
 
         Dim dictProceds As Dictionary(Of String, Integer) = CarregarProcedimentosCodId()
         Dim idProced As Integer
