@@ -159,6 +159,8 @@ Partial Class FormAMEOCI
         Me.Label13 = New System.Windows.Forms.Label()
         Me.tbSearchApac = New System.Windows.Forms.TextBox()
         Me.lbStatusCads = New System.Windows.Forms.Label()
+        Me.AuditoriaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ExcluirNãoUtilizadosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -1281,7 +1283,7 @@ Partial Class FormAMEOCI
         '
         'MenuStrip1
         '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConfiguraçõesToolStripMenuItem, Me.RelatóriosToolStripMenuItem})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConfiguraçõesToolStripMenuItem, Me.RelatóriosToolStripMenuItem, Me.AuditoriaToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Size = New System.Drawing.Size(1116, 24)
@@ -1615,6 +1617,19 @@ Partial Class FormAMEOCI
         Me.lbStatusCads.TabIndex = 56
         Me.lbStatusCads.Text = "0 registros"
         '
+        'AuditoriaToolStripMenuItem
+        '
+        Me.AuditoriaToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExcluirNãoUtilizadosToolStripMenuItem})
+        Me.AuditoriaToolStripMenuItem.Name = "AuditoriaToolStripMenuItem"
+        Me.AuditoriaToolStripMenuItem.Size = New System.Drawing.Size(68, 20)
+        Me.AuditoriaToolStripMenuItem.Text = "Auditoria"
+        '
+        'ExcluirNãoUtilizadosToolStripMenuItem
+        '
+        Me.ExcluirNãoUtilizadosToolStripMenuItem.Name = "ExcluirNãoUtilizadosToolStripMenuItem"
+        Me.ExcluirNãoUtilizadosToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
+        Me.ExcluirNãoUtilizadosToolStripMenuItem.Text = "Excluir não utilizados"
+        '
         'FormAMEOCI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1786,4 +1801,6 @@ Partial Class FormAMEOCI
     Friend WithEvents RelatóriosToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ImportarAPACToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ConsistênciaToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents AuditoriaToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ExcluirNãoUtilizadosToolStripMenuItem As ToolStripMenuItem
 End Class

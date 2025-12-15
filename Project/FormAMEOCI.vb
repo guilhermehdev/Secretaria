@@ -1881,6 +1881,41 @@ Public Class FormAMEOCI
         Process.Start($"C:\Program Files (x86)\Datasus\APAC\RCONSIST{chkMonthEXT()}")
     End Sub
 
+    Private Sub ExcluirNãoUtilizadosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExcluirNãoUtilizadosToolStripMenuItem.Click
+        Dim sequencia = File.ReadAllLines(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\sequencia.txt").ToList()
+        Dim usados As New HashSet(Of String)
+
+        For Each linha In File.ReadLines(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\APBKP.NOV.txt")
+            If linha.StartsWith("14") Then
+                Dim numeroApac = linha.Substring(8, 13).Trim()
+                usados.Add(numeroApac)
+            End If
+        Next
+
+        ' Diferença: sequência - usadas
+        Dim naoUsadas = sequencia.Except(usados).ToList()
+
+        ' Monta relatório
+        Dim sb As New StringBuilder()
+        sb.AppendLine("RELATÓRIO DE CONTROLE DE APAC")
+        sb.AppendLine("================================")
+        sb.AppendLine("Data: " & DateTime.Now.ToString("dd/MM/yyyy HH:mm"))
+        sb.AppendLine()
+        sb.AppendLine("Total na sequência original: " & sequencia.Count)
+        sb.AppendLine("Total de APACs usadas: " & usados.Count)
+        sb.AppendLine("Total de APACs NÃO usadas: " & naoUsadas.Count)
+        sb.AppendLine()
+        sb.AppendLine("LISTA DE APACs NÃO UTILIZADAS:")
+        sb.AppendLine("--------------------------------")
+
+        For Each n In naoUsadas
+            sb.AppendLine(n)
+        Next
+
+        ' Grava arquivo TXT
+        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\resultado.txt", sb.ToString(), Encoding.UTF8)
+
+    End Sub
 End Class
 
 Public Class ApacRegistro
