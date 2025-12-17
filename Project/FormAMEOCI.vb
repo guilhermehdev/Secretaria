@@ -876,7 +876,7 @@ Public Class FormAMEOCI
             Return
         End If
 
-        loadComp(cbSearchComp)
+        LimparData()
 
         Me.Text = $"Gerenciamento de APACs OCI - Competência {competencia(My.Settings.OCIcompetencia)}"
         ' loadAPACbyUser(idUser)
@@ -1056,10 +1056,10 @@ Public Class FormAMEOCI
             txtMotivoSaida.ValueMember = "Key"
             txtMotivoSaida.SelectedIndex = 1
 
-            FormAMEmain.loadComboBox("SELECT id, abrev FROM cod_oci_principal ORDER BY ID", cbSearchOCI, "id", "abrev", True)
+            ' FormAMEmain.loadComboBox("SELECT id, abrev FROM cod_oci_principal ORDER BY ID", cbSearchOCI, "id", "abrev", True)
 
-            dtpSearchData.CustomFormat = "dd/MM/yyyy"
-            FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC")
+            'dtpSearchData.CustomFormat = "dd/MM/yyyy"
+            'FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC")
 
         Catch ex As Exception
             ' MsgBox(ex.Message)
@@ -1741,61 +1741,10 @@ Public Class FormAMEOCI
         Next
         MsgBox("Importação concluída!")
     End Sub
-
-    Private Sub tbSearchApac_TextChanged(sender As Object, e As EventArgs) Handles tbSearchApac.TextChanged
-        LimparData()
-        Dim dv As DataView = CType(dgOCIcadastradas.Tag, DataView)
-        If String.IsNullOrWhiteSpace(tbSearchApac.Text) Then
-            dv.RowFilter = ""  ' Remove o filtro
-        Else
-            ' Filtra por uma ou mais colunas contendo o texto
-            dv.RowFilter = $"num_apac = '{tbSearchApac.Text}'"
-
-        End If
-    End Sub
-    Private Sub tbSearchNome_TextChanged(sender As Object, e As EventArgs) Handles tbSearchNome.TextChanged
-        LimparData()
-        Dim dv As DataView = CType(dgOCIcadastradas.Tag, DataView)
-        If String.IsNullOrWhiteSpace(tbSearchNome.Text) Then
-            dv.RowFilter = ""  ' Remove o filtro
-        Else
-            ' Filtra por uma ou mais colunas contendo o texto
-            dv.RowFilter = $"nome LIKE '%{tbSearchNome.Text}%'"
-
-        End If
-    End Sub
-    Private Sub cbSearchOCI_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSearchOCI.SelectedIndexChanged
-        LimparData()
-        Dim dv As DataView = CType(dgOCIcadastradas.Tag, DataView)
-        If cbSearchOCI.Text.ToString = "TODOS" Then
-            dv.RowFilter = ""  ' Remove o filtro
-        Else
-            ' Filtra por uma ou mais colunas contendo o texto
-            dv.RowFilter = $"oci LIKE '%{cbSearchOCI.Text}%'"
-        End If
-    End Sub
-    Private Sub dgOCIcadastradas_RowsAdded(sender As Object, e As DataGridViewRowsAddedEventArgs) Handles dgOCIcadastradas.RowsAdded
-        lbStatusCads.Text = $"{dgOCIcadastradas.Rows.Count} registros"
-    End Sub
-    Private Sub cbSearchComp_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSearchComp.SelectedIndexChanged
-        LimparData()
-        Dim dv As DataView = TryCast(dgOCIcadastradas.Tag, DataView)
-        If dv Is Nothing Then Exit Sub
-
-        If cbSearchComp.Text = "TODOS" Then
-            dv.RowFilter = ""
-        Else
-            dv.RowFilter = $"compet = '{cbSearchComp.Text}'"
-        End If
-    End Sub
     Private Sub searchByDate()
         dtpSearchData.CustomFormat = "dd/MM/yyyy"
-        FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC")
+        FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC",,, lbStatusCads)
         ckbSearchTodos.Checked = False
-        cbSearchComp.SelectedIndex = 0
-        cbSearchOCI.SelectedIndex = 0
-        tbSearchNome.Clear()
-        tbSearchApac.Clear()
     End Sub
 
     Private Sub FormAMEOCI_Click(sender As Object, e As EventArgs) Handles MyBase.Click
@@ -1805,7 +1754,7 @@ Public Class FormAMEOCI
         searchByDate()
     End Sub
     Public Sub loadAllOCI(dg As DataGridView)
-        FormAMEOCINumAPAC.loadNUMAPAC(dg,,,, idUser,,,, "CONC",, "oci.data_lanc DESC, id_cod_principal, pacientes.nome")
+        FormAMEOCINumAPAC.loadNUMAPAC(dg,,,, idUser,,,, "CONC",, "oci.data_lanc DESC, id_cod_principal, pacientes.nome",,, lbStatusCads)
     End Sub
     Private Sub ckbSearchTodos_CheckedChanged(sender As Object, e As EventArgs) Handles ckbSearchTodos.CheckedChanged
         If ckbSearchTodos.Checked Then

@@ -149,21 +149,13 @@ Partial Class FormAMEOCI
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.dgOCIcadastradas = New System.Windows.Forms.DataGridView()
+        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.ExcluirRegistroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.ckbSearchTodos = New System.Windows.Forms.CheckBox()
         Me.dtpSearchData = New System.Windows.Forms.DateTimePicker()
         Me.Label29 = New System.Windows.Forms.Label()
-        Me.Label28 = New System.Windows.Forms.Label()
-        Me.cbSearchComp = New System.Windows.Forms.ComboBox()
-        Me.Label15 = New System.Windows.Forms.Label()
-        Me.cbSearchOCI = New System.Windows.Forms.ComboBox()
-        Me.Label14 = New System.Windows.Forms.Label()
-        Me.tbSearchNome = New System.Windows.Forms.TextBox()
-        Me.Label13 = New System.Windows.Forms.Label()
-        Me.tbSearchApac = New System.Windows.Forms.TextBox()
         Me.lbStatusCads = New System.Windows.Forms.Label()
-        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.ExcluirRegistroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -176,8 +168,8 @@ Partial Class FormAMEOCI
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         CType(Me.dgOCIcadastradas, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox5.SuspendLayout()
         Me.ContextMenuStrip1.SuspendLayout()
+        Me.GroupBox5.SuspendLayout()
         Me.SuspendLayout()
         '
         'txtApacAnterior
@@ -1484,7 +1476,7 @@ Partial Class FormAMEOCI
         DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dgOCIcadastradas.DefaultCellStyle = DataGridViewCellStyle8
         Me.dgOCIcadastradas.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
-        Me.dgOCIcadastradas.Location = New System.Drawing.Point(6, 74)
+        Me.dgOCIcadastradas.Location = New System.Drawing.Point(6, 53)
         Me.dgOCIcadastradas.MultiSelect = False
         Me.dgOCIcadastradas.Name = "dgOCIcadastradas"
         Me.dgOCIcadastradas.ReadOnly = True
@@ -1500,23 +1492,27 @@ Partial Class FormAMEOCI
         Me.dgOCIcadastradas.RowHeadersWidth = 4
         Me.dgOCIcadastradas.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgOCIcadastradas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgOCIcadastradas.Size = New System.Drawing.Size(519, 395)
+        Me.dgOCIcadastradas.Size = New System.Drawing.Size(519, 416)
         Me.dgOCIcadastradas.TabIndex = 54
         Me.dgOCIcadastradas.TabStop = False
+        '
+        'ContextMenuStrip1
+        '
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExcluirRegistroToolStripMenuItem})
+        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(153, 26)
+        '
+        'ExcluirRegistroToolStripMenuItem
+        '
+        Me.ExcluirRegistroToolStripMenuItem.Name = "ExcluirRegistroToolStripMenuItem"
+        Me.ExcluirRegistroToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.ExcluirRegistroToolStripMenuItem.Text = "Excluir registro"
         '
         'GroupBox5
         '
         Me.GroupBox5.Controls.Add(Me.ckbSearchTodos)
         Me.GroupBox5.Controls.Add(Me.dtpSearchData)
         Me.GroupBox5.Controls.Add(Me.Label29)
-        Me.GroupBox5.Controls.Add(Me.Label28)
-        Me.GroupBox5.Controls.Add(Me.cbSearchComp)
-        Me.GroupBox5.Controls.Add(Me.Label15)
-        Me.GroupBox5.Controls.Add(Me.cbSearchOCI)
-        Me.GroupBox5.Controls.Add(Me.Label14)
-        Me.GroupBox5.Controls.Add(Me.tbSearchNome)
-        Me.GroupBox5.Controls.Add(Me.Label13)
-        Me.GroupBox5.Controls.Add(Me.tbSearchApac)
         Me.GroupBox5.Controls.Add(Me.dgOCIcadastradas)
         Me.GroupBox5.Location = New System.Drawing.Point(573, 30)
         Me.GroupBox5.Name = "GroupBox5"
@@ -1553,79 +1549,6 @@ Partial Class FormAMEOCI
         Me.Label29.TabIndex = 63
         Me.Label29.Text = "Data"
         '
-        'Label28
-        '
-        Me.Label28.AutoSize = True
-        Me.Label28.Location = New System.Drawing.Point(6, 53)
-        Me.Label28.Name = "Label28"
-        Me.Label28.Size = New System.Drawing.Size(69, 13)
-        Me.Label28.TabIndex = 62
-        Me.Label28.Text = "Competência"
-        '
-        'cbSearchComp
-        '
-        Me.cbSearchComp.FormattingEnabled = True
-        Me.cbSearchComp.Location = New System.Drawing.Point(76, 49)
-        Me.cbSearchComp.Name = "cbSearchComp"
-        Me.cbSearchComp.Size = New System.Drawing.Size(81, 21)
-        Me.cbSearchComp.TabIndex = 61
-        '
-        'Label15
-        '
-        Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(163, 53)
-        Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(25, 13)
-        Me.Label15.TabIndex = 60
-        Me.Label15.Text = "OCI"
-        '
-        'cbSearchOCI
-        '
-        Me.cbSearchOCI.FormattingEnabled = True
-        Me.cbSearchOCI.Location = New System.Drawing.Point(189, 49)
-        Me.cbSearchOCI.Name = "cbSearchOCI"
-        Me.cbSearchOCI.Size = New System.Drawing.Size(188, 21)
-        Me.cbSearchOCI.TabIndex = 59
-        '
-        'Label14
-        '
-        Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(206, 30)
-        Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(35, 13)
-        Me.Label14.TabIndex = 58
-        Me.Label14.Text = "Nome"
-        '
-        'tbSearchNome
-        '
-        Me.tbSearchNome.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.tbSearchNome.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
-        Me.tbSearchNome.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.tbSearchNome.Location = New System.Drawing.Point(243, 27)
-        Me.tbSearchNome.Name = "tbSearchNome"
-        Me.tbSearchNome.Size = New System.Drawing.Size(282, 21)
-        Me.tbSearchNome.TabIndex = 57
-        '
-        'Label13
-        '
-        Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(383, 53)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(35, 13)
-        Me.Label13.TabIndex = 56
-        Me.Label13.Text = "APAC"
-        '
-        'tbSearchApac
-        '
-        Me.tbSearchApac.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.tbSearchApac.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
-        Me.tbSearchApac.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.tbSearchApac.Location = New System.Drawing.Point(418, 49)
-        Me.tbSearchApac.MaxLength = 13
-        Me.tbSearchApac.Name = "tbSearchApac"
-        Me.tbSearchApac.Size = New System.Drawing.Size(107, 21)
-        Me.tbSearchApac.TabIndex = 55
-        '
         'lbStatusCads
         '
         Me.lbStatusCads.AutoSize = True
@@ -1634,18 +1557,6 @@ Partial Class FormAMEOCI
         Me.lbStatusCads.Size = New System.Drawing.Size(55, 13)
         Me.lbStatusCads.TabIndex = 56
         Me.lbStatusCads.Text = "0 registros"
-        '
-        'ContextMenuStrip1
-        '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExcluirRegistroToolStripMenuItem})
-        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(181, 48)
-        '
-        'ExcluirRegistroToolStripMenuItem
-        '
-        Me.ExcluirRegistroToolStripMenuItem.Name = "ExcluirRegistroToolStripMenuItem"
-        Me.ExcluirRegistroToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.ExcluirRegistroToolStripMenuItem.Text = "Excluir registro"
         '
         'FormAMEOCI
         '
@@ -1684,9 +1595,9 @@ Partial Class FormAMEOCI
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage2.ResumeLayout(False)
         CType(Me.dgOCIcadastradas, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ContextMenuStrip1.ResumeLayout(False)
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
-        Me.ContextMenuStrip1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1804,14 +1715,6 @@ Partial Class FormAMEOCI
     Friend WithEvents dgOCIcadastradas As DataGridView
     Friend WithEvents GroupBox5 As GroupBox
     Friend WithEvents lbStatusCads As Label
-    Friend WithEvents Label13 As Label
-    Friend WithEvents tbSearchApac As TextBox
-    Friend WithEvents Label14 As Label
-    Friend WithEvents tbSearchNome As TextBox
-    Friend WithEvents cbSearchOCI As ComboBox
-    Friend WithEvents Label15 As Label
-    Friend WithEvents cbSearchComp As ComboBox
-    Friend WithEvents Label28 As Label
     Friend WithEvents lbRestanteAPAC As Label
     Friend WithEvents Label29 As Label
     Friend WithEvents dtpSearchData As DateTimePicker

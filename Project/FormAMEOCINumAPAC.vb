@@ -111,7 +111,7 @@ Public Class FormAMEOCINumAPAC
         End If
     End Sub
 
-    Public Sub loadNUMAPAC(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "", Optional dtlanc As Date = Nothing, Optional order As String = "id", Optional custom As String = "", Optional medico As String = "")
+    Public Sub loadNUMAPAC(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "", Optional dtlanc As Date = Nothing, Optional order As String = "id", Optional custom As String = "", Optional medico As String = "", Optional labelCount As Label = Nothing)
         Try
             Dim where As String = "WHERE 1=1 "
 
@@ -169,7 +169,7 @@ Public Class FormAMEOCINumAPAC
             datagridview.Columns("status").Width = 60
             datagridview.Columns("responsavel").HeaderText = "Responsável"
             datagridview.Columns("responsavel").Width = 150
-            ToolStripStatusLabel1.Text = datagridview.Rows.Count & " registros encontrados."
+            labelCount.Text = $"{datagridview.Rows.Count} registros"
 
         Catch ex As Exception
             MsgBox("Erro ao carregar números APAC: " & ex.Message)
