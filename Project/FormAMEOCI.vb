@@ -113,8 +113,17 @@ Public Class FormAMEOCI
             If idPac = Nothing Then
                 Try
                     idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento, sexo) VALUES ('{txtNomePaciente.Text.Trim()}', '{m.mysqlDateFormat(dtNascimento.Text)}', '{txtNomeMae.Text.Trim()}', '({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', '{txtCpfPaciente.Text.Trim()}',{endereco.Rows(0).Item("id")}, '{txtNumero.Text.Trim()}', '{txtComplemento.Text.Trim()}', '{txtSexo.Text}')")
-                Catch ex As Exception
 
+                Catch ex As Exception
+                    Return False
+                End Try
+
+            Else
+                Try
+                    FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text.Trim()}', mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', id_logradouro={endereco.Rows(0).Item("id")}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}' WHERE id={idPac}")
+                    UnlockApac(txtNumApac.Text)
+                Catch ex As Exception
+                    Return False
                 End Try
 
             End If
@@ -130,15 +139,13 @@ Public Class FormAMEOCI
             result.Clear()
             clearFields()
             Return True
+
         Catch ex As Exception
             MsgBox("Erro ao salvar APAC: " & ex.Message)
-            Dim queryCPF = FormAMEmain.getDataset($"SELECT id FROM pacientes WHERE cpf='{txtCpfPaciente.Text}'").Rows(0).Item("id").ToString()
-            If queryCPF.Count > 0 Then
-                idPac = queryCPF
-            End If
-
-            FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text.Trim()}', mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', id_logradouro={endereco.Rows(0).Item("id")}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}' WHERE id={idPac}")
-            UnlockApac(txtNumApac.Text)
+            'Dim queryCPF = FormAMEmain.getDataset($"SELECT id FROM pacientes WHERE cpf='{txtCpfPaciente.Text}'").Rows(0).Item("id").ToString()
+            'If queryCPF.Count > 0 Then
+            '    idPac = queryCPF
+            'End If
             Return False
         End Try
 
@@ -360,6 +367,7 @@ Public Class FormAMEOCI
         Catch ex As Exception
             MessageBox.Show("⚠️ Erro ao gravar registro: " & ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
+
     End Sub
 
     Public Function RemoverAcentos(texto As String) As String
@@ -816,7 +824,7 @@ Public Class FormAMEOCI
             Return apacDisp & " restante(s)"
         End If
     End Function
-    Private Sub LimparData()
+    Public Sub LimparData()
         dtpSearchData.Format = DateTimePickerFormat.Custom
         dtpSearchData.CustomFormat = ""
     End Sub
@@ -847,6 +855,19 @@ Public Class FormAMEOCI
     Private Sub popupGrid_MouseLeave()
         popupGrid.Visible = False
     End Sub
+
+    Public Function deleteOCI(id As Integer)
+        Try
+            If m.msgQuestion("Excluir OCI?", "Atenção") Then
+                FormAMEmain.doQuery($"UPDATE oci Set compet='', data=NULL, id_paciente=NULL, id_medico=NULL, id_cod_principal=NULL, status='DISP', id_usuario=NULL WHERE id={id}",, True)
+                Return True
+            Else
+                Return False
+            End If
+        Catch ex As Exception
+            Return False
+        End Try
+    End Function
 
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If My.Settings.databaseAME = "" Then
@@ -1783,13 +1804,13 @@ Public Class FormAMEOCI
     Private Sub dtpSearchData_ValueChanged(sender As Object, e As EventArgs) Handles dtpSearchData.ValueChanged
         searchByDate()
     End Sub
-    Private sub loadAllOCI()
-        FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas,,,, idUser,,,, "CONC",, "oci.data_lanc DESC, id_cod_principal, pacientes.nome")
+    Public Sub loadAllOCI(dg As DataGridView)
+        FormAMEOCINumAPAC.loadNUMAPAC(dg,,,, idUser,,,, "CONC",, "oci.data_lanc DESC, id_cod_principal, pacientes.nome")
     End Sub
     Private Sub ckbSearchTodos_CheckedChanged(sender As Object, e As EventArgs) Handles ckbSearchTodos.CheckedChanged
         If ckbSearchTodos.Checked Then
             LimparData()
-            loadAllOCI()
+            loadAllOCI(dgOCIcadastradas)
         Else
             dgOCIcadastradas.DataSource = Nothing
             lbStatusCads.Text = "0 registros"
@@ -1885,7 +1906,7 @@ Public Class FormAMEOCI
         Dim sequencia = File.ReadAllLines(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\sequencia.txt").ToList()
         Dim usados As New HashSet(Of String)
 
-        For Each linha In File.ReadLines(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\APBKP.NOV.txt")
+        For Each linha In File.ReadLines(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\APBKP.NOV")
             If linha.StartsWith("14") Then
                 Dim numeroApac = linha.Substring(8, 13).Trim()
                 usados.Add(numeroApac)
@@ -1916,8 +1937,13 @@ Public Class FormAMEOCI
         File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\resultado.txt", sb.ToString(), Encoding.UTF8)
 
     End Sub
-End Class
+    Private Sub ExcluirRegistroToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExcluirRegistroToolStripMenuItem.Click
+        If deleteOCI(dgOCIcadastradas.SelectedRows(0).Cells(0).Value) Then
+            FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC")
+        End If
+    End Sub
 
+End Class
 Public Class ApacRegistro
     Public Property NumeroApac As String
     Public Property NomePaciente As String

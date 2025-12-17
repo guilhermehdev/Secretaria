@@ -175,7 +175,6 @@ Public Class FormAMEOCINumAPAC
             MsgBox("Erro ao carregar números APAC: " & ex.Message)
         End Try
     End Sub
-
     Private Sub FormAMEOCINumAPAC_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         FormAMEmain.loadComboBox("SELECT id, abrev FROM cod_oci_principal", cbOCI, "abrev", "id")
         FormAMEmain.loadComboBox("SELECT id, nome FROM usuarios ORDER BY nome", cbUsuarios, "nome", "id")
@@ -187,6 +186,8 @@ Public Class FormAMEOCINumAPAC
         cbUsuarios.SelectedIndex = -1
         cbSearchComp.SelectedIndex = 0
         rbTodos.Checked = True
+        FormAMEOCI.LimparData()
+        FormAMEOCI.loadAllOCI(dgvNumerosAPAC)
     End Sub
 
     Private Sub loadByAPACinterval()
@@ -195,17 +196,17 @@ Public Class FormAMEOCINumAPAC
             chkDisponiveis.Checked = False
             cbOCI.SelectedIndex = -1
             cbUsuarios.SelectedIndex = -1
-            If tbAPACIni.Text.Length > 0 AndAlso tbAPACFim.Text > 0 Then
-                loadNUMAPAC(dgvNumerosAPAC, tbAPACIni.Text, tbAPACFim.Text)
+            If tbAPACIni.Text.Length > 0 AndAlso tbAPACFim.Text.Length > 0 Then
+                loadNUMAPAC(dgvNumerosAPAC, tbAPACIni.Text, tbAPACFim.Text, False,,,,,,, "oci.data_lanc DESC")
             End If
         End If
 
     End Sub
 
-    Private Sub tbAPACFim_TextChanged(sender As Object, e As EventArgs)
+    Private Sub tbAPACFim_TextChanged(sender As Object, e As EventArgs) Handles tbAPACFim.TextChanged
         loadByAPACinterval()
     End Sub
-    Private Sub tbAPACIni_TextChanged(sender As Object, e As EventArgs)
+    Private Sub tbAPACIni_TextChanged(sender As Object, e As EventArgs) Handles tbAPACIni.TextChanged
         loadByAPACinterval()
     End Sub
 
@@ -392,7 +393,7 @@ Public Class FormAMEOCINumAPAC
             cbStatus.SelectedIndex = -1
             chkDisponiveis.Checked = False
             cbSearchComp.SelectedIndex = 0
-            loadNUMAPAC(dgvNumerosAPAC,,,,,,,, "CONC",, "num_apac")
+            loadNUMAPAC(dgvNumerosAPAC,,,,,,,, "CONC",, "oci.num_apac")
         End If
     End Sub
     Private Sub cbSearchComp_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSearchComp.SelectedIndexChanged
@@ -459,6 +460,11 @@ Public Class FormAMEOCINumAPAC
             loadNUMAPAC(dgvNumerosAPAC,,, False,,,,, "CONC",,,, medico)
         End If
     End Sub
-
+    Private Sub ExcluirOCIToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExcluirOCIToolStripMenuItem.Click
+        If FormAMEOCI.deleteOCI(dgvNumerosAPAC.SelectedRows(0).Cells(0).Value) Then
+            FormAMEOCI.LimparData()
+            FormAMEOCI.loadAllOCI(dgvNumerosAPAC)
+        End If
+    End Sub
 
 End Class

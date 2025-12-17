@@ -22,6 +22,7 @@ Partial Class FormAMEOCI
     'Não o modifique usando o editor de códigos.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
@@ -138,6 +139,8 @@ Partial Class FormAMEOCI
         Me.ImportarAPACToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.RelatóriosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConsistênciaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AuditoriaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ExcluirNãoUtilizadosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.dgvSugestoes = New System.Windows.Forms.DataGridView()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
@@ -159,8 +162,8 @@ Partial Class FormAMEOCI
         Me.Label13 = New System.Windows.Forms.Label()
         Me.tbSearchApac = New System.Windows.Forms.TextBox()
         Me.lbStatusCads = New System.Windows.Forms.Label()
-        Me.AuditoriaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ExcluirNãoUtilizadosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.ExcluirRegistroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -174,6 +177,7 @@ Partial Class FormAMEOCI
         Me.TabPage2.SuspendLayout()
         CType(Me.dgOCIcadastradas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox5.SuspendLayout()
+        Me.ContextMenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'txtApacAnterior
@@ -898,16 +902,16 @@ Partial Class FormAMEOCI
         '
         'btnGerarArquivo
         '
-        Me.btnGerarArquivo.BackColor = System.Drawing.Color.SkyBlue
+        Me.btnGerarArquivo.BackColor = System.Drawing.Color.DarkSeaGreen
         Me.btnGerarArquivo.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btnGerarArquivo.FlatAppearance.BorderSize = 0
         Me.btnGerarArquivo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnGerarArquivo.ForeColor = System.Drawing.SystemColors.HotTrack
+        Me.btnGerarArquivo.ForeColor = System.Drawing.Color.Transparent
         Me.btnGerarArquivo.Location = New System.Drawing.Point(218, 148)
         Me.btnGerarArquivo.Name = "btnGerarArquivo"
         Me.btnGerarArquivo.Size = New System.Drawing.Size(78, 23)
         Me.btnGerarArquivo.TabIndex = 50
-        Me.btnGerarArquivo.Text = "Gravar APAC"
+        Me.btnGerarArquivo.Text = "Salvar"
         Me.btnGerarArquivo.UseVisualStyleBackColor = False
         '
         'Label34
@@ -1328,6 +1332,19 @@ Partial Class FormAMEOCI
         Me.ConsistênciaToolStripMenuItem.Size = New System.Drawing.Size(141, 22)
         Me.ConsistênciaToolStripMenuItem.Text = "Consistência"
         '
+        'AuditoriaToolStripMenuItem
+        '
+        Me.AuditoriaToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExcluirNãoUtilizadosToolStripMenuItem})
+        Me.AuditoriaToolStripMenuItem.Name = "AuditoriaToolStripMenuItem"
+        Me.AuditoriaToolStripMenuItem.Size = New System.Drawing.Size(68, 20)
+        Me.AuditoriaToolStripMenuItem.Text = "Auditoria"
+        '
+        'ExcluirNãoUtilizadosToolStripMenuItem
+        '
+        Me.ExcluirNãoUtilizadosToolStripMenuItem.Name = "ExcluirNãoUtilizadosToolStripMenuItem"
+        Me.ExcluirNãoUtilizadosToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
+        Me.ExcluirNãoUtilizadosToolStripMenuItem.Text = "Excluir não utilizados"
+        '
         'dgvSugestoes
         '
         Me.dgvSugestoes.AllowUserToAddRows = False
@@ -1457,6 +1474,7 @@ Partial Class FormAMEOCI
         DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.dgOCIcadastradas.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle7
         Me.dgOCIcadastradas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgOCIcadastradas.ContextMenuStrip = Me.ContextMenuStrip1
         DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window
         DataGridViewCellStyle8.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -1617,18 +1635,17 @@ Partial Class FormAMEOCI
         Me.lbStatusCads.TabIndex = 56
         Me.lbStatusCads.Text = "0 registros"
         '
-        'AuditoriaToolStripMenuItem
+        'ContextMenuStrip1
         '
-        Me.AuditoriaToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExcluirNãoUtilizadosToolStripMenuItem})
-        Me.AuditoriaToolStripMenuItem.Name = "AuditoriaToolStripMenuItem"
-        Me.AuditoriaToolStripMenuItem.Size = New System.Drawing.Size(68, 20)
-        Me.AuditoriaToolStripMenuItem.Text = "Auditoria"
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExcluirRegistroToolStripMenuItem})
+        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(181, 48)
         '
-        'ExcluirNãoUtilizadosToolStripMenuItem
+        'ExcluirRegistroToolStripMenuItem
         '
-        Me.ExcluirNãoUtilizadosToolStripMenuItem.Name = "ExcluirNãoUtilizadosToolStripMenuItem"
-        Me.ExcluirNãoUtilizadosToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
-        Me.ExcluirNãoUtilizadosToolStripMenuItem.Text = "Excluir não utilizados"
+        Me.ExcluirRegistroToolStripMenuItem.Name = "ExcluirRegistroToolStripMenuItem"
+        Me.ExcluirRegistroToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.ExcluirRegistroToolStripMenuItem.Text = "Excluir registro"
         '
         'FormAMEOCI
         '
@@ -1669,6 +1686,7 @@ Partial Class FormAMEOCI
         CType(Me.dgOCIcadastradas, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
+        Me.ContextMenuStrip1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1803,4 +1821,6 @@ Partial Class FormAMEOCI
     Friend WithEvents ConsistênciaToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AuditoriaToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ExcluirNãoUtilizadosToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
+    Friend WithEvents ExcluirRegistroToolStripMenuItem As ToolStripMenuItem
 End Class
