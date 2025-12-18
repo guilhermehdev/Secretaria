@@ -30,6 +30,7 @@ Partial Class FormAMEOCINumAPAC
         Me.ctxMenuAPAC = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.AlterarStatusToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CopiarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ExcluirOCIToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.gbSearch = New System.Windows.Forms.GroupBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -59,7 +60,6 @@ Partial Class FormAMEOCINumAPAC
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.GeradorNumeraçãoAPACToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ExcluirOCIToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.dgvNumerosAPAC, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ctxMenuAPAC.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -122,19 +122,25 @@ Partial Class FormAMEOCINumAPAC
         '
         Me.ctxMenuAPAC.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AlterarStatusToolStripMenuItem, Me.CopiarToolStripMenuItem, Me.ExcluirOCIToolStripMenuItem})
         Me.ctxMenuAPAC.Name = "ctxMenuAPAC"
-        Me.ctxMenuAPAC.Size = New System.Drawing.Size(181, 92)
+        Me.ctxMenuAPAC.Size = New System.Drawing.Size(145, 70)
         '
         'AlterarStatusToolStripMenuItem
         '
         Me.AlterarStatusToolStripMenuItem.Name = "AlterarStatusToolStripMenuItem"
-        Me.AlterarStatusToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.AlterarStatusToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
         Me.AlterarStatusToolStripMenuItem.Text = "Alterar Status"
         '
         'CopiarToolStripMenuItem
         '
         Me.CopiarToolStripMenuItem.Name = "CopiarToolStripMenuItem"
-        Me.CopiarToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.CopiarToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
         Me.CopiarToolStripMenuItem.Text = "Copiar"
+        '
+        'ExcluirOCIToolStripMenuItem
+        '
+        Me.ExcluirOCIToolStripMenuItem.Name = "ExcluirOCIToolStripMenuItem"
+        Me.ExcluirOCIToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
+        Me.ExcluirOCIToolStripMenuItem.Text = "Excluir OCI"
         '
         'GroupBox1
         '
@@ -397,12 +403,6 @@ Partial Class FormAMEOCINumAPAC
         Me.GeradorNumeraçãoAPACToolStripMenuItem.Name = "GeradorNumeraçãoAPACToolStripMenuItem"
         Me.GeradorNumeraçãoAPACToolStripMenuItem.Size = New System.Drawing.Size(157, 20)
         Me.GeradorNumeraçãoAPACToolStripMenuItem.Text = "Gerador numeração APAC"
-        '
-        'ExcluirOCIToolStripMenuItem
-        '
-        Me.ExcluirOCIToolStripMenuItem.Name = "ExcluirOCIToolStripMenuItem"
-        Me.ExcluirOCIToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.ExcluirOCIToolStripMenuItem.Text = "Excluir OCI"
         '
         'FormAMEOCINumAPAC
         '

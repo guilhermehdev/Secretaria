@@ -466,5 +466,8 @@ Public Class FormAMEOCINumAPAC
             FormAMEOCI.loadAllOCI(dgvNumerosAPAC)
         End If
     End Sub
+    Private Sub dgvNumerosAPAC_RowsAdded(sender As Object, e As DataGridViewRowsAddedEventArgs) Handles dgvNumerosAPAC.RowsAdded
+        ToolStripStatusLabel1.Text = $"{dgvNumerosAPAC.Rows.Count} registros."
+    End Sub
 
 End Class
