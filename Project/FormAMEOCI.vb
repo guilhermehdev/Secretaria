@@ -170,7 +170,7 @@ Public Class FormAMEOCI
 
             If FormAMEmain.doQuery(query) Then
                 btNovonumeroAPAC.Enabled = True
-                FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC")
+                FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC",,, lbStatusCads)
                 'txtNumApac.Text = GetAndLockNextApac()
                 IDpacienteSelecionado = Nothing
             End If
@@ -398,7 +398,7 @@ Public Class FormAMEOCI
                 Dim selectedAutorizador As Integer = txtNomeAutorizador.SelectedIndex
                 Dim selectedCIDP As Integer = txtCidPrincipal.SelectedIndex
                 Dim selectedCIDS As Integer = txtCidSecundario.SelectedIndex
-                txtProcedimentoPrincipal_SelectionChangeCommitted(Nothing, Nothing) ' atualiza procedimentos)
+                txtProcedimentoPrincipal_SelectedValueChanged(Nothing, Nothing)
                 TabControl1.SelectedTab = TabControl1.TabPages(0)  ' ativa a terceira aba (0-based)
                 txtCNSMedicoExecutante.SelectedIndex = selectedCNSExe
                 txtNomeAutorizador.SelectedIndex = selectedAutorizador
@@ -489,108 +489,6 @@ Public Class FormAMEOCI
         txtComplemento.Clear()
         txtNumApac.Clear()
         txtNumApac.Focus()
-
-    End Sub
-    Private Sub txtProcedimentoPrincipal_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles txtProcedimentoPrincipal.SelectionChangeCommitted
-        'Dim procedSec As New Dictionary(Of String, String)
-        'Dim cbo As New Dictionary(Of String, String)
-
-        'dgvProcedimentos.Rows.Clear()
-        'procedSec.Clear()
-        'cbo.Clear()
-
-        'If txtProcedimentoPrincipal.SelectedValue = "0904010015" Then
-        '    procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
-        '    procedSec.Add("0211070041", "0211070041 - Audiometria tonal limiar (via aérea/óssea)")
-        '    cbo.Add("225275", "225275 - Médico Otorrinolaringologista")
-        '    dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225275")
-        '    dgvProcedimentos.Rows.Add("0211070041", "1", "Audiometria tonal limiar (via aérea/óssea)", "225275")
-
-        'ElseIf txtProcedimentoPrincipal.SelectedValue = "0902010026" Then
-        '    procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
-        '    procedSec.Add("0211020036", "0211020036 - Eletrocardiograma (ECG)")
-        '    cbo.Add("225120", "225120 - Médico Cardiologista")
-        '    dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225120")
-        '    dgvProcedimentos.Rows.Add("0211020036", "1", "Eletrocardiograma (ECG)", "225120")
-
-        'ElseIf txtProcedimentoPrincipal.SelectedValue = "0902010018" Then
-        '    procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
-        '    procedSec.Add("0211020036", "0211020036 - Eletrocardiograma (ECG)")
-        '    cbo.Add("225120", "225120 - Médico Cardiologista")
-        '    dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225120")
-        '    dgvProcedimentos.Rows.Add("0211020036", "1", "Eletrocardiograma (ECG)", "225120")
-
-        'ElseIf txtProcedimentoPrincipal.SelectedValue = "0905010035" Then
-        '    procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
-        '    procedSec.Add("0211060020", "0211060020 - Biomicroscopia de fundo de olho")
-        '    procedSec.Add("0211060127", "0211060127 - Mapeamento de retina")
-        '    procedSec.Add("0211060259", "0211060259 - Tonometria")
-        '    cbo.Add("225265", "225265 - Médico Oftalmologista")
-        '    dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225265")
-        '    dgvProcedimentos.Rows.Add("0211060020", "1", "Biomicroscopia de fundo de olho", "225265")
-        '    dgvProcedimentos.Rows.Add("0211060127", "1", "Mapeamento de retina", "225265")
-        '    dgvProcedimentos.Rows.Add("0211060259", "1", "Tonometria", "225265")
-
-        'ElseIf txtProcedimentoPrincipal.SelectedValue = "0903010011" Then
-        '    cbo.Add("225270", "225270 - Médico ortopedista e traumatologista")
-        '    procedSec.Add("0204020034", "0204020034 - RADIOGRAFIA DE COLUNA CERVICAL (AP + LATERAL + TO + OBLÍQUAS)")
-        '    procedSec.Add("0204020042", "0204020042 - RADIOGRAFIA DE COLUNA CERVICAL (AP + LATERAL + TO / FLEXÃO)")
-        '    procedSec.Add("0204020077", "0204020077 - RADIOGRAFIA DE COLUNA LOMBO-SACRA (C/ OBLÍQUAS)")
-        '    procedSec.Add("0204020085", "0204020085 - RADIOGRAFIA DE COLUNA LOMBO-SACRA FUNCIONAL / DINÂMICA")
-        '    procedSec.Add("0204020093", "0204020093 - RADIOGRAFIA DE COLUNA TORÁCICA (AP + LATERAL)")
-        '    procedSec.Add("0204020107", "0204020107 - RADIOGRAFIA DE COLUNA TORACO-LOMBAR")
-        '    procedSec.Add("0204020131", "0204020131 - RADIOGRAFIA PANORÂMICA DE COLUNA TOTAL - TELESPONDILOGRAFIA")
-
-        '    procedSec.Add("0204040035", "0204040035 - RADIOGRAFIA DE ARTICULAÇÃO ESCÁPULO-UMERAL")
-        '    procedSec.Add("0204040078", "0204040078 - RADIOGRAFIA DE COTOVELO")
-        '    procedSec.Add("0204040094", "0204040094 - RADIOGRAFIA DE MÃO")
-        '    procedSec.Add("0204040116", "0204040116 - RADIOGRAFIA DE ESCÁPULA/OMBRO (TRÊS POSIÇÕES)")
-        '    procedSec.Add("0204040124", "0204040124 - RADIOGRAFIA DE PUNHO (AP + LATERAL + OBLÍQUA)")
-
-        '    procedSec.Add("0204060060", "0204060060 - RADIOGRAFIA DE ARTICULAÇÃO COXO-FEMORAL")
-        '    procedSec.Add("0204060095", "0204060095 - RADIOGRAFIA DE BACIA")
-        '    procedSec.Add("0204060109", "0204060109 - RADIOGRAFIA DE CALCÂNEO")
-        '    procedSec.Add("0204060125", "0204060125 - RADIOGRAFIA DE JOELHO (AP + LATERAL)")
-        '    procedSec.Add("0204060133", "0204060133 - RADIOGRAFIA DE JOELHO OU PATELA (AP + LATERAL + AXIAL)")
-        '    procedSec.Add("0204060141", "0204060141 - RADIOGRAFIA DE JOELHO OU PATELA (AP + LATERAL + OBLÍQUA + 3)")
-        '    procedSec.Add("0204060150", "0204060150 - RADIOGRAFIA DE PÉ / DEDOS DO PÉ")
-        '    procedSec.Add("0204060176", "0204060176 - RADIOGRAFIA PANORÂMICA DE MEMBROS INFERIORES")
-
-        '    procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
-        '    procedSec.Add("0301010307", "0301010307 - TELECONSULTA MÉDICA NA ATENÇÃO ESPECIALIZADA")
-
-        '    dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225270")
-
-        'ElseIf txtProcedimentoPrincipal.SelectedValue = "0904010031" Then
-        '    procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
-        '    procedSec.Add("0209040025", "0209040025 - Laringoscopia")
-        '    procedSec.Add("0209040041", "0209040041 - Videolaringoscopia")
-        '    cbo.Add("225275", "225275 - Médico Otorrinolaringologista")
-        '    dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225275")
-        '    dgvProcedimentos.Rows.Add("0209040025", "1", "Laringoscopia", "225275")
-        '    dgvProcedimentos.Rows.Add("0209040041", "1", "Videolaringoscopia", "225275")
-
-        'End If
-
-        'CodProcedimento.DataSource = New BindingSource(procedSec, Nothing)
-        'CodProcedimento.DisplayMember = "Value"   ' O que aparece para o usuário
-        'CodProcedimento.ValueMember = "Key"
-        'CodProcedimento.SelectedIndex = 0
-
-        'CBOmed.DataSource = New BindingSource(cbo, Nothing)
-        'CBOmed.DisplayMember = "Value"   ' O que aparece para o usuário
-        'CBOmed.ValueMember = "Key"
-        'CBOmed.SelectedIndex = 0
-        'Quantidade.Text = "1"
-
-        'getServersSUS()
-        'Dim queryCID As String = $"SELECT cid.cid,cid.descricao FROM cid 
-        'JOIN cod_oci_principal ON cid.id_oci_principal = cod_oci_principal.id
-        'WHERE cod_oci_principal.cod ='{txtProcedimentoPrincipal.SelectedValue}'"
-        'FormAMEmain.loadComboBox(queryCID, txtCidPrincipal, "descricao", "cid")
-        'FormAMEmain.loadComboBox(queryCID, txtCidSecundario, "descricao", "cid")
-
-        'txtCidSecundario.SelectedIndex = -1
 
     End Sub
     Private Sub btnAdicionarProcedimento_Click(sender As Object, e As EventArgs) Handles btnAdicionarProcedimento.Click
