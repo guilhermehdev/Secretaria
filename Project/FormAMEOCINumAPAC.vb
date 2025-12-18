@@ -172,7 +172,7 @@ Public Class FormAMEOCINumAPAC
             labelCount.Text = $"{datagridview.Rows.Count} registros"
 
         Catch ex As Exception
-            MsgBox("Erro ao carregar números APAC: " & ex.Message)
+            ' MsgBox("Erro ao carregar números APAC: " & ex.Message)
         End Try
     End Sub
     Private Sub FormAMEOCINumAPAC_Load(sender As Object, e As EventArgs) Handles MyBase.Load

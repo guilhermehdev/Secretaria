@@ -20,7 +20,7 @@ Public Class FormAMEOCI
     Private debounceTimer As New Timer() With {.Interval = 300}
     Private isLoading As Boolean = False
     Private IDpacienteSelecionado As Integer = Nothing
-    Private nameHasFocused As Boolean = False
+    Private updateMode As Boolean = False
     Public Property idUser As Integer
 
     Public Function competencia(compet As String)
@@ -67,6 +67,44 @@ Public Class FormAMEOCI
             Return False
         End If
     End Function
+    Public Function CarregarProcedimentosIdCod() As Dictionary(Of Integer, String)
+        Dim procedimentos As New Dictionary(Of Integer, String)
+
+        Dim data = FormAMEmain.getDataset("SELECT cod, id FROM cod_oci_principal")
+
+        For Each rdr As DataRow In data.Rows
+            Dim cod As String = rdr("cod").ToString().Trim()
+            Dim id As Integer = Convert.ToInt32(rdr("id"))
+
+            If Not procedimentos.ContainsKey(id) Then
+                procedimentos.Add(id, cod)
+            End If
+        Next
+
+        Return procedimentos
+    End Function
+    Private Function GetProcedCod(idProcedimento As Integer) As String
+        Dim dictProceds = CarregarProcedimentosIdCod()
+
+        If dictProceds.ContainsKey(idProcedimento) Then
+            Return dictProceds(idProcedimento)
+        End If
+
+        Return String.Empty
+    End Function
+
+
+    Private Function getProcedID(codProcedimentoPrincipal As String)
+        Dim dictProceds As Dictionary(Of String, Integer) = CarregarProcedimentosCodId()
+        Dim idProced As Integer
+
+        Dim codigoBusca As String = codProcedimentoPrincipal
+        If dictProceds.ContainsKey(codigoBusca) Then
+            idProced = dictProceds(codigoBusca)
+        End If
+
+        Return idProced
+    End Function
 
     Private Function saveAPAC()
         If Not txtNumApac.Text.Length = 13 Then
@@ -99,20 +137,20 @@ Public Class FormAMEOCI
             Return False
         End If
 
-        Dim dictProceds As Dictionary(Of String, Integer) = CarregarProcedimentosCodId()
-        Dim idProced As Integer
+        'Dim dictProceds As Dictionary(Of String, Integer) = CarregarProcedimentosCodId()
+        'Dim idProced As Integer
 
-        Dim codigoBusca As String = txtProcedimentoPrincipal.SelectedValue
-        If dictProceds.ContainsKey(codigoBusca) Then
-            idProced = dictProceds(codigoBusca)
-        End If
+        'Dim codigoBusca As String = txtProcedimentoPrincipal.SelectedValue
+        'If dictProceds.ContainsKey(codigoBusca) Then
+        '    idProced = dictProceds(codigoBusca)
+        'End If
 
         Dim idPac As Object = IDpacienteSelecionado
 
         Try
             If idPac = Nothing Then
                 Try
-                    idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento, sexo) VALUES ('{txtNomePaciente.Text.Trim()}', '{m.mysqlDateFormat(dtNascimento.Text)}', '{txtNomeMae.Text.Trim()}', '({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', '{txtCpfPaciente.Text.Trim()}',{endereco.Rows(0).Item("id")}, '{txtNumero.Text.Trim()}', '{txtComplemento.Text.Trim()}', '{txtSexo.Text}')")
+                    idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento, sexo, raca) VALUES ('{txtNomePaciente.Text.Trim()}', '{m.mysqlDateFormat(dtNascimento.Text)}', '{txtNomeMae.Text.Trim()}', '({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', '{txtCpfPaciente.Text.Trim()}',{endereco.Rows(0).Item("id")}, '{txtNumero.Text.Trim()}', '{txtComplemento.Text.Trim()}', '{txtSexo.Text}', '{txtRaca.SelectedValue}')")
 
                 Catch ex As Exception
                     Return False
@@ -120,7 +158,7 @@ Public Class FormAMEOCI
 
             Else
                 Try
-                    FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text.Trim()}', mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', id_logradouro={endereco.Rows(0).Item("id")}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}' WHERE id={idPac}")
+                    FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text.Trim()}', mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', id_logradouro={endereco.Rows(0).Item("id")}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}', raca='{txtRaca.SelectedValue}' WHERE id={idPac}")
                     UnlockApac(txtNumApac.Text)
                 Catch ex As Exception
                     Return False
@@ -128,7 +166,7 @@ Public Class FormAMEOCI
 
             End If
 
-            Dim query = $"UPDATE oci Set compet='{competencia(My.Settings.OCIcompetencia)}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPac}, id_medico='{txtCNSMedicoExecutante.SelectedValue}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
+            Dim query = $"UPDATE oci Set compet='{competencia(My.Settings.OCIcompetencia)}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPac}, id_medico='{txtCNSMedicoExecutante.SelectedValue}',  id_autorizador='{txtNomeAutorizador.SelectedValue}',  id_cod_principal={getProcedID(txtProcedimentoPrincipal.SelectedValue)}, proced_secundario={CodProcedimento.SelectedValue}, cid_principal='{txtCidPrincipal.SelectedValue}', cid_sec='{txtCidSecundario.SelectedValue}' , status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
 
             If FormAMEmain.doQuery(query) Then
                 btNovonumeroAPAC.Enabled = True
@@ -150,7 +188,7 @@ Public Class FormAMEOCI
         End Try
 
     End Function
-    Private Sub btnAddPacAPAC_Click(sender As Object, e As EventArgs) Handles btnGerarArquivo.Click
+    Public Sub addAPAC()
         Try
             ' ==================== VALIDAÇÕES ====================
             If txtNumApac.Text.Trim() = "" Then Throw New Exception("Informe o número da APAC.")
@@ -233,6 +271,10 @@ Public Class FormAMEOCI
                     quantidades.Add(Convert.ToInt32(row.Cells("Quantidade").Value))
                 End If
             Next
+
+            If updateMode Then
+                RemoverRegistroApac($"14{competencia}{txtNumApac.Text}")
+            End If
 
             ' ==================== CRIA STREAM ÚNICO ====================
             Using fs As New FileStream(caminhoArquivo, FileMode.Append, FileAccess.Write, FileShare.None)
@@ -362,11 +404,43 @@ Public Class FormAMEOCI
                 txtNomeAutorizador.SelectedIndex = selectedAutorizador
                 txtCidPrincipal.SelectedIndex = selectedCIDP
                 txtCidSecundario.SelectedIndex = selectedCIDS
-
+                updateMode = False
             End If
         Catch ex As Exception
             MessageBox.Show("⚠️ Erro ao gravar registro: " & ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
+    End Sub
+    Private Sub btnAddPacAPAC_Click(sender As Object, e As EventArgs) Handles btnGerarArquivo.Click
+        addAPAC()
+    End Sub
+
+    Public Sub RemoverRegistroApac(prefixoApac As String)
+        Dim caminhoArquivo As String = Path.Combine(Application.StartupPath & "\APAC\EXPORTADOS", "AP" & My.Settings.OCIcompetencia & chkMonthEXT())
+        Dim linhas = File.ReadAllLines(caminhoArquivo, Encoding.GetEncoding("iso-8859-1"))
+        Dim resultado As New List(Of String)
+        Dim ignorar As Boolean = False
+
+        For Each linha In linhas
+
+            If linha.StartsWith("14") Then
+
+                ' Se este 14 for o que deve ser removido
+                If linha.StartsWith(prefixoApac) Then
+                    ignorar = True
+                    Continue For
+                Else
+                    ignorar = False
+                End If
+            End If
+
+            If Not ignorar Then
+                resultado.Add(linha)
+            End If
+
+        Next
+
+        ' Regrava o MESMO arquivo
+        File.WriteAllLines(caminhoArquivo, resultado, Encoding.GetEncoding("iso-8859-1"))
 
     End Sub
 
@@ -418,105 +492,105 @@ Public Class FormAMEOCI
 
     End Sub
     Private Sub txtProcedimentoPrincipal_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles txtProcedimentoPrincipal.SelectionChangeCommitted
-        Dim procedSec As New Dictionary(Of String, String)
-        Dim cbo As New Dictionary(Of String, String)
+        'Dim procedSec As New Dictionary(Of String, String)
+        'Dim cbo As New Dictionary(Of String, String)
 
-        dgvProcedimentos.Rows.Clear()
-        procedSec.Clear()
-        cbo.Clear()
+        'dgvProcedimentos.Rows.Clear()
+        'procedSec.Clear()
+        'cbo.Clear()
 
-        If txtProcedimentoPrincipal.SelectedValue = "0904010015" Then
-            procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
-            procedSec.Add("0211070041", "0211070041 - Audiometria tonal limiar (via aérea/óssea)")
-            cbo.Add("225275", "225275 - Médico Otorrinolaringologista")
-            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225275")
-            dgvProcedimentos.Rows.Add("0211070041", "1", "Audiometria tonal limiar (via aérea/óssea)", "225275")
+        'If txtProcedimentoPrincipal.SelectedValue = "0904010015" Then
+        '    procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
+        '    procedSec.Add("0211070041", "0211070041 - Audiometria tonal limiar (via aérea/óssea)")
+        '    cbo.Add("225275", "225275 - Médico Otorrinolaringologista")
+        '    dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225275")
+        '    dgvProcedimentos.Rows.Add("0211070041", "1", "Audiometria tonal limiar (via aérea/óssea)", "225275")
 
-        ElseIf txtProcedimentoPrincipal.SelectedValue = "0902010026" Then
-            procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
-            procedSec.Add("0211020036", "0211020036 - Eletrocardiograma (ECG)")
-            cbo.Add("225120", "225120 - Médico Cardiologista")
-            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225120")
-            dgvProcedimentos.Rows.Add("0211020036", "1", "Eletrocardiograma (ECG)", "225120")
+        'ElseIf txtProcedimentoPrincipal.SelectedValue = "0902010026" Then
+        '    procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
+        '    procedSec.Add("0211020036", "0211020036 - Eletrocardiograma (ECG)")
+        '    cbo.Add("225120", "225120 - Médico Cardiologista")
+        '    dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225120")
+        '    dgvProcedimentos.Rows.Add("0211020036", "1", "Eletrocardiograma (ECG)", "225120")
 
-        ElseIf txtProcedimentoPrincipal.SelectedValue = "0902010018" Then
-            procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
-            procedSec.Add("0211020036", "0211020036 - Eletrocardiograma (ECG)")
-            cbo.Add("225120", "225120 - Médico Cardiologista")
-            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225120")
-            dgvProcedimentos.Rows.Add("0211020036", "1", "Eletrocardiograma (ECG)", "225120")
+        'ElseIf txtProcedimentoPrincipal.SelectedValue = "0902010018" Then
+        '    procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
+        '    procedSec.Add("0211020036", "0211020036 - Eletrocardiograma (ECG)")
+        '    cbo.Add("225120", "225120 - Médico Cardiologista")
+        '    dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225120")
+        '    dgvProcedimentos.Rows.Add("0211020036", "1", "Eletrocardiograma (ECG)", "225120")
 
-        ElseIf txtProcedimentoPrincipal.SelectedValue = "0905010035" Then
-            procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
-            procedSec.Add("0211060020", "0211060020 - Biomicroscopia de fundo de olho")
-            procedSec.Add("0211060127", "0211060127 - Mapeamento de retina")
-            procedSec.Add("0211060259", "0211060259 - Tonometria")
-            cbo.Add("225265", "225265 - Médico Oftalmologista")
-            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225265")
-            dgvProcedimentos.Rows.Add("0211060020", "1", "Biomicroscopia de fundo de olho", "225265")
-            dgvProcedimentos.Rows.Add("0211060127", "1", "Mapeamento de retina", "225265")
-            dgvProcedimentos.Rows.Add("0211060259", "1", "Tonometria", "225265")
+        'ElseIf txtProcedimentoPrincipal.SelectedValue = "0905010035" Then
+        '    procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
+        '    procedSec.Add("0211060020", "0211060020 - Biomicroscopia de fundo de olho")
+        '    procedSec.Add("0211060127", "0211060127 - Mapeamento de retina")
+        '    procedSec.Add("0211060259", "0211060259 - Tonometria")
+        '    cbo.Add("225265", "225265 - Médico Oftalmologista")
+        '    dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225265")
+        '    dgvProcedimentos.Rows.Add("0211060020", "1", "Biomicroscopia de fundo de olho", "225265")
+        '    dgvProcedimentos.Rows.Add("0211060127", "1", "Mapeamento de retina", "225265")
+        '    dgvProcedimentos.Rows.Add("0211060259", "1", "Tonometria", "225265")
 
-        ElseIf txtProcedimentoPrincipal.SelectedValue = "0903010011" Then
-            cbo.Add("225270", "225270 - Médico ortopedista e traumatologista")
-            procedSec.Add("0204020034", "0204020034 - RADIOGRAFIA DE COLUNA CERVICAL (AP + LATERAL + TO + OBLÍQUAS)")
-            procedSec.Add("0204020042", "0204020042 - RADIOGRAFIA DE COLUNA CERVICAL (AP + LATERAL + TO / FLEXÃO)")
-            procedSec.Add("0204020077", "0204020077 - RADIOGRAFIA DE COLUNA LOMBO-SACRA (C/ OBLÍQUAS)")
-            procedSec.Add("0204020085", "0204020085 - RADIOGRAFIA DE COLUNA LOMBO-SACRA FUNCIONAL / DINÂMICA")
-            procedSec.Add("0204020093", "0204020093 - RADIOGRAFIA DE COLUNA TORÁCICA (AP + LATERAL)")
-            procedSec.Add("0204020107", "0204020107 - RADIOGRAFIA DE COLUNA TORACO-LOMBAR")
-            procedSec.Add("0204020131", "0204020131 - RADIOGRAFIA PANORÂMICA DE COLUNA TOTAL - TELESPONDILOGRAFIA")
+        'ElseIf txtProcedimentoPrincipal.SelectedValue = "0903010011" Then
+        '    cbo.Add("225270", "225270 - Médico ortopedista e traumatologista")
+        '    procedSec.Add("0204020034", "0204020034 - RADIOGRAFIA DE COLUNA CERVICAL (AP + LATERAL + TO + OBLÍQUAS)")
+        '    procedSec.Add("0204020042", "0204020042 - RADIOGRAFIA DE COLUNA CERVICAL (AP + LATERAL + TO / FLEXÃO)")
+        '    procedSec.Add("0204020077", "0204020077 - RADIOGRAFIA DE COLUNA LOMBO-SACRA (C/ OBLÍQUAS)")
+        '    procedSec.Add("0204020085", "0204020085 - RADIOGRAFIA DE COLUNA LOMBO-SACRA FUNCIONAL / DINÂMICA")
+        '    procedSec.Add("0204020093", "0204020093 - RADIOGRAFIA DE COLUNA TORÁCICA (AP + LATERAL)")
+        '    procedSec.Add("0204020107", "0204020107 - RADIOGRAFIA DE COLUNA TORACO-LOMBAR")
+        '    procedSec.Add("0204020131", "0204020131 - RADIOGRAFIA PANORÂMICA DE COLUNA TOTAL - TELESPONDILOGRAFIA")
 
-            procedSec.Add("0204040035", "0204040035 - RADIOGRAFIA DE ARTICULAÇÃO ESCÁPULO-UMERAL")
-            procedSec.Add("0204040078", "0204040078 - RADIOGRAFIA DE COTOVELO")
-            procedSec.Add("0204040094", "0204040094 - RADIOGRAFIA DE MÃO")
-            procedSec.Add("0204040116", "0204040116 - RADIOGRAFIA DE ESCÁPULA/OMBRO (TRÊS POSIÇÕES)")
-            procedSec.Add("0204040124", "0204040124 - RADIOGRAFIA DE PUNHO (AP + LATERAL + OBLÍQUA)")
+        '    procedSec.Add("0204040035", "0204040035 - RADIOGRAFIA DE ARTICULAÇÃO ESCÁPULO-UMERAL")
+        '    procedSec.Add("0204040078", "0204040078 - RADIOGRAFIA DE COTOVELO")
+        '    procedSec.Add("0204040094", "0204040094 - RADIOGRAFIA DE MÃO")
+        '    procedSec.Add("0204040116", "0204040116 - RADIOGRAFIA DE ESCÁPULA/OMBRO (TRÊS POSIÇÕES)")
+        '    procedSec.Add("0204040124", "0204040124 - RADIOGRAFIA DE PUNHO (AP + LATERAL + OBLÍQUA)")
 
-            procedSec.Add("0204060060", "0204060060 - RADIOGRAFIA DE ARTICULAÇÃO COXO-FEMORAL")
-            procedSec.Add("0204060095", "0204060095 - RADIOGRAFIA DE BACIA")
-            procedSec.Add("0204060109", "0204060109 - RADIOGRAFIA DE CALCÂNEO")
-            procedSec.Add("0204060125", "0204060125 - RADIOGRAFIA DE JOELHO (AP + LATERAL)")
-            procedSec.Add("0204060133", "0204060133 - RADIOGRAFIA DE JOELHO OU PATELA (AP + LATERAL + AXIAL)")
-            procedSec.Add("0204060141", "0204060141 - RADIOGRAFIA DE JOELHO OU PATELA (AP + LATERAL + OBLÍQUA + 3)")
-            procedSec.Add("0204060150", "0204060150 - RADIOGRAFIA DE PÉ / DEDOS DO PÉ")
-            procedSec.Add("0204060176", "0204060176 - RADIOGRAFIA PANORÂMICA DE MEMBROS INFERIORES")
+        '    procedSec.Add("0204060060", "0204060060 - RADIOGRAFIA DE ARTICULAÇÃO COXO-FEMORAL")
+        '    procedSec.Add("0204060095", "0204060095 - RADIOGRAFIA DE BACIA")
+        '    procedSec.Add("0204060109", "0204060109 - RADIOGRAFIA DE CALCÂNEO")
+        '    procedSec.Add("0204060125", "0204060125 - RADIOGRAFIA DE JOELHO (AP + LATERAL)")
+        '    procedSec.Add("0204060133", "0204060133 - RADIOGRAFIA DE JOELHO OU PATELA (AP + LATERAL + AXIAL)")
+        '    procedSec.Add("0204060141", "0204060141 - RADIOGRAFIA DE JOELHO OU PATELA (AP + LATERAL + OBLÍQUA + 3)")
+        '    procedSec.Add("0204060150", "0204060150 - RADIOGRAFIA DE PÉ / DEDOS DO PÉ")
+        '    procedSec.Add("0204060176", "0204060176 - RADIOGRAFIA PANORÂMICA DE MEMBROS INFERIORES")
 
-            procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
-            procedSec.Add("0301010307", "0301010307 - TELECONSULTA MÉDICA NA ATENÇÃO ESPECIALIZADA")
+        '    procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
+        '    procedSec.Add("0301010307", "0301010307 - TELECONSULTA MÉDICA NA ATENÇÃO ESPECIALIZADA")
 
-            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225270")
+        '    dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225270")
 
-        ElseIf txtProcedimentoPrincipal.SelectedValue = "0904010031" Then
-            procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
-            procedSec.Add("0209040025", "0209040025 - Laringoscopia")
-            procedSec.Add("0209040041", "0209040041 - Videolaringoscopia")
-            cbo.Add("225275", "225275 - Médico Otorrinolaringologista")
-            dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225275")
-            dgvProcedimentos.Rows.Add("0209040025", "1", "Laringoscopia", "225275")
-            dgvProcedimentos.Rows.Add("0209040041", "1", "Videolaringoscopia", "225275")
+        'ElseIf txtProcedimentoPrincipal.SelectedValue = "0904010031" Then
+        '    procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
+        '    procedSec.Add("0209040025", "0209040025 - Laringoscopia")
+        '    procedSec.Add("0209040041", "0209040041 - Videolaringoscopia")
+        '    cbo.Add("225275", "225275 - Médico Otorrinolaringologista")
+        '    dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225275")
+        '    dgvProcedimentos.Rows.Add("0209040025", "1", "Laringoscopia", "225275")
+        '    dgvProcedimentos.Rows.Add("0209040041", "1", "Videolaringoscopia", "225275")
 
-        End If
+        'End If
 
-        CodProcedimento.DataSource = New BindingSource(procedSec, Nothing)
-        CodProcedimento.DisplayMember = "Value"   ' O que aparece para o usuário
-        CodProcedimento.ValueMember = "Key"
-        CodProcedimento.SelectedIndex = 0
+        'CodProcedimento.DataSource = New BindingSource(procedSec, Nothing)
+        'CodProcedimento.DisplayMember = "Value"   ' O que aparece para o usuário
+        'CodProcedimento.ValueMember = "Key"
+        'CodProcedimento.SelectedIndex = 0
 
-        CBOmed.DataSource = New BindingSource(cbo, Nothing)
-        CBOmed.DisplayMember = "Value"   ' O que aparece para o usuário
-        CBOmed.ValueMember = "Key"
-        CBOmed.SelectedIndex = 0
-        Quantidade.Text = "1"
+        'CBOmed.DataSource = New BindingSource(cbo, Nothing)
+        'CBOmed.DisplayMember = "Value"   ' O que aparece para o usuário
+        'CBOmed.ValueMember = "Key"
+        'CBOmed.SelectedIndex = 0
+        'Quantidade.Text = "1"
 
-        getServersSUS()
-        Dim queryCID As String = $"SELECT cid.cid,cid.descricao FROM cid 
-        JOIN cod_oci_principal ON cid.id_oci_principal = cod_oci_principal.id
-        WHERE cod_oci_principal.cod ='{txtProcedimentoPrincipal.SelectedValue}'"
-        FormAMEmain.loadComboBox(queryCID, txtCidPrincipal, "descricao", "cid")
-        FormAMEmain.loadComboBox(queryCID, txtCidSecundario, "descricao", "cid")
+        'getServersSUS()
+        'Dim queryCID As String = $"SELECT cid.cid,cid.descricao FROM cid 
+        'JOIN cod_oci_principal ON cid.id_oci_principal = cod_oci_principal.id
+        'WHERE cod_oci_principal.cod ='{txtProcedimentoPrincipal.SelectedValue}'"
+        'FormAMEmain.loadComboBox(queryCID, txtCidPrincipal, "descricao", "cid")
+        'FormAMEmain.loadComboBox(queryCID, txtCidSecundario, "descricao", "cid")
 
-        txtCidSecundario.SelectedIndex = -1
+        'txtCidSecundario.SelectedIndex = -1
 
     End Sub
     Private Sub btnAdicionarProcedimento_Click(sender As Object, e As EventArgs) Handles btnAdicionarProcedimento.Click
@@ -860,6 +934,7 @@ Public Class FormAMEOCI
         Try
             If m.msgQuestion("Excluir OCI?", "Atenção") Then
                 FormAMEmain.doQuery($"UPDATE oci Set compet='', data=NULL, id_paciente=NULL, id_medico=NULL, id_cod_principal=NULL, status='DISP', id_usuario=NULL WHERE id={id}",, True)
+                lbRestanteAPAC.Text = loadAPACdisp()
                 Return True
             Else
                 Return False
@@ -868,7 +943,49 @@ Public Class FormAMEOCI
             Return False
         End Try
     End Function
+    Public Sub getOCIdata(id As Integer)
+        Try
+            Dim ociData = FormAMEmain.getDataset($"SELECT * FROM OCI WHERE id={id}", True)
+            If ociData.Rows.Count = 0 Then
+                m.msgAlert("OCI não encontrado!")
+                Return
+            End If
 
+            txtNumApac.Text = ociData.Rows(0).Item("num_apac").ToString()
+            dtValidadeIni.Value = CDate(ociData.Rows(0).Item("data"))
+            IDpacienteSelecionado = ociData.Rows(0).Item("id_paciente")
+
+            Dim pacData = FormAMEmain.getDataset($"SELECT cpf FROM pacientes WHERE id={IDpacienteSelecionado}", True)
+            txtCpfPaciente.Text = pacData.Rows(0).Item("cpf").ToString()
+            txtProcedimentoPrincipal.SelectedValue = GetProcedCod(ociData.Rows(0).Item("id_cod_principal").ToString())
+            txtCidPrincipal.SelectedValue = ociData.Rows(0).Item("cid_principal").ToString()
+            CodProcedimento.SelectedValue = ociData.Rows(0).Item("proced_secundario").ToString()
+            txtCidSecundario.SelectedValue = ociData.Rows(0).Item("cid_sec").ToString()
+            txtCNSMedicoExecutante.SelectedValue = ociData.Rows(0).Item("id_medico").ToString()
+            txtNomeAutorizador.SelectedValue = ociData.Rows(0).Item("id_autorizador").ToString()
+
+        Catch ex As Exception
+            MsgBox("Erro ao carregar dados do OCI: " & ex.Message)
+        End Try
+    End Sub
+
+    'Private Sub updateOCI(apac As String, idPac As Integer)
+    '    Try
+    '        FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text.Trim()}', mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', id_logradouro={endereco.Rows(0).Item("id")}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}', raca='{txtRaca.SelectedValue}' WHERE id={idPac}")
+
+    '        Dim query = $"UPDATE oci Set data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPac}, id_medico='{txtCNSMedicoExecutante.SelectedValue}', id_autorizador='{txtNomeAutorizador.SelectedValue}',  id_cod_principal={getProcedID(txtProcedimentoPrincipal.SelectedValue)}, proced_secundario={CodProcedimento.SelectedValue}, cid_principal='{txtCidPrincipal.SelectedValue}', cid_sec='{txtCidSecundario.SelectedValue}' status='CONC', id_usuario={idUser} WHERE num_apac='{apac}'"
+
+    '        FormAMEmain.doQuery(query,, True)
+
+    '        MsgBox("OCI atualizado com sucesso!")
+    '        RemoverRegistroApac($"14{My.Settings.OCIcompetencia}{apac}")
+    '        addAPAC()
+
+    '    Catch ex As Exception
+    '        Debug.WriteLine("Erro ao atualizar OCI: " & ex.Message)
+    '    End Try
+
+    'End Sub
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If My.Settings.databaseAME = "" Then
             FormAMEbd.ShowDialog()
@@ -1055,6 +1172,10 @@ Public Class FormAMEOCI
             txtMotivoSaida.DisplayMember = "Value"   ' O que aparece para o usuário
             txtMotivoSaida.ValueMember = "Key"
             txtMotivoSaida.SelectedIndex = 1
+
+            txtCidPrincipal.SelectedIndex = -1
+            txtCNSMedicoExecutante.SelectedIndex = -1
+            txtNomeAutorizador.SelectedIndex = -1
 
             ' FormAMEmain.loadComboBox("SELECT id, abrev FROM cod_oci_principal ORDER BY ID", cbSearchOCI, "id", "abrev", True)
 
@@ -1421,10 +1542,8 @@ Public Class FormAMEOCI
 
         Catch ex As Exception
             popupGrid.Visible = False
-            nameHasFocused = False
         Finally
             isLoading = False
-            nameHasFocused = False
         End Try
     End Sub
 
@@ -1503,10 +1622,10 @@ Public Class FormAMEOCI
     End Sub
 
     Private Sub dtValidadeIni_Leave(sender As Object, e As EventArgs) Handles dtValidadeIni.Leave
-        dtValidadeFim.Value = dtValidadeIni.Value.AddMonths(1)
-        dtAltaObito.Value = dtValidadeIni.Value
-        dtEmissao.Value = dtValidadeIni.Value
-        dtAutorizacao.Value = dtValidadeIni.Value
+        'dtValidadeFim.Value = dtValidadeIni.Value.AddMonths(1)
+        'dtAltaObito.Value = dtValidadeIni.Value
+        'dtEmissao.Value = dtValidadeIni.Value
+        'dtAutorizacao.Value = dtValidadeIni.Value
     End Sub
     Private Sub txtNomePaciente_Leave(sender As Object, e As EventArgs) Handles txtNomePaciente.Leave
         chkResponsavel()
@@ -1750,7 +1869,7 @@ Public Class FormAMEOCI
     Private Sub FormAMEOCI_Click(sender As Object, e As EventArgs) Handles MyBase.Click
         popupGrid.Visible = False
     End Sub
-    Private Sub dtpSearchData_ValueChanged(sender As Object, e As EventArgs) Handles dtpSearchData.ValueChanged
+    Private Sub clickDtpSearchData(sender As Object, e As EventArgs) Handles dtpSearchData.ValueChanged
         searchByDate()
     End Sub
     Public Sub loadAllOCI(dg As DataGridView)
@@ -1835,9 +1954,7 @@ Public Class FormAMEOCI
             txtTelefone.SelectionStart = 0
         End If
     End Sub
-    Private Sub dtpSearchData_MouseDown(sender As Object, e As MouseEventArgs) Handles dtpSearchData.MouseDown
-        searchByDate()
-    End Sub
+
     Private Sub FormAMEOCI_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
         If e.Control AndAlso e.KeyCode = Keys.V Then
             If m.TelefoneValido(Clipboard.GetText) Then
@@ -1888,8 +2005,136 @@ Public Class FormAMEOCI
     End Sub
     Private Sub ExcluirRegistroToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExcluirRegistroToolStripMenuItem.Click
         If deleteOCI(dgOCIcadastradas.SelectedRows(0).Cells(0).Value) Then
+            RemoverRegistroApac($"14{My.Settings.OCIcompetencia}{dgOCIcadastradas.SelectedRows(0).Cells(1).Value}")
             FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC")
         End If
+
+    End Sub
+    Private Sub EditarToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditarToolStripMenuItem.Click
+        updateMode = True
+        getOCIdata(dgOCIcadastradas.SelectedRows(0).Cells(0).Value)
+    End Sub
+    Private Sub dtValidadeIni_ValueChanged(sender As Object, e As EventArgs) Handles dtValidadeIni.ValueChanged
+        dtValidadeFim.Value = dtValidadeIni.Value.AddMonths(1)
+        dtAltaObito.Value = dtValidadeIni.Value
+        dtEmissao.Value = dtValidadeIni.Value
+        dtAutorizacao.Value = dtValidadeIni.Value
+    End Sub
+
+    Private Sub txtProcedimentoPrincipal_SelectedValueChanged(sender As Object, e As EventArgs) Handles txtProcedimentoPrincipal.SelectedValueChanged
+        Dim procedSec As New Dictionary(Of String, String)
+        Dim cbo As New Dictionary(Of String, String)
+
+        Try
+            dgvProcedimentos.Rows.Clear()
+            procedSec.Clear()
+            cbo.Clear()
+
+            If txtProcedimentoPrincipal.SelectedValue = "0904010015" Then
+                procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
+                procedSec.Add("0211070041", "0211070041 - Audiometria tonal limiar (via aérea/óssea)")
+                cbo.Add("225275", "225275 - Médico Otorrinolaringologista")
+                dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225275")
+                dgvProcedimentos.Rows.Add("0211070041", "1", "Audiometria tonal limiar (via aérea/óssea)", "225275")
+
+            ElseIf txtProcedimentoPrincipal.SelectedValue = "0902010026" Then
+                procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
+                procedSec.Add("0211020036", "0211020036 - Eletrocardiograma (ECG)")
+                cbo.Add("225120", "225120 - Médico Cardiologista")
+                dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225120")
+                dgvProcedimentos.Rows.Add("0211020036", "1", "Eletrocardiograma (ECG)", "225120")
+
+            ElseIf txtProcedimentoPrincipal.SelectedValue = "0902010018" Then
+                procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
+                procedSec.Add("0211020036", "0211020036 - Eletrocardiograma (ECG)")
+                cbo.Add("225120", "225120 - Médico Cardiologista")
+                dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225120")
+                dgvProcedimentos.Rows.Add("0211020036", "1", "Eletrocardiograma (ECG)", "225120")
+
+            ElseIf txtProcedimentoPrincipal.SelectedValue = "0905010035" Then
+                procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
+                procedSec.Add("0211060020", "0211060020 - Biomicroscopia de fundo de olho")
+                procedSec.Add("0211060127", "0211060127 - Mapeamento de retina")
+                procedSec.Add("0211060259", "0211060259 - Tonometria")
+                cbo.Add("225265", "225265 - Médico Oftalmologista")
+                dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225265")
+                dgvProcedimentos.Rows.Add("0211060020", "1", "Biomicroscopia de fundo de olho", "225265")
+                dgvProcedimentos.Rows.Add("0211060127", "1", "Mapeamento de retina", "225265")
+                dgvProcedimentos.Rows.Add("0211060259", "1", "Tonometria", "225265")
+
+            ElseIf txtProcedimentoPrincipal.SelectedValue = "0903010011" Then
+                cbo.Add("225270", "225270 - Médico ortopedista e traumatologista")
+                procedSec.Add("0204020034", "0204020034 - RADIOGRAFIA DE COLUNA CERVICAL (AP + LATERAL + TO + OBLÍQUAS)")
+                procedSec.Add("0204020042", "0204020042 - RADIOGRAFIA DE COLUNA CERVICAL (AP + LATERAL + TO / FLEXÃO)")
+                procedSec.Add("0204020077", "0204020077 - RADIOGRAFIA DE COLUNA LOMBO-SACRA (C/ OBLÍQUAS)")
+                procedSec.Add("0204020085", "0204020085 - RADIOGRAFIA DE COLUNA LOMBO-SACRA FUNCIONAL / DINÂMICA")
+                procedSec.Add("0204020093", "0204020093 - RADIOGRAFIA DE COLUNA TORÁCICA (AP + LATERAL)")
+                procedSec.Add("0204020107", "0204020107 - RADIOGRAFIA DE COLUNA TORACO-LOMBAR")
+                procedSec.Add("0204020131", "0204020131 - RADIOGRAFIA PANORÂMICA DE COLUNA TOTAL - TELESPONDILOGRAFIA")
+
+                procedSec.Add("0204040035", "0204040035 - RADIOGRAFIA DE ARTICULAÇÃO ESCÁPULO-UMERAL")
+                procedSec.Add("0204040078", "0204040078 - RADIOGRAFIA DE COTOVELO")
+                procedSec.Add("0204040094", "0204040094 - RADIOGRAFIA DE MÃO")
+                procedSec.Add("0204040116", "0204040116 - RADIOGRAFIA DE ESCÁPULA/OMBRO (TRÊS POSIÇÕES)")
+                procedSec.Add("0204040124", "0204040124 - RADIOGRAFIA DE PUNHO (AP + LATERAL + OBLÍQUA)")
+
+                procedSec.Add("0204060060", "0204060060 - RADIOGRAFIA DE ARTICULAÇÃO COXO-FEMORAL")
+                procedSec.Add("0204060095", "0204060095 - RADIOGRAFIA DE BACIA")
+                procedSec.Add("0204060109", "0204060109 - RADIOGRAFIA DE CALCÂNEO")
+                procedSec.Add("0204060125", "0204060125 - RADIOGRAFIA DE JOELHO (AP + LATERAL)")
+                procedSec.Add("0204060133", "0204060133 - RADIOGRAFIA DE JOELHO OU PATELA (AP + LATERAL + AXIAL)")
+                procedSec.Add("0204060141", "0204060141 - RADIOGRAFIA DE JOELHO OU PATELA (AP + LATERAL + OBLÍQUA + 3)")
+                procedSec.Add("0204060150", "0204060150 - RADIOGRAFIA DE PÉ / DEDOS DO PÉ")
+                procedSec.Add("0204060176", "0204060176 - RADIOGRAFIA PANORÂMICA DE MEMBROS INFERIORES")
+
+                procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
+                procedSec.Add("0301010307", "0301010307 - TELECONSULTA MÉDICA NA ATENÇÃO ESPECIALIZADA")
+
+                dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225270")
+
+            ElseIf txtProcedimentoPrincipal.SelectedValue = "0904010031" Then
+                procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
+                procedSec.Add("0209040025", "0209040025 - Laringoscopia")
+                procedSec.Add("0209040041", "0209040041 - Videolaringoscopia")
+                cbo.Add("225275", "225275 - Médico Otorrinolaringologista")
+                dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225275")
+                dgvProcedimentos.Rows.Add("0209040025", "1", "Laringoscopia", "225275")
+                dgvProcedimentos.Rows.Add("0209040041", "1", "Videolaringoscopia", "225275")
+
+            End If
+
+            If txtProcedimentoPrincipal.SelectedIndex >= 0 Then
+
+                CodProcedimento.DataSource = New BindingSource(procedSec, Nothing)
+                CodProcedimento.DisplayMember = "Value"   ' O que aparece para o usuário
+                CodProcedimento.ValueMember = "Key"
+                CodProcedimento.SelectedIndex = 0
+
+            Else
+
+                CodProcedimento.DataSource = Nothing
+
+            End If
+
+            CBOmed.DataSource = New BindingSource(cbo, Nothing)
+            CBOmed.DisplayMember = "Value"   ' O que aparece para o usuário
+            CBOmed.ValueMember = "Key"
+            CBOmed.SelectedIndex = 0
+            Quantidade.Text = "1"
+
+            getServersSUS()
+            Dim queryCID As String = $"SELECT cid.cid,cid.descricao FROM cid 
+        JOIN cod_oci_principal ON cid.id_oci_principal = cod_oci_principal.id
+        WHERE cod_oci_principal.cod ='{txtProcedimentoPrincipal.SelectedValue}'"
+            FormAMEmain.loadComboBox(queryCID, txtCidPrincipal, "descricao", "cid")
+            FormAMEmain.loadComboBox(queryCID, txtCidSecundario, "descricao", "cid")
+
+            txtCidSecundario.SelectedIndex = -1
+
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
 End Class
