@@ -501,6 +501,7 @@ Public Class FormAMEOCI
 
         ' Adiciona a linha com todas as colunas necessárias
         dgvProcedimentos.Rows.Add(cod, qtd, desc, cbo)
+        Quantidade.Text = 1
     End Sub
     Public Function CalcularCampoControle(apacNumber As String, codigosProcedimento As List(Of String), quantidadesProcedimento As List(Of Integer)) As String
         Dim total As Long = 0
