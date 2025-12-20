@@ -149,6 +149,7 @@ Public Class FormAMEOCI
 
         Try
             If idPac = Nothing Then
+                MsgBox(0)
                 Try
                     idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento, sexo, raca) VALUES ('{txtNomePaciente.Text.Trim()}', '{m.mysqlDateFormat(dtNascimento.Text)}', '{txtNomeMae.Text.Trim()}', '({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', '{txtCpfPaciente.Text.Trim()}',{endereco.Rows(0).Item("id")}, '{txtNumero.Text.Trim()}', '{txtComplemento.Text.Trim()}', '{txtSexo.Text}', '{txtRaca.SelectedValue}')")
 
@@ -157,10 +158,12 @@ Public Class FormAMEOCI
                 End Try
 
             Else
+                MsgBox(1)
                 Try
                     FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text.Trim()}', mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', id_logradouro={endereco.Rows(0).Item("id")}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}', raca='{txtRaca.SelectedValue}' WHERE id={idPac}")
                     UnlockApac(txtNumApac.Text)
                 Catch ex As Exception
+                    MsgBox(ex.Message)
                     Return False
                 End Try
 
@@ -793,7 +796,7 @@ Public Class FormAMEOCI
             btNovonumeroAPAC.Enabled = False
             Return "0 restante(s)"
         Else
-            btNovonumeroAPAC.Enabled = True
+            ' btNovonumeroAPAC.Enabled = True
             Return apacDisp & " restante(s)"
         End If
     End Function
@@ -1488,22 +1491,27 @@ Public Class FormAMEOCI
                     txtBairro.Text = ""
                 End If
 
-                txtNomePaciente.Text = result.Rows(0).Item("nome").ToString
-                txtCpfPaciente.Text = result.Rows(0).Item("cpf").ToString
                 dtNascimento.Text = result.Rows(0).Item("dtnasc").ToString
-                txtNomeMae.Text = result.Rows(0).Item("mae").ToString
+                txtNomePaciente.Text = result.Rows(0).Item("nome").ToString
                 txtSexo.Text = result.Rows(0).Item("sexo").ToString
-                chkResponsavel()
-
-                If result.Rows(0).Item("tel").ToString.Length >= 13 Then
+                txtCpfPaciente.Text = result.Rows(0).Item("cpf").ToString
+                txtNomeMae.Text = result.Rows(0).Item("mae").ToString
+                txtRaca.SelectedValue = result.Rows(0).Item("raca")
+                'chkSituacaoRua.Checked = CBool(result.Rows(0).Item("situacao_rua"))
+                Dim fullTel = result.Rows(0).Item("tel").ToString
+                If fullTel.Length > 0 Then
                     Dim ddd = result.Rows(0).Item("tel").ToString.Substring(1, 2)
                     txtDDD.Text = ddd
-                    Dim tel = result.Rows(0).Item("tel").ToString.Substring(4, 10)
-                    txtTelefone.Text = tel.Replace("-", "")
+                    If fullTel.Length >= 14 Then
+                        Dim tel = result.Rows(0).Item("tel").ToString.Substring(4, 10)
+                        txtTelefone.Text = tel.Replace("-", "")
+                    Else
+                        Dim tel = result.Rows(0).Item("tel").ToString.Substring(4, 9)
+                        txtTelefone.Text = tel.Replace("-", "")
+                    End If
                 End If
-
+                chkResponsavel()
             End If
-
         Catch ex As Exception
             'MsgBox(ex.Message)
         End Try
