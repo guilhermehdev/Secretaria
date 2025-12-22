@@ -19,7 +19,7 @@ Public Class FormAMEOCI
     Private popupGrid As DataGridView
     Private debounceTimer As New Timer() With {.Interval = 300}
     Private isLoading As Boolean = False
-    Private IDpacienteSelecionado As Integer = Nothing
+    Private IDpacienteSelecionado As Integer? = Nothing
     Private updateMode As Boolean = False
     Public Property idUser As Integer
 
@@ -146,28 +146,50 @@ Public Class FormAMEOCI
         'End If
 
         Dim idPac As Object = IDpacienteSelecionado
-
+        Dim idEnd As Integer = 0
+        Dim telfixo As String = ""
         Try
+
+            If endereco Is Nothing OrElse endereco.Rows.Count = 0 Then
+                idEnd = 0
+            Else
+                idEnd = endereco.Rows(0).Item("id")
+            End If
+
+            If txtTelefone.Text.Length = 8 Then
+                telfixo = txtTelefone.Text.Insert(4, "-")
+            Else
+                telfixo = txtTelefone.Text.Insert(5, "-")
+            End If
+
             If idPac = Nothing Then
-                MsgBox(0)
+
                 Try
-                    idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento, sexo, raca) VALUES ('{txtNomePaciente.Text.Trim()}', '{m.mysqlDateFormat(dtNascimento.Text)}', '{txtNomeMae.Text.Trim()}', '({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', '{txtCpfPaciente.Text.Trim()}',{endereco.Rows(0).Item("id")}, '{txtNumero.Text.Trim()}', '{txtComplemento.Text.Trim()}', '{txtSexo.Text}', '{txtRaca.SelectedValue}')")
+                    idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento, sexo, raca) VALUES ('{txtNomePaciente.Text.Trim()}', '{m.mysqlDateFormat(dtNascimento.Text)}', '{txtNomeMae.Text.Trim()}', '({txtDDD.Text}){telfixo}', '{txtCpfPaciente.Text.Trim()}',{idEnd}, '{txtNumero.Text.Trim()}', '{txtComplemento.Text.Trim()}', '{txtSexo.Text}', '{txtRaca.SelectedValue}')")
 
                 Catch ex As Exception
                     Return False
                 End Try
 
             Else
-                MsgBox(1)
+
                 Try
-                    FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text.Trim()}', mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', id_logradouro={endereco.Rows(0).Item("id")}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}', raca='{txtRaca.SelectedValue}' WHERE id={idPac}")
+                    FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text.Trim()}', mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){telfixo}', id_logradouro={idEnd}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}', raca='{txtRaca.SelectedValue}' WHERE id={idPac}")
                     UnlockApac(txtNumApac.Text)
                 Catch ex As Exception
-                    MsgBox(ex.Message)
+                    ' MsgBox(ex.Message)
                     Return False
                 End Try
 
             End If
+
+            If txtProcedimentoPrincipal.SelectedValue Is Nothing Then
+                Throw New Exception("Procedimento principal inválido.")
+            End If
+
+            'If CodProcedimento.SelectedValue Is Nothing Then
+            '    Throw New Exception("Procedimento secundário inválido.")
+            'End If
 
             Dim query = $"UPDATE oci Set compet='{competencia(My.Settings.OCIcompetencia)}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPac}, id_medico='{txtCNSMedicoExecutante.SelectedValue}',  id_autorizador='{txtNomeAutorizador.SelectedValue}',  id_cod_principal={getProcedID(txtProcedimentoPrincipal.SelectedValue)}, proced_secundario={CodProcedimento.SelectedValue}, cid_principal='{txtCidPrincipal.SelectedValue}', cid_sec='{txtCidSecundario.SelectedValue}' , status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
 
@@ -177,6 +199,7 @@ Public Class FormAMEOCI
                 'txtNumApac.Text = GetAndLockNextApac()
                 IDpacienteSelecionado = Nothing
             End If
+
             result.Clear()
             clearFields()
             Return True
@@ -199,6 +222,7 @@ Public Class FormAMEOCI
             txtNumApac.Focus()
             If Not m.ValidarCPF(txtCpfPaciente.Text) Then
                 MessageBox.Show("CPF inválido. Verifique e tente novamente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                txtCpfPaciente.Focus()
                 Return
             End If
 
@@ -259,6 +283,7 @@ Public Class FormAMEOCI
                 Throw New Exception("Selecione o procedimento principal.")
             End If
 
+
             ' ==================== CONFIGURAÇÕES ====================
             Dim competencia As String = My.Settings.OCIcompetencia
             Dim caminhoArquivo As String = Path.Combine(Application.StartupPath & "\APAC\EXPORTADOS", "AP" & competencia & chkMonthEXT())
@@ -278,6 +303,7 @@ Public Class FormAMEOCI
             If updateMode Then
                 RemoverRegistroApac($"14{competencia}{txtNumApac.Text}")
             End If
+
 
             ' ==================== CRIA STREAM ÚNICO ====================
             Using fs As New FileStream(caminhoArquivo, FileMode.Append, FileAccess.Write, FileShare.None)
@@ -1079,10 +1105,7 @@ Public Class FormAMEOCI
             txtCNSMedicoExecutante.SelectedIndex = -1
             txtNomeAutorizador.SelectedIndex = -1
 
-            ' FormAMEmain.loadComboBox("SELECT id, abrev FROM cod_oci_principal ORDER BY ID", cbSearchOCI, "id", "abrev", True)
-
-            'dtpSearchData.CustomFormat = "dd/MM/yyyy"
-            'FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC")
+            searchByDate()
 
         Catch ex As Exception
             ' MsgBox(ex.Message)
@@ -1496,22 +1519,33 @@ Public Class FormAMEOCI
                 txtSexo.Text = result.Rows(0).Item("sexo").ToString
                 txtCpfPaciente.Text = result.Rows(0).Item("cpf").ToString
                 txtNomeMae.Text = result.Rows(0).Item("mae").ToString
-                txtRaca.SelectedValue = result.Rows(0).Item("raca")
-                'chkSituacaoRua.Checked = CBool(result.Rows(0).Item("situacao_rua"))
-                Dim fullTel = result.Rows(0).Item("tel").ToString
-                If fullTel.Length > 0 Then
-                    Dim ddd = result.Rows(0).Item("tel").ToString.Substring(1, 2)
-                    txtDDD.Text = ddd
-                    If fullTel.Length >= 14 Then
-                        Dim tel = result.Rows(0).Item("tel").ToString.Substring(4, 10)
-                        txtTelefone.Text = tel.Replace("-", "")
-                    Else
-                        Dim tel = result.Rows(0).Item("tel").ToString.Substring(4, 9)
-                        txtTelefone.Text = tel.Replace("-", "")
-                    End If
+
+                If IsDBNull(result.Rows(0).Item("raca")) Then
+                    txtRaca.SelectedValue = "01"
+                Else
+                    txtRaca.SelectedValue = result.Rows(0).Item("raca")
                 End If
-                chkResponsavel()
-            End If
+                'chkSituacaoRua.Checked = CBool(result.Rows(0).Item("situacao_rua"))
+
+                Try
+                        Dim fullTel = result.Rows(0).Item("tel").ToString
+                        If fullTel.Length > 0 Then
+                            Dim ddd = result.Rows(0).Item("tel").ToString.Substring(1, 2)
+                            txtDDD.Text = ddd
+                            If fullTel.Length >= 14 Then
+                                Dim tel = result.Rows(0).Item("tel").ToString.Substring(4, 10)
+                                txtTelefone.Text = tel.Replace("-", "")
+                            Else
+                                Dim tel = result.Rows(0).Item("tel").ToString.Substring(4, 9)
+                                txtTelefone.Text = tel.Replace("-", "")
+                            End If
+                        End If
+
+                    Catch ex As Exception
+
+                    End Try
+                    chkResponsavel()
+                End If
         Catch ex As Exception
             'MsgBox(ex.Message)
         End Try
