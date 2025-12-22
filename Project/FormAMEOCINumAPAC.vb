@@ -469,5 +469,13 @@ Public Class FormAMEOCINumAPAC
     Private Sub dgvNumerosAPAC_RowsAdded(sender As Object, e As DataGridViewRowsAddedEventArgs) Handles dgvNumerosAPAC.RowsAdded
         ToolStripStatusLabel1.Text = $"{dgvNumerosAPAC.Rows.Count} registros."
     End Sub
+    Private Sub dgvNumerosAPAC_SelectionChanged(sender As Object, e As EventArgs) Handles dgvNumerosAPAC.SelectionChanged
+        Dim qtdSelec = dgvNumerosAPAC.SelectedRows.Count.ToString
+        If qtdSelec > 1 Then
+            ToolStripStatusLabel1.Text = $"{qtdSelec} registros selecionados."
+        Else
+            ToolStripStatusLabel1.Text = $"{dgvNumerosAPAC.Rows.Count} registros."
+        End If
+    End Sub
 
 End Class
