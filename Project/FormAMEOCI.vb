@@ -1148,6 +1148,32 @@ Public Class FormAMEOCI
 
     End Function
 
+    Public Function ExportedApac(prefixoApac)
+        Dim caminhoArquivo As String = Path.Combine(Application.StartupPath & "\APAC\EXPORTADOS", "AP" & My.Settings.OCIcompetencia & chkMonthEXT())
+        Dim linhas = File.ReadAllLines(caminhoArquivo, Encoding.GetEncoding("iso-8859-1"))
+        Dim resultado As New List(Of String)
+        Dim ignorar As Boolean = False
+
+        For Each linha In linhas
+            ' Se este 14 for o que deve ser removido
+            If linha.StartsWith(prefixoApac) Then
+                ignorar = True
+                Continue For
+            Else
+                ignorar = False
+            End If
+
+            If Not ignorar Then
+                resultado.Add(linha)
+            End If
+
+        Next
+
+        ' Regrava o MESMO arquivo
+        File.WriteAllLines(caminhoArquivo, resultado, Encoding.GetEncoding("iso-8859-1"))
+
+    End Function
+
     Private Sub btAddAPAC_Click(sender As Object, e As EventArgs) Handles btAddAPAC.Click
         ' Caminho padrão
         Dim pastaDestino As String = Application.StartupPath & "\APAC\EXPORTADOS"
@@ -1184,6 +1210,9 @@ Public Class FormAMEOCI
                 File.Copy(filePath, saveDialog.FileName)
                 MessageBox.Show($"Arquivo exportado com sucesso!{vbCrLf}{saveDialog.FileName}", "Exportação concluída", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 File.WriteAllText(filePath, "")
+
+
+
             End If
 
         End If
