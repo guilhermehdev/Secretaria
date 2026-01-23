@@ -17,7 +17,7 @@ Public Class FormLogin
             Me.Cursor = Cursors.WaitCursor
             Select Case system
                 Case "CNES"
-                    FormCNESmain.Show()
+                    FormCNESPlanejamento.Show()
                     Me.Visible = False
                 Case "EMTU"
                     FormEMTUmain.Show()

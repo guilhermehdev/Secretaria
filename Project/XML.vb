@@ -37,7 +37,7 @@ Public Class XML
     End Function
 
     Public Function getCNESXML(ByVal CNES As String) As String
-        xmlDocCBO.Load(XMLCNESfilePath)
+        'xmlDocCBO.Load(XMLCNESfilePath)
 
         Dim res As String = ""
         Dim dataxml As XmlNodeList = xmlDocCBO.GetElementsByTagName("CODIGO")

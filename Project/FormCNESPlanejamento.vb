@@ -295,5 +295,9 @@ Public Class FormCNESPlanejamento
         End Try
 
     End Sub
+    Private Sub FormCNESPlanejamento_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        FormSystemStart.Visible = True
+        ToolTip1.Active = False
+    End Sub
 
 End Class

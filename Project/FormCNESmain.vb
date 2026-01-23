@@ -654,7 +654,7 @@ Public Class FormCNESmain
     End Sub
     Private Sub FCNES_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Icon = FormCNESPlanejamento.Icon
-        loadPaineisEquipes()
+        'loadPaineisEquipes()
     End Sub
 
     Private Sub Label_Paint(sender As Object, e As PaintEventArgs)
