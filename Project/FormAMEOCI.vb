@@ -236,6 +236,11 @@ Public Class FormAMEOCI
                 TabControl1.SelectedTab = TabControl1.TabPages(0)
             End If
 
+            If txtProcedimentoPrincipal.SelectedValue = "0902010026" AndAlso CInt(m.AgeInMonths(m.mysqlDateFormat(dtNascimento.Text), m.mysqlDateFormat(dtValidadeIni.Value))) < 144 Then
+                Throw New Exception("Paciente com idade inferior a 12 anos não permitido para procedimento 0902010026.")
+                TabControl1.SelectedTab = TabControl1.TabPages(0)
+            End If
+
             If txtNomePaciente.Text.Trim() = "" Then
                 TabControl1.SelectedTab = TabControl1.TabPages(0)
                 txtNomePaciente.Focus()
