@@ -150,7 +150,7 @@ Public Class FormAMEOCIGeradorAPAC
                 atual = (CLng(atual) + 11).ToString().PadLeft(13, "0"c)
                 estado = 0
 
-            ElseIf ultimoDigito = 7 Then
+            ElseIf ultimoDigito = 9 Then
                 ' força virar 0
                 atual = atual.Substring(0, atual.Length - 1) & "0"
                 atual = (CLng(atual) + 10).ToString().PadLeft(13, "0"c)
@@ -165,7 +165,5 @@ Public Class FormAMEOCIGeradorAPAC
 
         Return lista
     End Function
-
-
 
 End Class

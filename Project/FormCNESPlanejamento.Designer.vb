@@ -189,7 +189,7 @@ Partial Class FormCNESPlanejamento
         Me.lbNMTotal.AutoSize = True
         Me.lbNMTotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbNMTotal.ForeColor = System.Drawing.Color.DarkKhaki
-        Me.lbNMTotal.Location = New System.Drawing.Point(13, 86)
+        Me.lbNMTotal.Location = New System.Drawing.Point(13, 107)
         Me.lbNMTotal.Name = "lbNMTotal"
         Me.lbNMTotal.Size = New System.Drawing.Size(31, 16)
         Me.lbNMTotal.TabIndex = 135
@@ -199,7 +199,7 @@ Partial Class FormCNESPlanejamento
         '
         Me.Label26.AutoSize = True
         Me.Label26.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label26.Location = New System.Drawing.Point(47, 88)
+        Me.Label26.Location = New System.Drawing.Point(47, 109)
         Me.Label26.Name = "Label26"
         Me.Label26.Size = New System.Drawing.Size(143, 13)
         Me.Label26.TabIndex = 134
@@ -210,7 +210,7 @@ Partial Class FormCNESPlanejamento
         Me.lbNSTotal.AutoSize = True
         Me.lbNSTotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbNSTotal.ForeColor = System.Drawing.Color.SeaGreen
-        Me.lbNSTotal.Location = New System.Drawing.Point(13, 107)
+        Me.lbNSTotal.Location = New System.Drawing.Point(13, 86)
         Me.lbNSTotal.Name = "lbNSTotal"
         Me.lbNSTotal.Size = New System.Drawing.Size(31, 16)
         Me.lbNSTotal.TabIndex = 101
@@ -220,7 +220,7 @@ Partial Class FormCNESPlanejamento
         '
         Me.Label18.AutoSize = True
         Me.Label18.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label18.Location = New System.Drawing.Point(47, 109)
+        Me.Label18.Location = New System.Drawing.Point(47, 88)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(167, 13)
         Me.Label18.TabIndex = 100
