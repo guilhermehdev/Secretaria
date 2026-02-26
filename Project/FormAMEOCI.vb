@@ -168,6 +168,8 @@ Public Class FormAMEOCI
                     idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento, sexo, raca) VALUES ('{txtNomePaciente.Text.Trim()}', '{m.mysqlDateFormat(dtNascimento.Text)}', '{txtNomeMae.Text.Trim()}', '({txtDDD.Text}){telfixo}', '{txtCpfPaciente.Text.Trim()}',{idEnd}, '{txtNumero.Text.Trim()}', '{txtComplemento.Text.Trim()}', '{txtSexo.Text}', '{txtRaca.SelectedValue}')")
 
                 Catch ex As Exception
+                    'MsgBox(idPac)
+                    'MsgBox("INSERT " & ex.Message)
                     Return False
                 End Try
 
@@ -177,7 +179,7 @@ Public Class FormAMEOCI
                     FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text.Trim()}', mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){telfixo}', id_logradouro={idEnd}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}', raca='{txtRaca.SelectedValue}' WHERE id={idPac}")
                     UnlockApac(txtNumApac.Text)
                 Catch ex As Exception
-                    ' MsgBox(ex.Message)
+                    MsgBox("UPDATE " & ex.Message)
                     Return False
                 End Try
 
@@ -1534,7 +1536,7 @@ Public Class FormAMEOCI
     Private Sub resultPacientes(result As DataTable)
 
         Try
-            'MsgBox(result.Rows(0).Item("id"))
+            IDpacienteSelecionado = result.Rows(0).Item("id")
             If result.Rows.Count > 0 Then
                 ' txtNomePaciente.Text = result.Rows(0).Item("nome").ToString
                 If result.Rows(0).Item("id_logradouro") <> 0 Then
