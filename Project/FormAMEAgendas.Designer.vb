@@ -1,0 +1,67 @@
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+Partial Class FormAMEAgendas
+    Inherits System.Windows.Forms.Form
+
+    'Descartar substituições de formulário para limpar a lista de componentes.
+    <System.Diagnostics.DebuggerNonUserCode()>
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
+    'Exigido pelo Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    'OBSERVAÇÃO: o procedimento a seguir é exigido pelo Windows Form Designer
+    'Pode ser modificado usando o Windows Form Designer.  
+    'Não o modifique usando o editor de códigos.
+    <System.Diagnostics.DebuggerStepThrough()>
+    Private Sub InitializeComponent()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.ListBox1 = New System.Windows.Forms.ListBox()
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.SuspendLayout()
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(47, 43)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 58
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'ListBox1
+        '
+        Me.ListBox1.FormattingEnabled = True
+        Me.ListBox1.Location = New System.Drawing.Point(128, 43)
+        Me.ListBox1.Name = "ListBox1"
+        Me.ListBox1.Size = New System.Drawing.Size(572, 381)
+        Me.ListBox1.TabIndex = 59
+        '
+        'OpenFileDialog1
+        '
+        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
+        '
+        'FormAMEAgendas
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.ListBox1)
+        Me.Controls.Add(Me.Button1)
+        Me.Name = "FormAMEAgendas"
+        Me.Text = "FormAMEAgendas"
+        Me.ResumeLayout(False)
+
+    End Sub
+
+    Friend WithEvents Button1 As Button
+    Friend WithEvents ListBox1 As ListBox
+    Friend WithEvents OpenFileDialog1 As OpenFileDialog
+End Class

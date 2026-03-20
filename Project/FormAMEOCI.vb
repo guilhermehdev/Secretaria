@@ -173,16 +173,6 @@ Public Class FormAMEOCI
                     Return False
                 End Try
 
-            Else
-
-                Try
-                    FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text.Trim()}', mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){telfixo}', id_logradouro={idEnd}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}', raca='{txtRaca.SelectedValue}' WHERE id={idPac}")
-                    UnlockApac(txtNumApac.Text)
-                Catch ex As Exception
-                    MsgBox("UPDATE " & ex.Message)
-                    Return False
-                End Try
-
             End If
 
             If txtProcedimentoPrincipal.SelectedValue Is Nothing Then
@@ -216,6 +206,38 @@ Public Class FormAMEOCI
         End Try
 
     End Function
+    Private Sub btAtualizarDados_Click(sender As Object, e As EventArgs) Handles btAtualizarDados.Click
+        Dim idPac As Object = IDpacienteSelecionado
+        Dim idEnd As Integer = 0
+        Dim telfixo As String = ""
+
+        If Not idPac = Nothing Then
+
+            If endereco Is Nothing OrElse endereco.Rows.Count = 0 Then
+                idEnd = 0
+            Else
+                idEnd = endereco.Rows(0).Item("id")
+            End If
+
+            If txtTelefone.Text.Length = 8 Then
+                telfixo = txtTelefone.Text.Insert(4, "-")
+            Else
+                telfixo = txtTelefone.Text.Insert(5, "-")
+            End If
+
+            Try
+                FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text.Trim()}', nome='{txtNomePaciente.Text}',mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){telfixo}', id_logradouro={idEnd}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}', raca='{txtRaca.SelectedValue}' WHERE id={idPac}",, True)
+
+                MessageBox.Show("✅ Dados do paciente atualizados!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Catch ex As Exception
+                MsgBox("UPDATE " & ex.Message)
+            End Try
+
+        Else
+            MessageBox.Show("Selecione um paciente por data de nascimento, nome ou CPF", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
+
+    End Sub
     Public Sub addAPAC()
         Try
             ' ==================== VALIDAÇÕES ====================
@@ -1831,7 +1853,7 @@ Public Class FormAMEOCI
             End Try
 
             Try
-                FormAMEmain.doQuery($"UPDATE oci SET compet='{competencia(apac.competencia)}', data='{m.mysqlDateFormat(apac.data)}', id_paciente='{idPac}', id_medico='{apac.SUSMedicoExecutante}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{apac.NumeroApac}'")
+                FormAMEmain.doQuery($"UPDATE oci SET data='{m.mysqlDateFormat(apac.data)}', id_paciente='{idPac}', id_medico='{apac.SUSMedicoExecutante}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{apac.NumeroApac}'")
             Catch ex As Exception
 
             End Try
@@ -2113,6 +2135,23 @@ Public Class FormAMEOCI
 
         End Try
 
+    End Sub
+    Private Sub btExcluirPaciente_Click(sender As Object, e As EventArgs) Handles btExcluirPaciente.Click
+        If IDpacienteSelecionado IsNot Nothing Then
+
+            If m.msgQuestion("Tem certeza que deseja excluir este paciente? Essa ação é irreversível.", "Confirmar exclusão") Then
+                FormAMEmain.doQuery("DELETE FROM pacientes WHERE id=" & IDpacienteSelecionado)
+                MessageBox.Show("Paciente excluído com sucesso.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                clearFields()
+            End If
+
+        Else
+            MessageBox.Show("Selecione um paciente por data de nascimento, nome ou CPF", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
+
+    End Sub
+    Private Sub AgendasToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AgendasToolStripMenuItem.Click
+        FormAMEAgendas.Show()
     End Sub
 
 End Class

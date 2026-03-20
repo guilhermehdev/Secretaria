@@ -7,6 +7,8 @@ Imports iTextSharp.text.pdf
 Imports iTextSharp.text.pdf.parser
 Imports MySql.Data.MySqlClient
 
+
+
 Public Class PDF
     Dim pdfPath As String = Application.StartupPath & "/PDF/PROFISSIONAIS.pdf"
     Dim xml As New XML
@@ -344,7 +346,89 @@ Public Class PDF
         Return resultado
 
     End Function
+    Public Function AgruparConsultasPDF(caminhoPDF As String) As List(Of String)
 
+        Dim texto As String = ""
+
+        Dim reader As New PdfReader(caminhoPDF)
+
+        For i As Integer = 1 To reader.NumberOfPages
+            texto &= PdfTextExtractor.GetTextFromPage(reader, i) & vbLf
+        Next
+
+        reader.Close()
+
+        Dim linhas = texto.Split(vbLf)
+
+        Dim medico As String = ""
+        Dim especialidade As String = ""
+        Dim dataConsulta As String = ""
+
+        Dim horarios As New Dictionary(Of String, Integer)
+
+        Dim regexData As New Regex("\d{2}/\d{2}/\d{4}")
+        Dim regexHora As New Regex("\b\d{2}:\d{2}\b")
+
+        For Each linha In linhas
+
+            linha = linha.Trim()
+
+            'capturar médico
+            If linha.Contains("do Profissional") Then
+                medico = linha.Replace("do Profissional", "").Trim()
+            End If
+
+            'capturar data
+            If dataConsulta = "" Then
+                Dim md = regexData.Match(linha)
+                If md.Success Then
+                    dataConsulta = md.Value
+                End If
+            End If
+
+            'ignorar rodapé com segundos
+            If Regex.IsMatch(linha, "\d{2}:\d{2}:\d{2}") Then Continue For
+
+            'capturar hora
+            Dim mh = regexHora.Match(linha)
+
+            If mh.Success Then
+
+                Dim hora = mh.Value
+
+                If horarios.ContainsKey(hora) Then
+                    horarios(hora) += 1
+                Else
+                    horarios.Add(hora, 1)
+                End If
+
+            End If
+
+            'capturar especialidade
+            If linha.Contains("CARDIOLOGIA") Then
+                especialidade = "CARDIOLOGIA"
+            End If
+
+        Next
+
+        Dim resultado As New List(Of String)
+
+        'cabeçalho
+        resultado.Add(dataConsulta & " - " & medico & " - " & especialidade)
+        resultado.Add("")
+
+        'horarios
+        For Each h In horarios.OrderBy(Function(x) TimeSpan.Parse(x.Key))
+
+            Dim txt = If(h.Value = 1, "1 paciente", h.Value & " pacientes")
+
+            resultado.Add(h.Key & " - " & txt)
+
+        Next
+
+        Return resultado
+
+    End Function
 
 End Class
 
@@ -679,6 +763,5 @@ Public Class Endereco
             Debug.WriteLine("Erro ao salvar no banco: " & ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
-
 
 End Class
