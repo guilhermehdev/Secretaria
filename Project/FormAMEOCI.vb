@@ -226,7 +226,7 @@ Public Class FormAMEOCI
             End If
 
             Try
-                FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text.Trim()}', nome='{txtNomePaciente.Text}',mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){telfixo}', id_logradouro={idEnd}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}', raca='{txtRaca.SelectedValue}' WHERE id={idPac}",, True)
+                FormAMEmain.doQuery($"UPDATE pacientes SET dtnasc='{m.mysqlDateFormat(dtNascimento.Text)}', cpf='{txtCpfPaciente.Text.Trim()}', nome='{txtNomePaciente.Text}',mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){telfixo}', id_logradouro={idEnd}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}', raca='{txtRaca.SelectedValue}' WHERE id={idPac}",, True)
 
                 MessageBox.Show("✅ Dados do paciente atualizados!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Catch ex As Exception
@@ -2144,6 +2144,8 @@ Public Class FormAMEOCI
                 MessageBox.Show("Paciente excluído com sucesso.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 clearFields()
             End If
+
+            btNovonumeroAPAC.Enabled = True
 
         Else
             MessageBox.Show("Selecione um paciente por data de nascimento, nome ou CPF", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
