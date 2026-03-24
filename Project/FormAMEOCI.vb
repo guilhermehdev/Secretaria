@@ -214,15 +214,51 @@ Public Class FormAMEOCI
         If Not idPac = Nothing Then
 
             If endereco Is Nothing OrElse endereco.Rows.Count = 0 Then
-                idEnd = 0
+                MessageBox.Show("Endereço inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
             Else
                 idEnd = endereco.Rows(0).Item("id")
+            End If
+
+            If dtNascimento.Text.Length < 10 Then
+                MessageBox.Show("Data de nascimento inválida.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
+            End If
+
+            If txtNomePaciente.Text.Length < 4 Then
+                MessageBox.Show("Nome inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
+            End If
+
+            If txtSexo.Text = Nothing Then
+                MessageBox.Show("Sexo inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
+            End If
+
+            If txtCpfPaciente.Text.Length < 11 Then
+                MessageBox.Show("CPF inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
+            End If
+
+            If txtNomeMae.Text.Length < 3 Then
+                MessageBox.Show("Nome da mãe inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
+            End If
+
+            If txtTelefone.Text.Length < 8 Or txtDDD.Text.Length < 2 Then
+                MessageBox.Show("Telefone inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
             End If
 
             If txtTelefone.Text.Length = 8 Then
                 telfixo = txtTelefone.Text.Insert(4, "-")
             Else
                 telfixo = txtTelefone.Text.Insert(5, "-")
+            End If
+
+            If txtNumero.Text.Length < 1 Then
+                MessageBox.Show("Número inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
             End If
 
             Try
