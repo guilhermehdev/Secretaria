@@ -245,15 +245,15 @@ Public Class FormAMEOCI
                 Return
             End If
 
-            If txtTelefone.Text.Length < 8 Or txtDDD.Text.Length < 2 Then
-                MessageBox.Show("Telefone inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Return
-            End If
-
             If txtTelefone.Text.Length = 8 Then
                 telfixo = txtTelefone.Text.Insert(4, "-")
             Else
                 telfixo = txtTelefone.Text.Insert(5, "-")
+            End If
+
+            If txtTelefone.Text.Length < 8 Or txtDDD.Text.Length < 2 Then
+                MessageBox.Show("Telefone inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
             End If
 
             If txtNumero.Text.Length < 1 Then
