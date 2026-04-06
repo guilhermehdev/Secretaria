@@ -8,6 +8,7 @@ Imports ClosedXML.Excel
 Imports Google.Protobuf.WellKnownTypes
 Imports MySql.Data.MySqlClient
 Imports Mysqlx.XDevAPI.Common
+Imports ServiceStack.Script
 
 Public Class FormAMEOCI
     Private linhas As New List(Of String)
@@ -206,7 +207,8 @@ Public Class FormAMEOCI
         End Try
 
     End Function
-    Private Sub btAtualizarDados_Click(sender As Object, e As EventArgs) Handles btAtualizarDados.Click
+
+    Private Function atPac()
         Dim idPac As Object = IDpacienteSelecionado
         Dim idEnd As Integer = 0
         Dim telfixo As String = ""
@@ -215,34 +217,34 @@ Public Class FormAMEOCI
 
             If endereco Is Nothing OrElse endereco.Rows.Count = 0 Then
                 MessageBox.Show("Endereço inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Return
+                Return False
             Else
                 idEnd = endereco.Rows(0).Item("id")
             End If
 
             If dtNascimento.Text.Length < 10 Then
                 MessageBox.Show("Data de nascimento inválida.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Return
+                Return False
             End If
 
             If txtNomePaciente.Text.Length < 4 Then
                 MessageBox.Show("Nome inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Return
+                Return False
             End If
 
             If txtSexo.Text = Nothing Then
                 MessageBox.Show("Sexo inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Return
+                Return False
             End If
 
             If txtCpfPaciente.Text.Length < 11 Then
                 MessageBox.Show("CPF inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Return
+                Return False
             End If
 
             If txtNomeMae.Text.Length < 3 Then
                 MessageBox.Show("Nome da mãe inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Return
+                Return False
             End If
 
             If txtTelefone.Text.Length = 8 Then
@@ -253,26 +255,36 @@ Public Class FormAMEOCI
 
             If txtTelefone.Text.Length < 8 Or txtDDD.Text.Length < 2 Then
                 MessageBox.Show("Telefone inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Return
+                Return False
             End If
 
             If txtNumero.Text.Length < 1 Then
                 MessageBox.Show("Número inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Return
+                Return False
             End If
 
             Try
-                FormAMEmain.doQuery($"UPDATE pacientes SET dtnasc='{m.mysqlDateFormat(dtNascimento.Text)}', cpf='{txtCpfPaciente.Text.Trim()}', nome='{txtNomePaciente.Text}',mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){telfixo}', id_logradouro={idEnd}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}', raca='{txtRaca.SelectedValue}' WHERE id={idPac}",, True)
-
-                MessageBox.Show("✅ Dados do paciente atualizados!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                FormAMEmain.doQuery($"UPDATE pacientes SET dtnasc='{m.mysqlDateFormat(dtNascimento.Text)}', cpf='{txtCpfPaciente.Text.Trim()}', nome='{txtNomePaciente.Text}',mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){telfixo}', id_logradouro={idEnd}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}', raca='{txtRaca.SelectedValue}' WHERE id={idPac}")
+                If txtNumApac.Text.Length = 13 Then
+                    UnlockApac(txtNumApac.Text)
+                End If
+                Return True
+                ' MessageBox.Show("✅ Dados do paciente atualizados!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Catch ex As Exception
                 MsgBox("UPDATE " & ex.Message)
+                Return False
             End Try
 
         Else
             MessageBox.Show("Selecione um paciente por data de nascimento, nome ou CPF", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return False
         End If
 
+    End Function
+    Private Sub btAtualizarDados_Click(sender As Object, e As EventArgs) Handles btAtualizarDados.Click
+        If atPac() Then
+            MessageBox.Show("✅ Dados do paciente atualizados!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        End If
     End Sub
     Public Sub addAPAC()
         Try
@@ -1213,7 +1225,7 @@ Public Class FormAMEOCI
 
     End Function
 
-    Public Function ExportedApac(prefixoApac)
+    Public Sub ExportedApac(prefixoApac)
         Dim caminhoArquivo As String = Path.Combine(Application.StartupPath & "\APAC\EXPORTADOS", "AP" & My.Settings.OCIcompetencia & chkMonthEXT())
         Dim linhas = File.ReadAllLines(caminhoArquivo, Encoding.GetEncoding("iso-8859-1"))
         Dim resultado As New List(Of String)
@@ -1237,7 +1249,7 @@ Public Class FormAMEOCI
         ' Regrava o MESMO arquivo
         File.WriteAllLines(caminhoArquivo, resultado, Encoding.GetEncoding("iso-8859-1"))
 
-    End Function
+    End Sub
 
     Private Sub btAddAPAC_Click(sender As Object, e As EventArgs) Handles btAddAPAC.Click
         ' Caminho padrão
@@ -1623,20 +1635,20 @@ Public Class FormAMEOCI
                 'chkSituacaoRua.Checked = CBool(result.Rows(0).Item("situacao_rua"))
 
                 Try
-                        Dim fullTel = result.Rows(0).Item("tel").ToString
-                        If fullTel.Length > 0 Then
-                            Dim ddd = result.Rows(0).Item("tel").ToString.Substring(1, 2)
-                            txtDDD.Text = ddd
-                            If fullTel.Length >= 14 Then
-                                Dim tel = result.Rows(0).Item("tel").ToString.Substring(4, 10)
-                                txtTelefone.Text = tel.Replace("-", "")
-                            Else
-                                Dim tel = result.Rows(0).Item("tel").ToString.Substring(4, 9)
-                                txtTelefone.Text = tel.Replace("-", "")
-                            End If
+                    Dim fullTel = result.Rows(0).Item("tel").ToString
+                    If fullTel.Length > 0 Then
+                        Dim ddd = result.Rows(0).Item("tel").ToString.Substring(1, 2)
+                        txtDDD.Text = ddd
+                        If fullTel.Length >= 14 Then
+                            Dim tel = result.Rows(0).Item("tel").ToString.Substring(4, 10)
+                            txtTelefone.Text = tel.Replace("-", "")
+                        Else
+                            Dim tel = result.Rows(0).Item("tel").ToString.Substring(4, 9)
+                            txtTelefone.Text = tel.Replace("-", "")
                         End If
+                    End If
 
-                    Catch ex As Exception
+                Catch ex As Exception
 
                     End Try
                     chkResponsavel()
@@ -2178,6 +2190,9 @@ Public Class FormAMEOCI
             If m.msgQuestion("Tem certeza que deseja excluir este paciente? Essa ação é irreversível.", "Confirmar exclusão") Then
                 FormAMEmain.doQuery("DELETE FROM pacientes WHERE id=" & IDpacienteSelecionado)
                 MessageBox.Show("Paciente excluído com sucesso.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                If txtNumApac.Text.Length = 13 Then
+                    UnlockApac(txtNumApac.Text)
+                End If
                 clearFields()
             End If
 

@@ -47,6 +47,7 @@ Partial Class FormAMEAgendas
         'OpenFileDialog1
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
+        Me.OpenFileDialog1.Multiselect = True
         '
         'FormAMEAgendas
         '
