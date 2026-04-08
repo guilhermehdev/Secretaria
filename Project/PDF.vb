@@ -348,114 +348,114 @@ Public Class PDF
 
     End Function
 
-    Public Function AgruparConsultasPDF(arquivos() As String) As List(Of String)
+    'Public Function AgruparConsultasPDF(arquivos() As String) As List(Of String)
 
-        Dim resultado As New List(Of String)
+    '    Dim resultado As New List(Of String)
 
-        Dim medico As String = ""
+    '    Dim medico As String = ""
 
-        For Each caminhoPDF In arquivos
+    '    For Each caminhoPDF In arquivos
 
-            Dim texto As String = ""
+    '        Dim texto As String = ""
 
-            Dim reader As New PdfReader(caminhoPDF)
+    '        Dim reader As New PdfReader(caminhoPDF)
 
-            For i = 1 To reader.NumberOfPages
-                texto &= PdfTextExtractor.GetTextFromPage(reader, i) & vbLf
-            Next
+    '        For i = 1 To reader.NumberOfPages
+    '            texto &= PdfTextExtractor.GetTextFromPage(reader, i) & vbLf
+    '        Next
 
-            reader.Close()
+    '        reader.Close()
 
-            Dim linhas = texto.Split(vbLf)
+    '        Dim linhas = texto.Split(vbLf)
 
-            Dim dataConsulta As String = ""
-            Dim especialidade As String = ""
+    '        Dim dataConsulta As String = ""
+    '        Dim especialidade As String = ""
 
-            Dim horarios As New Dictionary(Of String, Integer)
+    '        Dim horarios As New Dictionary(Of String, Integer)
 
-            Dim regexData As New Regex("\d{2}/\d{2}/\d{4}")
-            Dim regexHora As New Regex("\b\d{2}:\d{2}\b")
+    '        Dim regexData As New Regex("\d{2}/\d{2}/\d{4}")
+    '        Dim regexHora As New Regex("\b\d{2}:\d{2}\b")
 
-            For Each linha In linhas
+    '        For Each linha In linhas
 
-                linha = linha.Trim()
+    '            linha = linha.Trim()
 
-                'capturar médico
-                If linha.Contains("do Profissional") Then
+    '            'capturar médico
+    '            If linha.Contains("do Profissional") Then
 
-                    medico = linha.Replace("do Profissional", "").Trim()
+    '                medico = linha.Replace("do Profissional", "").Trim()
 
-                    Dim partes = medico.Split(" "c)
+    '                Dim partes = medico.Split(" "c)
 
-                    If partes.Length > 1 Then
-                        medico = String.Join(" ", partes.Skip(1))
-                    End If
+    '                If partes.Length > 1 Then
+    '                    medico = String.Join(" ", partes.Skip(1))
+    '                End If
 
-                End If
+    '            End If
 
-                'capturar data
-                If dataConsulta = "" Then
+    '            'capturar data
+    '            If dataConsulta = "" Then
 
-                    Dim md = regexData.Match(linha)
+    '                Dim md = regexData.Match(linha)
 
-                    If md.Success Then
-                        dataConsulta = md.Value
-                    End If
+    '                If md.Success Then
+    '                    dataConsulta = md.Value
+    '                End If
 
-                End If
+    '            End If
 
-                'capturar especialidade automaticamente
-                If linha.Contains("REGULAÇÃO") OrElse linha.Contains("CONSULTA") Then
+    '            'capturar especialidade automaticamente
+    '            If linha.Contains("REGULAÇÃO") OrElse linha.Contains("CONSULTA") Then
 
-                    Dim partes = linha.Split(" "c)
+    '                Dim partes = linha.Split(" "c)
 
-                    especialidade = partes(partes.Length - 1)
+    '                especialidade = partes(partes.Length - 1)
 
-                End If
+    '            End If
 
-                'ignorar rodapé com segundos
-                If Regex.IsMatch(linha, "\d{2}:\d{2}:\d{2}") Then Continue For
+    '            'ignorar rodapé com segundos
+    '            If Regex.IsMatch(linha, "\d{2}:\d{2}:\d{2}") Then Continue For
 
-                'capturar horários
-                Dim mh = regexHora.Match(linha)
+    '            'capturar horários
+    '            Dim mh = regexHora.Match(linha)
 
-                If mh.Success Then
+    '            If mh.Success Then
 
-                    Dim hora = mh.Value
+    '                Dim hora = mh.Value
 
-                    If horarios.ContainsKey(hora) Then
-                        horarios(hora) += 1
-                    Else
-                        horarios.Add(hora, 1)
-                    End If
+    '                If horarios.ContainsKey(hora) Then
+    '                    horarios(hora) += 1
+    '                Else
+    '                    horarios.Add(hora, 1)
+    '                End If
 
-                End If
+    '            End If
 
-            Next
+    '        Next
 
-            'Adicionar relatório por dia
+    '        'Adicionar relatório por dia
 
-            resultado.Add("")
-            Dim totalPacientes As Integer = horarios.Values.Sum()
-            resultado.Add(dataConsulta & " - " & especialidade & " (" & totalPacientes & " pacientes)")
+    '        resultado.Add("")
+    '        Dim totalPacientes As Integer = horarios.Values.Sum()
+    '        resultado.Add(dataConsulta & " - " & especialidade & " (" & totalPacientes & " pacientes)")
 
-            For Each h In horarios.OrderBy(Function(x) TimeSpan.Parse(x.Key))
+    '        For Each h In horarios.OrderBy(Function(x) TimeSpan.Parse(x.Key))
 
-                Dim txt = If(h.Value = 1, "1 paciente", h.Value & " pacientes")
+    '            Dim txt = If(h.Value = 1, "1 paciente", h.Value & " pacientes")
 
-                resultado.Add(h.Key & " - " & txt)
+    '            resultado.Add(h.Key & " - " & txt)
 
-            Next
+    '        Next
 
-        Next
+    '    Next
 
-        'Cabeçalho geral no topo
-        resultado.Insert(0, medico)
-        resultado.Insert(1, "")
+    '    'Cabeçalho geral no topo
+    '    resultado.Insert(0, medico)
+    '    resultado.Insert(1, "")
 
-        Return resultado
+    '    Return resultado
 
-    End Function
+    'End Function
 
     Public Function AgruparConsultasPDF(caminhoPDF As String) As List(Of String)
 
@@ -543,6 +543,17 @@ Public Class PDF
 
     End Function
 
+    Public Function mesExtenso()
+        Dim tituloMes As String =
+           Globalization.CultureInfo _
+           .GetCultureInfo("pt-BR") _
+           .TextInfo _
+           .ToTitleCase(
+               Date.Now.ToString("MMMM yyyy")
+           )
+        Return tituloMes
+    End Function
+
     Public Sub GerarRelatorioPDF3Colunas(arquivosPDF() As String, caminhoSaida As String)
         Dim doc As New Document(PageSize.A4, 40, 40, 40, 40)
         PdfWriter.GetInstance(doc, New FileStream(caminhoSaida, FileMode.Create))
@@ -552,11 +563,15 @@ Public Class PDF
         Dim fonteCabecalho = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14)
         Dim fonteData = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 9)
         Dim fonteTexto = FontFactory.GetFont(FontFactory.HELVETICA, 10)
+        Dim fonteTotal = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12)
 
         Dim tabela As New PdfPTable(3)
         tabela.WidthPercentage = 100
         Dim cabecalhoInserido As Boolean = False
         Dim totalCelulas As Integer = 0
+        Dim totalPacientesMes As Integer = 0
+        Dim medicoEspecialidade As String = ""
+        Dim regexHorarioPacientes As New Regex("^\d{2}:\d{2}\s-\s(\d+)\s+paciente")
 
         For Each arquivo In arquivosPDF
             Dim relatorio = AgruparConsultasPDF(arquivo)
@@ -565,25 +580,36 @@ Public Class PDF
             If relatorio Is Nothing OrElse relatorio.Count <= 3 Then Continue For
 
             Dim dataConsulta As String = relatorio(0)
-            Dim medicoEspecialidade As String = relatorio(1) & " - " & relatorio(2)
+            medicoEspecialidade = relatorio(1) & " - " & relatorio(2)
 
-            ' 1. INSERE O NOME DO MÉDICO NO TOPO (Apenas uma vez)
-            If Not cabecalhoInserido Then
-                doc.Add(New Paragraph(medicoEspecialidade, fonteCabecalho))
-                doc.Add(New Paragraph(" "))
-                cabecalhoInserido = True
-            End If
-
-            Dim bloco As New Paragraph()
-            Dim totalPacientes As Integer = 0
+            Dim dataAgenda As Date =
+            Date.Parse(dataConsulta)
+            ' Dim totalPacientes As Integer = 0
+            Dim totalPacientesDia As Integer = 0
 
             ' Conta pacientes (horários começam no índice 3)
             For i = 3 To relatorio.Count - 1
-                totalPacientes += 1
+                'totalPacientes += 1
+                Dim linha = relatorio(i)
+
+                Dim match =
+                    regexHorarioPacientes.Match(linha)
+
+                If match.Success Then
+
+                    totalPacientesDia +=
+                        Integer.Parse(
+                            match.Groups(1).Value)
+
+                End If
             Next
 
+            totalPacientesMes += totalPacientesDia
+
+            Dim bloco As New Paragraph()
+
             ' 2. TÍTULO DA CÉLULA: Data (X pacientes)
-            bloco.Add(New Phrase(dataConsulta & " (" & totalPacientes & " pacientes)" & vbLf, fonteData))
+            bloco.Add(New Phrase(dataConsulta & " - " & DateTime.Parse(dataConsulta).ToString("dddd") & ": (" & totalPacientesDia & " pacientes)" & vbLf, fonteData))
 
             ' 3. LISTA DE HORÁRIOS (Incluindo 08:00 se houver)
             For i = 3 To relatorio.Count - 1
@@ -597,6 +623,14 @@ Public Class PDF
             totalCelulas += 1
         Next
 
+        ' 1. INSERE O NOME DO MÉDICO NO TOPO (Apenas uma vez)
+        If Not cabecalhoInserido Then
+            doc.Add(New Paragraph(medicoEspecialidade & vbCrLf & "Agenda: " & mesExtenso(), fonteCabecalho))
+            doc.Add(New Paragraph("Total: " & totalPacientesMes & " paciente(s)", fonteTotal))
+            doc.Add(New Paragraph(" "))
+            cabecalhoInserido = True
+        End If
+
         ' Preenchimento de células vazias para manter 3 colunas
         If totalCelulas > 0 Then
             While totalCelulas Mod 3 <> 0
@@ -607,7 +641,11 @@ Public Class PDF
         End If
 
         doc.Close()
+
+        MessageBox.Show("Relatório PDF gerado com sucesso!", "Gerar Relatório", MessageBoxButtons.OK)
+
     End Sub
+
 
 End Class
 

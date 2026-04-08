@@ -5,14 +5,10 @@ Public Class FormAMEAgendas
         Dim pdf As New PDF
 
         If OpenFileDialog1.ShowDialog() = DialogResult.OK Then
+            SaveFileDialog1.FileName = $"Agenda {pdf.mesExtenso()}.pdf"
+            SaveFileDialog1.ShowDialog()
 
-            Dim teste = pdf.AgruparConsultasPDF(OpenFileDialog1.FileNames(0))
-            MessageBox.Show(teste.Count)
-
-            pdf.GerarRelatorioPDF3Colunas(
-                OpenFileDialog1.FileNames,
-                "D:\Desktop\agenda_relatorio.pdf"
-            )
+            pdf.GerarRelatorioPDF3Colunas(OpenFileDialog1.FileNames, SaveFileDialog1.FileName)
 
         End If
     End Sub
