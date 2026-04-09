@@ -2,6 +2,7 @@
 
 Public Class FormLogin
     Dim m As New Main
+    Dim m2 As New FormAMEmain
     Public system As String
     Private Sub btFechar_Click(sender As Object, e As EventArgs) Handles btFechar.Click
         Application.Exit()
@@ -30,7 +31,7 @@ Public Class FormLogin
                     Me.Visible = False
                 Case "AME"
                     FormAMEOCI.idUser = cbUsuarios.SelectedValue
-                    FormAMEOCI.Show()
+                    FormAMEmain.Show()
                     Me.Visible = False
                 Case "NUMAPAC"
                     FormAMEOCINumAPAC.Show()
@@ -40,23 +41,40 @@ Public Class FormLogin
 
     End Sub
     Private Function checkCredentials(id As Integer)
-        Dim userData = m.getDataset($"SELECT * FROM usuarios WHERE id ={id}")
-        Dim pass = userData.Rows(0).Item(2)
-        Dim level = userData.Rows(0).Item(4)
-        Dim eouve = userData.Rows(0).Item(5).ToString
-        Dim emtu = userData.Rows(0).Item(6).ToString
-        Dim cnes = userData.Rows(0).Item(7).ToString
-        Dim ame = userData.Rows(0).Item(8).ToString
-        Dim num_apac = userData.Rows(0).Item(9).ToString
+        Dim userData
+        Dim pass
+        Dim level = Nothing
+        Dim eouve = Nothing
+        Dim emtu = Nothing
+        Dim cnes = Nothing
+        Dim ame = Nothing
+        Dim num_apac = Nothing
+
+        If system = "AME" Then
+            userData = m2.getDataset($"SELECT * FROM usuarios WHERE id ={id}")
+            pass = userData.Rows(0).Item(7).ToString
+            ame = 1
+        Else
+            userData = m.getDataset($"SELECT * FROM usuarios WHERE id ={id}")
+            pass = userData.Rows(0).Item(2)
+            level = userData.Rows(0).Item(4)
+            eouve = userData.Rows(0).Item(5).ToString
+            emtu = userData.Rows(0).Item(6).ToString
+            cnes = userData.Rows(0).Item(7).ToString
+            ame = userData.Rows(0).Item(8).ToString
+            num_apac = userData.Rows(0).Item(9).ToString
+        End If
+
+
 
 
         If tbSenha IsNot Nothing Then
-                If tbSenha.Text = "" Then
-                    m.msgAlert("Digite a senha")
-                    tbSenha.Focus()
-                    Return 0
-                ElseIf tbSenha.Text <> pass Then
-                    m.msgAlert("Senha inválida")
+            If tbSenha.Text = "" Then
+                m.msgAlert("Digite a senha")
+                tbSenha.Focus()
+                Return 0
+            ElseIf tbSenha.Text <> pass Then
+                m.msgAlert("Senha inválida")
                 tbSenha.Focus()
                 Return 0
             End If
@@ -123,7 +141,12 @@ Public Class FormLogin
     End Sub
     Private Sub FormLogin_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
-            m.loadComboBox("SELECT * FROM usuarios WHERE ativo=1", cbUsuarios, "nome", "id")
+            If system = "AME" Then
+                m2.loadComboBox("SELECT * FROM usuarios WHERE ativo=1", cbUsuarios, "nome", "id")
+            Else
+                m.loadComboBox("SELECT * FROM usuarios WHERE ativo=1", cbUsuarios, "nome", "id")
+            End If
+
         Catch ex As Exception
             FormSystemConnSettings.ShowDialog()
         End Try

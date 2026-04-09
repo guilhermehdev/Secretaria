@@ -25,6 +25,7 @@ Public Class FormAMEOCI
     Public Property idUser As Integer
 
     Public Function competencia(compet As String)
+
         compet = MonthName(My.Settings.OCIcompetencia.Substring(4, 2), True).ToUpper & "/" & My.Settings.OCIcompetencia.Substring(0, 4)
         Return compet
 
@@ -995,6 +996,11 @@ Public Class FormAMEOCI
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If My.Settings.databaseAME = "" Then
             FormAMEbd.ShowDialog()
+            Me.Close()
+            Return
+        End If
+        If My.Settings.OCIcompetencia = "" Then
+            FormAMEOCIControleCompetencia.ShowDialog()
             Me.Close()
             Return
         End If
@@ -2202,9 +2208,6 @@ Public Class FormAMEOCI
             MessageBox.Show("Selecione um paciente por data de nascimento, nome ou CPF", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
 
-    End Sub
-    Private Sub AgendasToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AgendasToolStripMenuItem.Click
-        FormAMEAgendas.Show()
     End Sub
 
 End Class

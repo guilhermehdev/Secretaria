@@ -719,7 +719,9 @@ Public Class FormAMEmain
         Return False
 
     End Function
-
+    Private Sub ResumoMensalToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ResumoMensalToolStripMenuItem.Click
+        FormAMEAgendas.Show()
+    End Sub
 End Class
 
 Public Class Consulta

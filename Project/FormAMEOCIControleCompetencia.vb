@@ -48,7 +48,17 @@
 
     End Sub
     Private Sub btSair_Click(sender As Object, e As EventArgs) Handles btSair.Click
-        Me.Close()
+        If My.Settings.OCIcompetencia = "" Then
+            ' MessageBox.Show("Nenhuma competência foi configurada. O sistema não pode funcionar sem essa configuração. Por favor, configure a competência antes de sair.", "Configuração ausente", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Dim m As New Main
+            If m.msgQuestion("Nenhuma competência foi configurada. O sistema não pode funcionar sem essa configuração. Deseja mesmo sair?", "Configuração ausente") Then
+                Application.Restart()
+            End If
+        End If
+
     End Sub
 
+    Private Sub FormAMEOCIControleCompetencia_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+
+    End Sub
 End Class
