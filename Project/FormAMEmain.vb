@@ -220,10 +220,6 @@ Public Class FormAMEmain
         ComboBoxProfissional.SelectedIndex = 0
     End Sub
 
-    Private Sub FormAME_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        FormSystemStart.Visible = True
-    End Sub
-
     Private Sub dgAME_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgAME.CellClick
         Dim m As New Main
 
@@ -599,6 +595,7 @@ Public Class FormAMEmain
 
     Private Sub CadastroToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CadastroToolStripMenuItem.Click
         FormAMEOCI.Show()
+        Me.Visible = False
     End Sub
 
     Private Sub BaseDeDadosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles BaseDeDadosToolStripMenuItem.Click
@@ -721,7 +718,12 @@ Public Class FormAMEmain
     End Function
     Private Sub ResumoMensalToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ResumoMensalToolStripMenuItem.Click
         FormAMEAgendas.Show()
+        Me.Visible = False
     End Sub
+    Private Sub FormAMEmain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        FormSystemStart.Visible = True
+    End Sub
+
 End Class
 
 Public Class Consulta

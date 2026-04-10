@@ -4,8 +4,24 @@ Public Class FormLogin
     Dim m As New Main
     Dim m2 As New FormAMEmain
     Public system As String
+
+    Public Sub closeForms(formPermitido As Form)
+
+        For Each frm As Form In My.Application.OpenForms.Cast(Of Form).ToList()
+
+            If frm IsNot formPermitido Or frm IsNot Me Then
+                frm.Close()
+            End If
+
+        Next
+
+    End Sub
+
     Private Sub btFechar_Click(sender As Object, e As EventArgs) Handles btFechar.Click
-        Application.Exit()
+        'Application.Exit()
+        closeForms(FormSystemStart)
+        FormSystemStart.Show()
+        Me.Close()
     End Sub
     Private Sub FormLogin_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         If Application.OpenForms.Count = 1 AndAlso Application.OpenForms(0) Is Me Then

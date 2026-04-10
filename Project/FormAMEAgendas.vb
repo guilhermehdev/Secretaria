@@ -26,5 +26,8 @@ Public Class FormAMEAgendas
         m.doQuery($"INSERT INTO grade_semanal_medicos (id_dia_semana, id_servidor, id_espec, vagas) VALUES ()")
     End Sub
 
+    Private Sub FormAMEAgendas_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        FormAMEmain.Visible = True
+    End Sub
 
 End Class

@@ -22,9 +22,9 @@ Partial Class FormAMEmain
     'Não o modifique usando o editor de códigos.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.dgAME = New System.Windows.Forms.DataGridView()
         Me.ComboBoxEspecialidade = New System.Windows.Forms.ComboBox()
         Me.ComboBoxProfissional = New System.Windows.Forms.ComboBox()
@@ -39,10 +39,10 @@ Partial Class FormAMEmain
         Me.GCASPPToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OCIToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CadastroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ConfiguraçõesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.BaseDeDadosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AgendasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ResumoMensalToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ConfiguraçõesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.BaseDeDadosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.dgAME, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -59,37 +59,37 @@ Partial Class FormAMEmain
         Me.dgAME.BackgroundColor = System.Drawing.Color.White
         Me.dgAME.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgAME.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
-        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle7.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgAME.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgAME.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgAME.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle8.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.SteelBlue
-        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgAME.DefaultCellStyle = DataGridViewCellStyle8
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.SteelBlue
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgAME.DefaultCellStyle = DataGridViewCellStyle2
         Me.dgAME.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
         Me.dgAME.Location = New System.Drawing.Point(12, 73)
         Me.dgAME.MultiSelect = False
         Me.dgAME.Name = "dgAME"
         Me.dgAME.ReadOnly = True
         Me.dgAME.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
-        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
-        DataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.ControlDark
-        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgAME.RowHeadersDefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.ControlDark
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgAME.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
         Me.dgAME.RowHeadersWidth = 4
         Me.dgAME.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgAME.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
@@ -198,21 +198,8 @@ Partial Class FormAMEmain
         'CadastroToolStripMenuItem
         '
         Me.CadastroToolStripMenuItem.Name = "CadastroToolStripMenuItem"
-        Me.CadastroToolStripMenuItem.Size = New System.Drawing.Size(121, 22)
+        Me.CadastroToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.CadastroToolStripMenuItem.Text = "Cadastro"
-        '
-        'ConfiguraçõesToolStripMenuItem
-        '
-        Me.ConfiguraçõesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BaseDeDadosToolStripMenuItem})
-        Me.ConfiguraçõesToolStripMenuItem.Name = "ConfiguraçõesToolStripMenuItem"
-        Me.ConfiguraçõesToolStripMenuItem.Size = New System.Drawing.Size(96, 20)
-        Me.ConfiguraçõesToolStripMenuItem.Text = "Configurações"
-        '
-        'BaseDeDadosToolStripMenuItem
-        '
-        Me.BaseDeDadosToolStripMenuItem.Name = "BaseDeDadosToolStripMenuItem"
-        Me.BaseDeDadosToolStripMenuItem.Size = New System.Drawing.Size(149, 22)
-        Me.BaseDeDadosToolStripMenuItem.Text = "Base de dados"
         '
         'AgendasToolStripMenuItem
         '
@@ -226,6 +213,19 @@ Partial Class FormAMEmain
         Me.ResumoMensalToolStripMenuItem.Name = "ResumoMensalToolStripMenuItem"
         Me.ResumoMensalToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.ResumoMensalToolStripMenuItem.Text = "Resumo mensal"
+        '
+        'ConfiguraçõesToolStripMenuItem
+        '
+        Me.ConfiguraçõesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BaseDeDadosToolStripMenuItem})
+        Me.ConfiguraçõesToolStripMenuItem.Name = "ConfiguraçõesToolStripMenuItem"
+        Me.ConfiguraçõesToolStripMenuItem.Size = New System.Drawing.Size(96, 20)
+        Me.ConfiguraçõesToolStripMenuItem.Text = "Configurações"
+        '
+        'BaseDeDadosToolStripMenuItem
+        '
+        Me.BaseDeDadosToolStripMenuItem.Name = "BaseDeDadosToolStripMenuItem"
+        Me.BaseDeDadosToolStripMenuItem.Size = New System.Drawing.Size(149, 22)
+        Me.BaseDeDadosToolStripMenuItem.Text = "Base de dados"
         '
         'FormAMEmain
         '

@@ -1694,7 +1694,7 @@ Public Class FormAMEOCI
         End Try
     End Sub
     Private Sub FormAMEOCI_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        FormSystemStart.Visible = True
+        FormAMEmain.Visible = True
         If Not String.IsNullOrEmpty(txtNumApac.Text) Then
             UnlockApac(txtNumApac.Text)
         End If
