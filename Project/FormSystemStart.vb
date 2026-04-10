@@ -31,12 +31,12 @@
         Me.Visible = False
     End Sub
     Private Sub btAME_Click(sender As Object, e As EventArgs) Handles btAME.Click
+        FormLogin.system = "AME"
         If My.Settings.databaseAME = "" Then
             MessageBox.Show("Configuração do banco de dados AME não encontrada. Por favor, configure o banco de dados nas configurações do sistema.", "Configuração ausente", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             FormAMEbd.ShowDialog()
         End If
         FormLogin.Show()
-        FormLogin.system = "AME"
         Me.Visible = False
     End Sub
 

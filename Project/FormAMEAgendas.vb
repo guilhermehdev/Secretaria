@@ -23,7 +23,7 @@ Public Class FormAMEAgendas
         WHERE servidores.id = {cbProfissional.SelectedValue} ORDER BY nome", cbEspecialidade, "espec", "id")
     End Sub
     Private Sub btSalvarGrade_Click(sender As Object, e As EventArgs) Handles btSalvarGrade.Click
-        m.doQuery($"INSERT INTO grade_semanal_medicos (id_dia_semana, id_servidor, id_espec, vagas) VALUES ({})")
+        m.doQuery($"INSERT INTO grade_semanal_medicos (id_dia_semana, id_servidor, id_espec, vagas) VALUES ()")
     End Sub
 
 

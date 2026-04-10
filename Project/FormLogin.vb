@@ -51,11 +51,17 @@ Public Class FormLogin
         Dim num_apac = Nothing
 
         If system = "AME" Then
-            userData = m2.getDataset($"SELECT * FROM usuarios WHERE id ={id}")
-            pass = userData.Rows(0).Item(7).ToString
+            userData = m2.getDataset($"SELECT * FROM usuarios WHERE id ={id} AND ativo=1")
+            Try
+                pass = userData.Rows(0).Item(7).ToString
+            Catch ex As Exception
+                MessageBox.Show("Usuário não encontrado./Senha inválida.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return 0
+            End Try
+
             ame = 1
         Else
-            userData = m.getDataset($"SELECT * FROM usuarios WHERE id ={id}")
+            userData = m.getDataset($"SELECT * FROM usuarios WHERE id ={id} AND ativo=1")
             pass = userData.Rows(0).Item(2)
             level = userData.Rows(0).Item(4)
             eouve = userData.Rows(0).Item(5).ToString
@@ -64,9 +70,6 @@ Public Class FormLogin
             ame = userData.Rows(0).Item(8).ToString
             num_apac = userData.Rows(0).Item(9).ToString
         End If
-
-
-
 
         If tbSenha IsNot Nothing Then
             If tbSenha.Text = "" Then
