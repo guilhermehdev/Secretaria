@@ -30,14 +30,14 @@ Partial Class FormAMEAgendas
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         Me.cbProfissional = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.dtpDataConsulta = New System.Windows.Forms.DateTimePicker()
-        Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cbEspecialidade = New System.Windows.Forms.ComboBox()
         Me.Nvagas = New System.Windows.Forms.NumericUpDown()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.dgGrades = New System.Windows.Forms.DataGridView()
         Me.btSalvarGrade = New System.Windows.Forms.Button()
+        Me.cbDiasemana = New System.Windows.Forms.ComboBox()
+        Me.Label5 = New System.Windows.Forms.Label()
         CType(Me.Nvagas, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgGrades, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -65,7 +65,7 @@ Partial Class FormAMEAgendas
         Me.cbProfissional.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbProfissional.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
         Me.cbProfissional.FormattingEnabled = True
-        Me.cbProfissional.Location = New System.Drawing.Point(124, 44)
+        Me.cbProfissional.Location = New System.Drawing.Point(139, 44)
         Me.cbProfissional.Name = "cbProfissional"
         Me.cbProfissional.Size = New System.Drawing.Size(210, 23)
         Me.cbProfissional.TabIndex = 59
@@ -73,33 +73,16 @@ Partial Class FormAMEAgendas
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(121, 28)
+        Me.Label1.Location = New System.Drawing.Point(136, 28)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(60, 13)
         Me.Label1.TabIndex = 60
         Me.Label1.Text = "Profissional"
         '
-        'dtpDataConsulta
-        '
-        Me.dtpDataConsulta.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtpDataConsulta.Location = New System.Drawing.Point(18, 45)
-        Me.dtpDataConsulta.Name = "dtpDataConsulta"
-        Me.dtpDataConsulta.Size = New System.Drawing.Size(100, 20)
-        Me.dtpDataConsulta.TabIndex = 61
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(15, 28)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(30, 13)
-        Me.Label2.TabIndex = 62
-        Me.Label2.Text = "Data"
-        '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(337, 28)
+        Me.Label3.Location = New System.Drawing.Point(352, 28)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(73, 13)
         Me.Label3.TabIndex = 64
@@ -113,14 +96,14 @@ Partial Class FormAMEAgendas
         Me.cbEspecialidade.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbEspecialidade.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
         Me.cbEspecialidade.FormattingEnabled = True
-        Me.cbEspecialidade.Location = New System.Drawing.Point(340, 44)
+        Me.cbEspecialidade.Location = New System.Drawing.Point(355, 44)
         Me.cbEspecialidade.Name = "cbEspecialidade"
         Me.cbEspecialidade.Size = New System.Drawing.Size(153, 23)
         Me.cbEspecialidade.TabIndex = 63
         '
         'Nvagas
         '
-        Me.Nvagas.Location = New System.Drawing.Point(499, 45)
+        Me.Nvagas.Location = New System.Drawing.Point(514, 45)
         Me.Nvagas.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.Nvagas.Name = "Nvagas"
         Me.Nvagas.Size = New System.Drawing.Size(53, 20)
@@ -130,7 +113,7 @@ Partial Class FormAMEAgendas
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(498, 28)
+        Me.Label4.Location = New System.Drawing.Point(513, 28)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(37, 13)
         Me.Label4.TabIndex = 66
@@ -145,6 +128,7 @@ Partial Class FormAMEAgendas
         Me.dgGrades.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.dgGrades.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgGrades.BackgroundColor = System.Drawing.Color.White
         Me.dgGrades.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgGrades.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
@@ -182,7 +166,7 @@ Partial Class FormAMEAgendas
         Me.dgGrades.RowHeadersWidth = 4
         Me.dgGrades.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgGrades.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgGrades.Size = New System.Drawing.Size(534, 284)
+        Me.dgGrades.Size = New System.Drawing.Size(549, 284)
         Me.dgGrades.TabIndex = 67
         Me.dgGrades.TabStop = False
         '
@@ -195,19 +179,36 @@ Partial Class FormAMEAgendas
         Me.btSalvarGrade.Text = "Gravar"
         Me.btSalvarGrade.UseVisualStyleBackColor = True
         '
+        'cbDiasemana
+        '
+        Me.cbDiasemana.FormattingEnabled = True
+        Me.cbDiasemana.Location = New System.Drawing.Point(18, 46)
+        Me.cbDiasemana.Name = "cbDiasemana"
+        Me.cbDiasemana.Size = New System.Drawing.Size(115, 21)
+        Me.cbDiasemana.TabIndex = 69
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(15, 30)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(78, 13)
+        Me.Label5.TabIndex = 70
+        Me.Label5.Text = "Dia da semana"
+        '
         'FormAMEAgendas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(564, 398)
+        Me.ClientSize = New System.Drawing.Size(585, 398)
+        Me.Controls.Add(Me.Label5)
+        Me.Controls.Add(Me.cbDiasemana)
         Me.Controls.Add(Me.btSalvarGrade)
         Me.Controls.Add(Me.dgGrades)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Nvagas)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.cbEspecialidade)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.dtpDataConsulta)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.cbProfissional)
         Me.Controls.Add(Me.Button1)
@@ -228,12 +229,12 @@ Partial Class FormAMEAgendas
     Friend WithEvents SaveFileDialog1 As SaveFileDialog
     Friend WithEvents cbProfissional As ComboBox
     Friend WithEvents Label1 As Label
-    Friend WithEvents dtpDataConsulta As DateTimePicker
-    Friend WithEvents Label2 As Label
     Friend WithEvents Label3 As Label
     Friend WithEvents cbEspecialidade As ComboBox
     Friend WithEvents Nvagas As NumericUpDown
     Friend WithEvents Label4 As Label
     Friend WithEvents dgGrades As DataGridView
     Friend WithEvents btSalvarGrade As Button
+    Friend WithEvents cbDiasemana As ComboBox
+    Friend WithEvents Label5 As Label
 End Class
