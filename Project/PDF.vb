@@ -542,7 +542,6 @@ Public Class PDF
         Return resultado
 
     End Function
-
     Public Function mesExtenso()
         Dim tituloMes As String =
            Globalization.CultureInfo _
@@ -553,7 +552,6 @@ Public Class PDF
            )
         Return tituloMes
     End Function
-
     Public Sub GerarRelatorioPDF3Colunas(arquivosPDF() As String, caminhoSaida As String)
         Dim doc As New Document(PageSize.A4, 40, 40, 40, 40)
         PdfWriter.GetInstance(doc, New FileStream(caminhoSaida, FileMode.Create))
@@ -564,7 +562,6 @@ Public Class PDF
         Dim fonteData = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 9)
         Dim fonteTexto = FontFactory.GetFont(FontFactory.HELVETICA, 10)
         Dim fonteTotal = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12)
-
         Dim tabela As New PdfPTable(3)
         tabela.WidthPercentage = 100
         Dim cabecalhoInserido As Boolean = False
@@ -645,7 +642,6 @@ Public Class PDF
         MessageBox.Show("Relatório PDF gerado com sucesso!", "Gerar Relatório", MessageBoxButtons.OK)
 
     End Sub
-
 
 End Class
 

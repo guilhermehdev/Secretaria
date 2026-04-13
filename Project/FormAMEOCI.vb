@@ -22,6 +22,18 @@ Public Class FormAMEOCI
     Private isLoading As Boolean = False
     Private IDpacienteSelecionado As Integer? = Nothing
     Private updateMode As Boolean = False
+
+    Private nasc = Nothing
+    Private nome = Nothing
+    Private sexo = Nothing
+    Private cpf = Nothing
+    Private mae = Nothing
+    Private raca = Nothing
+    Private ddd = Nothing
+    Private telefone = Nothing
+    Private cepRes = Nothing
+    Private numero = Nothing
+    Private complemento = Nothing
     Public Property idUser As Integer
 
     Public Function competencia(compet As String)
@@ -175,6 +187,12 @@ Public Class FormAMEOCI
                     Return False
                 End Try
 
+            Else
+
+                If detectChanges() Then
+                    atPac()
+                End If
+
             End If
 
             If txtProcedimentoPrincipal.SelectedValue Is Nothing Then
@@ -248,15 +266,15 @@ Public Class FormAMEOCI
                 Return False
             End If
 
-            If txtTelefone.Text.Length = 8 Then
-                telfixo = txtTelefone.Text.Insert(4, "-")
-            Else
-                telfixo = txtTelefone.Text.Insert(5, "-")
-            End If
-
             If txtTelefone.Text.Length < 8 Or txtDDD.Text.Length < 2 Then
                 MessageBox.Show("Telefone inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 Return False
+            Else
+                If txtTelefone.Text.Length = 8 Then
+                    telfixo = txtTelefone.Text.Insert(4, "-")
+                Else
+                    telfixo = txtTelefone.Text.Insert(5, "-")
+                End If
             End If
 
             If txtNumero.Text.Length < 1 Then
@@ -975,24 +993,13 @@ Public Class FormAMEOCI
             MsgBox("Erro ao carregar dados do OCI: " & ex.Message)
         End Try
     End Sub
-
-    'Private Sub updateOCI(apac As String, idPac As Integer)
-    '    Try
-    '        FormAMEmain.doQuery($"UPDATE pacientes SET cpf='{txtCpfPaciente.Text.Trim()}', mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){txtTelefone.Text.Insert(5, "-")}', id_logradouro={endereco.Rows(0).Item("id")}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}', raca='{txtRaca.SelectedValue}' WHERE id={idPac}")
-
-    '        Dim query = $"UPDATE oci Set data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPac}, id_medico='{txtCNSMedicoExecutante.SelectedValue}', id_autorizador='{txtNomeAutorizador.SelectedValue}',  id_cod_principal={getProcedID(txtProcedimentoPrincipal.SelectedValue)}, proced_secundario={CodProcedimento.SelectedValue}, cid_principal='{txtCidPrincipal.SelectedValue}', cid_sec='{txtCidSecundario.SelectedValue}' status='CONC', id_usuario={idUser} WHERE num_apac='{apac}'"
-
-    '        FormAMEmain.doQuery(query,, True)
-
-    '        MsgBox("OCI atualizado com sucesso!")
-    '        RemoverRegistroApac($"14{My.Settings.OCIcompetencia}{apac}")
-    '        addAPAC()
-
-    '    Catch ex As Exception
-    '        Debug.WriteLine("Erro ao atualizar OCI: " & ex.Message)
-    '    End Try
-
-    'End Sub
+    Private Function detectChanges()
+        If dtNascimento.Text <> nasc OrElse txtNomePaciente.Text <> nome OrElse txtSexo.Text <> sexo OrElse txtCpfPaciente.Text <> cpf OrElse txtNomeMae.Text <> mae OrElse txtRaca.SelectedValue <> raca OrElse txtDDD.Text <> ddd OrElse txtTelefone.Text <> telefone OrElse txtCep.Text <> cepRes OrElse txtNumero.Text <> numero OrElse txtComplemento.Text <> complemento Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If My.Settings.databaseAME = "" Then
             FormAMEbd.ShowDialog()
@@ -1653,12 +1660,24 @@ Public Class FormAMEOCI
                             txtTelefone.Text = tel.Replace("-", "")
                         End If
                     End If
-
                 Catch ex As Exception
 
-                    End Try
-                    chkResponsavel()
-                End If
+                End Try
+                chkResponsavel()
+
+                nasc = dtNascimento.Text
+                nome = txtNomePaciente.Text
+                sexo = txtSexo.Text
+                cpf = txtCpfPaciente.Text
+                mae = txtNomeMae.Text
+                raca = txtRaca.SelectedValue
+                ddd = txtDDD.Text
+                telefone = txtTelefone.Text
+                cepRes = txtCep.Text
+                numero = txtNumero.Text
+                complemento = txtComplemento.Text
+
+            End If
         Catch ex As Exception
             'MsgBox(ex.Message)
         End Try
