@@ -18,7 +18,8 @@ Public Class FormAMEAgendas
         FROM grade_semanal_medicos
         JOIN servidores ON servidores.id = grade_semanal_medicos.id_servidor
         JOIN dias ON dias.id = grade_semanal_medicos.id_dia_semana
-        JOIN especs ON especs.id = grade_semanal_medicos.id_espec")
+        JOIN especs ON especs.id = grade_semanal_medicos.id_espec
+        WHERE grade_semanal_medicos.id_servidor={cbProfissional.SelectedValue}")
 
         dgGrades.DataSource = dataGrade
         dgGrades.Columns("id").Visible = False
@@ -32,7 +33,7 @@ Public Class FormAMEAgendas
         m.loadComboBox("SELECT id, nome FROM servidores ORDER BY nome", cbProfissional, "nome", "id")
         cbProfissional.SelectedIndex = -1
         m.loadComboBox("SELECT id, dia FROM dias ORDER BY id", cbDiasemana, "dia", "id")
-        loadGrades()
+
     End Sub
     Private Sub cbProfissional_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbProfissional.SelectionChangeCommitted
         m.loadComboBox($"SELECT especs.id, especs.especialidade AS espec 
@@ -49,5 +50,7 @@ Public Class FormAMEAgendas
     Private Sub FormAMEAgendas_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         FormAMEmain.Visible = True
     End Sub
-
+    Private Sub cbEspecialidade_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbEspecialidade.SelectedIndexChanged
+        loadGrades()
+    End Sub
 End Class
