@@ -439,16 +439,16 @@ Public Class PDF
            )
         Return tituloMes
     End Function
-    Public Sub GerarRelatorioPDF3Colunas(arquivosPDF() As String, caminhoSaida As String)
+    Public Sub GerarRelatorioPDF3Colunas(arquivosPDF() As String, caminhoSaida As String, dataGrade As DataTable)
         Dim doc As New Document(PageSize.A4, 40, 40, 40, 40)
         PdfWriter.GetInstance(doc, New FileStream(caminhoSaida, FileMode.Create))
         doc.Open()
 
         ' Fontes
-        Dim fonteCabecalho = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14)
-        Dim fonteData = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 9)
-        Dim fonteTexto = FontFactory.GetFont(FontFactory.HELVETICA, 10)
-        Dim fonteTotal = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12)
+        Dim fonteCabecalho = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12)
+        Dim fonteData = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 8)
+        Dim fonteTexto = FontFactory.GetFont(FontFactory.HELVETICA, 8)
+        Dim fonteTotal = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10)
         Dim tabela As New PdfPTable(3)
         tabela.WidthPercentage = 100
         Dim cabecalhoInserido As Boolean = False
@@ -457,7 +457,6 @@ Public Class PDF
         Dim medicoEspecialidade As String = ""
         Dim regexHorarioPacientes As New Regex("^\d{2}:\d{2}\s-\s(\d+)\s+paciente")
 
-        Dim dataGrade As DataTable = 
 
         For Each arquivo In arquivosPDF
             Dim relatorio = AgruparConsultasPDF(arquivo)
@@ -468,38 +467,42 @@ Public Class PDF
             Dim dataConsulta As String = relatorio(0)
             medicoEspecialidade = relatorio(1) & " - " & relatorio(2)
 
-            Dim dataAgenda As Date =
-            Date.Parse(dataConsulta)
+            Dim dataAgenda As Date = Date.Parse(dataConsulta)
             ' Dim totalPacientes As Integer = 0
             Dim totalPacientesDia As Integer = 0
-
+            Dim diaSemana = dataAgenda.DayOfWeek + 1
+            Dim vagas
+            If dataGrade.Select($"id_dia_semana={diaSemana}").Length > 0 Then
+                vagas = dataGrade.Select($"id_dia_semana={diaSemana}")(0).Item("vagas")
+            End If
             ' Conta pacientes (horários começam no índice 3)
             For i = 3 To relatorio.Count - 1
-                'totalPacientes += 1
-                Dim linha = relatorio(i)
+                    'totalPacientes += 1
+                    Dim linha = relatorio(i)
+                    Dim match = regexHorarioPacientes.Match(linha)
 
-                Dim match =
-                    regexHorarioPacientes.Match(linha)
+                    If match.Success Then
+                        totalPacientesDia += Integer.Parse(match.Groups(1).Value)
+                    End If
+                Next
 
-                If match.Success Then
+                totalPacientesMes += totalPacientesDia
 
-                    totalPacientesDia +=
-                        Integer.Parse(
-                            match.Groups(1).Value)
-                End If
-            Next
+                Dim bloco As New Paragraph()
 
-            totalPacientesMes += totalPacientesDia
+                ' 2. TÍTULO DA CÉLULA: Data (X pacientes)
+                ' bloco.Add(New Phrase(dataConsulta & " - " & DateTime.Parse(dataConsulta).ToString("dddd") & ": (" & totalPacientesDia & " agendados)" & vbLf & vbLf, fonteData))
 
-            Dim bloco As New Paragraph()
+                bloco.Add(New Phrase(dataConsulta & " - " & DateTime.Parse(dataConsulta).ToString("dddd") & ": (" & vagas & " vagas)" & vbLf & vbLf, fonteData))
 
-            ' 2. TÍTULO DA CÉLULA: Data (X pacientes)
-            bloco.Add(New Phrase(dataConsulta & " - " & DateTime.Parse(dataConsulta).ToString("dddd") & ": (" & totalPacientesDia & " pacientes)" & vbLf, fonteData))
 
-            ' 3. LISTA DE HORÁRIOS (Incluindo 08:00 se houver)
-            For i = 3 To relatorio.Count - 1
-                bloco.Add(New Phrase(relatorio(i) & vbLf, fonteTexto))
-            Next
+                ' 3. LISTA DE HORÁRIOS (Incluindo 08:00 se houver)
+                For i = 3 To relatorio.Count - 1
+                    bloco.Add(New Phrase(relatorio(i) & vbLf & vbLf, fonteTexto))
+                Next
+
+            bloco.Add(New Phrase($"Agendados: {totalPacientesDia} / Disponíveis: " & (vagas - totalPacientesDia) & " vagas", fonteTexto))
+
 
             Dim celula As New PdfPCell(bloco)
             celula.Padding = 6
@@ -511,7 +514,7 @@ Public Class PDF
         ' 1. INSERE O NOME DO MÉDICO NO TOPO (Apenas uma vez)
         If Not cabecalhoInserido Then
             doc.Add(New Paragraph(medicoEspecialidade & vbCrLf & "Agenda: " & mesExtenso(), fonteCabecalho))
-            doc.Add(New Paragraph("Total: " & totalPacientesMes & " paciente(s)", fonteTotal))
+            doc.Add(New Paragraph("Total: " & totalPacientesMes & " agendados", fonteTotal))
             doc.Add(New Paragraph(" "))
             cabecalhoInserido = True
         End If

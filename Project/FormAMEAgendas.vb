@@ -9,7 +9,9 @@ Public Class FormAMEAgendas
             SaveFileDialog1.FileName = $"Agenda {pdf.mesExtenso()}.pdf"
             SaveFileDialog1.ShowDialog()
 
-            pdf.GerarRelatorioPDF3Colunas(OpenFileDialog1.FileNames, SaveFileDialog1.FileName)
+            Dim dataGrades As DataTable = m.getDataset($"SELECT id_dia_semana,vagas FROM grade_semanal_medicos WHERE id_servidor={cbProfissional.SelectedValue} AND id_espec={cbEspecialidade.SelectedValue}")
+
+            pdf.GerarRelatorioPDF3Colunas(OpenFileDialog1.FileNames, SaveFileDialog1.FileName, dataGrades)
 
         End If
     End Sub
