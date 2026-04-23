@@ -386,15 +386,15 @@ Public Class FormAMEOCI
             If Not Directory.Exists(Application.StartupPath & "\APAC\EXPORTADOS") Then
                 Directory.CreateDirectory(Application.StartupPath & "\APAC\EXPORTADOS")
             End If
-            Dim codigos As New List(Of String)
-            Dim quantidades As New List(Of Integer)
+            'Dim codigos As New List(Of String)
+            'Dim quantidades As New List(Of Integer)
 
-            For Each row As DataGridViewRow In dgvProcedimentos.Rows
-                If Not row.IsNewRow Then
-                    codigos.Add(row.Cells("Codigo").Value.ToString())
-                    quantidades.Add(Convert.ToInt32(row.Cells("Quantidade").Value))
-                End If
-            Next
+            'For Each row As DataGridViewRow In dgvProcedimentos.Rows
+            '    If Not row.IsNewRow Then
+            '        codigos.Add(row.Cells("Codigo").Value.ToString())
+            '        quantidades.Add(Convert.ToInt32(row.Cells("Quantidade").Value))
+            '    End If
+            'Next
 
             If updateMode Then
                 RemoverRegistroApac($"14{competencia}{txtNumApac.Text}")
@@ -1144,8 +1144,7 @@ Public Class FormAMEOCI
                 {"02", "PRETA"},
                 {"03", "PARDA"},
                 {"04", "AMARELA"},
-                {"05", "INDIGENA"},
-                {"99", "SEM INFO"}
+                {"05", "INDIGENA"}
             }
 
             txtRaca.DataSource = New BindingSource(racas, Nothing)
@@ -1195,6 +1194,7 @@ Public Class FormAMEOCI
             txtCidPrincipal.SelectedIndex = -1
             txtCNSMedicoExecutante.SelectedIndex = -1
             txtNomeAutorizador.SelectedIndex = -1
+            txtRaca.SelectedIndex = 0
 
             searchByDate()
 

@@ -66,7 +66,7 @@ Public Class FormLogin
         Dim ame = Nothing
         Dim num_apac = Nothing
 
-        If system = "AME" Then
+        If system = "AME" Or system = "NUMAPAC" Then
             userData = m2.getDataset($"SELECT * FROM usuarios WHERE id ={id} AND ativo=1")
             Try
                 pass = userData.Rows(0).Item(7).ToString
@@ -160,7 +160,7 @@ Public Class FormLogin
     End Sub
     Private Sub FormLogin_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
-            If system = "AME" Then
+            If system = "AME" Or system = "NUMAPAC" Then
                 m2.loadComboBox("SELECT * FROM usuarios WHERE ativo=1", cbUsuarios, "nome", "id")
             Else
                 m.loadComboBox("SELECT * FROM usuarios WHERE ativo=1", cbUsuarios, "nome", "id")
