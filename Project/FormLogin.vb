@@ -74,7 +74,7 @@ Public Class FormLogin
                 MessageBox.Show("Usuário não encontrado./Senha inválida.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 Return 0
             End Try
-
+            num_apac = 1
             ame = 1
         Else
             userData = m.getDataset($"SELECT * FROM usuarios WHERE id ={id} AND ativo=1")
