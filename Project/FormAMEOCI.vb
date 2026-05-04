@@ -202,15 +202,25 @@ Public Class FormAMEOCI
             'If CodProcedimento.SelectedValue Is Nothing Then
             '    Throw New Exception("Procedimento secundário inválido.")
             'End If
+            Dim cidSec = If(txtCidSecundario.SelectedValue Is Nothing, "''", $"'{txtCidSecundario.SelectedValue}'")
+            Dim procedSec = If(CodProcedimento.SelectedValue Is Nothing, "''", $"'{CodProcedimento.SelectedValue}'")
 
-            Dim query = $"UPDATE oci Set compet='{competencia(My.Settings.OCIcompetencia)}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPac}, id_medico='{txtCNSMedicoExecutante.SelectedValue}',  id_autorizador='{txtNomeAutorizador.SelectedValue}',  id_cod_principal={getProcedID(txtProcedimentoPrincipal.SelectedValue)}, proced_secundario={CodProcedimento.SelectedValue}, cid_principal='{txtCidPrincipal.SelectedValue}', cid_sec='{txtCidSecundario.SelectedValue}' , status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
+            Dim query = $"UPDATE oci SET compet='{competencia(My.Settings.OCIcompetencia)}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPac}, id_medico='{txtCNSMedicoExecutante.SelectedValue}',  id_autorizador='{txtNomeAutorizador.SelectedValue}',  id_cod_principal={getProcedID(txtProcedimentoPrincipal.SelectedValue)}, proced_secundario={procedSec}, cid_principal='{txtCidPrincipal.SelectedValue}', cid_sec={cidSec} , status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
 
-            If FormAMEmain.doQuery(query) Then
-                btNovonumeroAPAC.Enabled = True
-                FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC",,, lbStatusCads)
-                'txtNumApac.Text = GetAndLockNextApac()
-                IDpacienteSelecionado = Nothing
-            End If
+            Debug.WriteLine(query)
+
+            Try
+
+                If FormAMEmain.doQuery(query) Then
+                    btNovonumeroAPAC.Enabled = True
+                    FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC",,, lbStatusCads)
+                    'txtNumApac.Text = GetAndLockNextApac()
+                    IDpacienteSelecionado = Nothing
+                End If
+
+            Catch ex As Exception
+                MsgBox(ex.Message)
+            End Try
 
             result.Clear()
             clearFields()
@@ -545,6 +555,7 @@ Public Class FormAMEOCI
         Dim linhas = File.ReadAllLines(caminhoArquivo, Encoding.GetEncoding("iso-8859-1"))
         Dim resultado As New List(Of String)
         Dim ignorar As Boolean = False
+
 
         For Each linha In linhas
 
@@ -2077,6 +2088,9 @@ Public Class FormAMEOCI
 
     End Sub
     Private Sub ExcluirRegistroToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExcluirRegistroToolStripMenuItem.Click
+
+        '  MsgBox($"14{My.Settings.OCIcompetencia}{dgOCIcadastradas.SelectedRows(0).Cells(1).Value}")
+
         If deleteOCI(dgOCIcadastradas.SelectedRows(0).Cells(0).Value) Then
             RemoverRegistroApac($"14{My.Settings.OCIcompetencia}{dgOCIcadastradas.SelectedRows(0).Cells(1).Value}")
             FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC")
