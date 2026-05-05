@@ -1946,7 +1946,7 @@ Public Class FormAMEOCI
     End Sub
     Private Sub searchByDate()
         dtpSearchData.CustomFormat = "dd/MM/yyyy"
-        FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC",,, lbStatusCads)
+        FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC", " AND status <> 'BLOQ'",, lbStatusCads)
         ckbSearchTodos.Checked = False
     End Sub
 
