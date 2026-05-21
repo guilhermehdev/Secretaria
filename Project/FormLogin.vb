@@ -69,7 +69,7 @@ Public Class FormLogin
         If system = "AME" Or system = "NUMAPAC" Then
             userData = m2.getDataset($"SELECT * FROM usuarios WHERE id ={id} AND ativo=1")
             Try
-                pass = userData.Rows(0).Item(7).ToString
+                pass = userData.Rows(0).Item(5).ToString
             Catch ex As Exception
                 MessageBox.Show("Usuário não encontrado./Senha inválida.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 Return 0
