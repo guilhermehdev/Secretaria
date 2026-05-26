@@ -1011,6 +1011,48 @@ Public Class FormAMEOCI
             Return False
         End If
     End Function
+
+    Private Sub loadQueueOCI()
+        Dim dataset As DataTable = FormAMEmain.getDataset("SELECT 
+            oci_fila.id_medico_solicitante AS idMedico,
+            oci_fila.cod_proced_principal AS idCod,
+            cod_oci_principal.abrev,
+            servidores.nome,
+            COUNT(*) AS total
+
+        FROM oci_fila 
+
+        JOIN cod_oci_principal 
+            ON cod_oci_principal.id = oci_fila.cod_proced_principal
+
+        JOIN servidores 
+            ON servidores.SUS = oci_fila.id_medico_solicitante
+
+        GROUP BY 
+            oci_fila.id_medico_solicitante,
+            oci_fila.cod_proced_principal,
+            cod_oci_principal.abrev,
+            servidores.nome")
+
+        dgQueueOCI.DataSource = dataset
+
+        dgQueueOCI.Columns("idMedico").Visible = False
+        dgQueueOCI.Columns("idCod").Visible = False
+        dgQueueOCI.Columns("abrev").HeaderText = "Procedimento"
+        dgQueueOCI.Columns("abrev").Width = 210
+        dgQueueOCI.Columns("nome").HeaderText = "Médico"
+        dgQueueOCI.Columns("nome").Width = 180
+        dgQueueOCI.Columns("total").HeaderText = "Total"
+        dgQueueOCI.Columns("total").Width = 43
+    End Sub
+
+    Private Sub loadQueueItens()
+        Dim dataset As DataTable = FormAMEmain.getDataset("SELECT oci_fila.*, servidores.nome AS medico
+            FROM oci_fila
+            JOIN servidores ON servidores.SUS = oci_fila.id_medico_solicitante
+            WHERE oci_fila.`status`=0 ORDER BY oci_fila.`data`")
+    End Sub
+
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If My.Settings.databaseAME = "" Then
             FormAMEbd.ShowDialog()
@@ -1024,6 +1066,8 @@ Public Class FormAMEOCI
         End If
 
         LimparData()
+        loadQueueOCI()
+        loadQueueItens()
 
         Me.Text = $"Gerenciamento de APACs OCI - Competência {competencia(My.Settings.OCIcompetencia)}"
         ' loadAPACbyUser(idUser)
