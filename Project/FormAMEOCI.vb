@@ -1046,11 +1046,16 @@ Public Class FormAMEOCI
         dgQueueOCI.Columns("total").Width = 43
     End Sub
 
-    Private Sub loadQueueItens()
-        Dim dataset As DataTable = FormAMEmain.getDataset("SELECT oci_fila.*, servidores.nome AS medico
+    Private Sub loadQueueItens(ByVal idMedico, ByVal idCod)
+        Dim dataset As DataTable = FormAMEmain.getDataset($"SELECT oci_fila.*, servidores.nome AS medico
             FROM oci_fila
             JOIN servidores ON servidores.SUS = oci_fila.id_medico_solicitante
-            WHERE oci_fila.`status`=0 ORDER BY oci_fila.`data`")
+            WHERE oci_fila.`status`=0 
+				AND oci_fila.id_medico_solicitante = '{idMedico}'
+				AND oci_fila.cod_proced_principal = {idCod}
+				ORDER BY oci_fila.`data`")
+
+        dgQueueItens.DataSource = dataset
     End Sub
 
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -1067,7 +1072,6 @@ Public Class FormAMEOCI
 
         LimparData()
         loadQueueOCI()
-        loadQueueItens()
 
         Me.Text = $"Gerenciamento de APACs OCI - Competência {competencia(My.Settings.OCIcompetencia)}"
         ' loadAPACbyUser(idUser)
@@ -2285,6 +2289,10 @@ Public Class FormAMEOCI
             MessageBox.Show("Selecione um paciente por data de nascimento, nome ou CPF", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
 
+    End Sub
+
+    Private Sub dgQueueOCI_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles dgQueueOCI.RowEnter
+        loadQueueItens(dgQueueOCI.Rows(e.RowIndex).Cells(0).Value, dgQueueOCI.Rows(e.RowIndex).Cells(1).Value)
     End Sub
 
 End Class
