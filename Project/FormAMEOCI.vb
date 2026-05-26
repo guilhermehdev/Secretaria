@@ -1779,7 +1779,7 @@ Public Class FormAMEOCI
         Return procedimentos
     End Function
 
-    Private Sub btFechar_Click(sender As Object, e As EventArgs) Handles btFechar.Click
+    Private Sub btFechar_Click(sender As Object, e As EventArgs)
         FormSystemStart.Visible = True
         If Not String.IsNullOrEmpty(txtNumApac.Text) Then
             UnlockApac(txtNumApac.Text)
@@ -2052,7 +2052,7 @@ Public Class FormAMEOCI
         Process.Start($"C:\Program Files (x86)\Datasus\APAC\RCONSIST{chkMonthEXT()}")
     End Sub
 
-    Private Sub ExcluirNãoUtilizadosToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExcluirNãoUtilizadosToolStripMenuItem.Click
+    Private Sub ExcluirNãoUtilizadosToolStripMenuItem_Click(sender As Object, e As EventArgs)
         Dim sequencia = File.ReadAllLines(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\sequencia.txt").ToList()
         Dim usados As New HashSet(Of String)
 
