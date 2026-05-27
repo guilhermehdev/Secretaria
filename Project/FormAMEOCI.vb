@@ -34,6 +34,7 @@ Public Class FormAMEOCI
     Private cepRes = Nothing
     Private numero = Nothing
     Private complemento = Nothing
+    Private colapsed As Boolean = False
     Public Property idUser As Integer
 
     Public Function competencia(compet As String)
@@ -1035,7 +1036,6 @@ Public Class FormAMEOCI
             servidores.nome")
 
         dgQueueOCI.DataSource = dataset
-
         dgQueueOCI.Columns("idMedico").Visible = False
         dgQueueOCI.Columns("idCod").Visible = False
         dgQueueOCI.Columns("abrev").HeaderText = "Procedimento"
@@ -1044,21 +1044,78 @@ Public Class FormAMEOCI
         dgQueueOCI.Columns("nome").Width = 180
         dgQueueOCI.Columns("total").HeaderText = "Total"
         dgQueueOCI.Columns("total").Width = 43
+
+        dgQueueOCI.ClearSelection()
+
     End Sub
 
     Private Sub loadQueueItens(ByVal idMedico, ByVal idCod)
-        Dim dataset As DataTable = FormAMEmain.getDataset($"SELECT oci_fila.*, servidores.nome AS medico
+
+
+        Dim dataset As DataTable = FormAMEmain.getDataset($"SELECT oci_fila.*, pacientes.nome AS paciente, pacientes.dtnasc
             FROM oci_fila
-            JOIN servidores ON servidores.SUS = oci_fila.id_medico_solicitante
+            JOIN pacientes ON pacientes.id = oci_fila.id_paciente
             WHERE oci_fila.`status`=0 
 				AND oci_fila.id_medico_solicitante = '{idMedico}'
 				AND oci_fila.cod_proced_principal = {idCod}
 				ORDER BY oci_fila.`data`")
 
         dgQueueItens.DataSource = dataset
+
+        Try
+
+            dgQueueItens.Columns("id").Visible = False
+            dgQueueItens.Columns("id_medico_solicitante").Visible = False
+            dgQueueItens.Columns("cod_proced_principal").Visible = False
+            dgQueueItens.Columns("cid_principal").Visible = False
+            dgQueueItens.Columns("cid_secundario").Visible = False
+            dgQueueItens.Columns("id_paciente").Visible = False
+            dgQueueItens.Columns("status").Visible = False
+
+            dgQueueItens.Columns(3).HeaderText = "Data"
+            dgQueueItens.Columns(3).Width = 70
+            dgQueueItens.Columns("paciente").HeaderText = "Paciente"
+            dgQueueItens.Columns("paciente").Width = 274
+            dgQueueItens.Columns("dtnasc").HeaderText = "Data de Nascimento"
+            dgQueueItens.Columns("dtnasc").Width = 90
+
+            dgQueueItens.ClearSelection()
+
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub colapse()
+        If colapsed Then
+            dgQueueOCI.Width = 440
+            dgQueueItens.Width = 440
+            TabControl1.Location = New Point(457, 43)
+            Me.Width = 1042
+            colapsed = False
+        Else
+            dgQueueOCI.Width = 0
+            dgQueueItens.Width = 0
+            TabControl1.Location = New Point(14, 43)
+            Me.Width = 600
+            colapsed = True
+        End If
+    End Sub
+
+    Private Sub checkQueue()
+        Dim dataset = FormAMEmain.getDataset("SELECT COUNT(*) AS total FROM oci_fila WHERE `status`=0").Rows(0).Item("total")
+
+        If dataset > 0 Then
+            btOCIpendente.Visible = True
+        Else
+            btOCIpendente.Visible = False
+        End If
     End Sub
 
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        checkQueue()
+        colapse()
+
         If My.Settings.databaseAME = "" Then
             FormAMEbd.ShowDialog()
             Me.Close()
@@ -1418,12 +1475,12 @@ Public Class FormAMEOCI
             txtNumero.Focus()
         End If
     End Sub
-    Private Sub formatGrid()
-        dgvSugestoes.Width = 650
+    Private Sub formatGrid(location As Point)
+        dgvSugestoes.Width = 570
         dgvSugestoes.Height = 150
         dgvSugestoes.BringToFront()
         dgvSugestoes.Visible = True
-        dgvSugestoes.Location = New Point(24, 235)
+        dgvSugestoes.Location = New Point(location)
 
         ' Oculta o ID (se existir)
         If dgvSugestoes.Columns.Contains("id") Then
@@ -1438,8 +1495,8 @@ Public Class FormAMEOCI
 
         ' Ajusta larguras
         If dgvSugestoes.Columns.Contains("cep") Then dgvSugestoes.Columns("cep").Width = 80
-        If dgvSugestoes.Columns.Contains("tipo") Then dgvSugestoes.Columns("tipo").Width = 70
-        If dgvSugestoes.Columns.Contains("logradouro") Then dgvSugestoes.Columns("logradouro").Width = 300
+        If dgvSugestoes.Columns.Contains("tipo") Then dgvSugestoes.Columns("tipo").Width = 90
+        If dgvSugestoes.Columns.Contains("logradouro") Then dgvSugestoes.Columns("logradouro").Width = 200
         If dgvSugestoes.Columns.Contains("bairro") Then dgvSugestoes.Columns("bairro").Width = 200
 
         ' Aparência geral
@@ -1471,7 +1528,7 @@ Public Class FormAMEOCI
 
             ' Configura grid
             dgvSugestoes.DataSource = resultado
-            formatGrid()
+            formatGrid(New Point(470, 410))
 
         Catch ex As Exception
             Debug.WriteLine("Erro ao carregar sugestões: " & ex.Message)
@@ -1528,7 +1585,7 @@ Public Class FormAMEOCI
 
             ' Configura grid
             dgvSugestoes.DataSource = resultado
-            formatGrid()
+            formatGrid(New Point(470, 315))
 
         Catch ex As Exception
             Debug.WriteLine("Erro ao carregar sugestões: " & ex.Message)
@@ -1611,7 +1668,7 @@ Public Class FormAMEOCI
                 popupGrid.DataSource = result
 
                 ' Posiciona o grid logo abaixo do textbox
-                popupGrid.Location = New Point(30, 225)
+                popupGrid.Location = New Point(480, 230)
                 ' ======== CONFIGURAÇÃO DE COLUNAS INDIVIDUAIS ========
 
                 For Each col As DataGridViewColumn In popupGrid.Columns
@@ -2291,7 +2348,10 @@ Public Class FormAMEOCI
 
     End Sub
 
-    Private Sub dgQueueOCI_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles dgQueueOCI.RowEnter
+    Private Sub btOCIpendente_Click(sender As Object, e As EventArgs) Handles btOCIpendente.Click
+        colapse()
+    End Sub
+    Private Sub dgQueueOCI_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgQueueOCI.CellClick
         loadQueueItens(dgQueueOCI.Rows(e.RowIndex).Cells(0).Value, dgQueueOCI.Rows(e.RowIndex).Cells(1).Value)
     End Sub
 

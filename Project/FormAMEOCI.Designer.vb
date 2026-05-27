@@ -165,6 +165,7 @@ Partial Class FormAMEOCI
         Me.lbStatusCads = New System.Windows.Forms.Label()
         Me.dgQueueItens = New System.Windows.Forms.DataGridView()
         Me.dgQueueOCI = New System.Windows.Forms.DataGridView()
+        Me.btOCIpendente = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -1294,7 +1295,7 @@ Partial Class FormAMEOCI
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConfiguraçõesToolStripMenuItem, Me.RelatóriosToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(1027, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(1026, 24)
         Me.MenuStrip1.TabIndex = 27
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -1366,7 +1367,7 @@ Partial Class FormAMEOCI
         DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dgvSugestoes.DefaultCellStyle = DataGridViewCellStyle5
         Me.dgvSugestoes.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
-        Me.dgvSugestoes.Location = New System.Drawing.Point(-664, 412)
+        Me.dgvSugestoes.Location = New System.Drawing.Point(1019, 54)
         Me.dgvSugestoes.MultiSelect = False
         Me.dgvSugestoes.Name = "dgvSugestoes"
         Me.dgvSugestoes.ReadOnly = True
@@ -1390,9 +1391,9 @@ Partial Class FormAMEOCI
         '
         'StatusStrip1
         '
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 546)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 559)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(1027, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(1026, 22)
         Me.StatusStrip1.TabIndex = 52
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -1405,7 +1406,7 @@ Partial Class FormAMEOCI
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.TabPage3)
-        Me.TabControl1.Location = New System.Drawing.Point(457, 30)
+        Me.TabControl1.Location = New System.Drawing.Point(457, 44)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(558, 513)
@@ -1574,18 +1575,18 @@ Partial Class FormAMEOCI
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.EditarToolStripMenuItem, Me.ExcluirRegistroToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(109, 48)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(110, 48)
         '
         'EditarToolStripMenuItem
         '
         Me.EditarToolStripMenuItem.Name = "EditarToolStripMenuItem"
-        Me.EditarToolStripMenuItem.Size = New System.Drawing.Size(108, 22)
+        Me.EditarToolStripMenuItem.Size = New System.Drawing.Size(109, 22)
         Me.EditarToolStripMenuItem.Text = "Editar"
         '
         'ExcluirRegistroToolStripMenuItem
         '
         Me.ExcluirRegistroToolStripMenuItem.Name = "ExcluirRegistroToolStripMenuItem"
-        Me.ExcluirRegistroToolStripMenuItem.Size = New System.Drawing.Size(108, 22)
+        Me.ExcluirRegistroToolStripMenuItem.Size = New System.Drawing.Size(109, 22)
         Me.ExcluirRegistroToolStripMenuItem.Text = "Excluir"
         '
         'lbStatusCads
@@ -1603,15 +1604,14 @@ Partial Class FormAMEOCI
         Me.dgQueueItens.AllowUserToDeleteRows = False
         Me.dgQueueItens.AllowUserToOrderColumns = True
         Me.dgQueueItens.AllowUserToResizeRows = False
-        Me.dgQueueItens.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.dgQueueItens.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.dgQueueItens.BackgroundColor = System.Drawing.Color.White
         Me.dgQueueItens.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgQueueItens.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
         DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle10.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle10.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         DataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText
         DataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight
         DataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText
@@ -1622,14 +1622,14 @@ Partial Class FormAMEOCI
         Me.dgQueueItens.Cursor = System.Windows.Forms.Cursors.Hand
         DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle11.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle11.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         DataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText
         DataGridViewCellStyle11.SelectionBackColor = System.Drawing.Color.SteelBlue
         DataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.Window
         DataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dgQueueItens.DefaultCellStyle = DataGridViewCellStyle11
         Me.dgQueueItens.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
-        Me.dgQueueItens.Location = New System.Drawing.Point(12, 166)
+        Me.dgQueueItens.Location = New System.Drawing.Point(11, 182)
         Me.dgQueueItens.MultiSelect = False
         Me.dgQueueItens.Name = "dgQueueItens"
         Me.dgQueueItens.ReadOnly = True
@@ -1645,7 +1645,7 @@ Partial Class FormAMEOCI
         Me.dgQueueItens.RowHeadersWidth = 4
         Me.dgQueueItens.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgQueueItens.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgQueueItens.Size = New System.Drawing.Size(439, 369)
+        Me.dgQueueItens.Size = New System.Drawing.Size(440, 374)
         Me.dgQueueItens.TabIndex = 55
         Me.dgQueueItens.TabStop = False
         '
@@ -1655,9 +1655,8 @@ Partial Class FormAMEOCI
         Me.dgQueueOCI.AllowUserToDeleteRows = False
         Me.dgQueueOCI.AllowUserToOrderColumns = True
         Me.dgQueueOCI.AllowUserToResizeRows = False
-        Me.dgQueueOCI.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.dgQueueOCI.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.dgQueueOCI.BackgroundColor = System.Drawing.Color.White
         Me.dgQueueOCI.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgQueueOCI.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
@@ -1681,7 +1680,7 @@ Partial Class FormAMEOCI
         DataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dgQueueOCI.DefaultCellStyle = DataGridViewCellStyle14
         Me.dgQueueOCI.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
-        Me.dgQueueOCI.Location = New System.Drawing.Point(12, 44)
+        Me.dgQueueOCI.Location = New System.Drawing.Point(11, 58)
         Me.dgQueueOCI.MultiSelect = False
         Me.dgQueueOCI.Name = "dgQueueOCI"
         Me.dgQueueOCI.ReadOnly = True
@@ -1697,21 +1696,38 @@ Partial Class FormAMEOCI
         Me.dgQueueOCI.RowHeadersWidth = 4
         Me.dgQueueOCI.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgQueueOCI.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgQueueOCI.Size = New System.Drawing.Size(439, 123)
+        Me.dgQueueOCI.Size = New System.Drawing.Size(440, 122)
         Me.dgQueueOCI.TabIndex = 56
         Me.dgQueueOCI.TabStop = False
+        '
+        'btOCIpendente
+        '
+        Me.btOCIpendente.BackColor = System.Drawing.Color.LimeGreen
+        Me.btOCIpendente.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btOCIpendente.FlatAppearance.BorderSize = 0
+        Me.btOCIpendente.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btOCIpendente.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btOCIpendente.ForeColor = System.Drawing.Color.Linen
+        Me.btOCIpendente.Location = New System.Drawing.Point(0, 23)
+        Me.btOCIpendente.Name = "btOCIpendente"
+        Me.btOCIpendente.Size = New System.Drawing.Size(81, 18)
+        Me.btOCIpendente.TabIndex = 57
+        Me.btOCIpendente.Text = "OCIs pendentes"
+        Me.btOCIpendente.UseVisualStyleBackColor = False
         '
         'FormAMEOCI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1027, 568)
+        Me.ClientSize = New System.Drawing.Size(1026, 581)
+        Me.Controls.Add(Me.btOCIpendente)
         Me.Controls.Add(Me.dgQueueOCI)
         Me.Controls.Add(Me.dgQueueItens)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.dgvSugestoes)
         Me.Controls.Add(Me.MenuStrip1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.KeyPreview = True
         Me.MainMenuStrip = Me.MenuStrip1
         Me.MaximizeBox = False
@@ -1874,4 +1890,5 @@ Partial Class FormAMEOCI
     Friend WithEvents TabPage3 As TabPage
     Friend WithEvents dgQueueItens As DataGridView
     Friend WithEvents dgQueueOCI As DataGridView
+    Friend WithEvents btOCIpendente As Button
 End Class
