@@ -338,8 +338,8 @@ Public Class FormAMEOCI
                 TabControl1.SelectedTab = TabControl1.TabPages(0)
             End If
 
-            If txtProcedimentoPrincipal.SelectedValue = "0902010026" AndAlso CInt(m.AgeInMonths(m.mysqlDateFormat(dtNascimento.Text), m.mysqlDateFormat(dtValidadeIni.Value))) < 216 Then
-                Throw New Exception("Paciente com idade inferior a 18 anos não permitido para procedimento 0902010026.")
+            If txtProcedimentoPrincipal.SelectedValue = "0902010026" AndAlso CInt(m.AgeInMonths(m.mysqlDateFormat(dtNascimento.Text), m.mysqlDateFormat(dtValidadeIni.Value))) < 144 Then
+                Throw New Exception("Paciente com idade inferior a 12 anos não permitido para procedimento 0902010026.")
                 TabControl1.SelectedTab = TabControl1.TabPages(0)
             End If
 
@@ -1100,6 +1100,8 @@ Public Class FormAMEOCI
             Me.Width = 600
             colapsed = True
         End If
+        dgvSugestoes.Visible = False
+        popupGrid.Visible = False
     End Sub
 
     Private Sub checkQueue()
@@ -1476,7 +1478,7 @@ Public Class FormAMEOCI
         End If
     End Sub
     Private Sub formatGrid(location As Point)
-        dgvSugestoes.Width = 570
+        dgvSugestoes.Width = 520
         dgvSugestoes.Height = 150
         dgvSugestoes.BringToFront()
         dgvSugestoes.Visible = True
@@ -1528,7 +1530,11 @@ Public Class FormAMEOCI
 
             ' Configura grid
             dgvSugestoes.DataSource = resultado
-            formatGrid(New Point(470, 410))
+            If colapsed Then
+                formatGrid(New Point(38, 290))
+            Else
+                formatGrid(New Point(481, 290))
+            End If
 
         Catch ex As Exception
             Debug.WriteLine("Erro ao carregar sugestões: " & ex.Message)
@@ -1585,7 +1591,12 @@ Public Class FormAMEOCI
 
             ' Configura grid
             dgvSugestoes.DataSource = resultado
-            formatGrid(New Point(470, 315))
+
+            If colapsed Then
+                formatGrid(New Point(38, 328))
+            Else
+                formatGrid(New Point(481, 328))
+            End If
 
         Catch ex As Exception
             Debug.WriteLine("Erro ao carregar sugestões: " & ex.Message)
@@ -1668,7 +1679,11 @@ Public Class FormAMEOCI
                 popupGrid.DataSource = result
 
                 ' Posiciona o grid logo abaixo do textbox
-                popupGrid.Location = New Point(480, 230)
+                If colapsed Then
+                    popupGrid.Location = New Point(36, 243)
+                Else
+                    popupGrid.Location = New Point(480, 243)
+                End If
                 ' ======== CONFIGURAÇÃO DE COLUNAS INDIVIDUAIS ========
 
                 For Each col As DataGridViewColumn In popupGrid.Columns
