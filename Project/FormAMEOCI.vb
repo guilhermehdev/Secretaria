@@ -1087,21 +1087,25 @@ Public Class FormAMEOCI
     End Sub
 
     Private Sub colapse()
-        If colapsed Then
-            dgQueueOCI.Width = 440
-            dgQueueItens.Width = 440
-            TabControl1.Location = New Point(457, 43)
-            Me.Width = 1042
-            colapsed = False
-        Else
-            dgQueueOCI.Width = 0
-            dgQueueItens.Width = 0
-            TabControl1.Location = New Point(14, 43)
-            Me.Width = 600
-            colapsed = True
-        End If
-        dgvSugestoes.Visible = False
-        popupGrid.Visible = False
+        Try
+            If colapsed Then
+                dgQueueOCI.Width = 440
+                dgQueueItens.Width = 440
+                TabControl1.Location = New Point(457, 43)
+                Me.Width = 1042
+                colapsed = False
+            Else
+                dgQueueOCI.Width = 0
+                dgQueueItens.Width = 0
+                TabControl1.Location = New Point(14, 43)
+                Me.Width = 600
+                colapsed = True
+            End If
+            dgvSugestoes.Visible = False
+            popupGrid.Visible = False
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Sub checkQueue()
@@ -1151,7 +1155,7 @@ Public Class FormAMEOCI
         .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
         .BackgroundColor = Color.White,
         .BorderStyle = BorderStyle.FixedSingle,
-        .Width = 500,
+        .Width = 520,
         .Height = 250,
         .MultiSelect = False,
         .TabStop = True,
@@ -1171,7 +1175,7 @@ Public Class FormAMEOCI
 
         AddHandler popupGrid.MouseLeave, AddressOf popupGrid_MouseLeave
         AddHandler debounceTimer.Tick, AddressOf BuscarPacientes
-        AddHandler popupGrid.CellDoubleClick, AddressOf popupGrid_CellClick
+        AddHandler popupGrid.CellClick, AddressOf popupGrid_CellClick
 
         Try
             ' 1. Converter a string para um número inteiro
@@ -1631,6 +1635,9 @@ Public Class FormAMEOCI
         If Char.IsLetter(e.KeyChar) Then e.KeyChar = Char.ToUpper(e.KeyChar)
     End Sub
     Private Sub cbo_TextChanged(sender As Object, e As EventArgs) Handles txtNomePaciente.TextChanged
+        If isLoading Then Exit Sub
+        debounceTimer.Stop()
+
         If _upperLock Then Return
         Dim cb = DirectCast(sender, ComboBox)
         Dim txt = cb.Text
@@ -1644,9 +1651,6 @@ Public Class FormAMEOCI
             cb.SelectionStart = Math.Min(pos, cb.Text.Length)
             _upperLock = False
         End If
-
-        If isLoading Then Exit Sub
-        debounceTimer.Stop()
 
         If txtNomePaciente.Text.Length >= 4 Then
             debounceTimer.Start()
@@ -1727,8 +1731,6 @@ Public Class FormAMEOCI
         If e.RowIndex >= 0 Then
             IDpacienteSelecionado = CInt(popupGrid.Rows(e.RowIndex).Cells("id").Value)
 
-            ' MsgBox(IDpacienteSelecionado)
-
             Try
                 isLoading = True ' 🔒 bloqueia o TextChanged durante a seleção
                 debounceTimer.Stop()
@@ -1736,11 +1738,11 @@ Public Class FormAMEOCI
                 If linhas.Length = 0 Then Exit Sub
 
                 ' Cria uma cópia apenas com essa linha
-                Dim dtSelecionado As DataTable = result.Clone()
-                dtSelecionado.ImportRow(linhas(0))
+                ' Dim dtSelecionado As DataTable = result.Clone()
+                'dtSelecionado.ImportRow(linhas(0))
+                'resultPacientes(dtSelecionado)
+                resultPacientes(linhas.CopyToDataTable())
                 popupGrid.Visible = False
-                resultPacientes(dtSelecionado)
-
             Finally
                 isLoading = False ' 🔓 libera novamente
             End Try
@@ -1850,6 +1852,7 @@ Public Class FormAMEOCI
         End If
     End Sub
     Private Sub txtCpfPaciente_TextChanged(sender As Object, e As EventArgs) Handles txtCpfPaciente.TextChanged
+        If isLoading Then Exit Sub
         If txtCpfPaciente.Text.Length = 11 Then
             Try
                 If m.ValidarCPF(txtCpfPaciente.Text) Then
@@ -1862,8 +1865,11 @@ Public Class FormAMEOCI
                     txtCpfPaciente.Clear()
                 End If
 
+
             Catch ex As Exception
                 MsgBox("CPF invalido!")
+            Finally
+                isLoading = False
             End Try
         End If
     End Sub
@@ -2115,8 +2121,8 @@ Public Class FormAMEOCI
         popupGrid.Visible = False
     End Sub
     Private Sub dtNascimento_TextChanged(sender As Object, e As EventArgs) Handles dtNascimento.TextChanged
+        If isLoading Then Exit Sub
         Try
-
             If dtNascimento.Text.Length = 10 Then
                 popupGrid.Visible = True
                 BuscarPacientes(sender, e, "dtnasc")
@@ -2127,6 +2133,8 @@ Public Class FormAMEOCI
             End If
         Catch ex As Exception
             'MsgBox(ex.Message)
+        Finally
+            isLoading = False
         End Try
     End Sub
     Private Sub txtNomeMae_Leave(sender As Object, e As EventArgs) Handles txtNomeMae.Leave
