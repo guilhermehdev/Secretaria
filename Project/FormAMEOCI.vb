@@ -1,4 +1,5 @@
-﻿Imports System.Globalization
+﻿Imports System.Data.Entity.Core.Metadata.Edm
+Imports System.Globalization
 Imports System.IO
 Imports System.Security.Principal
 Imports System.Text
@@ -15,6 +16,7 @@ Public Class FormAMEOCI
     Dim m As New Main
     Dim result As DataTable
     Dim endereco As DataTable
+    Dim queue As DataTable
     Dim cepObj As New CEP()
     ' Variáveis globais
     Private popupGrid As DataGridView
@@ -716,15 +718,11 @@ Public Class FormAMEOCI
 
             If cpf IsNot Nothing Then
                 data = FormAMEmain.getDataset(query & $" WHERE pacientes.cpf ='{cpf}' {orderBy}")
-
             ElseIf nome IsNot Nothing Then
                 data = FormAMEmain.getDataset(query & $" WHERE pacientes.nome LIKE '%{nome}%' {orderBy}")
-
             ElseIf dtnasc IsNot Nothing Then
-
                 data = FormAMEmain.getDataset(query & $" WHERE pacientes.dtnasc ='{dtnasc}' {orderBy}")
             ElseIf id > 0 Then
-
                 data = FormAMEmain.getDataset(query & $" WHERE pacientes.id ={id} {orderBy}")
             End If
 
@@ -1049,8 +1047,7 @@ Public Class FormAMEOCI
 
     Private Sub loadQueueItens(ByVal idMedico, ByVal idCod)
 
-
-        Dim dataset As DataTable = FormAMEmain.getDataset($"SELECT oci_fila.*, pacientes.nome AS paciente, pacientes.dtnasc
+        queue = FormAMEmain.getDataset($"SELECT oci_fila.*, pacientes.nome AS paciente, pacientes.dtnasc
             FROM oci_fila
             JOIN pacientes ON pacientes.id = oci_fila.id_paciente
             WHERE oci_fila.`status`=0 
@@ -1058,7 +1055,7 @@ Public Class FormAMEOCI
 				AND oci_fila.cod_proced_principal = {idCod}
 				ORDER BY oci_fila.`data`")
 
-        dgQueueItens.DataSource = dataset
+        dgQueueItens.DataSource = queue
 
         Try
 
@@ -1082,6 +1079,22 @@ Public Class FormAMEOCI
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try
+    End Sub
+    Private Sub getQueueData(idQueue As Integer)
+        Dim data() As DataRow = queue.Select("id = " & idQueue)
+
+        If data.Length > 0 Then
+            isLoading = True
+            Dim row As DataRow = data(0)
+            Dim idPac = row("id_paciente")
+
+            result = getPacientes(, , , idPac)
+            resultPacientes(result)
+
+        End If
+
+        isLoading = False
+
     End Sub
 
     Private Sub colapse()
@@ -1677,7 +1690,6 @@ Public Class FormAMEOCI
                     popupGrid.Visible = False
                     Exit Sub
                 End If
-
                 result = getPacientes(, txtNomePaciente.Text,,)
             ElseIf parameter = "cpf" Then
                 result = getPacientes(txtCpfPaciente.Text)
@@ -2392,6 +2404,9 @@ Public Class FormAMEOCI
     End Sub
     Private Sub dgQueueOCI_CellEnter(sender As Object, e As DataGridViewCellEventArgs) Handles dgQueueOCI.CellEnter
         loadQueueItens(dgQueueOCI.Rows(e.RowIndex).Cells(0).Value, dgQueueOCI.Rows(e.RowIndex).Cells(1).Value)
+    End Sub
+    Private Sub dgQueueItens_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgQueueItens.CellDoubleClick
+        getQueueData(dgQueueItens.Rows(e.RowIndex).Cells(0).Value)
     End Sub
 
 End Class
