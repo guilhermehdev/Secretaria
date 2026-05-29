@@ -1089,12 +1089,18 @@ Public Class FormAMEOCI
     Private Sub colapse()
         Try
             If colapsed Then
-                dgQueueOCI.Width = 440
-                dgQueueItens.Width = 440
+                btOCIpendente.Left = -55
+                btOCIpendente.Text = "Fechar"
+                btOCIpendente.TextAlign = ContentAlignment.MiddleRight
+                dgQueueOCI.Width = 450
+                dgQueueItens.Width = 450
                 TabControl1.Location = New Point(457, 43)
-                Me.Width = 1042
+                Me.Width = 1035
                 colapsed = False
             Else
+                btOCIpendente.Left = 0
+                btOCIpendente.Text = "OCIs pendentes"
+                btOCIpendente.TextAlign = ContentAlignment.MiddleLeft
                 dgQueueOCI.Width = 0
                 dgQueueItens.Width = 0
                 TabControl1.Location = New Point(14, 43)
@@ -1113,8 +1119,10 @@ Public Class FormAMEOCI
 
         If dataset > 0 Then
             btOCIpendente.Visible = True
+            Timer1.Start()
         Else
             btOCIpendente.Visible = False
+            Timer1.Stop()
         End If
     End Sub
 
@@ -2373,9 +2381,18 @@ Public Class FormAMEOCI
 
     Private Sub btOCIpendente_Click(sender As Object, e As EventArgs) Handles btOCIpendente.Click
         colapse()
+        Timer1.Stop()
+        btOCIpendente.ForeColor = Color.Linen
     End Sub
     Private Sub dgQueueOCI_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgQueueOCI.CellClick
         loadQueueItens(dgQueueOCI.Rows(e.RowIndex).Cells(0).Value, dgQueueOCI.Rows(e.RowIndex).Cells(1).Value)
+    End Sub
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        If btOCIpendente.ForeColor = Color.Red Then
+            btOCIpendente.ForeColor = Color.Yellow
+        Else
+            btOCIpendente.ForeColor = Color.Red
+        End If
     End Sub
 
 End Class
