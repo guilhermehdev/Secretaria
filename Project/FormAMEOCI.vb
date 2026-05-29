@@ -1047,9 +1047,10 @@ Public Class FormAMEOCI
 
     Private Sub loadQueueItens(ByVal idMedico, ByVal idCod)
 
-        queue = FormAMEmain.getDataset($"SELECT oci_fila.*, pacientes.nome AS paciente, pacientes.dtnasc
+        queue = FormAMEmain.getDataset($"SELECT oci_fila.*, pacientes.nome AS paciente, pacientes.dtnasc, cod_oci_principal.cod AS proced
             FROM oci_fila
             JOIN pacientes ON pacientes.id = oci_fila.id_paciente
+            JOIN cod_oci_principal ON cod_oci_principal.id = oci_fila.cod_proced_principal
             WHERE oci_fila.`status`=0 
 				AND oci_fila.id_medico_solicitante = '{idMedico}'
 				AND oci_fila.cod_proced_principal = {idCod}
@@ -1090,6 +1091,12 @@ Public Class FormAMEOCI
 
             result = getPacientes(, , , idPac)
             resultPacientes(result)
+            dtValidadeIni.Value = CDate(row("data"))
+            txtCNSMedicoExecutante.SelectedValue = row("id_medico_solicitante")
+            txtNomeMedicoSolicitante.SelectedValue = row("id_medico_solicitante")
+            txtProcedimentoPrincipal.SelectedValue = row("proced")
+            txtCidPrincipal.SelectedValue = row("cid_principal")
+            txtCidSecundario.SelectedValue = row("cid_secundario")
 
         End If
 
@@ -1814,8 +1821,12 @@ Public Class FormAMEOCI
                 Catch ex As Exception
 
                 End Try
-                chkResponsavel()
 
+
+
+
+                chkResponsavel()
+                
                 nasc = dtNascimento.Text
                 nome = txtNomePaciente.Text
                 sexo = txtSexo.Text
