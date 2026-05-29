@@ -1545,7 +1545,7 @@ Public Class FormAMEOCI
         End Try
     End Sub
 
-    Private Sub dgvSugestoes_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvSugestoes.CellDoubleClick
+    Private Sub dgvSugestoes_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvSugestoes.CellClick
         If e.RowIndex < 0 Then Exit Sub
 
         Dim linha As DataGridViewRow = dgvSugestoes.Rows(e.RowIndex)
