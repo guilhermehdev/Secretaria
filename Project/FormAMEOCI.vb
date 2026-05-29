@@ -1041,11 +1041,9 @@ Public Class FormAMEOCI
         dgQueueOCI.Columns("abrev").HeaderText = "Procedimento"
         dgQueueOCI.Columns("abrev").Width = 210
         dgQueueOCI.Columns("nome").HeaderText = "Médico"
-        dgQueueOCI.Columns("nome").Width = 180
+        dgQueueOCI.Columns("nome").Width = 192
         dgQueueOCI.Columns("total").HeaderText = "Total"
         dgQueueOCI.Columns("total").Width = 43
-
-        dgQueueOCI.ClearSelection()
 
     End Sub
 
@@ -1075,7 +1073,7 @@ Public Class FormAMEOCI
             dgQueueItens.Columns(3).HeaderText = "Data"
             dgQueueItens.Columns(3).Width = 70
             dgQueueItens.Columns("paciente").HeaderText = "Paciente"
-            dgQueueItens.Columns("paciente").Width = 274
+            dgQueueItens.Columns("paciente").Width = 284
             dgQueueItens.Columns("dtnasc").HeaderText = "Data de Nascimento"
             dgQueueItens.Columns("dtnasc").Width = 90
 
@@ -2384,15 +2382,16 @@ Public Class FormAMEOCI
         Timer1.Stop()
         btOCIpendente.ForeColor = Color.Linen
     End Sub
-    Private Sub dgQueueOCI_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgQueueOCI.CellClick
-        loadQueueItens(dgQueueOCI.Rows(e.RowIndex).Cells(0).Value, dgQueueOCI.Rows(e.RowIndex).Cells(1).Value)
-    End Sub
+
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         If btOCIpendente.ForeColor = Color.Red Then
             btOCIpendente.ForeColor = Color.Yellow
         Else
             btOCIpendente.ForeColor = Color.Red
         End If
+    End Sub
+    Private Sub dgQueueOCI_CellEnter(sender As Object, e As DataGridViewCellEventArgs) Handles dgQueueOCI.CellEnter
+        loadQueueItens(dgQueueOCI.Rows(e.RowIndex).Cells(0).Value, dgQueueOCI.Rows(e.RowIndex).Cells(1).Value)
     End Sub
 
 End Class
