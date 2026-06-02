@@ -198,7 +198,7 @@ Partial Class FormAMEmain
         'CadastroToolStripMenuItem
         '
         Me.CadastroToolStripMenuItem.Name = "CadastroToolStripMenuItem"
-        Me.CadastroToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.CadastroToolStripMenuItem.Size = New System.Drawing.Size(121, 22)
         Me.CadastroToolStripMenuItem.Text = "Cadastro"
         '
         'AgendasToolStripMenuItem
@@ -211,7 +211,7 @@ Partial Class FormAMEmain
         'ResumoMensalToolStripMenuItem
         '
         Me.ResumoMensalToolStripMenuItem.Name = "ResumoMensalToolStripMenuItem"
-        Me.ResumoMensalToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.ResumoMensalToolStripMenuItem.Size = New System.Drawing.Size(158, 22)
         Me.ResumoMensalToolStripMenuItem.Text = "Resumo mensal"
         '
         'ConfiguraçõesToolStripMenuItem

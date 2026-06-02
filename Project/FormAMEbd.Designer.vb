@@ -148,6 +148,8 @@ Partial Class FormAMEbd
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(428, 164)
         Me.Controls.Add(Me.GroupBox1)
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "FormAMEbd"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "AME - Banco de dados"

@@ -167,7 +167,11 @@ Public Class FormLogin
             End If
 
         Catch ex As Exception
-            FormSystemConnSettings.ShowDialog()
+            If system = "AME" Or system = "NUMAPAC" Then
+                FormAMEbd.ShowDialog()
+            Else
+                FormSystemConnSettings.ShowDialog()
+            End If
         End Try
 
     End Sub

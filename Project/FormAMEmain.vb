@@ -610,7 +610,7 @@ Public Class FormAMEmain
                 vconexao.Open()
             Catch ex As Exception
                 MsgBox("Não foi possível realizar a conexão com o servidor!" & vbCrLf & vbCrLf & "Erro: " & ex.Message, MsgBoxStyle.Information)
-                FormSystemConnSettings.ShowDialog()
+                FormAMEbd.ShowDialog()
             End Try
 
         Else
