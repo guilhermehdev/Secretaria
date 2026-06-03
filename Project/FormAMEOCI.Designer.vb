@@ -40,6 +40,7 @@ Partial Class FormAMEOCI
         Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormAMEOCI))
         Me.txtApacAnterior = New System.Windows.Forms.TextBox()
         Me.txtCnesSolicitante = New System.Windows.Forms.TextBox()
         Me.txtCnesExecutante = New System.Windows.Forms.TextBox()
@@ -1755,6 +1756,7 @@ Partial Class FormAMEOCI
         Me.Controls.Add(Me.MenuStrip1)
         Me.Cursor = System.Windows.Forms.Cursors.Arrow
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.KeyPreview = True
         Me.MainMenuStrip = Me.MenuStrip1
         Me.MaximizeBox = False

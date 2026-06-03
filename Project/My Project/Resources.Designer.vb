@@ -63,6 +63,26 @@ Namespace My.Resources
         '''<summary>
         '''  Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property ame_icon() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ame-icon", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property ameicon_removebg_preview__1_() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ameicon-removebg-preview (1)", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property arrowdown() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("arrowdown", resourceCulture)
@@ -146,6 +166,26 @@ Namespace My.Resources
         Friend ReadOnly Property sendmail() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("sendmail", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property small() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("small", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property small1() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("small1", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

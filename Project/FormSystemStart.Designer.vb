@@ -27,11 +27,11 @@ Partial Class FormSystemStart
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.CadastroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UsuárioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btAME = New System.Windows.Forms.Button()
         Me.btBLH = New System.Windows.Forms.Button()
         Me.btCNES = New System.Windows.Forms.Button()
         Me.btRecepcao = New System.Windows.Forms.Button()
         Me.btOuvidoria = New System.Windows.Forms.Button()
-        Me.btAME = New System.Windows.Forms.Button()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -79,6 +79,24 @@ Partial Class FormSystemStart
         Me.UsuárioToolStripMenuItem.Name = "UsuárioToolStripMenuItem"
         Me.UsuárioToolStripMenuItem.Size = New System.Drawing.Size(121, 22)
         Me.UsuárioToolStripMenuItem.Text = "Usuários"
+        '
+        'btAME
+        '
+        Me.btAME.BackColor = System.Drawing.Color.DodgerBlue
+        Me.btAME.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btAME.FlatAppearance.BorderColor = System.Drawing.Color.RoyalBlue
+        Me.btAME.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DeepSkyBlue
+        Me.btAME.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
+        Me.btAME.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btAME.Font = New System.Drawing.Font("Calibri", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btAME.ForeColor = System.Drawing.Color.Yellow
+        Me.btAME.Image = Global.Project.My.Resources.Resources.small1
+        Me.btAME.Location = New System.Drawing.Point(198, 37)
+        Me.btAME.Name = "btAME"
+        Me.btAME.Size = New System.Drawing.Size(87, 55)
+        Me.btAME.TabIndex = 7
+        Me.btAME.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btAME.UseVisualStyleBackColor = False
         '
         'btBLH
         '
@@ -161,25 +179,6 @@ Partial Class FormSystemStart
         Me.btOuvidoria.Text = "Ouvidoria"
         Me.btOuvidoria.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btOuvidoria.UseVisualStyleBackColor = False
-        '
-        'btAME
-        '
-        Me.btAME.BackColor = System.Drawing.Color.DodgerBlue
-        Me.btAME.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btAME.FlatAppearance.BorderColor = System.Drawing.Color.RoyalBlue
-        Me.btAME.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DeepSkyBlue
-        Me.btAME.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue
-        Me.btAME.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btAME.Font = New System.Drawing.Font("Calibri", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btAME.ForeColor = System.Drawing.Color.Yellow
-        Me.btAME.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btAME.Location = New System.Drawing.Point(198, 37)
-        Me.btAME.Name = "btAME"
-        Me.btAME.Size = New System.Drawing.Size(87, 55)
-        Me.btAME.TabIndex = 7
-        Me.btAME.Text = "AME"
-        Me.btAME.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btAME.UseVisualStyleBackColor = False
         '
         'FormSystemStart
         '

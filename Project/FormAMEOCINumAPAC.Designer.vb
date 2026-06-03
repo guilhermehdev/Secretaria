@@ -26,6 +26,7 @@ Partial Class FormAMEOCINumAPAC
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormAMEOCINumAPAC))
         Me.dgvNumerosAPAC = New System.Windows.Forms.DataGridView()
         Me.ctxMenuAPAC = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.AlterarStatusToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -413,6 +414,7 @@ Partial Class FormAMEOCINumAPAC
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.MenuStrip1)
         Me.Controls.Add(Me.GroupBox1)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.MenuStrip1
         Me.MaximizeBox = False
         Me.MinimizeBox = False

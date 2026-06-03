@@ -957,6 +957,10 @@
     <None Include="Resources\cnes.png" />
     <None Include="Resources\Capturar-removebg-preview.png" />
     <None Include="Resources\blh.png" />
+    <None Include="Resources\ameicon-removebg-preview %281%29.png" />
+    <None Include="Resources\small.png" />
+    <None Include="Resources\small1.png" />
+    <None Include="Resources\ame-icon.ico" />
     <Content Include="sec-icon.ico" />
     <None Include="Resources\icone_e-ouv.png" />
     <None Include="Resources\sendmail.png" />

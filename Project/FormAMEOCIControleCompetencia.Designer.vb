@@ -22,6 +22,7 @@ Partial Class FormAMEOCIControleCompetencia
     'Não o modifique usando o editor de códigos.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormAMEOCIControleCompetencia))
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.txtUf = New System.Windows.Forms.ComboBox()
         Me.Label29 = New System.Windows.Forms.Label()
@@ -268,6 +269,7 @@ Partial Class FormAMEOCIControleCompetencia
         Me.Controls.Add(Me.btSair)
         Me.Controls.Add(Me.btSalvar)
         Me.Controls.Add(Me.GroupBox5)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "FormAMEOCIControleCompetencia"
