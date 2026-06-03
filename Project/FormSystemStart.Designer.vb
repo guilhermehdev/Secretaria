@@ -44,11 +44,11 @@ Partial Class FormSystemStart
         Me.btSair.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Firebrick
         Me.btSair.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btSair.ForeColor = System.Drawing.Color.Gainsboro
-        Me.btSair.Location = New System.Drawing.Point(12, 159)
+        Me.btSair.Location = New System.Drawing.Point(274, 0)
         Me.btSair.Name = "btSair"
-        Me.btSair.Size = New System.Drawing.Size(273, 23)
+        Me.btSair.Size = New System.Drawing.Size(23, 23)
         Me.btSair.TabIndex = 3
-        Me.btSair.Text = "Fechar"
+        Me.btSair.Text = "X"
         Me.btSair.UseVisualStyleBackColor = False
         '
         'MenuStrip1
@@ -57,7 +57,7 @@ Partial Class FormSystemStart
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CadastroToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(298, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(297, 24)
         Me.MenuStrip1.TabIndex = 5
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -91,7 +91,7 @@ Partial Class FormSystemStart
         Me.btAME.Font = New System.Drawing.Font("Calibri", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btAME.ForeColor = System.Drawing.Color.Yellow
         Me.btAME.Image = Global.Project.My.Resources.Resources.small1
-        Me.btAME.Location = New System.Drawing.Point(198, 37)
+        Me.btAME.Location = New System.Drawing.Point(12, 37)
         Me.btAME.Name = "btAME"
         Me.btAME.Size = New System.Drawing.Size(87, 55)
         Me.btAME.TabIndex = 7
@@ -111,7 +111,7 @@ Partial Class FormSystemStart
         Me.btBLH.ForeColor = System.Drawing.Color.Yellow
         Me.btBLH.Image = Global.Project.My.Resources.Resources.blh
         Me.btBLH.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btBLH.Location = New System.Drawing.Point(12, 98)
+        Me.btBLH.Location = New System.Drawing.Point(365, 159)
         Me.btBLH.Name = "btBLH"
         Me.btBLH.Size = New System.Drawing.Size(87, 55)
         Me.btBLH.TabIndex = 6
@@ -131,7 +131,7 @@ Partial Class FormSystemStart
         Me.btCNES.ForeColor = System.Drawing.Color.Yellow
         Me.btCNES.Image = CType(resources.GetObject("btCNES.Image"), System.Drawing.Image)
         Me.btCNES.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btCNES.Location = New System.Drawing.Point(105, 98)
+        Me.btCNES.Location = New System.Drawing.Point(198, 37)
         Me.btCNES.Name = "btCNES"
         Me.btCNES.Size = New System.Drawing.Size(87, 55)
         Me.btCNES.TabIndex = 4
@@ -151,7 +151,7 @@ Partial Class FormSystemStart
         Me.btRecepcao.ForeColor = System.Drawing.Color.Yellow
         Me.btRecepcao.Image = CType(resources.GetObject("btRecepcao.Image"), System.Drawing.Image)
         Me.btRecepcao.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btRecepcao.Location = New System.Drawing.Point(105, 37)
+        Me.btRecepcao.Location = New System.Drawing.Point(365, 98)
         Me.btRecepcao.Name = "btRecepcao"
         Me.btRecepcao.Size = New System.Drawing.Size(87, 55)
         Me.btRecepcao.TabIndex = 2
@@ -172,7 +172,7 @@ Partial Class FormSystemStart
         Me.btOuvidoria.ForeColor = System.Drawing.Color.Yellow
         Me.btOuvidoria.Image = CType(resources.GetObject("btOuvidoria.Image"), System.Drawing.Image)
         Me.btOuvidoria.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btOuvidoria.Location = New System.Drawing.Point(12, 37)
+        Me.btOuvidoria.Location = New System.Drawing.Point(105, 37)
         Me.btOuvidoria.Name = "btOuvidoria"
         Me.btOuvidoria.Size = New System.Drawing.Size(87, 55)
         Me.btOuvidoria.TabIndex = 1
@@ -185,7 +185,7 @@ Partial Class FormSystemStart
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(298, 188)
+        Me.ClientSize = New System.Drawing.Size(297, 115)
         Me.Controls.Add(Me.btAME)
         Me.Controls.Add(Me.btBLH)
         Me.Controls.Add(Me.btCNES)
