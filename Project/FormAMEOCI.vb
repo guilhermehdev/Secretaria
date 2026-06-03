@@ -1081,6 +1081,33 @@ Public Class FormAMEOCI
             MsgBox(ex.Message)
         End Try
     End Sub
+
+    Private Sub getProcedSecundario(data As Date, idPac As Integer, medico As String)
+        Dim prceds As DataTable = FormAMEmain.getDataset($"SELECT cod_oci_secundario.cod, procedimentos_secundarios.qtd, cod_oci_secundario.descricao, procedimentos_secundarios.cbo
+FROM procedimentos_secundarios
+JOIN cod_oci_secundario ON cod_oci_secundario.id = procedimentos_secundarios.cod_proced_secundario
+WHERE procedimentos_secundarios.`data`='{data:yyyy-MM-dd}'
+AND procedimentos_secundarios.id_paciente = {idPac}
+AND procedimentos_secundarios.medico_solicitante ='{medico}'")
+
+        dgvProcedimentos.Columns.Clear()
+
+        dgvProcedimentos.Columns.Add("Codigo", "Procedimento")
+        dgvProcedimentos.Columns("Codigo").Width = 80
+        dgvProcedimentos.Columns.Add("Quantidade", "Qtd")
+        dgvProcedimentos.Columns("Quantidade").Width = 40
+        dgvProcedimentos.Columns.Add("Desc", "Descrição")
+        dgvProcedimentos.Columns("Desc").Width = 300
+        dgvProcedimentos.Columns.Add("CBO", "CBO")
+        dgvProcedimentos.Columns("CBO").Width = 90
+
+        dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225275")
+        For Each row As DataRow In prceds.Rows
+            Dim desc As String = row("descricao").ToString().Substring(13).Trim()
+            dgvProcedimentos.Rows.Add(row("cod"), row("qtd"), desc, row("cbo"))
+        Next
+
+    End Sub
     Private Sub getQueueData(idQueue As Integer)
         Dim data() As DataRow = queue.Select("id = " & idQueue)
 
@@ -1097,6 +1124,8 @@ Public Class FormAMEOCI
             txtProcedimentoPrincipal.SelectedValue = row("proced")
             txtCidPrincipal.SelectedValue = row("cid_principal")
             txtCidSecundario.SelectedValue = row("cid_secundario")
+
+            getProcedSecundario(row("data"), idPac, txtCNSMedicoExecutante.SelectedValue)
 
         End If
 
