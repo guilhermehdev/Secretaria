@@ -986,18 +986,23 @@ Public Class FormAMEOCI
                 Return
             End If
 
+            Dim data As Date = ociData.Rows(0).Item("data")
+            Dim idPac = ociData.Rows(0).Item("id_paciente")
+            Dim medico = ociData.Rows(0).Item("id_medico").ToString()
             txtNumApac.Text = ociData.Rows(0).Item("num_apac").ToString()
-            dtValidadeIni.Value = CDate(ociData.Rows(0).Item("data"))
-            IDpacienteSelecionado = ociData.Rows(0).Item("id_paciente")
+            dtValidadeIni.Value = data
+            IDpacienteSelecionado = idPac
 
             Dim pacData = FormAMEmain.getDataset($"SELECT cpf FROM pacientes WHERE id={IDpacienteSelecionado}", True)
             txtCpfPaciente.Text = pacData.Rows(0).Item("cpf").ToString()
             txtProcedimentoPrincipal.SelectedValue = GetProcedCod(ociData.Rows(0).Item("id_cod_principal").ToString())
             txtCidPrincipal.SelectedValue = ociData.Rows(0).Item("cid_principal").ToString()
-            CodProcedimento.SelectedValue = ociData.Rows(0).Item("proced_secundario").ToString()
+            'CodProcedimento.SelectedValue = ociData.Rows(0).Item("proced_secundario").ToString()
             txtCidSecundario.SelectedValue = ociData.Rows(0).Item("cid_sec").ToString()
-            txtCNSMedicoExecutante.SelectedValue = ociData.Rows(0).Item("id_medico").ToString()
+            txtCNSMedicoExecutante.SelectedValue = medico
             txtNomeAutorizador.SelectedValue = ociData.Rows(0).Item("id_autorizador").ToString()
+
+            getProcedSecundario(data, idPac, medico)
 
         Catch ex As Exception
             MsgBox("Erro ao carregar dados do OCI: " & ex.Message)
@@ -1083,12 +1088,14 @@ Public Class FormAMEOCI
     End Sub
 
     Private Sub getProcedSecundario(data As Date, idPac As Integer, medico As String)
-        Dim prceds As DataTable = FormAMEmain.getDataset($"SELECT cod_oci_secundario.cod, procedimentos_secundarios.qtd, cod_oci_secundario.descricao, procedimentos_secundarios.cbo
+        Dim proceds As DataTable = FormAMEmain.getDataset($"SELECT cod_oci_secundario.cod, procedimentos_secundarios.qtd, cod_oci_secundario.descricao, procedimentos_secundarios.cbo
 FROM procedimentos_secundarios
 JOIN cod_oci_secundario ON cod_oci_secundario.id = procedimentos_secundarios.cod_proced_secundario
 WHERE procedimentos_secundarios.`data`='{data:yyyy-MM-dd}'
 AND procedimentos_secundarios.id_paciente = {idPac}
 AND procedimentos_secundarios.medico_solicitante ='{medico}'")
+
+        If proceds.Rows.Count = 0 Then Exit Sub
 
         dgvProcedimentos.Columns.Clear()
 
@@ -1101,8 +1108,8 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         dgvProcedimentos.Columns.Add("CBO", "CBO")
         dgvProcedimentos.Columns("CBO").Width = 90
 
-        dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225275")
-        For Each row As DataRow In prceds.Rows
+        dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", proceds.Rows(0)("cbo"))
+        For Each row As DataRow In proceds.Rows
             Dim desc As String = row("descricao").ToString().Substring(13).Trim()
             dgvProcedimentos.Rows.Add(row("cod"), row("qtd"), desc, row("cbo"))
         Next
@@ -2298,6 +2305,8 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         Dim procedSec As New Dictionary(Of String, String)
         Dim cbo As New Dictionary(Of String, String)
 
+
+
         Try
             dgvProcedimentos.Rows.Clear()
             procedSec.Clear()
@@ -2325,6 +2334,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                 dgvProcedimentos.Rows.Add("0211020036", "1", "Eletrocardiograma (ECG)", "225120")
 
             ElseIf txtProcedimentoPrincipal.SelectedValue = "0905010035" Then
+
                 procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
                 procedSec.Add("0211060020", "0211060020 - Biomicroscopia de fundo de olho")
                 procedSec.Add("0211060127", "0211060127 - Mapeamento de retina")
@@ -2405,7 +2415,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             txtCidSecundario.SelectedIndex = -1
 
         Catch ex As Exception
-
+            MsgBox(ex.Message)
         End Try
 
     End Sub

@@ -1595,18 +1595,18 @@ Partial Class FormAMEOCI
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.EditarToolStripMenuItem, Me.ExcluirRegistroToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(110, 48)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(109, 48)
         '
         'EditarToolStripMenuItem
         '
         Me.EditarToolStripMenuItem.Name = "EditarToolStripMenuItem"
-        Me.EditarToolStripMenuItem.Size = New System.Drawing.Size(109, 22)
+        Me.EditarToolStripMenuItem.Size = New System.Drawing.Size(108, 22)
         Me.EditarToolStripMenuItem.Text = "Editar"
         '
         'ExcluirRegistroToolStripMenuItem
         '
         Me.ExcluirRegistroToolStripMenuItem.Name = "ExcluirRegistroToolStripMenuItem"
-        Me.ExcluirRegistroToolStripMenuItem.Size = New System.Drawing.Size(109, 22)
+        Me.ExcluirRegistroToolStripMenuItem.Size = New System.Drawing.Size(108, 22)
         Me.ExcluirRegistroToolStripMenuItem.Text = "Excluir"
         '
         'lbStatusCads
