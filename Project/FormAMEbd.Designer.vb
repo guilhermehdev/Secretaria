@@ -22,6 +22,7 @@ Partial Class FormAMEbd
     'Não o modifique usando o editor de códigos.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormAMEbd))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.cbShowPass = New System.Windows.Forms.CheckBox()
         Me.tbUser = New System.Windows.Forms.TextBox()
@@ -148,6 +149,7 @@ Partial Class FormAMEbd
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(428, 164)
         Me.Controls.Add(Me.GroupBox1)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "FormAMEbd"

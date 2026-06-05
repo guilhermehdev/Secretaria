@@ -50,6 +50,7 @@ Public Class FormLogin
                     FormAMEmain.Show()
                     Me.Visible = False
                 Case "NUMAPAC"
+                    FormAMEOCI.idUser = cbUsuarios.SelectedValue
                     FormAMEOCINumAPAC.Show()
                     Me.Visible = False
             End Select

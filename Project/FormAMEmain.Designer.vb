@@ -25,6 +25,7 @@ Partial Class FormAMEmain
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormAMEmain))
         Me.dgAME = New System.Windows.Forms.DataGridView()
         Me.ComboBoxEspecialidade = New System.Windows.Forms.ComboBox()
         Me.ComboBoxProfissional = New System.Windows.Forms.ComboBox()
@@ -243,6 +244,7 @@ Partial Class FormAMEmain
         Me.Controls.Add(Me.ComboBoxEspecialidade)
         Me.Controls.Add(Me.dgAME)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.MenuStrip1
         Me.Name = "FormAMEmain"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

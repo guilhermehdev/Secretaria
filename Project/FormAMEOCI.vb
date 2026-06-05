@@ -202,18 +202,23 @@ Public Class FormAMEOCI
             Try
 
                 If FormAMEmain.doQuery(query) Then
-                    For Each row As DataGridViewRow In dgvProcedimentos.Rows
-                        If row.IsNewRow Then Continue For
-                        Dim codProcSec = If(row.Cells(0).Value Is Nothing, "''", $"'{row.Cells(0).Value}'")
-                        Dim cboSec = If(row.Cells(3).Value Is Nothing, "''", $"'{row.Cells(3).Value}'")
-                        FormAMEmain.doQuery($"INSERT INTO procedimentos_secundarios (data, num_apac, id_paciente, cod_proced_secundario, qtd, cbo, medico_solicitante) VALUES ('{m.mysqlDateFormat(dtValidadeIni.Value)}', '{txtNumApac.Text}', {idPac}, {codProcSec}, {row.Cells(1).Value}, {cboSec}, '{txtCNSMedicoExecutante.SelectedValue}')")
-                    Next
+
+                    If txtProcedimentoPrincipal.SelectedValue = "0903010011" Then
+
+                        For Each row As DataGridViewRow In dgvProcedimentos.Rows
+                            If row.IsNewRow Then Continue For
+                            Dim codProcSec = If(row.Cells(0).Value Is Nothing, "''", $"'{row.Cells(0).Value}'")
+                            Dim cboSec = If(row.Cells(3).Value Is Nothing, "''", $"'{row.Cells(3).Value}'")
+                            FormAMEmain.doQuery($"INSERT INTO procedimentos_secundarios (data, num_apac, id_paciente, cod_proced_secundario, qtd, cbo, medico_solicitante) VALUES ('{m.mysqlDateFormat(dtValidadeIni.Value)}', '{txtNumApac.Text}', {idPac}, {codProcSec}, {row.Cells(1).Value}, {cboSec}, '{txtCNSMedicoExecutante.SelectedValue}')")
+                        Next
+
+                    End If
 
                     btNovonumeroAPAC.Enabled = True
-                    FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC",,, lbStatusCads)
-                    'txtNumApac.Text = GetAndLockNextApac()
-                    IDpacienteSelecionado = Nothing
-                End If
+                        FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC",,, lbStatusCads)
+                        'txtNumApac.Text = GetAndLockNextApac()
+                        IDpacienteSelecionado = Nothing
+                    End If
 
             Catch ex As Exception
                 'MsgBox(ex.Message)
@@ -1127,8 +1132,9 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             txtCidPrincipal.SelectedValue = row("cid_principal")
             txtCidSecundario.SelectedValue = row("cid_secundario")
 
-            getProcedSecundario(row("data"), idPac, txtCNSMedicoExecutante.SelectedValue)
-
+            If txtProcedimentoPrincipal.SelectedValue = "0903010011" Then
+                getProcedSecundario(row("data"), idPac, txtCNSMedicoExecutante.SelectedValue)
+            End If
         End If
 
         isLoading = False
@@ -1373,6 +1379,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             txtCidPrincipal.SelectedIndex = -1
             txtCNSMedicoExecutante.SelectedIndex = -1
             txtNomeAutorizador.SelectedIndex = -1
+            CBOmed.SelectedIndex = -1
             txtRaca.SelectedIndex = 0
 
             searchByDate()
@@ -2288,6 +2295,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     Private Sub EditarToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditarToolStripMenuItem.Click
         updateMode = True
         getOCIdata(dgOCIcadastradas.SelectedRows(0).Cells(0).Value)
+        TabControl1.SelectedTab = TabControl1.TabPages(0)
     End Sub
     Private Sub dtValidadeIni_ValueChanged(sender As Object, e As EventArgs) Handles dtValidadeIni.ValueChanged
         dtValidadeFim.Value = dtValidadeIni.Value.AddMonths(1)
@@ -2452,6 +2460,40 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     End Sub
     Private Sub dgQueueItens_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgQueueItens.CellDoubleClick
         getQueueData(dgQueueItens.Rows(e.RowIndex).Cells(0).Value)
+    End Sub
+
+    Private Sub LimparControles(controles As Control.ControlCollection)
+
+        For Each ctrl As Control In controles
+
+            If String.Equals(Convert.ToString(ctrl.Tag), "ign") Then
+                Continue For
+            End If
+
+            If TypeOf ctrl Is TextBox Then
+                DirectCast(ctrl, TextBox).Clear()
+
+            ElseIf TypeOf ctrl Is ComboBox Then
+                DirectCast(ctrl, ComboBox).SelectedIndex = -1
+                DirectCast(ctrl, ComboBox).Text = Nothing
+            ElseIf TypeOf ctrl Is MaskedTextBox Then
+                DirectCast(ctrl, MaskedTextBox).Clear()
+
+            ElseIf TypeOf ctrl Is CheckBox Then
+                DirectCast(ctrl, CheckBox).Checked = False
+
+            End If
+
+            If ctrl.HasChildren Then
+                LimparControles(ctrl.Controls)
+            End If
+
+        Next
+
+    End Sub
+
+    Private Sub btnovo_Click(sender As Object, e As EventArgs) Handles btnovo.Click
+        LimparControles(Me.Controls)
     End Sub
 
 End Class

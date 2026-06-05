@@ -170,6 +170,8 @@ Partial Class FormAMEOCI
         Me.dgQueueOCI = New System.Windows.Forms.DataGridView()
         Me.btOCIpendente = New System.Windows.Forms.Button()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.btnovo = New System.Windows.Forms.Button()
+        Me.FecharToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -207,6 +209,7 @@ Partial Class FormAMEOCI
         Me.txtCnesSolicitante.Name = "txtCnesSolicitante"
         Me.txtCnesSolicitante.Size = New System.Drawing.Size(75, 21)
         Me.txtCnesSolicitante.TabIndex = 3
+        Me.txtCnesSolicitante.Tag = "ign"
         Me.txtCnesSolicitante.Text = "7036892"
         '
         'txtCnesExecutante
@@ -217,6 +220,7 @@ Partial Class FormAMEOCI
         Me.txtCnesExecutante.Name = "txtCnesExecutante"
         Me.txtCnesExecutante.Size = New System.Drawing.Size(75, 21)
         Me.txtCnesExecutante.TabIndex = 4
+        Me.txtCnesExecutante.Tag = "ign"
         Me.txtCnesExecutante.Text = "7036892"
         '
         'dtValidadeIni
@@ -227,6 +231,7 @@ Partial Class FormAMEOCI
         Me.dtValidadeIni.Name = "dtValidadeIni"
         Me.dtValidadeIni.Size = New System.Drawing.Size(99, 21)
         Me.dtValidadeIni.TabIndex = 1
+        Me.dtValidadeIni.Tag = "ign"
         '
         'dtValidadeFim
         '
@@ -236,6 +241,7 @@ Partial Class FormAMEOCI
         Me.dtValidadeFim.Name = "dtValidadeFim"
         Me.dtValidadeFim.Size = New System.Drawing.Size(99, 21)
         Me.dtValidadeFim.TabIndex = 5
+        Me.dtValidadeFim.Tag = "ign"
         '
         'txtTipoApac
         '
@@ -245,6 +251,7 @@ Partial Class FormAMEOCI
         Me.txtTipoApac.Name = "txtTipoApac"
         Me.txtTipoApac.Size = New System.Drawing.Size(148, 23)
         Me.txtTipoApac.TabIndex = 6
+        Me.txtTipoApac.Tag = "ign"
         '
         'GroupBox1
         '
@@ -538,6 +545,7 @@ Partial Class FormAMEOCI
         Me.txtMunIbge.Name = "txtMunIbge"
         Me.txtMunIbge.Size = New System.Drawing.Size(59, 21)
         Me.txtMunIbge.TabIndex = 10
+        Me.txtMunIbge.Tag = "ign"
         Me.txtMunIbge.Text = "3537602"
         '
         'txtBairro
@@ -611,6 +619,7 @@ Partial Class FormAMEOCI
         Me.txtMunicipioNome.Name = "txtMunicipioNome"
         Me.txtMunicipioNome.Size = New System.Drawing.Size(173, 21)
         Me.txtMunicipioNome.TabIndex = 11
+        Me.txtMunicipioNome.Tag = "ign"
         Me.txtMunicipioNome.Text = "PERUIBE"
         '
         'txtCep
@@ -783,6 +792,7 @@ Partial Class FormAMEOCI
         Me.txtRaca.Name = "txtRaca"
         Me.txtRaca.Size = New System.Drawing.Size(113, 23)
         Me.txtRaca.TabIndex = 17
+        Me.txtRaca.Tag = "ign"
         '
         'txtSexo
         '
@@ -793,6 +803,7 @@ Partial Class FormAMEOCI
         Me.txtSexo.Name = "txtSexo"
         Me.txtSexo.Size = New System.Drawing.Size(52, 23)
         Me.txtSexo.TabIndex = 11
+        Me.txtSexo.Tag = "ign"
         '
         'chkSituacaoRua
         '
@@ -862,6 +873,7 @@ Partial Class FormAMEOCI
         Me.txtNomeAutorizador.Name = "txtNomeAutorizador"
         Me.txtNomeAutorizador.Size = New System.Drawing.Size(432, 23)
         Me.txtNomeAutorizador.TabIndex = 46
+        Me.txtNomeAutorizador.Tag = ""
         '
         'txtNomeMedicoSolicitante
         '
@@ -872,6 +884,7 @@ Partial Class FormAMEOCI
         Me.txtNomeMedicoSolicitante.Name = "txtNomeMedicoSolicitante"
         Me.txtNomeMedicoSolicitante.Size = New System.Drawing.Size(432, 23)
         Me.txtNomeMedicoSolicitante.TabIndex = 44
+        Me.txtNomeMedicoSolicitante.Tag = ""
         '
         'Label50
         '
@@ -976,6 +989,7 @@ Partial Class FormAMEOCI
         Me.txtTipoAtend.Name = "txtTipoAtend"
         Me.txtTipoAtend.Size = New System.Drawing.Size(172, 23)
         Me.txtTipoAtend.TabIndex = 43
+        Me.txtTipoAtend.Tag = "ign"
         '
         'txtGestor
         '
@@ -985,6 +999,7 @@ Partial Class FormAMEOCI
         Me.txtGestor.Name = "txtGestor"
         Me.txtGestor.Size = New System.Drawing.Size(94, 21)
         Me.txtGestor.TabIndex = 48
+        Me.txtGestor.Tag = "ign"
         Me.txtGestor.Text = "M353760001"
         '
         'Label31
@@ -1004,6 +1019,7 @@ Partial Class FormAMEOCI
         Me.dtAltaObito.Name = "dtAltaObito"
         Me.dtAltaObito.Size = New System.Drawing.Size(99, 21)
         Me.dtAltaObito.TabIndex = 42
+        Me.dtAltaObito.Tag = "ign"
         '
         'txtMotivoSaida
         '
@@ -1013,6 +1029,7 @@ Partial Class FormAMEOCI
         Me.txtMotivoSaida.Name = "txtMotivoSaida"
         Me.txtMotivoSaida.Size = New System.Drawing.Size(238, 23)
         Me.txtMotivoSaida.TabIndex = 41
+        Me.txtMotivoSaida.Tag = "ign"
         '
         'dtEmissao
         '
@@ -1022,6 +1039,7 @@ Partial Class FormAMEOCI
         Me.dtEmissao.Name = "dtEmissao"
         Me.dtEmissao.Size = New System.Drawing.Size(82, 21)
         Me.dtEmissao.TabIndex = 45
+        Me.dtEmissao.Tag = "ign"
         '
         'dtAutorizacao
         '
@@ -1031,6 +1049,7 @@ Partial Class FormAMEOCI
         Me.dtAutorizacao.Name = "dtAutorizacao"
         Me.dtAutorizacao.Size = New System.Drawing.Size(82, 21)
         Me.dtAutorizacao.TabIndex = 47
+        Me.dtAutorizacao.Tag = "ign"
         '
         'btAddAPAC
         '
@@ -1296,7 +1315,7 @@ Partial Class FormAMEOCI
         '
         'MenuStrip1
         '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConfiguraçõesToolStripMenuItem, Me.RelatóriosToolStripMenuItem})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConfiguraçõesToolStripMenuItem, Me.RelatóriosToolStripMenuItem, Me.FecharToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Size = New System.Drawing.Size(1019, 24)
@@ -1435,6 +1454,7 @@ Partial Class FormAMEOCI
         'TabPage1
         '
         Me.TabPage1.BackColor = System.Drawing.SystemColors.ButtonFace
+        Me.TabPage1.Controls.Add(Me.btnovo)
         Me.TabPage1.Controls.Add(Me.btExcluirPaciente)
         Me.TabPage1.Controls.Add(Me.btAtualizarDados)
         Me.TabPage1.Controls.Add(Me.GroupBox1)
@@ -1742,6 +1762,26 @@ Partial Class FormAMEOCI
         '
         Me.Timer1.Interval = 200
         '
+        'btnovo
+        '
+        Me.btnovo.BackColor = System.Drawing.Color.DarkSeaGreen
+        Me.btnovo.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnovo.FlatAppearance.BorderSize = 0
+        Me.btnovo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnovo.ForeColor = System.Drawing.Color.White
+        Me.btnovo.Location = New System.Drawing.Point(175, 455)
+        Me.btnovo.Name = "btnovo"
+        Me.btnovo.Size = New System.Drawing.Size(75, 23)
+        Me.btnovo.TabIndex = 52
+        Me.btnovo.Text = "Novo"
+        Me.btnovo.UseVisualStyleBackColor = False
+        '
+        'FecharToolStripMenuItem
+        '
+        Me.FecharToolStripMenuItem.Name = "FecharToolStripMenuItem"
+        Me.FecharToolStripMenuItem.Size = New System.Drawing.Size(54, 20)
+        Me.FecharToolStripMenuItem.Text = "Fechar"
+        '
         'FormAMEOCI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1921,4 +1961,6 @@ Partial Class FormAMEOCI
     Friend WithEvents dgQueueOCI As DataGridView
     Friend WithEvents btOCIpendente As Button
     Friend WithEvents Timer1 As Timer
+    Friend WithEvents btnovo As Button
+    Friend WithEvents FecharToolStripMenuItem As ToolStripMenuItem
 End Class
