@@ -154,14 +154,6 @@ Public Class FormAMEOCI
             Return False
         End If
 
-        'Dim dictProceds As Dictionary(Of String, Integer) = CarregarProcedimentosCodId()
-        'Dim idProced As Integer
-
-        'Dim codigoBusca As String = txtProcedimentoPrincipal.SelectedValue
-        'If dictProceds.ContainsKey(codigoBusca) Then
-        '    idProced = dictProceds(codigoBusca)
-        'End If
-
         Dim idPac As Object = IDpacienteSelecionado
         Dim idEnd As Integer = 0
         Dim telfixo As String = ""
@@ -202,19 +194,21 @@ Public Class FormAMEOCI
                 Throw New Exception("Procedimento principal inválido.")
             End If
 
-            'If CodProcedimento.SelectedValue Is Nothing Then
-            '    Throw New Exception("Procedimento secundário inválido.")
-            'End If
             Dim cidSec = If(txtCidSecundario.SelectedValue Is Nothing, "''", $"'{txtCidSecundario.SelectedValue}'")
             Dim procedSec = If(CodProcedimento.SelectedValue Is Nothing, "''", $"'{CodProcedimento.SelectedValue}'")
 
-            Dim query = $"UPDATE oci SET compet='{competencia(My.Settings.OCIcompetencia)}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPac}, id_medico='{txtCNSMedicoExecutante.SelectedValue}',  id_autorizador='{txtNomeAutorizador.SelectedValue}',  id_cod_principal={getProcedID(txtProcedimentoPrincipal.SelectedValue)}, proced_secundario={procedSec}, cid_principal='{txtCidPrincipal.SelectedValue}', cid_sec={cidSec} , status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
-
-            Debug.WriteLine(query)
+            Dim query = $"UPDATE oci SET compet='{competencia(My.Settings.OCIcompetencia)}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPac}, id_medico='{txtCNSMedicoExecutante.SelectedValue}',  id_autorizador='{txtNomeAutorizador.SelectedValue}',  id_cod_principal={getProcedID(txtProcedimentoPrincipal.SelectedValue)}, cid_principal='{txtCidPrincipal.SelectedValue}', cid_sec={cidSec} , status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
 
             Try
 
                 If FormAMEmain.doQuery(query) Then
+                    For Each row As DataGridViewRow In dgvProcedimentos.Rows
+                        If row.IsNewRow Then Continue For
+                        Dim codProcSec = If(row.Cells(0).Value Is Nothing, "''", $"'{row.Cells(0).Value}'")
+                        Dim cboSec = If(row.Cells(3).Value Is Nothing, "''", $"'{row.Cells(3).Value}'")
+                        FormAMEmain.doQuery($"INSERT INTO procedimentos_secundarios (data, num_apac, id_paciente, cod_proced_secundario, qtd, cbo, medico_solicitante) VALUES ('{m.mysqlDateFormat(dtValidadeIni.Value)}', '{txtNumApac.Text}', {idPac}, {codProcSec}, {row.Cells(1).Value}, {cboSec}, '{txtCNSMedicoExecutante.SelectedValue}')")
+                    Next
+
                     btNovonumeroAPAC.Enabled = True
                     FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC",,, lbStatusCads)
                     'txtNumApac.Text = GetAndLockNextApac()
@@ -222,7 +216,8 @@ Public Class FormAMEOCI
                 End If
 
             Catch ex As Exception
-                MsgBox(ex.Message)
+                'MsgBox(ex.Message)
+                Return False
             End Try
 
             result.Clear()
@@ -1088,9 +1083,9 @@ Public Class FormAMEOCI
     End Sub
 
     Private Sub getProcedSecundario(data As Date, idPac As Integer, medico As String)
-        Dim proceds As DataTable = FormAMEmain.getDataset($"SELECT cod_oci_secundario.cod, procedimentos_secundarios.qtd, cod_oci_secundario.descricao, procedimentos_secundarios.cbo
+        Dim proceds As DataTable = FormAMEmain.getDataset($"SELECT DISTINCT cod_oci_secundario.cod, procedimentos_secundarios.qtd, cod_oci_secundario.descricao, procedimentos_secundarios.cbo
 FROM procedimentos_secundarios
-JOIN cod_oci_secundario ON cod_oci_secundario.id = procedimentos_secundarios.cod_proced_secundario
+JOIN cod_oci_secundario ON cod_oci_secundario.cod = procedimentos_secundarios.cod_proced_secundario
 WHERE procedimentos_secundarios.`data`='{data:yyyy-MM-dd}'
 AND procedimentos_secundarios.id_paciente = {idPac}
 AND procedimentos_secundarios.medico_solicitante ='{medico}'")
@@ -1108,7 +1103,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         dgvProcedimentos.Columns.Add("CBO", "CBO")
         dgvProcedimentos.Columns("CBO").Width = 90
 
-        dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", proceds.Rows(0)("cbo"))
+        ' dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", proceds.Rows(0)("cbo"))
         For Each row As DataRow In proceds.Rows
             Dim desc As String = row("descricao").ToString().Substring(13).Trim()
             dgvProcedimentos.Rows.Add(row("cod"), row("qtd"), desc, row("cbo"))
@@ -2370,7 +2365,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                 procedSec.Add("0204060150", "0204060150 - RADIOGRAFIA DE PÉ / DEDOS DO PÉ")
                 procedSec.Add("0204060176", "0204060176 - RADIOGRAFIA PANORÂMICA DE MEMBROS INFERIORES")
 
-                procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
+                ' procedSec.Add("0301010072", "0301010072 - Consulta médica na atenção especializada")
                 procedSec.Add("0301010307", "0301010307 - TELECONSULTA MÉDICA NA ATENÇÃO ESPECIALIZADA")
 
                 dgvProcedimentos.Rows.Add("0301010072", "1", "Consulta médica na atenção especializada", "225270")
@@ -2415,7 +2410,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             txtCidSecundario.SelectedIndex = -1
 
         Catch ex As Exception
-            MsgBox(ex.Message)
+            ' MsgBox(ex.Message)
         End Try
 
     End Sub
