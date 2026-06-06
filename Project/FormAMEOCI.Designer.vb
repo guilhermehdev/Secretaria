@@ -148,11 +148,13 @@ Partial Class FormAMEOCI
         Me.ImportarAPACToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.RelatóriosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConsistênciaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.FecharToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.dgvSugestoes = New System.Windows.Forms.DataGridView()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.btnovo = New System.Windows.Forms.Button()
         Me.btExcluirPaciente = New System.Windows.Forms.Button()
         Me.btAtualizarDados = New System.Windows.Forms.Button()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
@@ -170,8 +172,6 @@ Partial Class FormAMEOCI
         Me.dgQueueOCI = New System.Windows.Forms.DataGridView()
         Me.btOCIpendente = New System.Windows.Forms.Button()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.btnovo = New System.Windows.Forms.Button()
-        Me.FecharToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -846,7 +846,6 @@ Partial Class FormAMEOCI
         Me.GroupBox3.Controls.Add(Me.txtEquipe)
         Me.GroupBox3.Controls.Add(Me.Label40)
         Me.GroupBox3.Controls.Add(Me.Label39)
-        Me.GroupBox3.Controls.Add(Me.btnGerarArquivo)
         Me.GroupBox3.Controls.Add(Me.Label34)
         Me.GroupBox3.Controls.Add(Me.Label38)
         Me.GroupBox3.Controls.Add(Me.Label36)
@@ -861,7 +860,7 @@ Partial Class FormAMEOCI
         Me.GroupBox3.Controls.Add(Me.dtAutorizacao)
         Me.GroupBox3.Location = New System.Drawing.Point(6, 304)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(538, 178)
+        Me.GroupBox3.Size = New System.Drawing.Size(538, 146)
         Me.GroupBox3.TabIndex = 40
         Me.GroupBox3.TabStop = False
         '
@@ -871,7 +870,7 @@ Partial Class FormAMEOCI
         Me.txtNomeAutorizador.FormattingEnabled = True
         Me.txtNomeAutorizador.Location = New System.Drawing.Point(12, 111)
         Me.txtNomeAutorizador.Name = "txtNomeAutorizador"
-        Me.txtNomeAutorizador.Size = New System.Drawing.Size(432, 23)
+        Me.txtNomeAutorizador.Size = New System.Drawing.Size(342, 23)
         Me.txtNomeAutorizador.TabIndex = 46
         Me.txtNomeAutorizador.Tag = ""
         '
@@ -882,14 +881,14 @@ Partial Class FormAMEOCI
         Me.txtNomeMedicoSolicitante.FormattingEnabled = True
         Me.txtNomeMedicoSolicitante.Location = New System.Drawing.Point(12, 72)
         Me.txtNomeMedicoSolicitante.Name = "txtNomeMedicoSolicitante"
-        Me.txtNomeMedicoSolicitante.Size = New System.Drawing.Size(432, 23)
+        Me.txtNomeMedicoSolicitante.Size = New System.Drawing.Size(342, 23)
         Me.txtNomeMedicoSolicitante.TabIndex = 44
         Me.txtNomeMedicoSolicitante.Tag = ""
         '
         'Label50
         '
         Me.Label50.AutoSize = True
-        Me.Label50.Location = New System.Drawing.Point(109, 134)
+        Me.Label50.Location = New System.Drawing.Point(444, 97)
         Me.Label50.Name = "Label50"
         Me.Label50.Size = New System.Drawing.Size(40, 13)
         Me.Label50.TabIndex = 29
@@ -899,24 +898,24 @@ Partial Class FormAMEOCI
         '
         Me.txtEquipe.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtEquipe.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtEquipe.Location = New System.Drawing.Point(112, 150)
+        Me.txtEquipe.Location = New System.Drawing.Point(447, 113)
         Me.txtEquipe.Name = "txtEquipe"
-        Me.txtEquipe.Size = New System.Drawing.Size(100, 21)
+        Me.txtEquipe.Size = New System.Drawing.Size(85, 21)
         Me.txtEquipe.TabIndex = 49
         '
         'Label40
         '
         Me.Label40.AutoSize = True
-        Me.Label40.Location = New System.Drawing.Point(9, 134)
+        Me.Label40.Location = New System.Drawing.Point(444, 56)
         Me.Label40.Name = "Label40"
-        Me.Label40.Size = New System.Drawing.Size(97, 13)
+        Me.Label40.Size = New System.Drawing.Size(75, 13)
         Me.Label40.TabIndex = 25
-        Me.Label40.Text = "Cod Orgao Emissor"
+        Me.Label40.Text = "Orgao Emissor"
         '
         'Label39
         '
         Me.Label39.AutoSize = True
-        Me.Label39.Location = New System.Drawing.Point(447, 97)
+        Me.Label39.Location = New System.Drawing.Point(359, 99)
         Me.Label39.Name = "Label39"
         Me.Label39.Size = New System.Drawing.Size(88, 13)
         Me.Label39.TabIndex = 24
@@ -929,9 +928,9 @@ Partial Class FormAMEOCI
         Me.btnGerarArquivo.FlatAppearance.BorderSize = 0
         Me.btnGerarArquivo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnGerarArquivo.ForeColor = System.Drawing.Color.Transparent
-        Me.btnGerarArquivo.Location = New System.Drawing.Point(218, 148)
+        Me.btnGerarArquivo.Location = New System.Drawing.Point(453, 455)
         Me.btnGerarArquivo.Name = "btnGerarArquivo"
-        Me.btnGerarArquivo.Size = New System.Drawing.Size(78, 23)
+        Me.btnGerarArquivo.Size = New System.Drawing.Size(85, 26)
         Me.btnGerarArquivo.TabIndex = 50
         Me.btnGerarArquivo.Text = "Gravar OCI"
         Me.btnGerarArquivo.UseVisualStyleBackColor = False
@@ -975,7 +974,7 @@ Partial Class FormAMEOCI
         'Label33
         '
         Me.Label33.AutoSize = True
-        Me.Label33.Location = New System.Drawing.Point(447, 59)
+        Me.Label33.Location = New System.Drawing.Point(359, 58)
         Me.Label33.Name = "Label33"
         Me.Label33.Size = New System.Drawing.Size(83, 13)
         Me.Label33.TabIndex = 18
@@ -995,9 +994,9 @@ Partial Class FormAMEOCI
         '
         Me.txtGestor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtGestor.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtGestor.Location = New System.Drawing.Point(12, 150)
+        Me.txtGestor.Location = New System.Drawing.Point(447, 72)
         Me.txtGestor.Name = "txtGestor"
-        Me.txtGestor.Size = New System.Drawing.Size(94, 21)
+        Me.txtGestor.Size = New System.Drawing.Size(85, 21)
         Me.txtGestor.TabIndex = 48
         Me.txtGestor.Tag = "ign"
         Me.txtGestor.Text = "M353760001"
@@ -1035,7 +1034,7 @@ Partial Class FormAMEOCI
         '
         Me.dtEmissao.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.dtEmissao.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtEmissao.Location = New System.Drawing.Point(450, 73)
+        Me.dtEmissao.Location = New System.Drawing.Point(362, 72)
         Me.dtEmissao.Name = "dtEmissao"
         Me.dtEmissao.Size = New System.Drawing.Size(82, 21)
         Me.dtEmissao.TabIndex = 45
@@ -1045,7 +1044,7 @@ Partial Class FormAMEOCI
         '
         Me.dtAutorizacao.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.dtAutorizacao.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtAutorizacao.Location = New System.Drawing.Point(450, 111)
+        Me.dtAutorizacao.Location = New System.Drawing.Point(362, 113)
         Me.dtAutorizacao.Name = "dtAutorizacao"
         Me.dtAutorizacao.Size = New System.Drawing.Size(82, 21)
         Me.dtAutorizacao.TabIndex = 47
@@ -1054,7 +1053,7 @@ Partial Class FormAMEOCI
         'btAddAPAC
         '
         Me.btAddAPAC.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btAddAPAC.Location = New System.Drawing.Point(437, 455)
+        Me.btAddAPAC.Location = New System.Drawing.Point(434, 458)
         Me.btAddAPAC.Name = "btAddAPAC"
         Me.btAddAPAC.Size = New System.Drawing.Size(107, 23)
         Me.btAddAPAC.TabIndex = 51
@@ -1360,6 +1359,12 @@ Partial Class FormAMEOCI
         Me.ConsistênciaToolStripMenuItem.Size = New System.Drawing.Size(141, 22)
         Me.ConsistênciaToolStripMenuItem.Text = "Consistência"
         '
+        'FecharToolStripMenuItem
+        '
+        Me.FecharToolStripMenuItem.Name = "FecharToolStripMenuItem"
+        Me.FecharToolStripMenuItem.Size = New System.Drawing.Size(54, 20)
+        Me.FecharToolStripMenuItem.Text = "Fechar"
+        '
         'dgvSugestoes
         '
         Me.dgvSugestoes.AllowUserToAddRows = False
@@ -1459,13 +1464,26 @@ Partial Class FormAMEOCI
         Me.TabPage1.Controls.Add(Me.btAtualizarDados)
         Me.TabPage1.Controls.Add(Me.GroupBox1)
         Me.TabPage1.Controls.Add(Me.GroupBox2)
-        Me.TabPage1.Controls.Add(Me.btAddAPAC)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage1.Size = New System.Drawing.Size(550, 488)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Identificação do Paciente"
+        '
+        'btnovo
+        '
+        Me.btnovo.BackColor = System.Drawing.Color.DarkSeaGreen
+        Me.btnovo.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnovo.FlatAppearance.BorderSize = 0
+        Me.btnovo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnovo.ForeColor = System.Drawing.Color.White
+        Me.btnovo.Location = New System.Drawing.Point(18, 455)
+        Me.btnovo.Name = "btnovo"
+        Me.btnovo.Size = New System.Drawing.Size(75, 23)
+        Me.btnovo.TabIndex = 52
+        Me.btnovo.Text = "Novo"
+        Me.btnovo.UseVisualStyleBackColor = False
         '
         'btExcluirPaciente
         '
@@ -1474,7 +1492,7 @@ Partial Class FormAMEOCI
         Me.btExcluirPaciente.FlatAppearance.BorderSize = 0
         Me.btExcluirPaciente.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btExcluirPaciente.ForeColor = System.Drawing.Color.White
-        Me.btExcluirPaciente.Location = New System.Drawing.Point(344, 455)
+        Me.btExcluirPaciente.Location = New System.Drawing.Point(187, 455)
         Me.btExcluirPaciente.Name = "btExcluirPaciente"
         Me.btExcluirPaciente.Size = New System.Drawing.Size(92, 23)
         Me.btExcluirPaciente.TabIndex = 10
@@ -1488,7 +1506,7 @@ Partial Class FormAMEOCI
         Me.btAtualizarDados.FlatAppearance.BorderSize = 0
         Me.btAtualizarDados.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btAtualizarDados.ForeColor = System.Drawing.Color.White
-        Me.btAtualizarDados.Location = New System.Drawing.Point(251, 455)
+        Me.btAtualizarDados.Location = New System.Drawing.Point(94, 455)
         Me.btAtualizarDados.Name = "btAtualizarDados"
         Me.btAtualizarDados.Size = New System.Drawing.Size(92, 23)
         Me.btAtualizarDados.TabIndex = 9
@@ -1500,6 +1518,7 @@ Partial Class FormAMEOCI
         Me.TabPage2.BackColor = System.Drawing.SystemColors.ButtonFace
         Me.TabPage2.Controls.Add(Me.GroupBox4)
         Me.TabPage2.Controls.Add(Me.GroupBox3)
+        Me.TabPage2.Controls.Add(Me.btnGerarArquivo)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
@@ -1512,6 +1531,7 @@ Partial Class FormAMEOCI
         Me.TabPage3.BackColor = System.Drawing.SystemColors.ButtonFace
         Me.TabPage3.Controls.Add(Me.GroupBox5)
         Me.TabPage3.Controls.Add(Me.lbStatusCads)
+        Me.TabPage3.Controls.Add(Me.btAddAPAC)
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
         Me.TabPage3.Name = "TabPage3"
         Me.TabPage3.Size = New System.Drawing.Size(550, 488)
@@ -1526,7 +1546,7 @@ Partial Class FormAMEOCI
         Me.GroupBox5.Controls.Add(Me.dgOCIcadastradas)
         Me.GroupBox5.Location = New System.Drawing.Point(3, 3)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(544, 462)
+        Me.GroupBox5.Size = New System.Drawing.Size(544, 452)
         Me.GroupBox5.TabIndex = 55
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "OCI cadastradas"
@@ -1607,7 +1627,7 @@ Partial Class FormAMEOCI
         Me.dgOCIcadastradas.RowHeadersWidth = 4
         Me.dgOCIcadastradas.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgOCIcadastradas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgOCIcadastradas.Size = New System.Drawing.Size(532, 403)
+        Me.dgOCIcadastradas.Size = New System.Drawing.Size(532, 393)
         Me.dgOCIcadastradas.TabIndex = 54
         Me.dgOCIcadastradas.TabStop = False
         '
@@ -1632,7 +1652,7 @@ Partial Class FormAMEOCI
         'lbStatusCads
         '
         Me.lbStatusCads.AutoSize = True
-        Me.lbStatusCads.Location = New System.Drawing.Point(9, 468)
+        Me.lbStatusCads.Location = New System.Drawing.Point(9, 463)
         Me.lbStatusCads.Name = "lbStatusCads"
         Me.lbStatusCads.Size = New System.Drawing.Size(55, 13)
         Me.lbStatusCads.TabIndex = 56
@@ -1761,26 +1781,6 @@ Partial Class FormAMEOCI
         'Timer1
         '
         Me.Timer1.Interval = 200
-        '
-        'btnovo
-        '
-        Me.btnovo.BackColor = System.Drawing.Color.DarkSeaGreen
-        Me.btnovo.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnovo.FlatAppearance.BorderSize = 0
-        Me.btnovo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnovo.ForeColor = System.Drawing.Color.White
-        Me.btnovo.Location = New System.Drawing.Point(175, 455)
-        Me.btnovo.Name = "btnovo"
-        Me.btnovo.Size = New System.Drawing.Size(75, 23)
-        Me.btnovo.TabIndex = 52
-        Me.btnovo.Text = "Novo"
-        Me.btnovo.UseVisualStyleBackColor = False
-        '
-        'FecharToolStripMenuItem
-        '
-        Me.FecharToolStripMenuItem.Name = "FecharToolStripMenuItem"
-        Me.FecharToolStripMenuItem.Size = New System.Drawing.Size(54, 20)
-        Me.FecharToolStripMenuItem.Text = "Fechar"
         '
         'FormAMEOCI
         '
