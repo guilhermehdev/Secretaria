@@ -1678,7 +1678,6 @@ Partial Class FormAMEOCI
         DataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.dgQueueItens.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle12
         Me.dgQueueItens.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgQueueItens.ContextMenuStrip = Me.ContextMenuStrip1
         Me.dgQueueItens.Cursor = System.Windows.Forms.Cursors.Hand
         DataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Window
