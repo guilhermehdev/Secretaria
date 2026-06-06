@@ -1964,11 +1964,15 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
         End Try
     End Sub
-    Private Sub FormAMEOCI_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+
+    Private Sub onClose()
         FormAMEmain.Visible = True
         If Not String.IsNullOrEmpty(txtNumApac.Text) Then
             UnlockApac(txtNumApac.Text)
         End If
+    End Sub
+    Private Sub FormAMEOCI_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        onClose()
     End Sub
     Private Sub txtCpfPaciente_TextChanged(sender As Object, e As EventArgs) Handles txtCpfPaciente.TextChanged
         If isLoading Then Exit Sub
@@ -2551,6 +2555,12 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     Private Sub FormAMEOCI_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
         CentralizarFormulario()
     End Sub
+
+    Private Sub FecharToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FecharToolStripMenuItem.Click
+        Me.Close()
+        onClose()
+    End Sub
+
 End Class
 Public Class ApacRegistro
     Public Property NumeroApac As String
