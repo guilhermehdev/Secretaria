@@ -144,11 +144,11 @@ Public Class FormAMEOCI
             TabControl1.SelectedTab = TabControl1.TabPages(1)
             CodProcedimento.Focus()
             CodProcedimento.DroppedDown = True
-            Return False
+            Exit Function
         End If
         If txtNomeMedicoSolicitante.Text = txtNomeAutorizador.Text Then
             MessageBox.Show("Os medicos Solicitante e Autorizador nao podem ser os mesmos.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            TabControl1.SelectedTab = TabControl1.TabPages(1)
+            ' TabControl1.SelectedTab = TabControl1.TabPages(1)
             txtNomeAutorizador.Focus()
             txtNomeAutorizador.DroppedDown = True
             Return False
@@ -239,10 +239,6 @@ Public Class FormAMEOCI
 
         Catch ex As Exception
             MsgBox("Erro ao salvar APAC: " & ex.Message)
-            'Dim queryCPF = FormAMEmain.getDataset($"SELECT id FROM pacientes WHERE cpf='{txtCpfPaciente.Text}'").Rows(0).Item("id").ToString()
-            'If queryCPF.Count > 0 Then
-            '    idPac = queryCPF
-            'End If
             Return False
         End Try
 
@@ -329,19 +325,24 @@ Public Class FormAMEOCI
     Public Sub addAPAC()
         Try
             ' ==================== VALIDAÇÕES ====================
-            If txtNumApac.Text.Trim() = "" Then Throw New Exception("Informe o número da APAC.")
-            TabControl1.SelectedTab = TabControl1.TabPages(0)
-            txtNumApac.Focus()
+            If txtNumApac.Text.Trim() = "" Then
+                Throw New Exception("Informe o número da APAC.")
+                TabControl1.SelectedTab = TabControl1.TabPages(0)
+                txtNumApac.Focus()
+            End If
+
             If Not m.ValidarCPF(txtCpfPaciente.Text) Then
                 MessageBox.Show("CPF inválido. Verifique e tente novamente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 txtCpfPaciente.Focus()
                 Return
             End If
 
-            If dtNascimento.Text.Trim() = "" Then Throw New Exception("Informe a data de nascimento Do paciente.")
-            TabControl1.SelectedTab = TabControl1.TabPages(0)
-            dtNascimento.Focus()
-            chkResponsavel()
+            If dtNascimento.Text.Trim() = "" Then
+                Throw New Exception("Informe a data de nascimento Do paciente.")
+                TabControl1.SelectedTab = TabControl1.TabPages(0)
+                dtNascimento.Focus()
+                chkResponsavel()
+            End If
 
             If txtProcedimentoPrincipal.SelectedValue = "0905010035" AndAlso CInt(m.AgeInMonths(m.mysqlDateFormat(dtNascimento.Text), m.mysqlDateFormat(dtValidadeIni.Value))) < 108 Then
                 Throw New Exception("Paciente com idade inferior a 9 anos não permitido para procedimento 0905010035.")
@@ -407,15 +408,6 @@ Public Class FormAMEOCI
             If Not Directory.Exists(Application.StartupPath & "\APAC\EXPORTADOS") Then
                 Directory.CreateDirectory(Application.StartupPath & "\APAC\EXPORTADOS")
             End If
-            'Dim codigos As New List(Of String)
-            'Dim quantidades As New List(Of Integer)
-
-            'For Each row As DataGridViewRow In dgvProcedimentos.Rows
-            '    If Not row.IsNewRow Then
-            '        codigos.Add(row.Cells("Codigo").Value.ToString())
-            '        quantidades.Add(Convert.ToInt32(row.Cells("Quantidade").Value))
-            '    End If
-            'Next
 
             If updateMode Then
                 RemoverRegistroApac($"14{competencia}{txtNumApac.Text}")
@@ -1823,12 +1815,12 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                     popupGrid.Columns("dtnasc").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
                 End If
 
-                If txtCpfPaciente.Text.Length = 11 Then
-                    ' Se CPF já estiver preenchido, oculta o grid 
-                    popupGrid.Visible = False
-                Else
-                    popupGrid.Visible = True
-                End If
+                'If txtCpfPaciente.Text.Length = 11 Then
+                '    ' Se CPF já estiver preenchido, oculta o grid 
+                '    popupGrid.Visible = False
+                'Else
+                '    popupGrid.Visible = True
+                'End If
 
             Else
                 result.Clear()

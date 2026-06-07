@@ -208,7 +208,7 @@ Partial Class FormAMEOCI
         Me.txtCnesSolicitante.Location = New System.Drawing.Point(380, 38)
         Me.txtCnesSolicitante.Name = "txtCnesSolicitante"
         Me.txtCnesSolicitante.Size = New System.Drawing.Size(75, 21)
-        Me.txtCnesSolicitante.TabIndex = 3
+        Me.txtCnesSolicitante.TabIndex = 50
         Me.txtCnesSolicitante.Tag = "ign"
         Me.txtCnesSolicitante.Text = "7036892"
         '
@@ -219,7 +219,7 @@ Partial Class FormAMEOCI
         Me.txtCnesExecutante.Location = New System.Drawing.Point(458, 38)
         Me.txtCnesExecutante.Name = "txtCnesExecutante"
         Me.txtCnesExecutante.Size = New System.Drawing.Size(75, 21)
-        Me.txtCnesExecutante.TabIndex = 4
+        Me.txtCnesExecutante.TabIndex = 51
         Me.txtCnesExecutante.Tag = "ign"
         Me.txtCnesExecutante.Text = "7036892"
         '
@@ -230,7 +230,7 @@ Partial Class FormAMEOCI
         Me.dtValidadeIni.Location = New System.Drawing.Point(15, 80)
         Me.dtValidadeIni.Name = "dtValidadeIni"
         Me.dtValidadeIni.Size = New System.Drawing.Size(99, 21)
-        Me.dtValidadeIni.TabIndex = 1
+        Me.dtValidadeIni.TabIndex = 3
         Me.dtValidadeIni.Tag = "ign"
         '
         'dtValidadeFim
@@ -240,7 +240,7 @@ Partial Class FormAMEOCI
         Me.dtValidadeFim.Location = New System.Drawing.Point(122, 80)
         Me.dtValidadeFim.Name = "dtValidadeFim"
         Me.dtValidadeFim.Size = New System.Drawing.Size(99, 21)
-        Me.dtValidadeFim.TabIndex = 5
+        Me.dtValidadeFim.TabIndex = 4
         Me.dtValidadeFim.Tag = "ign"
         '
         'txtTipoApac
@@ -250,7 +250,7 @@ Partial Class FormAMEOCI
         Me.txtTipoApac.Location = New System.Drawing.Point(226, 78)
         Me.txtTipoApac.Name = "txtTipoApac"
         Me.txtTipoApac.Size = New System.Drawing.Size(148, 23)
-        Me.txtTipoApac.TabIndex = 6
+        Me.txtTipoApac.TabIndex = 5
         Me.txtTipoApac.Tag = "ign"
         '
         'GroupBox1
@@ -288,7 +288,7 @@ Partial Class FormAMEOCI
         Me.btNovonumeroAPAC.Location = New System.Drawing.Point(169, 38)
         Me.btNovonumeroAPAC.Name = "btNovonumeroAPAC"
         Me.btNovonumeroAPAC.Size = New System.Drawing.Size(79, 21)
-        Me.btNovonumeroAPAC.TabIndex = 0
+        Me.btNovonumeroAPAC.TabIndex = 2
         Me.btNovonumeroAPAC.Text = "Novo numero"
         Me.btNovonumeroAPAC.UseVisualStyleBackColor = False
         '
@@ -409,7 +409,7 @@ Partial Class FormAMEOCI
         Me.GroupBox2.Location = New System.Drawing.Point(5, 117)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(539, 336)
-        Me.GroupBox2.TabIndex = 8
+        Me.GroupBox2.TabIndex = 6
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Identificação do Paciente"
         '
@@ -425,7 +425,7 @@ Partial Class FormAMEOCI
         Me.txtNomePaciente.MaxLength = 30
         Me.txtNomePaciente.Name = "txtNomePaciente"
         Me.txtNomePaciente.Size = New System.Drawing.Size(378, 21)
-        Me.txtNomePaciente.TabIndex = 9
+        Me.txtNomePaciente.TabIndex = 8
         '
         'dtNascimento
         '
@@ -435,7 +435,7 @@ Partial Class FormAMEOCI
         Me.dtNascimento.Mask = "00/00/0000"
         Me.dtNascimento.Name = "dtNascimento"
         Me.dtNascimento.Size = New System.Drawing.Size(82, 21)
-        Me.dtNascimento.TabIndex = 10
+        Me.dtNascimento.TabIndex = 7
         Me.dtNascimento.ValidatingType = GetType(Date)
         '
         'Label49
@@ -456,7 +456,7 @@ Partial Class FormAMEOCI
         Me.txtDDD.MaxLength = 2
         Me.txtDDD.Name = "txtDDD"
         Me.txtDDD.Size = New System.Drawing.Size(37, 21)
-        Me.txtDDD.TabIndex = 20
+        Me.txtDDD.TabIndex = 12
         Me.txtDDD.Text = "13"
         '
         'GroupBox6
@@ -544,7 +544,7 @@ Partial Class FormAMEOCI
         Me.txtMunIbge.Location = New System.Drawing.Point(12, 37)
         Me.txtMunIbge.Name = "txtMunIbge"
         Me.txtMunIbge.Size = New System.Drawing.Size(59, 21)
-        Me.txtMunIbge.TabIndex = 10
+        Me.txtMunIbge.TabIndex = 58
         Me.txtMunIbge.Tag = "ign"
         Me.txtMunIbge.Text = "3537602"
         '
@@ -558,7 +558,7 @@ Partial Class FormAMEOCI
         Me.txtBairro.MaxLength = 30
         Me.txtBairro.Name = "txtBairro"
         Me.txtBairro.Size = New System.Drawing.Size(305, 21)
-        Me.txtBairro.TabIndex = 27
+        Me.txtBairro.TabIndex = 62
         '
         'Label19
         '
@@ -577,7 +577,7 @@ Partial Class FormAMEOCI
         Me.txtComplemento.Location = New System.Drawing.Point(323, 113)
         Me.txtComplemento.Name = "txtComplemento"
         Me.txtComplemento.Size = New System.Drawing.Size(200, 21)
-        Me.txtComplemento.TabIndex = 28
+        Me.txtComplemento.TabIndex = 63
         '
         'txtNumero
         '
@@ -588,7 +588,7 @@ Partial Class FormAMEOCI
         Me.txtNumero.MaxLength = 5
         Me.txtNumero.Name = "txtNumero"
         Me.txtNumero.Size = New System.Drawing.Size(62, 21)
-        Me.txtNumero.TabIndex = 26
+        Me.txtNumero.TabIndex = 15
         '
         'cbTipoLogradouro
         '
@@ -597,7 +597,7 @@ Partial Class FormAMEOCI
         Me.cbTipoLogradouro.Location = New System.Drawing.Point(335, 36)
         Me.cbTipoLogradouro.Name = "cbTipoLogradouro"
         Me.cbTipoLogradouro.Size = New System.Drawing.Size(188, 23)
-        Me.cbTipoLogradouro.TabIndex = 24
+        Me.cbTipoLogradouro.TabIndex = 60
         '
         'txtLogradouro
         '
@@ -609,7 +609,7 @@ Partial Class FormAMEOCI
         Me.txtLogradouro.MaxLength = 30
         Me.txtLogradouro.Name = "txtLogradouro"
         Me.txtLogradouro.Size = New System.Drawing.Size(443, 21)
-        Me.txtLogradouro.TabIndex = 25
+        Me.txtLogradouro.TabIndex = 61
         '
         'txtMunicipioNome
         '
@@ -618,7 +618,7 @@ Partial Class FormAMEOCI
         Me.txtMunicipioNome.Location = New System.Drawing.Point(72, 37)
         Me.txtMunicipioNome.Name = "txtMunicipioNome"
         Me.txtMunicipioNome.Size = New System.Drawing.Size(173, 21)
-        Me.txtMunicipioNome.TabIndex = 11
+        Me.txtMunicipioNome.TabIndex = 59
         Me.txtMunicipioNome.Tag = "ign"
         Me.txtMunicipioNome.Text = "PERUIBE"
         '
@@ -631,7 +631,7 @@ Partial Class FormAMEOCI
         Me.txtCep.Mask = "99999-999"
         Me.txtCep.Name = "txtCep"
         Me.txtCep.Size = New System.Drawing.Size(80, 21)
-        Me.txtCep.TabIndex = 23
+        Me.txtCep.TabIndex = 14
         '
         'Label27
         '
@@ -649,7 +649,7 @@ Partial Class FormAMEOCI
         Me.txtProntuario.Location = New System.Drawing.Point(235, 78)
         Me.txtProntuario.Name = "txtProntuario"
         Me.txtProntuario.Size = New System.Drawing.Size(75, 21)
-        Me.txtProntuario.TabIndex = 14
+        Me.txtProntuario.TabIndex = 53
         '
         'Label18
         '
@@ -668,7 +668,7 @@ Partial Class FormAMEOCI
         Me.txtCnsPaciente.MaxLength = 15
         Me.txtCnsPaciente.Name = "txtCnsPaciente"
         Me.txtCnsPaciente.Size = New System.Drawing.Size(108, 21)
-        Me.txtCnsPaciente.TabIndex = 13
+        Me.txtCnsPaciente.TabIndex = 52
         '
         'Label25
         '
@@ -688,7 +688,7 @@ Partial Class FormAMEOCI
         Me.txtCpfPaciente.Mask = "99999999999"
         Me.txtCpfPaciente.Name = "txtCpfPaciente"
         Me.txtCpfPaciente.Size = New System.Drawing.Size(106, 21)
-        Me.txtCpfPaciente.TabIndex = 12
+        Me.txtCpfPaciente.TabIndex = 10
         '
         'Label17
         '
@@ -753,7 +753,7 @@ Partial Class FormAMEOCI
         Me.txtEmail.MaxLength = 40
         Me.txtEmail.Name = "txtEmail"
         Me.txtEmail.Size = New System.Drawing.Size(337, 21)
-        Me.txtEmail.TabIndex = 19
+        Me.txtEmail.TabIndex = 57
         '
         'Label23
         '
@@ -773,7 +773,7 @@ Partial Class FormAMEOCI
         Me.txtTelefone.MaxLength = 9
         Me.txtTelefone.Name = "txtTelefone"
         Me.txtTelefone.Size = New System.Drawing.Size(134, 21)
-        Me.txtTelefone.TabIndex = 21
+        Me.txtTelefone.TabIndex = 13
         '
         'Label20
         '
@@ -791,7 +791,7 @@ Partial Class FormAMEOCI
         Me.txtRaca.Location = New System.Drawing.Point(304, 118)
         Me.txtRaca.Name = "txtRaca"
         Me.txtRaca.Size = New System.Drawing.Size(113, 23)
-        Me.txtRaca.TabIndex = 17
+        Me.txtRaca.TabIndex = 55
         Me.txtRaca.Tag = "ign"
         '
         'txtSexo
@@ -802,7 +802,7 @@ Partial Class FormAMEOCI
         Me.txtSexo.Location = New System.Drawing.Point(481, 39)
         Me.txtSexo.Name = "txtSexo"
         Me.txtSexo.Size = New System.Drawing.Size(52, 23)
-        Me.txtSexo.TabIndex = 11
+        Me.txtSexo.TabIndex = 9
         Me.txtSexo.Tag = "ign"
         '
         'chkSituacaoRua
@@ -811,7 +811,7 @@ Partial Class FormAMEOCI
         Me.chkSituacaoRua.Location = New System.Drawing.Point(423, 120)
         Me.chkSituacaoRua.Name = "chkSituacaoRua"
         Me.chkSituacaoRua.Size = New System.Drawing.Size(107, 17)
-        Me.chkSituacaoRua.TabIndex = 18
+        Me.chkSituacaoRua.TabIndex = 56
         Me.chkSituacaoRua.Text = "Situação de rua?"
         Me.chkSituacaoRua.UseVisualStyleBackColor = True
         '
@@ -824,7 +824,7 @@ Partial Class FormAMEOCI
         Me.txtNomeRespPaciente.MaxLength = 30
         Me.txtNomeRespPaciente.Name = "txtNomeRespPaciente"
         Me.txtNomeRespPaciente.Size = New System.Drawing.Size(285, 21)
-        Me.txtNomeRespPaciente.TabIndex = 16
+        Me.txtNomeRespPaciente.TabIndex = 54
         '
         'txtNomeMae
         '
@@ -836,7 +836,7 @@ Partial Class FormAMEOCI
         Me.txtNomeMae.MaxLength = 30
         Me.txtNomeMae.Name = "txtNomeMae"
         Me.txtNomeMae.Size = New System.Drawing.Size(219, 21)
-        Me.txtNomeMae.TabIndex = 15
+        Me.txtNomeMae.TabIndex = 11
         '
         'GroupBox3
         '
@@ -1481,7 +1481,7 @@ Partial Class FormAMEOCI
         Me.btnovo.Location = New System.Drawing.Point(18, 455)
         Me.btnovo.Name = "btnovo"
         Me.btnovo.Size = New System.Drawing.Size(75, 23)
-        Me.btnovo.TabIndex = 52
+        Me.btnovo.TabIndex = 16
         Me.btnovo.Text = "Novo"
         Me.btnovo.UseVisualStyleBackColor = False
         '
@@ -1495,7 +1495,7 @@ Partial Class FormAMEOCI
         Me.btExcluirPaciente.Location = New System.Drawing.Point(187, 455)
         Me.btExcluirPaciente.Name = "btExcluirPaciente"
         Me.btExcluirPaciente.Size = New System.Drawing.Size(92, 23)
-        Me.btExcluirPaciente.TabIndex = 10
+        Me.btExcluirPaciente.TabIndex = 18
         Me.btExcluirPaciente.Text = "Excluir paciente"
         Me.btExcluirPaciente.UseVisualStyleBackColor = False
         '
@@ -1509,7 +1509,7 @@ Partial Class FormAMEOCI
         Me.btAtualizarDados.Location = New System.Drawing.Point(94, 455)
         Me.btAtualizarDados.Name = "btAtualizarDados"
         Me.btAtualizarDados.Size = New System.Drawing.Size(92, 23)
-        Me.btAtualizarDados.TabIndex = 9
+        Me.btAtualizarDados.TabIndex = 17
         Me.btAtualizarDados.Text = "Atualizar dados "
         Me.btAtualizarDados.UseVisualStyleBackColor = False
         '
