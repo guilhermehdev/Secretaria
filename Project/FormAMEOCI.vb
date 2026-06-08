@@ -22,6 +22,7 @@ Public Class FormAMEOCI
     Private popupGrid As DataGridView
     Private debounceTimer As New Timer() With {.Interval = 300}
     Private isLoading As Boolean = False
+    Private isQueue As Boolean = False
     Private IDpacienteSelecionado As Integer? = Nothing
     Private updateMode As Boolean = False
 
@@ -144,11 +145,11 @@ Public Class FormAMEOCI
             TabControl1.SelectedTab = TabControl1.TabPages(1)
             CodProcedimento.Focus()
             CodProcedimento.DroppedDown = True
-            Exit Function
+            Return False
         End If
         If txtNomeMedicoSolicitante.Text = txtNomeAutorizador.Text Then
             MessageBox.Show("Os medicos Solicitante e Autorizador nao podem ser os mesmos.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            ' TabControl1.SelectedTab = TabControl1.TabPages(1)
+            TabControl1.SelectedTab = TabControl1.TabPages(1)
             txtNomeAutorizador.Focus()
             txtNomeAutorizador.DroppedDown = True
             Return False
@@ -178,7 +179,7 @@ Public Class FormAMEOCI
 
                 Catch ex As Exception
                     'MsgBox(idPac)
-                    MsgBox(ex.Message)
+                    'MsgBox(ex.Message)
                     Return False
                 End Try
 
@@ -205,18 +206,25 @@ Public Class FormAMEOCI
                 If FormAMEmain.doQuery(query) Then
 
                     If txtProcedimentoPrincipal.SelectedValue = "0903010011" Then
+                        If Not isQueue Then
+                            For Each row As DataGridViewRow In dgvProcedimentos.Rows
+                                If row.IsNewRow Then Continue For
+                                If row.Cells(0).Value = "0301010072" Then Continue For ' Procedimento obrigatório, mas não deve ser inserido na tabela de secundários
+                                Dim codProcSec = If(row.Cells(0).Value Is Nothing, "''", $"'{row.Cells(0).Value}'")
+                                Dim cboSec = If(row.Cells(3).Value Is Nothing, "''", $"'{row.Cells(3).Value}'")
+                                FormAMEmain.doQuery($"INSERT INTO procedimentos_secundarios (data, num_apac, id_paciente, cod_proced_secundario, qtd, cbo, medico_solicitante) VALUES ('{m.mysqlDateFormat(dtValidadeIni.Value)}', '{txtNumApac.Text}', {idPac}, {codProcSec}, {row.Cells(1).Value}, {cboSec}, '{txtCNSMedicoExecutante.SelectedValue}')")
+                            Next
 
-                        For Each row As DataGridViewRow In dgvProcedimentos.Rows
-                            If row.IsNewRow Then Continue For
-                            If row.Cells(0).Value = "0301010072" Then Continue For ' Procedimento obrigatório, mas não deve ser inserido na tabela de secundários
-                            Dim codProcSec = If(row.Cells(0).Value Is Nothing, "''", $"'{row.Cells(0).Value}'")
-                            Dim cboSec = If(row.Cells(3).Value Is Nothing, "''", $"'{row.Cells(3).Value}'")
-                            FormAMEmain.doQuery($"INSERT INTO procedimentos_secundarios (data, num_apac, id_paciente, cod_proced_secundario, qtd, cbo, medico_solicitante) VALUES ('{m.mysqlDateFormat(dtValidadeIni.Value)}', '{txtNumApac.Text}', {idPac}, {codProcSec}, {row.Cells(1).Value}, {cboSec}, '{txtCNSMedicoExecutante.SelectedValue}')")
-                        Next
+                        Else
+
+                            Dim queryUpdateQueue = $"UPDATE oci_fila SET status=1 WHERE id={dgQueueItens.SelectedRows.Item(0).Cells(0).Value}"
+                            FormAMEmain.doQuery(queryUpdateQueue)
+                            loadQueueOCI()
+                        End If
 
                     End If
 
-                    btNovonumeroAPAC.Enabled = True
+                        btNovonumeroAPAC.Enabled = True
                     FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC",,, lbStatusCads)
                     'txtNumApac.Text = GetAndLockNextApac()
                     IDpacienteSelecionado = Nothing
@@ -243,7 +251,6 @@ Public Class FormAMEOCI
         End Try
 
     End Function
-
     Private Function atPac()
         Dim idPac As Object = IDpacienteSelecionado
         Dim idEnd As Integer = 0
@@ -548,6 +555,7 @@ Public Class FormAMEOCI
                 txtCidPrincipal.SelectedIndex = selectedCIDP
                 txtCidSecundario.SelectedIndex = selectedCIDS
                 updateMode = False
+                clearFields()
             End If
         Catch ex As Exception
             MessageBox.Show("⚠️ Erro ao gravar registro: " & ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -1071,6 +1079,10 @@ Public Class FormAMEOCI
             cod_oci_principal.abrev,
             servidores.nome")
 
+        If dataset.Rows.Count = 0 Then
+            Exit Sub
+        End If
+
         dgQueueOCI.DataSource = dataset
         dgQueueOCI.Columns("idMedico").Visible = False
         dgQueueOCI.Columns("idCod").Visible = False
@@ -1089,7 +1101,7 @@ Public Class FormAMEOCI
             FROM oci_fila
             JOIN pacientes ON pacientes.id = oci_fila.id_paciente
             JOIN cod_oci_principal ON cod_oci_principal.id = oci_fila.cod_proced_principal
-            WHERE oci_fila.`status`=0 
+            WHERE oci_fila.`status`= 0 
 				AND oci_fila.id_medico_solicitante = '{idMedico}'
 				AND oci_fila.cod_proced_principal = {idCod}
 				ORDER BY oci_fila.`data`")
@@ -1153,6 +1165,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
         If data.Length > 0 Then
             isLoading = True
+            isQueue = True
             Dim row As DataRow = data(0)
             Dim idPac = row("id_paciente")
 
