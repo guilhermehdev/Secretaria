@@ -1080,6 +1080,7 @@ Public Class FormAMEOCI
             servidores.nome")
 
         If dataset.Rows.Count = 0 Then
+            dgQueueOCI.DataSource = Nothing
             Exit Sub
         End If
 
