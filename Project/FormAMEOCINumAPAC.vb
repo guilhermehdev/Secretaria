@@ -112,6 +112,7 @@ Public Class FormAMEOCINumAPAC
     End Sub
 
     Public Sub loadNUMAPAC(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "", Optional dtlanc As Date = Nothing, Optional order As String = "id", Optional custom As String = "", Optional medico As String = "", Optional labelCount As Label = Nothing)
+
         Try
             Dim where As String = "WHERE 1=1 "
 
@@ -140,39 +141,50 @@ Public Class FormAMEOCINumAPAC
                 where &= $" AND oci.id_medico ='{medico}' "
             End If
 
-            Dim data = FormAMEmain.getDataset($"SELECT oci.id, oci.num_apac, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc AS dtnasc, oci.`data`, oci.compet, servidores.nome AS medico, oci.status, usuarios.nome AS responsavel 
+            Dim query = $"SELECT oci.id, oci.num_apac, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc AS dtnasc, oci.`data`, oci.compet, servidores.nome AS medico, oci.status, usuarios.nome AS responsavel 
                 FROM oci 
                LEFT JOIN pacientes ON pacientes.id = oci.id_paciente 
                LEFT JOIN servidores ON servidores.SUS = oci.id_medico
                LEFT JOIN cod_oci_principal ON cod_oci_principal.id = oci.id_cod_principal 
-               LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} {custom} ORDER BY {order}")
+               LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} {custom} ORDER BY {order}"
 
-            datagridview.DataSource = data
-            datagridview.Tag = data.DefaultView
+            ' MsgBox(query)
 
-            datagridview.Columns("id").Visible = False
-            datagridview.Columns("num_apac").HeaderText = "Número APAC"
-            datagridview.Columns("num_apac").Width = 100
-            datagridview.Columns("oci").HeaderText = "OCI"
-            datagridview.Columns("oci").Width = 220
-            datagridview.Columns("nome").HeaderText = "Paciente"
-            datagridview.Columns("nome").Width = 250
-            datagridview.Columns("dtnasc").HeaderText = "Nascimento"
-            datagridview.Columns("dtnasc").Width = 80
-            datagridview.Columns("data").HeaderText = "Data"
-            datagridview.Columns("data").Width = 70
-            datagridview.Columns("compet").HeaderText = "Comp"
-            datagridview.Columns("compet").Width = 80
-            datagridview.Columns("medico").HeaderText = "Médico"
-            datagridview.Columns("medico").Width = 200
-            datagridview.Columns("status").HeaderText = "Status"
-            datagridview.Columns("status").Width = 60
-            datagridview.Columns("responsavel").HeaderText = "Responsável"
-            datagridview.Columns("responsavel").Width = 150
-            labelCount.Text = $"{datagridview.Rows.Count} registros"
+            Dim data = FormAMEmain.getDataset(query)
+
+            If data.Rows.Count > 0 Then
+
+                datagridview.DataSource = data
+                datagridview.Tag = data.DefaultView
+
+                datagridview.Columns("id").Visible = False
+                datagridview.Columns("num_apac").HeaderText = "Número APAC"
+                datagridview.Columns("num_apac").Width = 100
+                datagridview.Columns("oci").HeaderText = "OCI"
+                datagridview.Columns("oci").Width = 220
+                datagridview.Columns("nome").HeaderText = "Paciente"
+                datagridview.Columns("nome").Width = 250
+                datagridview.Columns("dtnasc").HeaderText = "Nascimento"
+                datagridview.Columns("dtnasc").Width = 80
+                datagridview.Columns("data").HeaderText = "Data"
+                datagridview.Columns("data").Width = 70
+                datagridview.Columns("compet").HeaderText = "Comp"
+                datagridview.Columns("compet").Width = 80
+                datagridview.Columns("medico").HeaderText = "Médico"
+                datagridview.Columns("medico").Width = 200
+                datagridview.Columns("status").HeaderText = "Status"
+                datagridview.Columns("status").Width = 60
+                datagridview.Columns("responsavel").HeaderText = "Responsável"
+                datagridview.Columns("responsavel").Width = 150
+                labelCount.Text = $"{data.Rows.Count} registros"
+
+            Else
+                datagridview.DataSource = Nothing
+                labelCount.Text = "0 registros"
+            End If
 
         Catch ex As Exception
-            MsgBox("Erro ao carregar números APAC: " & ex.Message)
+            'MsgBox("Erro ao carregar números APAC: " & ex.Message)
         End Try
     End Sub
     Private Sub FormAMEOCINumAPAC_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -180,7 +192,7 @@ Public Class FormAMEOCINumAPAC
         FormAMEmain.loadComboBox("SELECT id, nome FROM usuarios ORDER BY nome", cbUsuarios, "nome", "id")
         FormAMEOCI.loadComp(cbSearchComp)
         ToolStripStatusLabel1.Text = ""
-        FormAMEmain.loadComboBox("SELECT SUS AS id, nome AS medico FROM servidores WHERE SUS IS NOT NULL", cbMedico, "medico", "id", True)
+        FormAMEmain.loadComboBox("SELECT SUS AS id, nome AS medico FROM servidores WHERE SUS IS NOT NULL", cbMedico, "medico", "id")
         cbMedico.SelectedIndex = 0
         cbOCI.SelectedIndex = 0
         cbUsuarios.SelectedIndex = -1

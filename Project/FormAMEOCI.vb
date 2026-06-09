@@ -2212,7 +2212,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         searchByDate()
     End Sub
     Public Sub loadAllOCI(dg As DataGridView)
-        FormAMEOCINumAPAC.loadNUMAPAC(dg,,,, idUser,,,, "CONC",, "oci.data_lanc DESC, id_cod_principal, pacientes.nome",,, lbStatusCads)
+        FormAMEOCINumAPAC.loadNUMAPAC(dg,,,, idUser,,,, "CONC", , "oci.data_lanc DESC, id_cod_principal, pacientes.nome",,, lbStatusCads)
     End Sub
     Private Sub ckbSearchTodos_CheckedChanged(sender As Object, e As EventArgs) Handles ckbSearchTodos.CheckedChanged
         If ckbSearchTodos.Checked Then
