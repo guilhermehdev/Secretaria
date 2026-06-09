@@ -1,15 +1,10 @@
-﻿Imports System.Data.Entity.Core.Metadata.Edm
+﻿
 Imports System.Globalization
 Imports System.IO
-Imports System.Security.Principal
 Imports System.Text
 Imports System.Text.RegularExpressions
-Imports System.Web
 Imports ClosedXML.Excel
-Imports Google.Protobuf.WellKnownTypes
-Imports MySql.Data.MySqlClient
-Imports Mysqlx.XDevAPI.Common
-Imports ServiceStack.Script
+Imports iTextSharp.text.pdf
 
 Public Class FormAMEOCI
     Private linhas As New List(Of String)
@@ -2567,6 +2562,17 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         onClose()
     End Sub
 
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        If OpenFileDialog1.ShowDialog() = DialogResult.OK Then
+            Dim reader As New PdfReader(OpenFileDialog1.FileName)
+
+            For Each campo In reader.AcroFields.Fields
+
+                Debug.WriteLine(campo.Key)
+
+            Next
+        End If
+    End Sub
 End Class
 Public Class ApacRegistro
     Public Property NumeroApac As String
