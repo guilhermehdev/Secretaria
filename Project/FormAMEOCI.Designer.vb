@@ -107,7 +107,6 @@ Partial Class FormAMEOCI
         Me.txtEquipe = New System.Windows.Forms.TextBox()
         Me.Label40 = New System.Windows.Forms.Label()
         Me.Label39 = New System.Windows.Forms.Label()
-        Me.btnGerarArquivo = New System.Windows.Forms.Button()
         Me.Label34 = New System.Windows.Forms.Label()
         Me.Label38 = New System.Windows.Forms.Label()
         Me.Label36 = New System.Windows.Forms.Label()
@@ -120,6 +119,7 @@ Partial Class FormAMEOCI
         Me.txtMotivoSaida = New System.Windows.Forms.ComboBox()
         Me.dtEmissao = New System.Windows.Forms.DateTimePicker()
         Me.dtAutorizacao = New System.Windows.Forms.DateTimePicker()
+        Me.btnGerarArquivo = New System.Windows.Forms.Button()
         Me.btAddAPAC = New System.Windows.Forms.Button()
         Me.Label47 = New System.Windows.Forms.Label()
         Me.Label46 = New System.Windows.Forms.Label()
@@ -172,6 +172,7 @@ Partial Class FormAMEOCI
         Me.dgQueueOCI = New System.Windows.Forms.DataGridView()
         Me.btOCIpendente = New System.Windows.Forms.Button()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -921,20 +922,6 @@ Partial Class FormAMEOCI
         Me.Label39.TabIndex = 24
         Me.Label39.Text = "Data autorização"
         '
-        'btnGerarArquivo
-        '
-        Me.btnGerarArquivo.BackColor = System.Drawing.Color.DarkSeaGreen
-        Me.btnGerarArquivo.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnGerarArquivo.FlatAppearance.BorderSize = 0
-        Me.btnGerarArquivo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnGerarArquivo.ForeColor = System.Drawing.Color.Transparent
-        Me.btnGerarArquivo.Location = New System.Drawing.Point(453, 455)
-        Me.btnGerarArquivo.Name = "btnGerarArquivo"
-        Me.btnGerarArquivo.Size = New System.Drawing.Size(85, 26)
-        Me.btnGerarArquivo.TabIndex = 50
-        Me.btnGerarArquivo.Text = "Gravar OCI"
-        Me.btnGerarArquivo.UseVisualStyleBackColor = False
-        '
         'Label34
         '
         Me.Label34.AutoSize = True
@@ -1049,6 +1036,20 @@ Partial Class FormAMEOCI
         Me.dtAutorizacao.Size = New System.Drawing.Size(82, 21)
         Me.dtAutorizacao.TabIndex = 47
         Me.dtAutorizacao.Tag = "ign"
+        '
+        'btnGerarArquivo
+        '
+        Me.btnGerarArquivo.BackColor = System.Drawing.Color.DarkSeaGreen
+        Me.btnGerarArquivo.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnGerarArquivo.FlatAppearance.BorderSize = 0
+        Me.btnGerarArquivo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnGerarArquivo.ForeColor = System.Drawing.Color.Transparent
+        Me.btnGerarArquivo.Location = New System.Drawing.Point(453, 455)
+        Me.btnGerarArquivo.Name = "btnGerarArquivo"
+        Me.btnGerarArquivo.Size = New System.Drawing.Size(85, 26)
+        Me.btnGerarArquivo.TabIndex = 50
+        Me.btnGerarArquivo.Text = "Gravar OCI"
+        Me.btnGerarArquivo.UseVisualStyleBackColor = False
         '
         'btAddAPAC
         '
@@ -1459,6 +1460,7 @@ Partial Class FormAMEOCI
         'TabPage1
         '
         Me.TabPage1.BackColor = System.Drawing.SystemColors.ButtonFace
+        Me.TabPage1.Controls.Add(Me.Button1)
         Me.TabPage1.Controls.Add(Me.btnovo)
         Me.TabPage1.Controls.Add(Me.btExcluirPaciente)
         Me.TabPage1.Controls.Add(Me.btAtualizarDados)
@@ -1781,6 +1783,15 @@ Partial Class FormAMEOCI
         '
         Me.Timer1.Interval = 200
         '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(280, 455)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 58
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
         'FormAMEOCI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1963,4 +1974,5 @@ Partial Class FormAMEOCI
     Friend WithEvents Timer1 As Timer
     Friend WithEvents btnovo As Button
     Friend WithEvents FecharToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents Button1 As Button
 End Class
