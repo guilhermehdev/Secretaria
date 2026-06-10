@@ -2568,7 +2568,14 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
             For Each campo In reader.AcroFields.Fields
 
-                Debug.WriteLine(campo.Key)
+                Console.WriteLine(campo.Key)
+
+                Dim estados =
+        reader.AcroFields.GetAppearanceStates(campo.Key)
+
+                For Each estado In estados
+                    Console.WriteLine("  " & estado)
+                Next
 
             Next
         End If
