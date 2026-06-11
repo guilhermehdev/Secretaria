@@ -28,7 +28,7 @@ Public Class OCI
         campos.SetField("DN_PACIENTE", paciente.Rows(0)("dtnasc").ToString())
         campos.SetField("RACA_PACIENTE", paciente.Rows(0)("raca").ToString())
         campos.SetField("MAE_PACIENTE", paciente.Rows(0)("mae").ToString())
-        campos.SetField("DDD_PACIENTE", paciente.Rows(0)("tel").ToString().Substring(0, 3))
+        campos.SetField("DDD_PACIENTE", paciente.Rows(0)("tel").ToString().Replace("(", "").Replace(")", "").Substring(0, 3))
         campos.SetField("TELEFONE_PACIENTE", paciente.Rows(0)("tel").ToString().Substring(4))
         If m.CalcularIdade(CDate(paciente.Rows(0)("dtnasc").ToString())) >= 18 Then
             campos.SetField("RESPONSAVEL_PACIENTE", paciente.Rows(0)("nome").ToString())
@@ -40,7 +40,7 @@ Public Class OCI
         campos.SetField("LOGRADOURO_PACIENTE", endereco.Rows(0)("tipo").ToString() & " " & endereco.Rows(0)("logradouro").ToString() & ", " & paciente.Rows(0)("numero").ToString() & " - " & endereco.Rows(0)("bairro").ToString())
 
         campos.SetField("CODPRINCIPAL", procedimento.Rows(0)("cod").ToString())
-        campos.SetField("DESCRICAO_PROCEDIMENTO", procedimento.Rows(0)("descricao").ToString())
+        campos.SetField("DESCRICAO_PROCEDIMENTO", procedimento.Rows(0)("descricao").ToString().ToUpper())
 
         If procedimento.Rows(0)("cod").ToString() = "0904010015" Then
             campos.SetField("CODPROCED_SECUNDARIO_1", "0301010072")
