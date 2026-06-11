@@ -1,17 +1,34 @@
 ﻿Imports System.IO
 Imports iTextSharp.text.pdf
 
+
 Public Class OCI
     Dim m As New Main
 
-    Public Function datatablePaciente(idPaciente As Integer)
-        Dim query = $"SELECT id, nome, dtnasc, sexo, raca, cpf, mae, tel, id_logradouro FROM pacientes WHERE id={idPaciente}"
-
+    Public Sub printOCI(idOCI As Integer, pdfDestino As String)
+        Dim oci = datatableOCI(idOCI)
+        OCI_PDF(Application.StartupPath & "\PDF\ModeloOCI.pdf", pdfDestino, oci)
+    End Sub
+    Private Function datatableOCI(idOCI As Integer, Optional parametros As String = "")
+        If parametros <> "" Then
+            parametros = " AND " & parametros
+        End If
+        Dim query = $"SELECT oci.num_apac, oci.`data` AS data_solicitacao, cod_oci_principal.cod, cod_oci_principal.descricao, oci.cid_principal, 
+        oci.cid_sec, solicitante.nome AS medico_solicitante, solicitante.SUS AS sus_medico_solicitante, 
+        autorizador.nome AS medico_autorizador, autorizador.SUS AS sus_medico_autorizador,
+        pacientes.nome, pacientes.dtnasc, pacientes.sexo, pacientes.raca, pacientes.cpf, pacientes.mae, pacientes.tel, 
+        ceps_peruibe.cep, ceps_peruibe.tipo, ceps_peruibe.logradouro, pacientes.numero, ceps_peruibe.bairro
+        FROM oci 
+        JOIN servidores solicitante ON solicitante.SUS = oci.id_medico
+        JOIN servidores autorizador ON autorizador.SUS = oci.id_autorizador
+        JOIN cod_oci_principal ON cod_oci_principal.id = oci.id_cod_principal
+        JOIN pacientes ON pacientes.id = oci.id_paciente
+        JOIN ceps_peruibe ON ceps_peruibe.id = pacientes.id_logradouro
+        WHERE oci.id={idOCI} {parametros}"
         Return FormAMEmain.getDataset(query)
 
     End Function
-
-    Public Sub OCI_PDF(pdfOrigem As String, pdfDestino As String, paciente As DataTable, endereco As DataTable, procedimento As DataTable, procedimentoSecundario As DataTable)
+    Private Sub OCI_PDF(pdfOrigem As String, pdfDestino As String, oci As DataTable, Optional procedimentoSecundario As DataTable = Nothing)
 
         Dim reader As New PdfReader(pdfOrigem)
         Dim stamper As New PdfStamper(
@@ -24,9 +41,9 @@ Public Class OCI
 
         Dim campos = stamper.AcroFields
 
-        campos.SetField("NOME_PACIENTE", paciente.Rows(0)("nome").ToString())
+        campos.SetField("NOME_PACIENTE", oci.Rows(0)("nome").ToString())
 
-        If paciente.Rows(0)("sexo").ToString() = "M" Then
+        If oci.Rows(0)("sexo").ToString() = "M" Then
             campos.SetField("SEXO_M", "On")
             campos.SetField("SEXO_F", "Off")
         Else
@@ -34,25 +51,25 @@ Public Class OCI
             campos.SetField("SEXO_M", "Off")
         End If
 
-        campos.SetField("CPF_PACIENTE", paciente.Rows(0)("cpf").ToString())
-        campos.SetField("DN_PACIENTE", paciente.Rows(0)("dtnasc").ToString())
-        campos.SetField("RACA_PACIENTE", paciente.Rows(0)("raca").ToString())
-        campos.SetField("MAE_PACIENTE", paciente.Rows(0)("mae").ToString())
-        campos.SetField("DDD_PACIENTE", paciente.Rows(0)("tel").ToString().Replace("(", "").Replace(")", "").Substring(0, 3))
-        campos.SetField("TELEFONE_PACIENTE", paciente.Rows(0)("tel").ToString().Substring(4))
-        If m.CalcularIdade(CDate(paciente.Rows(0)("dtnasc").ToString())) >= 18 Then
-            campos.SetField("RESPONSAVEL_PACIENTE", paciente.Rows(0)("nome").ToString())
+        campos.SetField("CPF_PACIENTE", oci.Rows(0)("cpf").ToString())
+        campos.SetField("DN_PACIENTE", DirectCast(oci.Rows(0)("dtnasc"), Date).ToString("dd/MM/yyyy"))
+        campos.SetField("RACA_PACIENTE", oci.Rows(0)("raca").ToString())
+        campos.SetField("MAE_PACIENTE", oci.Rows(0)("mae").ToString())
+        campos.SetField("DDD_PACIENTE", oci.Rows(0)("tel").ToString().Replace("(", "").Replace(")", "").Substring(0, 3))
+        campos.SetField("TELEFONE_PACIENTE", oci.Rows(0)("tel").ToString().Replace("-", "").Substring(4))
+        If m.CalcularIdade(CDate(oci.Rows(0)("dtnasc").ToString())) >= 18 Then
+            campos.SetField("RESPONSAVEL_PACIENTE", oci.Rows(0)("nome").ToString())
         Else
-            campos.SetField("RESPONSAVEL_PACIENTE", paciente.Rows(0)("mae").ToString())
+            campos.SetField("RESPONSAVEL_PACIENTE", oci.Rows(0)("mae").ToString())
         End If
 
-        campos.SetField("CEP_PACIENTE", endereco.Rows(0)("cep").ToString())
-        campos.SetField("LOGRADOURO_PACIENTE", endereco.Rows(0)("tipo").ToString() & " " & endereco.Rows(0)("logradouro").ToString() & ", " & paciente.Rows(0)("numero").ToString() & " - " & endereco.Rows(0)("bairro").ToString())
+        campos.SetField("CEP_PACIENTE", oci.Rows(0)("cep").ToString().Replace("-", ""))
+        campos.SetField("LOGRADOURO_PACIENTE", oci.Rows(0)("tipo").ToString() & " " & oci.Rows(0)("logradouro").ToString() & ", " & oci.Rows(0)("numero").ToString() & " - " & oci.Rows(0)("bairro").ToString())
 
-        campos.SetField("CODPRINCIPAL", procedimento.Rows(0)("cod").ToString())
-        campos.SetField("DESCRICAO_PROCEDIMENTO", procedimento.Rows(0)("descricao").ToString().ToUpper())
+        campos.SetField("CODPRINCIPAL", oci.Rows(0)("cod").ToString())
+        campos.SetField("DESCRICAO_PROCEDIMENTO", oci.Rows(0)("descricao").ToString().ToUpper())
 
-        If procedimento.Rows(0)("cod").ToString() = "0904010015" Then
+        If oci.Rows(0)("cod").ToString() = "0904010015" Then
             campos.SetField("CODPROCED_SECUNDARIO_1", "0301010072")
             campos.SetField("DESCRICAO_PROCED_SECUNDARIO_1", "Consulta médica na atenção especializada".ToUpper())
             campos.SetField("QTD_PROCED_SECUNDARIO_1", "1")
@@ -61,7 +78,7 @@ Public Class OCI
             campos.SetField("DESCRICAO_PROCED_SECUNDARIO_2", "Audiometria tonal limiar (via aérea/óssea)".ToUpper())
             campos.SetField("QTD_PROCED_SECUNDARIO_2", "1")
 
-        ElseIf procedimento.Rows(0)("cod").ToString() = "0902010026" OrElse procedimento.Rows(0)("cod").ToString() = "0902010018" Then
+        ElseIf oci.Rows(0)("cod").ToString() = "0902010026" OrElse oci.Rows(0)("cod").ToString() = "0902010018" Then
             campos.SetField("CODPROCED_SECUNDARIO_1", "0301010072")
             campos.SetField("DESCRICAO_PROCED_SECUNDARIO_1", "Consulta médica na atenção especializada".ToUpper())
             campos.SetField("QTD_PROCED_SECUNDARIO_1", "1")
@@ -70,7 +87,7 @@ Public Class OCI
             campos.SetField("DESCRICAO_PROCED_SECUNDARIO_2", "Eletrocardiograma".ToUpper())
             campos.SetField("QTD_PROCED_SECUNDARIO_2", "1")
 
-        ElseIf procedimento.Rows(0)("cod").ToString() = "0905010035" Then
+        ElseIf oci.Rows(0)("cod").ToString() = "0905010035" Then
             campos.SetField("CODPROCED_SECUNDARIO_1", "0301010072")
             campos.SetField("DESCRICAO_PROCED_SECUNDARIO_1", "Consulta médica na atenção especializada".ToUpper())
             campos.SetField("QTD_PROCED_SECUNDARIO_1", "1")
@@ -79,15 +96,15 @@ Public Class OCI
             campos.SetField("DESCRICAO_PROCED_SECUNDARIO_2", "Biomicroscopia de fundo de olho".ToUpper())
             campos.SetField("QTD_PROCED_SECUNDARIO_2", "1")
 
-            campos.SetField("CODPROCED_SECUNDARIO_3", "")
+            campos.SetField("CODPROCED_SECUNDARIO_3", "0211060127")
             campos.SetField("DESCRICAO_PROCED_SECUNDARIO_3", "Mapeamento de retina".ToUpper())
             campos.SetField("QTD_PROCED_SECUNDARIO_3", "1")
 
-            campos.SetField("CODPROCED_SECUNDARIO_4", "")
+            campos.SetField("CODPROCED_SECUNDARIO_4", "0211060259")
             campos.SetField("DESCRICAO_PROCED_SECUNDARIO_4", "Tonometria".ToUpper())
             campos.SetField("QTD_PROCED_SECUNDARIO_4", "1")
 
-        ElseIf procedimento.Rows(0)("cod").ToString() = "0904010031" Then
+        ElseIf oci.Rows(0)("cod").ToString() = "0904010031" Then
             campos.SetField("CODPROCED_SECUNDARIO_1", "0301010072")
             campos.SetField("DESCRICAO_PROCED_SECUNDARIO_1", "Consulta médica na atenção especializada".ToUpper())
             campos.SetField("QTD_PROCED_SECUNDARIO_1", "1")
@@ -100,7 +117,7 @@ Public Class OCI
             campos.SetField("DESCRICAO_PROCED_SECUNDARIO_3", "Videolaringoscopia".ToUpper())
             campos.SetField("QTD_PROCED_SECUNDARIO_3", "1")
 
-        ElseIf procedimento.Rows(0)("cod").ToString() = "0903010011" Then
+        ElseIf oci.Rows(0)("cod").ToString() = "0903010011" Then
             campos.SetField("CODPROCED_SECUNDARIO_1", "0301010072")
             campos.SetField("DESCRICAO_PROCED_SECUNDARIO_1", "Consulta médica na atenção especializada".ToUpper())
             campos.SetField("QTD_PROCED_SECUNDARIO_1", "1")
@@ -153,25 +170,27 @@ Public Class OCI
 
         End If
 
-        campos.SetField("CID1", procedimento.Rows(0)("cid_principal").ToString())
-        campos.SetField("CID2", procedimento.Rows(0)("cid_sec").ToString())
+        campos.SetField("CID1", oci.Rows(0)("cid_principal").ToString())
+        campos.SetField("CID2", oci.Rows(0)("cid_sec").ToString())
 
-        campos.SetField("DATA_SOLICITACAO", procedimento.Rows(0)("data_solicitacao").ToString())
-        campos.SetField("NOME_MEDICO_SOLICITANTE", procedimento.Rows(0)("medico_solicitante").ToString().ToUpper)
+        campos.SetField("DATA_SOLICITACAO", oci.Rows(0)("data_solicitacao").ToString())
+        campos.SetField("NOME_MEDICO_SOLICITANTE", oci.Rows(0)("medico_solicitante").ToString().ToUpper)
         campos.SetField("TIPO_DOCUMENTO_MEDICO_SOLICITANTE_CNS", "On")
         campos.SetField("TIPO_DOCUMENTO_MEDICO_SOLICITANTE_CPF", "Off")
-        campos.SetField("CNS_MEDICO_SOLICITANTE", procedimento.Rows(0)("sus_medico_solicitante").ToString())
+        campos.SetField("CNS_MEDICO_SOLICITANTE", oci.Rows(0)("sus_medico_solicitante").ToString())
 
-        campos.SetField("NOME_MEDICO_AUTORIZADOR", procedimento.Rows(0)("medico_solicitante").ToString().ToUpper)
+        campos.SetField("NOME_MEDICO_AUTORIZADOR", oci.Rows(0)("medico_autorizador").ToString().ToUpper)
         campos.SetField("TIPO_DOCUMENTO_MEDICO_AUTORIZADOR_CNS", "On")
         campos.SetField("TIPO_DOCUMENTO_MEDICO_AUTORIZADOR_CPF", "Off")
-        campos.SetField("CNS_MEDICO_AUTORIZADOR", procedimento.Rows(0)("sus_medico_autorizador").ToString())
+        campos.SetField("CNS_MEDICO_AUTORIZADOR", oci.Rows(0)("sus_medico_autorizador").ToString())
 
-        campos.SetField("NUMERO_APAC", procedimento.Rows(0)("num_apac").ToString())
+        campos.SetField("NUMERO_APAC", oci.Rows(0)("num_apac").ToString())
 
-        Dim dataOCI As Date = CDate(procedimento.Rows(0)("data_solicitacao"))
-        campos.SetField("DATA_INICIO_OCI", dataOCI.ToString())
-        campos.SetField("DATA_FIM_OCI", dataOCI.AddMonths(1).ToString())
+        'DirectCast(oci.Rows(0)("dtnasc"), Date).ToString("dd/MM/yyyy"))
+
+        Dim dataOCI As Date = CDate(oci.Rows(0)("data_solicitacao")).ToString("dd/MM/yyyy")
+        campos.SetField("DATA_INICIO_OCI", dataOCI.ToString("dd/MM/yyyy"))
+        campos.SetField("DATA_FIM_OCI", dataOCI.AddMonths(1).ToString("dd/MM/yyyy"))
 
         stamper.FormFlattening = True
 

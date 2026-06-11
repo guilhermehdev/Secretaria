@@ -154,6 +154,7 @@ Partial Class FormAMEOCI
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.btnovo = New System.Windows.Forms.Button()
         Me.btExcluirPaciente = New System.Windows.Forms.Button()
         Me.btAtualizarDados = New System.Windows.Forms.Button()
@@ -172,7 +173,6 @@ Partial Class FormAMEOCI
         Me.dgQueueOCI = New System.Windows.Forms.DataGridView()
         Me.btOCIpendente = New System.Windows.Forms.Button()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.Button1 = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -1460,7 +1460,6 @@ Partial Class FormAMEOCI
         'TabPage1
         '
         Me.TabPage1.BackColor = System.Drawing.SystemColors.ButtonFace
-        Me.TabPage1.Controls.Add(Me.Button1)
         Me.TabPage1.Controls.Add(Me.btnovo)
         Me.TabPage1.Controls.Add(Me.btExcluirPaciente)
         Me.TabPage1.Controls.Add(Me.btAtualizarDados)
@@ -1472,6 +1471,15 @@ Partial Class FormAMEOCI
         Me.TabPage1.Size = New System.Drawing.Size(550, 488)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Identificação do Paciente"
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(353, 458)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 58
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
         '
         'btnovo
         '
@@ -1531,6 +1539,7 @@ Partial Class FormAMEOCI
         'TabPage3
         '
         Me.TabPage3.BackColor = System.Drawing.SystemColors.ButtonFace
+        Me.TabPage3.Controls.Add(Me.Button1)
         Me.TabPage3.Controls.Add(Me.GroupBox5)
         Me.TabPage3.Controls.Add(Me.lbStatusCads)
         Me.TabPage3.Controls.Add(Me.btAddAPAC)
@@ -1782,15 +1791,6 @@ Partial Class FormAMEOCI
         'Timer1
         '
         Me.Timer1.Interval = 200
-        '
-        'Button1
-        '
-        Me.Button1.Location = New System.Drawing.Point(280, 455)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 58
-        Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
         '
         'FormAMEOCI
         '

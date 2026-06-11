@@ -2564,101 +2564,103 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim oci As New OCI
+
+        oci.printOCI(dgOCIcadastradas.SelectedRows(0).Cells(0).Value, "D:\Desktop\oci.pdf")
         '=========================
         ' PACIENTE
         '=========================
-        Dim dtPaciente As New DataTable
-        dtPaciente.Columns.Add("nome")
-        dtPaciente.Columns.Add("sexo")
-        dtPaciente.Columns.Add("cpf")
-        dtPaciente.Columns.Add("dtnasc")
-        dtPaciente.Columns.Add("raca")
-        dtPaciente.Columns.Add("mae")
-        dtPaciente.Columns.Add("tel")
-        dtPaciente.Columns.Add("numero")
+        'Dim dtPaciente As New DataTable
+        'dtPaciente.Columns.Add("nome")
+        'dtPaciente.Columns.Add("sexo")
+        'dtPaciente.Columns.Add("cpf")
+        'dtPaciente.Columns.Add("dtnasc")
+        'dtPaciente.Columns.Add("raca")
+        'dtPaciente.Columns.Add("mae")
+        'dtPaciente.Columns.Add("tel")
+        'dtPaciente.Columns.Add("numero")
 
-        dtPaciente.Rows.Add(
-            "JOAO DA SILVA",
-            "M",
-            "12345678900",
-            "15/05/1985",
-            "BRANCA",
-            "MARIA DA SILVA",
-            "(13)999999999",
-            "123"
-        )
+        'dtPaciente.Rows.Add(
+        '    "JOAO DA SILVA",
+        '    "M",
+        '    "12345678900",
+        '    "15/05/1985",
+        '    "BRANCA",
+        '    "MARIA DA SILVA",
+        '    "(13)999999999",
+        '    "123"
+        ')
 
-        '=========================
-        ' ENDERECO
-        '=========================
-        Dim dtEndereco As New DataTable
-        dtEndereco.Columns.Add("cep")
-        dtEndereco.Columns.Add("tipo")
-        dtEndereco.Columns.Add("logradouro")
-        dtEndereco.Columns.Add("bairro")
+        ''=========================
+        '' ENDERECO
+        ''=========================
+        'Dim dtEndereco As New DataTable
+        'dtEndereco.Columns.Add("cep")
+        'dtEndereco.Columns.Add("tipo")
+        'dtEndereco.Columns.Add("logradouro")
+        'dtEndereco.Columns.Add("bairro")
 
-        dtEndereco.Rows.Add(
-            "11750000",
-            "Rua",
-            "Das Flores",
-            "Centro"
-        )
+        'dtEndereco.Rows.Add(
+        '    "11750000",
+        '    "Rua",
+        '    "Das Flores",
+        '    "Centro"
+        ')
 
-        '=========================
-        ' PROCEDIMENTO PRINCIPAL
-        '=========================
-        Dim dtProcedimento As New DataTable
-        dtProcedimento.Columns.Add("cod")
-        dtProcedimento.Columns.Add("descricao")
-        dtProcedimento.Columns.Add("cid_principal")
-        dtProcedimento.Columns.Add("cid_sec")
+        ''=========================
+        '' PROCEDIMENTO PRINCIPAL
+        ''=========================
+        'Dim dtProcedimento As New DataTable
+        'dtProcedimento.Columns.Add("cod")
+        'dtProcedimento.Columns.Add("descricao")
+        'dtProcedimento.Columns.Add("cid_principal")
+        'dtProcedimento.Columns.Add("cid_sec")
 
-        dtProcedimento.Rows.Add(
-            "0902010026",
-            "Consulta em Cardiologia",
-            "I10",
-            "E11"
-        )
+        'dtProcedimento.Rows.Add(
+        '    "0902010026",
+        '    "Consulta em Cardiologia",
+        '    "I10",
+        '    "E11"
+        ')
 
-        '=========================
-        ' PROCEDIMENTOS SECUNDARIOS
-        '=========================
-        Dim dtProcedimentoSec As New DataTable
-        dtProcedimentoSec.Columns.Add("cod_proced_secundario")
-        dtProcedimentoSec.Columns.Add("descricao")
-        dtProcedimentoSec.Columns.Add("qtd")
+        ''=========================
+        '' PROCEDIMENTOS SECUNDARIOS
+        ''=========================
+        'Dim dtProcedimentoSec As New DataTable
+        'dtProcedimentoSec.Columns.Add("cod_proced_secundario")
+        'dtProcedimentoSec.Columns.Add("descricao")
+        'dtProcedimentoSec.Columns.Add("qtd")
 
-        dtProcedimentoSec.Rows.Add(
-            "0301010072",
-            "Consulta médica na atenção especializada",
-            "1"
-        )
+        'dtProcedimentoSec.Rows.Add(
+        '    "0301010072",
+        '    "Consulta médica na atenção especializada",
+        '    "1"
+        ')
 
-        dtProcedimentoSec.Rows.Add(
-            "0211020036",
-            "Eletrocardiograma",
-            "1"
-        )
+        'dtProcedimentoSec.Rows.Add(
+        '    "0211020036",
+        '    "Eletrocardiograma",
+        '    "1"
+        ')
 
-        dtProcedimentoSec.Rows.Add(
-            "0211020060",
-            "Teste ergométrico",
-            "1"
-        )
+        'dtProcedimentoSec.Rows.Add(
+        '    "0211020060",
+        '    "Teste ergométrico",
+        '    "1"
+        ')
 
-        dtProcedimentoSec.Rows.Add(
-            "0203010019",
-            "Ecocardiograma",
-            "1"
-        )
+        'dtProcedimentoSec.Rows.Add(
+        '    "0203010019",
+        '    "Ecocardiograma",
+        '    "1"
+        ')
 
-        dtProcedimentoSec.Rows.Add(
-            "0205010046",
-            "Holter 24 horas",
-            "1"
-        )
+        'dtProcedimentoSec.Rows.Add(
+        '    "0205010046",
+        '    "Holter 24 horas",
+        '    "1"
+        ')
 
-        oci.GerarOCI("D:\Desktop\ModeloOCI.pdf", "D:\Desktop\OCI_Preenchida.pdf", dtPaciente, dtEndereco, dtProcedimento, dtProcedimentoSec)
+        'oci.GerarOCI("D:\Desktop\ModeloOCI.pdf", "D:\Desktop\OCI_Preenchida.pdf", dtPaciente, dtEndereco, dtProcedimento, dtProcedimentoSec)
 
 
         'If OpenFileDialog1.ShowDialog() = DialogResult.OK Then
