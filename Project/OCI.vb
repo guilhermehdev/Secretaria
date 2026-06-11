@@ -3,7 +3,15 @@ Imports iTextSharp.text.pdf
 
 Public Class OCI
     Dim m As New Main
-    Public Sub GerarOCI(pdfOrigem As String, pdfDestino As String, paciente As DataTable, endereco As DataTable, procedimento As DataTable, procedimentoSecundario As DataTable)
+
+    Public Function datatablePaciente(idPaciente As Integer)
+        Dim query = $"SELECT id, nome, dtnasc, sexo, raca, cpf, mae, tel, id_logradouro FROM pacientes WHERE id={idPaciente}"
+
+        Return FormAMEmain.getDataset(query)
+
+    End Function
+
+    Public Sub OCI_PDF(pdfOrigem As String, pdfDestino As String, paciente As DataTable, endereco As DataTable, procedimento As DataTable, procedimentoSecundario As DataTable)
 
         Dim reader As New PdfReader(pdfOrigem)
         Dim stamper As New PdfStamper(
@@ -17,6 +25,7 @@ Public Class OCI
         Dim campos = stamper.AcroFields
 
         campos.SetField("NOME_PACIENTE", paciente.Rows(0)("nome").ToString())
+
         If paciente.Rows(0)("sexo").ToString() = "M" Then
             campos.SetField("SEXO_M", "On")
             campos.SetField("SEXO_F", "Off")
@@ -24,6 +33,7 @@ Public Class OCI
             campos.SetField("SEXO_F", "On")
             campos.SetField("SEXO_M", "Off")
         End If
+
         campos.SetField("CPF_PACIENTE", paciente.Rows(0)("cpf").ToString())
         campos.SetField("DN_PACIENTE", paciente.Rows(0)("dtnasc").ToString())
         campos.SetField("RACA_PACIENTE", paciente.Rows(0)("raca").ToString())
@@ -141,19 +151,32 @@ Public Class OCI
 
             Next
 
-
         End If
-
 
         campos.SetField("CID1", procedimento.Rows(0)("cid_principal").ToString())
         campos.SetField("CID2", procedimento.Rows(0)("cid_sec").ToString())
+
+        campos.SetField("DATA_SOLICITACAO", procedimento.Rows(0)("data_solicitacao").ToString())
+        campos.SetField("NOME_MEDICO_SOLICITANTE", procedimento.Rows(0)("medico_solicitante").ToString().ToUpper)
+        campos.SetField("TIPO_DOCUMENTO_MEDICO_SOLICITANTE_CNS", "On")
+        campos.SetField("TIPO_DOCUMENTO_MEDICO_SOLICITANTE_CPF", "Off")
+        campos.SetField("CNS_MEDICO_SOLICITANTE", procedimento.Rows(0)("sus_medico_solicitante").ToString())
+
+        campos.SetField("NOME_MEDICO_AUTORIZADOR", procedimento.Rows(0)("medico_solicitante").ToString().ToUpper)
+        campos.SetField("TIPO_DOCUMENTO_MEDICO_AUTORIZADOR_CNS", "On")
+        campos.SetField("TIPO_DOCUMENTO_MEDICO_AUTORIZADOR_CPF", "Off")
+        campos.SetField("CNS_MEDICO_AUTORIZADOR", procedimento.Rows(0)("sus_medico_autorizador").ToString())
+
+        campos.SetField("NUMERO_APAC", procedimento.Rows(0)("num_apac").ToString())
+
+        Dim dataOCI As Date = CDate(procedimento.Rows(0)("data_solicitacao"))
+        campos.SetField("DATA_INICIO_OCI", dataOCI.ToString())
+        campos.SetField("DATA_FIM_OCI", dataOCI.AddMonths(1).ToString())
 
         stamper.FormFlattening = True
 
         stamper.Close()
         reader.Close()
-
-
 
     End Sub
 
