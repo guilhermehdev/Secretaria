@@ -101,9 +101,9 @@ Public Class OCI
 
             For i As Integer = 0 To procedimentoSecundario.Rows.Count - 1
 
-                Dim codigo = procedimentoSecundario.Rows(i)("cod_proced_secundario").Value.ToString()
-                Dim descricao = procedimentoSecundario.Rows(i)("descricao").Value.ToString()
-                Dim qtd = procedimentoSecundario.Rows(i)("qtd").Value.ToString()
+                Dim codigo = procedimentoSecundario.Rows(i)("cod_proced_secundario").ToString()
+                Dim descricao = procedimentoSecundario.Rows(i)("descricao").ToString()
+                Dim qtd = procedimentoSecundario.Rows(i)("qtd").ToString()
 
                 Select Case i
 
