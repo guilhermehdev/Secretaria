@@ -44,16 +44,33 @@ Public Class OCI
         campos.SetField("NOME_PACIENTE", oci.Rows(0)("nome").ToString())
 
         If oci.Rows(0)("sexo").ToString() = "M" Then
-            campos.SetField("SEXO_M", "On")
-            campos.SetField("SEXO_F", "Off")
+            MarcarCheckBox(campos, "SEXO_M", True)
+            MarcarCheckBox(campos, "SEXO_F", False)
         Else
-            campos.SetField("SEXO_F", "On")
-            campos.SetField("SEXO_M", "Off")
+            MarcarCheckBox(campos, "SEXO_M", False)
+            MarcarCheckBox(campos, "SEXO_F", True)
         End If
 
         campos.SetField("CPF_PACIENTE", oci.Rows(0)("cpf").ToString())
         campos.SetField("DN_PACIENTE", DirectCast(oci.Rows(0)("dtnasc"), Date).ToString("dd/MM/yyyy"))
-        campos.SetField("RACA_PACIENTE", oci.Rows(0)("raca").ToString())
+
+        Dim idRaca = oci.Rows(0)("raca").ToString()
+        Dim raca As String = "BRANCA"
+
+        Select Case idRaca
+            Case "01"
+                raca = "BRANCA"
+            Case "02"
+                raca = "PRETA"
+            Case "03"
+                raca = "PARDA"
+            Case "04"
+                raca = "AMARELA"
+            Case "05"
+                raca = "INDIGENA"
+        End Select
+
+        campos.SetField("RACA_PACIENTE", raca)
         campos.SetField("MAE_PACIENTE", oci.Rows(0)("mae").ToString())
         campos.SetField("DDD_PACIENTE", oci.Rows(0)("tel").ToString().Replace("(", "").Replace(")", "").Substring(0, 3))
         campos.SetField("TELEFONE_PACIENTE", oci.Rows(0)("tel").ToString().Replace("-", "").Substring(4))
@@ -175,27 +192,42 @@ Public Class OCI
 
         campos.SetField("DATA_SOLICITACAO", oci.Rows(0)("data_solicitacao").ToString())
         campos.SetField("NOME_MEDICO_SOLICITANTE", oci.Rows(0)("medico_solicitante").ToString().ToUpper)
-        campos.SetField("TIPO_DOCUMENTO_MEDICO_SOLICITANTE_CNS", "On")
-        campos.SetField("TIPO_DOCUMENTO_MEDICO_SOLICITANTE_CPF", "Off")
+        MarcarCheckBox(campos, "TIPO_DOCUMENTO_MEDICO_SOLICITANTE_CNS", True)
+        MarcarCheckBox(campos, "TIPO_DOCUMENTO_MEDICO_SOLICITANTE_CPF", False)
         campos.SetField("CNS_MEDICO_SOLICITANTE", oci.Rows(0)("sus_medico_solicitante").ToString())
 
         campos.SetField("NOME_MEDICO_AUTORIZADOR", oci.Rows(0)("medico_autorizador").ToString().ToUpper)
-        campos.SetField("TIPO_DOCUMENTO_MEDICO_AUTORIZADOR_CNS", "On")
-        campos.SetField("TIPO_DOCUMENTO_MEDICO_AUTORIZADOR_CPF", "Off")
+        MarcarCheckBox(campos, "TIPO_DOCUMENTO_MEDICO_AUTORIZADOR_CNS", True)
+        MarcarCheckBox(campos, "TIPO_DOCUMENTO_MEDICO_AUTORIZADOR_CPF", False)
         campos.SetField("CNS_MEDICO_AUTORIZADOR", oci.Rows(0)("sus_medico_autorizador").ToString())
 
         campos.SetField("NUMERO_APAC", oci.Rows(0)("num_apac").ToString())
-
-        'DirectCast(oci.Rows(0)("dtnasc"), Date).ToString("dd/MM/yyyy"))
 
         Dim dataOCI As Date = CDate(oci.Rows(0)("data_solicitacao")).ToString("dd/MM/yyyy")
         campos.SetField("DATA_INICIO_OCI", dataOCI.ToString("dd/MM/yyyy"))
         campos.SetField("DATA_FIM_OCI", dataOCI.AddMonths(1).ToString("dd/MM/yyyy"))
 
         stamper.FormFlattening = True
-
         stamper.Close()
         reader.Close()
+
+    End Sub
+
+    Private Sub MarcarCheckBox(campos As AcroFields, nomeCampo As String, marcado As Boolean)
+        Dim estado As String = If(marcado, "On", "Off")
+
+        campos.SetField(nomeCampo, estado)
+
+        Dim item = campos.GetFieldItem(nomeCampo)
+
+        If item IsNot Nothing Then
+            For i As Integer = 0 To item.Size - 1
+                item.GetMerged(i).Put(
+                    PdfName.AS,
+                    New PdfName(estado)
+                )
+            Next
+        End If
 
     End Sub
 
