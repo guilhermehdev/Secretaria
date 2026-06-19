@@ -944,7 +944,7 @@ Public Class Main
 
             Case 9, 8
                 ddd = "13"
-                numero = digits
+                numero = digits.Replace("-", "")
 
             Case Else
                 MessageBox.Show("Número inválido: " & digits)
