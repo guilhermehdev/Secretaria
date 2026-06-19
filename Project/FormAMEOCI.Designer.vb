@@ -154,12 +154,12 @@ Partial Class FormAMEOCI
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.Button1 = New System.Windows.Forms.Button()
         Me.btnovo = New System.Windows.Forms.Button()
         Me.btExcluirPaciente = New System.Windows.Forms.Button()
         Me.btAtualizarDados = New System.Windows.Forms.Button()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.ckbSearchTodos = New System.Windows.Forms.CheckBox()
         Me.dtpSearchData = New System.Windows.Forms.DateTimePicker()
@@ -173,6 +173,7 @@ Partial Class FormAMEOCI
         Me.dgQueueOCI = New System.Windows.Forms.DataGridView()
         Me.btOCIpendente = New System.Windows.Forms.Button()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.Button2 = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -1464,6 +1465,7 @@ Partial Class FormAMEOCI
         Me.TabPage1.Controls.Add(Me.btExcluirPaciente)
         Me.TabPage1.Controls.Add(Me.btAtualizarDados)
         Me.TabPage1.Controls.Add(Me.GroupBox1)
+        Me.TabPage1.Controls.Add(Me.Button2)
         Me.TabPage1.Controls.Add(Me.GroupBox2)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
@@ -1471,15 +1473,6 @@ Partial Class FormAMEOCI
         Me.TabPage1.Size = New System.Drawing.Size(550, 488)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Identificação do Paciente"
-        '
-        'Button1
-        '
-        Me.Button1.Location = New System.Drawing.Point(353, 458)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 58
-        Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
         '
         'btnovo
         '
@@ -1548,6 +1541,15 @@ Partial Class FormAMEOCI
         Me.TabPage3.Size = New System.Drawing.Size(550, 488)
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Histórico"
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(353, 458)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 58
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
         '
         'GroupBox5
         '
@@ -1646,18 +1648,18 @@ Partial Class FormAMEOCI
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.EditarToolStripMenuItem, Me.ExcluirRegistroToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(109, 48)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(110, 48)
         '
         'EditarToolStripMenuItem
         '
         Me.EditarToolStripMenuItem.Name = "EditarToolStripMenuItem"
-        Me.EditarToolStripMenuItem.Size = New System.Drawing.Size(108, 22)
+        Me.EditarToolStripMenuItem.Size = New System.Drawing.Size(109, 22)
         Me.EditarToolStripMenuItem.Text = "Editar"
         '
         'ExcluirRegistroToolStripMenuItem
         '
         Me.ExcluirRegistroToolStripMenuItem.Name = "ExcluirRegistroToolStripMenuItem"
-        Me.ExcluirRegistroToolStripMenuItem.Size = New System.Drawing.Size(108, 22)
+        Me.ExcluirRegistroToolStripMenuItem.Size = New System.Drawing.Size(109, 22)
         Me.ExcluirRegistroToolStripMenuItem.Text = "Excluir"
         '
         'lbStatusCads
@@ -1791,6 +1793,15 @@ Partial Class FormAMEOCI
         'Timer1
         '
         Me.Timer1.Interval = 200
+        '
+        'Button2
+        '
+        Me.Button2.Location = New System.Drawing.Point(280, 455)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(75, 23)
+        Me.Button2.TabIndex = 58
+        Me.Button2.Text = "Button2"
+        Me.Button2.UseVisualStyleBackColor = True
         '
         'FormAMEOCI
         '
@@ -1975,4 +1986,5 @@ Partial Class FormAMEOCI
     Friend WithEvents btnovo As Button
     Friend WithEvents FecharToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Button1 As Button
+    Friend WithEvents Button2 As Button
 End Class

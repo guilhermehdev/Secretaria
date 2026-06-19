@@ -201,28 +201,29 @@ Public Class FormAMEOCI
                 If FormAMEmain.doQuery(query) Then
 
                     If txtProcedimentoPrincipal.SelectedValue = "0903010011" Then
-                        If Not isQueue Then
-                            For Each row As DataGridViewRow In dgvProcedimentos.Rows
-                                If row.IsNewRow Then Continue For
-                                If row.Cells(0).Value = "0301010072" Then Continue For ' Procedimento obrigatório, mas não deve ser inserido na tabela de secundários
-                                Dim codProcSec = If(row.Cells(0).Value Is Nothing, "''", $"'{row.Cells(0).Value}'")
-                                Dim cboSec = If(row.Cells(3).Value Is Nothing, "''", $"'{row.Cells(3).Value}'")
-                                FormAMEmain.doQuery($"INSERT INTO procedimentos_secundarios (data, num_apac, id_paciente, cod_proced_secundario, qtd, cbo, medico_solicitante) VALUES ('{m.mysqlDateFormat(dtValidadeIni.Value)}', '{txtNumApac.Text}', {idPac}, {codProcSec}, {row.Cells(1).Value}, {cboSec}, '{txtCNSMedicoExecutante.SelectedValue}')")
-                            Next
 
-                        Else
-
-                            Dim queryUpdateQueue = $"UPDATE oci_fila SET status=1 WHERE id={dgQueueItens.SelectedRows.Item(0).Cells(0).Value}"
-                            FormAMEmain.doQuery(queryUpdateQueue)
-                            loadQueueOCI()
-                        End If
+                        For Each row As DataGridViewRow In dgvProcedimentos.Rows
+                            If row.IsNewRow Then Continue For
+                            If row.Cells(0).Value = "0301010072" Then Continue For ' Procedimento obrigatório, mas não deve ser inserido na tabela de secundários
+                            Dim codProcSec = If(row.Cells(0).Value Is Nothing, "''", $"'{row.Cells(0).Value}'")
+                            Dim cboSec = If(row.Cells(3).Value Is Nothing, "''", $"'{row.Cells(3).Value}'")
+                            FormAMEmain.doQuery($"INSERT INTO procedimentos_secundarios (data, num_apac, id_paciente, cod_proced_secundario, qtd, cbo, medico_solicitante) VALUES ('{m.mysqlDateFormat(dtValidadeIni.Value)}', '{txtNumApac.Text}', {idPac}, {codProcSec}, {row.Cells(1).Value}, {cboSec}, '{txtCNSMedicoExecutante.SelectedValue}')")
+                        Next
 
                     End If
 
-                        btNovonumeroAPAC.Enabled = True
+                    btNovonumeroAPAC.Enabled = True
                     FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC",,, lbStatusCads)
                     'txtNumApac.Text = GetAndLockNextApac()
                     IDpacienteSelecionado = Nothing
+
+                    If isQueue Then
+                        Dim queryUpdateQueue = $"UPDATE oci_fila SET status=1 WHERE id={dgQueueItens.SelectedRows.Item(0).Cells(0).Value}"
+                        FormAMEmain.doQuery(queryUpdateQueue)
+                        loadQueueOCI()
+                        isQueue = False
+                    End If
+
                 End If
 
             Catch ex As Exception
@@ -727,7 +728,7 @@ Public Class FormAMEOCI
             MessageBox.Show("Selecione um procedimento para remover.")
         End If
     End Sub
-    Public Sub getServersSUS()
+    Public Sub getMedSolicAut(Optional idstartIndexMedico As String = "")
         Dim main As New FormAMEmain
         Dim comboList As New List(Of System.Windows.Forms.ComboBox) From {
             txtCNSMedicoExecutante,
@@ -738,12 +739,17 @@ Public Class FormAMEOCI
             main.loadComboBox($"SELECT SUS, nome FROM servidores WHERE cbo ='{CBOmed.SelectedValue}'", cbb, "nome", "SUS", True)
         Next
 
-        main.loadComboBox($"SELECT SUS, nome FROM servidores WHERE oci_autorizador=1", txtNomeAutorizador, "nome", "SUS", True)
+        If idstartIndexMedico <> "" Then
+            txtCNSMedicoExecutante.SelectedValue = idstartIndexMedico
+            txtNomeMedicoSolicitante.SelectedValue = idstartIndexMedico
+        End If
+
+        main.loadComboBox($"Select SUS, nome FROM servidores WHERE oci_autorizador=1", txtNomeAutorizador, "nome", "SUS", True)
 
     End Sub
     Private Function getPacientes(Optional ByVal cpf As String = Nothing, Optional nome As String = Nothing, Optional dtnasc As String = Nothing, Optional id As Integer = 0)
         Dim data As DataTable = Nothing
-        Dim query As String = "SELECT pacientes.*, ceps_peruibe.cep AS CEP,ceps_peruibe.tipo,ceps_peruibe.logradouro,ceps_peruibe.bairro
+        Dim query As String = "Select pacientes.*, ceps_peruibe.cep As CEP,ceps_peruibe.tipo,ceps_peruibe.logradouro,ceps_peruibe.bairro
           FROM pacientes
           JOIN ceps_peruibe ON pacientes.id_logradouro = ceps_peruibe.id "
         Dim orderBy As String = " ORDER BY pacientes.nome"
@@ -1068,6 +1074,8 @@ Public Class FormAMEOCI
         JOIN servidores 
             ON servidores.SUS = oci_fila.id_medico_solicitante
 
+        WHERE oci_fila.`status` = 0
+
         GROUP BY 
             oci_fila.id_medico_solicitante,
             oci_fila.cod_proced_principal,
@@ -1164,12 +1172,13 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             isQueue = True
             Dim row As DataRow = data(0)
             Dim idPac = row("id_paciente")
+            Dim idMedico As String = row("id_medico_solicitante").ToString()
 
             result = getPacientes(, , , idPac)
             resultPacientes(result)
             dtValidadeIni.Value = CDate(row("data"))
-            txtCNSMedicoExecutante.SelectedValue = row("id_medico_solicitante")
-            txtNomeMedicoSolicitante.SelectedValue = row("id_medico_solicitante")
+            txtCNSMedicoExecutante.SelectedValue = idMedico
+            txtNomeMedicoSolicitante.SelectedValue = idMedico
             txtProcedimentoPrincipal.SelectedValue = row("proced")
             txtCidPrincipal.SelectedValue = row("cid_principal")
             txtCidSecundario.SelectedValue = row("cid_secundario")
@@ -1917,7 +1926,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
 
                 chkResponsavel()
-                
+
                 nasc = dtNascimento.Text
                 nome = txtNomePaciente.Text
                 sexo = txtSexo.Text
@@ -2365,8 +2374,6 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         Dim procedSec As New Dictionary(Of String, String)
         Dim cbo As New Dictionary(Of String, String)
 
-
-
         Try
             dgvProcedimentos.Rows.Clear()
             procedSec.Clear()
@@ -2465,7 +2472,13 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             CBOmed.SelectedIndex = 0
             Quantidade.Text = "1"
 
-            getServersSUS()
+            If isQueue Then
+                getMedSolicAut(dgQueueItens.CurrentRow.Cells(1).Value)
+            Else
+                getMedSolicAut()
+            End If
+
+
             Dim queryCID As String = $"SELECT cid.cid,cid.descricao FROM cid 
         JOIN cod_oci_principal ON cid.id_oci_principal = cod_oci_principal.id
         WHERE cod_oci_principal.cod ='{txtProcedimentoPrincipal.SelectedValue}'"
@@ -2680,6 +2693,76 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         '    Next
         'End If
     End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Try
+
+
+            Dim leitor As New GCASPPReader
+            Dim p = leitor.LerPaciente()
+
+            txtNomePaciente.Text = p.Nome
+            txtCpfPaciente.Text = p.CPF
+            txtNomeMae.Text = p.Mae
+            txtSexo.Text = p.Sexo.Substring(0, 1)
+            dtNascimento.Text = p.Nascimento
+            'If p.CEP.Length > 8 Then
+            txtCep.Text = p.CEP
+                txtNumero.Text = p.Numero
+            ' Return
+            'Else
+            'txtNumero.Text = p.Numero
+            txtBairro.Text = p.Bairro
+                txtLogradouro.Text = p.Logradouro
+            'End If
+
+        Catch ex As Exception
+            MessageBox.Show(ex.ToString())
+        End Try
+
+    End Sub
+
+    Private Function LerTextoControle(hwnd As IntPtr) As String
+
+        Dim tamanho As Integer = WinApi.SendMessage(hwnd, WinApi.WM_GETTEXTLENGTH, 0, Nothing)
+        Dim sb As New StringBuilder(tamanho + 1)
+        WinApi.SendMessage(hwnd, WinApi.WM_GETTEXT, sb.Capacity, sb)
+        Return sb.ToString()
+
+    End Function
+
+    Private Function LerCaption(hwnd As IntPtr) As String
+
+        Dim sb As New StringBuilder(500)
+
+        WinApi.GetWindowText(hwnd, sb, sb.Capacity)
+
+        Return sb.ToString()
+
+    End Function
+
+    Private Sub ListarControles(parent As IntPtr)
+
+        Dim child As IntPtr = IntPtr.Zero
+        Do
+            child = WinApi.FindWindowEx(parent, child, Nothing, Nothing)
+
+            If child = IntPtr.Zero Then Exit Do
+            Dim sb As New System.Text.StringBuilder(256)
+
+            WinApi.GetClassName(child, sb, sb.Capacity)
+            Dim classe As String = sb.ToString()
+
+            If classe = "TEdit" OrElse classe = "TDBEdit" OrElse classe = "TComboBox" OrElse classe = "TDBLookupComboBox" Then
+                Dim txt As String = LerTextoControle(child)
+                Dim caption As String = LerCaption(child)
+                Debug.WriteLine($"HWND={child} Classe={classe} Valor=[{txt}]")
+            End If
+            ListarControles(child)
+        Loop
+
+    End Sub
+
 End Class
 Public Class ApacRegistro
     Public Property NumeroApac As String
@@ -2699,3 +2782,5 @@ Public Class ApacRegistro
     Public Property data As Date
     Public Property competencia As String
 End Class
+
+

@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports System.Runtime.InteropServices
 Imports iTextSharp.text.pdf
 
 
@@ -230,5 +231,14 @@ Public Class OCI
         End If
 
     End Sub
+
+    <DllImport("user32.dll")>
+    Private Shared Function FindWindowEx(
+    hwndParent As IntPtr,
+    hwndChildAfter As IntPtr,
+    lpszClass As String,
+    lpszWindow As String
+) As IntPtr
+    End Function
 
 End Class
