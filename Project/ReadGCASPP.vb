@@ -257,33 +257,33 @@ Public Class GCASPPReader
         Dim paciente As New PacienteGCASPP
 
         paciente.CPF =
-    ProcurarCampo(campos, 450, 600, 200, 260)
+                ProcurarCampo(campos, 450, 600, 200, 260)
 
         paciente.Nome =
-    ProcurarCampo(campos, 450, 900, 230, 280)
+                ProcurarCampo(campos, 450, 900, 230, 280)
 
         paciente.Nascimento =
-    ProcurarCampo(campos, 620, 760, 200, 260)
+                ProcurarCampo(campos, 620, 760, 200, 260)
 
         paciente.Sexo =
-    ProcurarCampo(campos, 1000, 1200, 220, 280)
+                ProcurarCampo(campos, 1000, 1200, 220, 280)
 
         paciente.Mae =
-    ProcurarCampo(campos, 850, 1150, 300, 350)
+                ProcurarCampo(campos, 850, 1150, 300, 350)
 
         If typeofWindows = 0 Then 'tipo Cliente
 
             paciente.CEP =
-    ProcurarCampo(campos, 850, 1050, 530, 580)
+                ProcurarCampo(campos, 850, 1050, 530, 580)
 
             paciente.Logradouro =
-        ProcurarCampo(campos, 760, 860, 480, 520)
+                ProcurarCampo(campos, 760, 860, 480, 520)
 
             paciente.Numero =
-        ProcurarCampo(campos, 436, 536, 479, 579)
+                ProcurarCampo(campos, 436, 536, 479, 579)
 
             paciente.Bairro =
-    ProcurarCampo(campos, 760, 950, 500, 550)
+                ProcurarCampo(campos, 760, 950, 500, 550)
 
         ElseIf typeofWindows = 1 Then 'tipo Cidadao
             ' Endereço
