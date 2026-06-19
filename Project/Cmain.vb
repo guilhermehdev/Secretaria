@@ -919,34 +919,39 @@ Public Class Main
 
     End Function
     Public Sub PasteTelefone(txtDDD As TextBox, txtNumero As TextBox)
-        ' Lê da área de transferência
+
         Dim raw As String = Clipboard.GetText()
 
-        If String.IsNullOrWhiteSpace(raw) Then
-            MessageBox.Show("A área de transferência está vazia.")
-            Exit Sub
-        End If
+        If String.IsNullOrWhiteSpace(raw) Then Exit Sub
 
         ' Mantém apenas números
         Dim digits As String = New String(raw.Where(Function(c) Char.IsDigit(c)).ToArray())
 
-        ' Remove DDI +55 se existir
+        ' Remove DDI 55
         If digits.StartsWith("55") AndAlso digits.Length > 11 Then
             digits = digits.Substring(2)
         End If
 
-        ' Agora deve restar: DDD (2) + Número (8 ou 9 dígitos)
-        If digits.Length < 10 Then
-            MessageBox.Show("Número inválido: " & digits)
-            Exit Sub
-        End If
+        Dim ddd As String = ""
+        Dim numero As String = ""
 
-        ' Separa DDD e número
-        Dim ddd As String = digits.Substring(0, 2)
-        Dim numero As String = digits.Substring(2)
+        Select Case digits.Length
 
-        txtDDD.Focus()
-        ' Preenche os textboxes
+            Case 11, 10
+                ' Com DDD
+                ddd = digits.Substring(0, 2)
+                numero = digits.Substring(2)
+
+            Case 9, 8
+                ddd = "13"
+                numero = digits
+
+            Case Else
+                MessageBox.Show("Número inválido: " & digits)
+                Exit Sub
+
+        End Select
+
         txtDDD.Text = ddd
         txtNumero.Text = numero
 
@@ -962,8 +967,13 @@ Public Class Main
         End If
 
         ' Só aceita 10 ou 11 dígitos
-        If digits.Length <> 10 AndAlso digits.Length <> 11 Then
+        If digits.Length < 8 OrElse digits.Length > 11 Then
             Return False
+        End If
+
+        If digits.Length = 9 Then
+            If digits.Distinct().Count() = 1 Then Return False
+            Return digits.StartsWith("9")
         End If
 
         ' Separa DDD e número
@@ -1002,6 +1012,12 @@ Public Class Main
         If digits.Length = 10 Then
             If Not "2345".Contains(num(0)) Then Return False
             Return True
+        End If
+
+        If num.Length = 9 Then
+            Return num.StartsWith("9")
+        ElseIf num.Length = 8 Then
+            Return "2345".Contains(num(0))
         End If
 
         Return False

@@ -1188,6 +1188,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             End If
         End If
 
+        Clipboard.SetText(result(0)("dtnasc").ToString())
         isLoading = False
 
     End Sub
@@ -1232,7 +1233,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     End Sub
 
     Private Sub checkQueue()
-        Dim dataset = FormAMEmain.getDataset("SELECT COUNT(*) AS total FROM oci_fila WHERE `status`=0").Rows(0).Item("total")
+        Dim dataset = FormAMEmain.getDataset("Select COUNT(*) As total FROM oci_fila WHERE `status`=0").Rows(0).Item("total")
 
         If dataset > 0 Then
             btOCIpendente.Visible = True
@@ -1743,10 +1744,10 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         Else
             Try
                 cbTipoLogradouro.SelectedIndex = 0
-                txtLogradouro.Text = ""
-                txtBairro.Text = ""
-                txtNumero.Text = ""
-                txtComplemento.Text = ""
+                txtLogradouro.Clear()
+                txtBairro.Clear()
+                If txtNumero.Text = "" Then txtNumero.Clear()
+                txtComplemento.Clear()
             Catch ex As Exception
 
             End Try
@@ -2693,33 +2694,30 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         '    Next
         'End If
     End Sub
-
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+    Private Sub getFromGCASPP()
         Try
-
-
             Dim leitor As New GCASPPReader
             Dim p = leitor.LerPaciente()
 
-            txtNomePaciente.Text = p.Nome
-            txtCpfPaciente.Text = p.CPF
-            txtNomeMae.Text = p.Mae
-            txtSexo.Text = p.Sexo.Substring(0, 1)
-            dtNascimento.Text = p.Nascimento
-            'If p.CEP.Length > 8 Then
-            txtCep.Text = p.CEP
-                txtNumero.Text = p.Numero
-            ' Return
-            'Else
-            'txtNumero.Text = p.Numero
-            txtBairro.Text = p.Bairro
-                txtLogradouro.Text = p.Logradouro
-            'End If
+            If txtNomePaciente.Text = "" Then txtNomePaciente.Text = p.Nome
+            If txtCpfPaciente.Text = "" Then txtCpfPaciente.Text = p.CPF
+            If txtNomeMae.Text = "" Then txtNomeMae.Text = p.Mae
+            If txtSexo.Text = "" Then txtSexo.Text = p.Sexo.Substring(0, 1)
+            If dtNascimento.Text = "" Then dtNascimento.Text = p.Nascimento
+            If txtCep.Text = "     -" Then txtCep.Text = p.CEP
+            If txtNumero.Text = "" Then txtNumero.Text = p.Numero
+            If txtBairro.Text = "" Then txtBairro.Text = p.Bairro
+            If txtLogradouro.Text = "" Then txtLogradouro.Text = p.Logradouro
 
         Catch ex As Exception
             MessageBox.Show(ex.ToString())
         End Try
 
+    End Sub
+
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        getFromGCASPP()
     End Sub
 
     Private Function LerTextoControle(hwnd As IntPtr) As String
