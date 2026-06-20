@@ -174,7 +174,7 @@ Public Class FormAMEOCI
 
                 Catch ex As Exception
                     'MsgBox(idPac)
-                    'MsgBox(ex.Message)
+                    MsgBox(ex.Message)
                     Return False
                 End Try
 
