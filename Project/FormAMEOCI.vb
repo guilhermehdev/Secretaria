@@ -2570,6 +2570,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                 LimparControles(ctrl.Controls)
             End If
 
+            btNovonumeroAPAC.Enabled = True
         Next
 
     End Sub
@@ -2709,13 +2710,17 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         Try
             Dim leitor As New GCASPPReader
             Dim p = leitor.LerPaciente()
+            Dim cepValido = p.CEP
+
 
             If txtNomePaciente.Text = "" Then txtNomePaciente.Text = p.Nome
             If txtCpfPaciente.Text = "" Then txtCpfPaciente.Text = p.CPF
             If txtNomeMae.Text = "" Then txtNomeMae.Text = p.Mae
             If txtSexo.Text = "" Then txtSexo.Text = p.Sexo.Substring(0, 1)
             If dtNascimento.Text = "  /  /" Then dtNascimento.Text = p.Nascimento
-            If txtCep.Text = "     -" Then txtCep.Text = p.CEP
+            If cepValido <> "11750-000" AndAlso cepValido <> "11750000" Then
+                If txtCep.Text = "     -" Then txtCep.Text = cepValido
+            End If
             If txtNumero.Text = "" Then txtNumero.Text = p.Numero
             If txtBairro.Text = "" Then txtBairro.Text = p.Bairro
             If txtLogradouro.Text = "" Then txtLogradouro.Text = p.Logradouro
