@@ -1762,28 +1762,38 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         If Char.IsLetter(e.KeyChar) Then e.KeyChar = Char.ToUpper(e.KeyChar)
     End Sub
     Private Sub cbo_TextChanged(sender As Object, e As EventArgs) Handles txtNomePaciente.TextChanged
-        If isLoading Then Exit Sub
-        debounceTimer.Stop()
+        Try
 
-        If _upperLock Then Return
-        Dim cb = DirectCast(sender, ComboBox)
-        Dim txt = cb.Text
-        Dim upper = txt.ToUpper()
+            If isLoading Then Exit Sub
+            debounceTimer.Stop()
 
-        If txt <> upper Then
-            _upperLock = True
-            Dim pos = cb.SelectionStart
-            cb.Text = upper
-            ' protege o cursor mesmo se o texto encurtar
-            cb.SelectionStart = Math.Min(pos, cb.Text.Length)
-            _upperLock = False
-        End If
+            If _upperLock Then Return
+            Dim cb = DirectCast(sender, ComboBox)
+            Dim txt = cb.Text
+            Dim upper = txt.ToUpper()
 
-        If txtNomePaciente.Text.Length >= 4 Then
-            debounceTimer.Start()
-        Else
-            popupGrid.Visible = False
-        End If
+            If txt <> upper Then
+                _upperLock = True
+                Dim pos = cb.SelectionStart
+                cb.Text = upper
+                ' protege o cursor mesmo se o texto encurtar
+                cb.SelectionStart = Math.Min(pos, cb.Text.Length)
+                _upperLock = False
+            End If
+
+            If txtNomePaciente.Text.Length >= 4 Then
+                popupGrid.Visible = True
+                BuscarPacientes(sender, e, "nome")
+                'debounceTimer.Start()
+            Else
+                popupGrid.Visible = False
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        Finally
+            isLoading = False
+        End Try
 
     End Sub
 
@@ -1798,6 +1808,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                     popupGrid.Visible = False
                     Exit Sub
                 End If
+
                 result = getPacientes(, txtNomePaciente.Text,,)
             ElseIf parameter = "cpf" Then
                 result = getPacientes(txtCpfPaciente.Text)
@@ -2703,19 +2714,18 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             If txtCpfPaciente.Text = "" Then txtCpfPaciente.Text = p.CPF
             If txtNomeMae.Text = "" Then txtNomeMae.Text = p.Mae
             If txtSexo.Text = "" Then txtSexo.Text = p.Sexo.Substring(0, 1)
-            If dtNascimento.Text = "" Then dtNascimento.Text = p.Nascimento
+            If dtNascimento.Text = "  /  /" Then dtNascimento.Text = p.Nascimento
             If txtCep.Text = "     -" Then txtCep.Text = p.CEP
             If txtNumero.Text = "" Then txtNumero.Text = p.Numero
             If txtBairro.Text = "" Then txtBairro.Text = p.Bairro
             If txtLogradouro.Text = "" Then txtLogradouro.Text = p.Logradouro
+            chkResponsavel()
 
         Catch ex As Exception
             MessageBox.Show(ex.ToString())
         End Try
 
     End Sub
-
-
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         getFromGCASPP()
     End Sub
