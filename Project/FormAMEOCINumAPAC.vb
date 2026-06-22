@@ -7,109 +7,104 @@ Imports System.Windows
 
 Public Class FormAMEOCINumAPAC
     Dim m As New Main
+    Dim iduser As Integer = FormAMEOCI.idUser
 
-    Public Sub substituirNumAPAC(caminhoArquivo As String)
-        ' Dicionário de números errados → certos
-        Dim mapa As New Dictionary(Of String, String) From {
-            {"3525705636574", "3525706138724"},
-            {"3525705636585", "3525706138735"},
-            {"3525705636596", "3525706138746"},
-            {"3525705636607", "3525706138757"},
-            {"3525705636618", "3525706138768"},
-            {"3525705636629", "3525706138779"},
-            {"3525705636630", "3525706138780"},
-            {"3525705636640", "3525706138790"},
-            {"3525705636651", "3525706138801"},
-            {"3525705636662", "3525706138812"},
-            {"3525705636673", "3525706138823"},
-            {"3525705636684", "3525706138834"},
-            {"3525705636695", "3525706138845"},
-            {"3525705636706", "3525706138856"},
-            {"3525705636717", "3525706138867"},
-            {"3525705636728", "3525706138878"},
-            {"3525705636739", "3525706138889"},
-            {"3525705636740", "3525706138890"},
-            {"3525705636750", "3525706138900"},
-            {"3525705636761", "3525706138911"},
-            {"3525705636772", "3525706138922"},
-            {"3525705636783", "3525706138933"},
-            {"3525705636805", "3525706138944"},
-            {"3525705636816", "3525706138955"},
-            {"3525705636827", "3525706138966"},
-            {"3525705636838", "3525706138977"},
-            {"3525705636849", "3525706138988"},
-            {"3525705636850", "3525706138999"},
-            {"3525705636860", "3525706139000"},
-            {"3525705636871", "3525706139010"},
-            {"3525705636882", "3525706139021"},
-            {"3525705636893", "3525706139032"},
-            {"3525705636904", "3525706139043"},
-            {"3525705636915", "3525706139054"},
-            {"3525705636926", "3525706139065"},
-            {"3525705636937", "3525706139076"},
-            {"3525705636948", "3525706139087"},
-            {"3525705636959", "3525706139098"},
-            {"3525705636960", "3525706139109"},
-            {"3525705636970", "3525706139110"},
-            {"3525705636981", "3525706139120"},
-            {"3525705636992", "3525706139131"},
-            {"3525705637003", "3525706139142"},
-            {"3525705637014", "3525706139153"},
-            {"3525705637025", "3525706139164"},
-            {"3525705637036", "3525706139175"},
-            {"3525705637047", "3525706139186"},
-            {"3525705637058", "3525706139197"},
-            {"3525705637069", "3525706139208"},
-            {"3525705637070", "3525706139219"},
-            {"3525705637080", "3525706139220"},
-            {"3525705637091", "3525706139230"},
-            {"3525705637102", "3525706139241"}
-        }
+    'Public Sub substituirNumAPAC(caminhoArquivo As String)
+    '    ' Dicionário de números errados → certos
+    '    Dim mapa As New Dictionary(Of String, String) From {
+    '        {"3525705636574", "3525706138724"},
+    '        {"3525705636585", "3525706138735"},
+    '        {"3525705636596", "3525706138746"},
+    '        {"3525705636607", "3525706138757"},
+    '        {"3525705636618", "3525706138768"},
+    '        {"3525705636629", "3525706138779"},
+    '        {"3525705636630", "3525706138780"},
+    '        {"3525705636640", "3525706138790"},
+    '        {"3525705636651", "3525706138801"},
+    '        {"3525705636662", "3525706138812"},
+    '        {"3525705636673", "3525706138823"},
+    '        {"3525705636684", "3525706138834"},
+    '        {"3525705636695", "3525706138845"},
+    '        {"3525705636706", "3525706138856"},
+    '        {"3525705636717", "3525706138867"},
+    '        {"3525705636728", "3525706138878"},
+    '        {"3525705636739", "3525706138889"},
+    '        {"3525705636740", "3525706138890"},
+    '        {"3525705636750", "3525706138900"},
+    '        {"3525705636761", "3525706138911"},
+    '        {"3525705636772", "3525706138922"},
+    '        {"3525705636783", "3525706138933"},
+    '        {"3525705636805", "3525706138944"},
+    '        {"3525705636816", "3525706138955"},
+    '        {"3525705636827", "3525706138966"},
+    '        {"3525705636838", "3525706138977"},
+    '        {"3525705636849", "3525706138988"},
+    '        {"3525705636850", "3525706138999"},
+    '        {"3525705636860", "3525706139000"},
+    '        {"3525705636871", "3525706139010"},
+    '        {"3525705636882", "3525706139021"},
+    '        {"3525705636893", "3525706139032"},
+    '        {"3525705636904", "3525706139043"},
+    '        {"3525705636915", "3525706139054"},
+    '        {"3525705636926", "3525706139065"},
+    '        {"3525705636937", "3525706139076"},
+    '        {"3525705636948", "3525706139087"},
+    '        {"3525705636959", "3525706139098"},
+    '        {"3525705636960", "3525706139109"},
+    '        {"3525705636970", "3525706139110"},
+    '        {"3525705636981", "3525706139120"},
+    '        {"3525705636992", "3525706139131"},
+    '        {"3525705637003", "3525706139142"},
+    '        {"3525705637014", "3525706139153"},
+    '        {"3525705637025", "3525706139164"},
+    '        {"3525705637036", "3525706139175"},
+    '        {"3525705637047", "3525706139186"},
+    '        {"3525705637058", "3525706139197"},
+    '        {"3525705637069", "3525706139208"},
+    '        {"3525705637070", "3525706139219"},
+    '        {"3525705637080", "3525706139220"},
+    '        {"3525705637091", "3525706139230"},
+    '        {"3525705637102", "3525706139241"}
+    '    }
 
-        ' --- 1. Lê o arquivo original em bytes (mantendo codificação ANSI) ---
-        Dim conteudoBytes As Byte() = File.ReadAllBytes(caminhoArquivo)
-        Dim conteudo As String = Encoding.Default.GetString(conteudoBytes)
+    '    ' --- 1. Lê o arquivo original em bytes (mantendo codificação ANSI) ---
+    '    Dim conteudoBytes As Byte() = File.ReadAllBytes(caminhoArquivo)
+    '    Dim conteudo As String = Encoding.Default.GetString(conteudoBytes)
 
-        ' --- 2. Substitui literalmente, sem regex ---
-        For Each par In mapa
-            conteudo = conteudo.Replace(par.Key, par.Value)
-        Next
+    '    ' --- 2. Substitui literalmente, sem regex ---
+    '    For Each par In mapa
+    '        conteudo = conteudo.Replace(par.Key, par.Value)
+    '    Next
 
-        ' --- 3. Força CRLF em todas as quebras ---
-        conteudo = conteudo.Replace(vbCrLf, vbLf) ' normaliza
-        conteudo = conteudo.Replace(vbCr, vbLf)
-        conteudo = conteudo.Replace(vbLf, vbCrLf)
+    '    ' --- 3. Força CRLF em todas as quebras ---
+    '    conteudo = conteudo.Replace(vbCrLf, vbLf) ' normaliza
+    '    conteudo = conteudo.Replace(vbCr, vbLf)
+    '    conteudo = conteudo.Replace(vbLf, vbCrLf)
 
-        ' --- 4. Divide por linhas e checa comprimento ---
-        Dim linhas = conteudo.Split({vbCrLf}, StringSplitOptions.None)
-        Dim linhasComErro As New List(Of String)
-        For i = 0 To linhas.Length - 1
-            If linhas(i).Trim().Length > 0 AndAlso linhas(i).Length <> 533 Then
-                linhasComErro.Add($"Linha {i + 1}: {linhas(i).Length} caracteres (esperado: 533)")
-            End If
-        Next
+    '    ' --- 4. Divide por linhas e checa comprimento ---
+    '    Dim linhas = conteudo.Split({vbCrLf}, StringSplitOptions.None)
+    '    Dim linhasComErro As New List(Of String)
+    '    For i = 0 To linhas.Length - 1
+    '        If linhas(i).Trim().Length > 0 AndAlso linhas(i).Length <> 533 Then
+    '            linhasComErro.Add($"Linha {i + 1}: {linhas(i).Length} caracteres (esperado: 533)")
+    '        End If
+    '    Next
 
-        ' --- 5. Salva novamente em ANSI (sem mudar tamanho) ---
-        Dim novoCaminho As String = Path.Combine(
-        Path.GetDirectoryName(caminhoArquivo),
-        Path.GetFileNameWithoutExtension(caminhoArquivo) & "_corrigido" & Path.GetExtension(caminhoArquivo)
-    )
+    '    ' --- 5. Salva novamente em ANSI (sem mudar tamanho) ---
+    '    Dim novoCaminho As String = Path.Combine(
+    '    Path.GetDirectoryName(caminhoArquivo),
+    '    Path.GetFileNameWithoutExtension(caminhoArquivo) & "_corrigido" & Path.GetExtension(caminhoArquivo)
+    ')
 
-        File.WriteAllText(novoCaminho, conteudo, Encoding.Default)
+    '    File.WriteAllText(novoCaminho, conteudo, Encoding.Default)
 
-        ' --- 6. Relatório visual ---
-        If linhasComErro.Count > 0 Then
-            MsgBox("⚠️ Linhas desalinhadas detectadas:" & vbCrLf & String.Join(vbCrLf, linhasComErro))
-        Else
-            MsgBox($"✅ Arquivo corrigido com sucesso e validado: {novoCaminho}")
-        End If
-    End Sub
-
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        If OpenFileDialog1.ShowDialog() = DialogResult.OK Then
-            substituirNumAPAC(OpenFileDialog1.FileName)
-        End If
-    End Sub
+    '    ' --- 6. Relatório visual ---
+    '    If linhasComErro.Count > 0 Then
+    '        MsgBox("⚠️ Linhas desalinhadas detectadas:" & vbCrLf & String.Join(vbCrLf, linhasComErro))
+    '    Else
+    '        MsgBox($"✅ Arquivo corrigido com sucesso e validado: {novoCaminho}")
+    '    End If
+    'End Sub
 
     Public Sub loadNUMAPAC(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "", Optional dtlanc As Date = Nothing, Optional order As String = "id", Optional custom As String = "", Optional medico As String = "", Optional labelCount As Label = Nothing)
 
@@ -229,7 +224,7 @@ Public Class FormAMEOCINumAPAC
         cbOCI.SelectedIndex = 0
         cbStatus.SelectedIndex = -1
         chkDisponiveis.Checked = False
-        loadNUMAPAC(dgvNumerosAPAC,,,, CInt(cbUsuarios.SelectedValue))
+        loadNUMAPAC(dgvNumerosAPAC,,,, iduser)
     End Sub
     Private Sub loadByData()
         dgvNumerosAPAC.DataSource = Nothing
@@ -239,7 +234,7 @@ Public Class FormAMEOCINumAPAC
         cbUsuarios.SelectedIndex = -1
         cbStatus.SelectedIndex = -1
         chkDisponiveis.Checked = False
-        loadNUMAPAC(dgvNumerosAPAC,,,,, dtpIni.Value, dtpFim.Value,,)
+        loadNUMAPAC(dgvNumerosAPAC,,,,, dtpIni.Value, dtpFim.Value,,,,,, cbMedico.SelectedValue)
     End Sub
     Private Sub dtpIni_ValueChanged(sender As Object, e As EventArgs) Handles dtpIni.ValueChanged
         loadByData()
@@ -488,6 +483,48 @@ Public Class FormAMEOCINumAPAC
         Else
             ToolStripStatusLabel1.Text = $"{dgvNumerosAPAC.Rows.Count} registros."
         End If
+    End Sub
+    Private Sub btImprimirOCI_Click(sender As Object, e As EventArgs) Handles btImprimirOCI.Click
+        Dim oci As New OCI
+
+        If dgvNumerosAPAC.RowCount = 0 Then
+            MsgBox("Nenhum registro para imprimir.")
+            Exit Sub
+        End If
+
+        Dim dgData = CDate(dgvNumerosAPAC.SelectedRows(0).Cells(5).Value).ToString("dd-MM-yyyy")
+        Dim dir As String = $"D:\Desktop\{cbMedico.Text}\{dgData}"
+
+        If Not Directory.Exists(dir) Then
+            Directory.CreateDirectory(dir)
+        End If
+
+        Dim arquivos As New List(Of String)
+
+        For Each row As DataGridViewRow In dgvNumerosAPAC.Rows
+            If row.IsNewRow Then Continue For
+            Dim pdf As String = $"{dir}\{row.Cells(0).Value}.pdf"
+            oci.printOCI(row.Cells(0).Value, pdf)
+            arquivos.Add(pdf)
+        Next
+
+        Dim lotePdf As String = $"{dir}\{cbMedico.Text & "_" & dgData}.pdf"
+
+        OCI.UnirPDFs(arquivos, lotePdf)
+        If File.Exists(lotePdf) Then
+
+            For Each arquivo In arquivos
+
+                If File.Exists(arquivo) Then
+                    File.Delete(arquivo)
+                End If
+
+            Next
+
+            m.msgInfo("PDF gerado com sucesso: " & lotePdf)
+
+        End If
+
     End Sub
 
 End Class

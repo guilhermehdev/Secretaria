@@ -61,6 +61,7 @@ Partial Class FormAMEOCINumAPAC
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.GeradorNumeraçãoAPACToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btImprimirOCI = New System.Windows.Forms.Button()
         CType(Me.dgvNumerosAPAC, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ctxMenuAPAC.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -373,9 +374,9 @@ Partial Class FormAMEOCINumAPAC
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.statusLabelRegistros, Me.ToolStripStatusLabel1})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 499)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 531)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(866, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(871, 22)
         Me.StatusStrip1.TabIndex = 37
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -395,7 +396,7 @@ Partial Class FormAMEOCINumAPAC
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GeradorNumeraçãoAPACToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(866, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(871, 24)
         Me.MenuStrip1.TabIndex = 38
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -405,11 +406,21 @@ Partial Class FormAMEOCINumAPAC
         Me.GeradorNumeraçãoAPACToolStripMenuItem.Size = New System.Drawing.Size(157, 20)
         Me.GeradorNumeraçãoAPACToolStripMenuItem.Text = "Gerador numeração APAC"
         '
+        'btImprimirOCI
+        '
+        Me.btImprimirOCI.Location = New System.Drawing.Point(761, 504)
+        Me.btImprimirOCI.Name = "btImprimirOCI"
+        Me.btImprimirOCI.Size = New System.Drawing.Size(92, 23)
+        Me.btImprimirOCI.TabIndex = 59
+        Me.btImprimirOCI.Text = "Imprimir OCI"
+        Me.btImprimirOCI.UseVisualStyleBackColor = True
+        '
         'FormAMEOCINumAPAC
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(866, 521)
+        Me.ClientSize = New System.Drawing.Size(871, 553)
+        Me.Controls.Add(Me.btImprimirOCI)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.MenuStrip1)
@@ -469,4 +480,5 @@ Partial Class FormAMEOCINumAPAC
     Friend WithEvents Label1 As Label
     Friend WithEvents cbMedico As ComboBox
     Friend WithEvents ExcluirOCIToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents btImprimirOCI As Button
 End Class

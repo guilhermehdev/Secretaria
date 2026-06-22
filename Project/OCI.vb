@@ -32,14 +32,7 @@ Public Class OCI
     Private Sub OCI_PDF(pdfOrigem As String, pdfDestino As String, oci As DataTable, Optional procedimentoSecundario As DataTable = Nothing)
 
         Dim reader As New PdfReader(pdfOrigem)
-        Dim stamper As New PdfStamper(
-            reader,
-            New FileStream(
-                pdfDestino,
-                FileMode.Create
-            )
-        )
-
+        Dim stamper As New PdfStamper(reader, New FileStream(pdfDestino, FileMode.Create))
         Dim campos = stamper.AcroFields
 
         campos.SetField("NOME_PACIENTE", oci.Rows(0)("nome").ToString())
@@ -144,47 +137,54 @@ Public Class OCI
             campos.SetField("DESCRICAO_PROCED_SECUNDARIO_2", "Eletrocardiograma".ToUpper())
             campos.SetField("QTD_PROCED_SECUNDARIO_2", "1")
 
-            For i As Integer = 0 To procedimentoSecundario.Rows.Count - 1
+            Try
 
-                Dim codigo = procedimentoSecundario.Rows(i)("cod_proced_secundario").ToString()
-                Dim descricao = procedimentoSecundario.Rows(i)("descricao").ToString()
-                Dim qtd = procedimentoSecundario.Rows(i)("qtd").ToString()
+                For i As Integer = 0 To procedimentoSecundario.Rows.Count - 1
 
-                Select Case i
+                    Dim codigo = procedimentoSecundario.Rows(i)("cod_proced_secundario").ToString()
+                    Dim descricao = procedimentoSecundario.Rows(i)("descricao").ToString()
+                    Dim qtd = procedimentoSecundario.Rows(i)("qtd").ToString()
 
-                    Case 0
+                    Select Case i
 
-                        campos.SetField("CODPROCED_SECUNDARIO_1", codigo)
-                        campos.SetField("DESCRICAO_PROCED_SECUNDARIO_1", descricao)
-                        campos.SetField("QTD_PROCED_SECUNDARIO_1", qtd)
+                        Case 0
 
-                    Case 1
+                            campos.SetField("CODPROCED_SECUNDARIO_1", codigo)
+                            campos.SetField("DESCRICAO_PROCED_SECUNDARIO_1", descricao)
+                            campos.SetField("QTD_PROCED_SECUNDARIO_1", qtd)
 
-                        campos.SetField("CODPROCED_SECUNDARIO_2", codigo)
-                        campos.SetField("DESCRICAO_PROCED_SECUNDARIO_2", descricao)
-                        campos.SetField("QTD_PROCED_SECUNDARIO_2", qtd)
+                        Case 1
 
-                    Case 2
+                            campos.SetField("CODPROCED_SECUNDARIO_2", codigo)
+                            campos.SetField("DESCRICAO_PROCED_SECUNDARIO_2", descricao)
+                            campos.SetField("QTD_PROCED_SECUNDARIO_2", qtd)
 
-                        campos.SetField("CODPROCED_SECUNDARIO_3", codigo)
-                        campos.SetField("DESCRICAO_PROCED_SECUNDARIO_3", descricao)
-                        campos.SetField("QTD_PROCED_SECUNDARIO_3", qtd)
+                        Case 2
 
-                    Case 3
+                            campos.SetField("CODPROCED_SECUNDARIO_3", codigo)
+                            campos.SetField("DESCRICAO_PROCED_SECUNDARIO_3", descricao)
+                            campos.SetField("QTD_PROCED_SECUNDARIO_3", qtd)
 
-                        campos.SetField("CODPROCED_SECUNDARIO_4", codigo)
-                        campos.SetField("DESCRICAO_PROCED_SECUNDARIO_4", descricao)
-                        campos.SetField("QTD_PROCED_SECUNDARIO_4", qtd)
+                        Case 3
 
-                    Case 4
+                            campos.SetField("CODPROCED_SECUNDARIO_4", codigo)
+                            campos.SetField("DESCRICAO_PROCED_SECUNDARIO_4", descricao)
+                            campos.SetField("QTD_PROCED_SECUNDARIO_4", qtd)
 
-                        campos.SetField("CODPROCED_SECUNDARIO_5", codigo)
-                        campos.SetField("DESCRICAO_PROCED_SECUNDARIO_5", descricao)
-                        campos.SetField("QTD_PROCED_SECUNDARIO_5", qtd)
+                        Case 4
 
-                End Select
+                            campos.SetField("CODPROCED_SECUNDARIO_5", codigo)
+                            campos.SetField("DESCRICAO_PROCED_SECUNDARIO_5", descricao)
+                            campos.SetField("QTD_PROCED_SECUNDARIO_5", qtd)
 
-            Next
+                    End Select
+
+                Next
+
+            Catch ex As Exception
+                MsgBox("Erro ao preencher procedimentos secundários: " & ex.Message)
+            End Try
+
 
         End If
 
@@ -204,13 +204,42 @@ Public Class OCI
 
         campos.SetField("NUMERO_APAC", oci.Rows(0)("num_apac").ToString())
 
-        Dim dataOCI As Date = CDate(oci.Rows(0)("data_solicitacao")).ToString("dd/MM/yyyy")
+        Dim dataOCI As Date = CDate(oci.Rows(0)("data_solicitacao"))
         campos.SetField("DATA_INICIO_OCI", dataOCI.ToString("dd/MM/yyyy"))
         campos.SetField("DATA_FIM_OCI", dataOCI.AddMonths(1).ToString("dd/MM/yyyy"))
 
         stamper.FormFlattening = True
         stamper.Close()
         reader.Close()
+
+    End Sub
+
+    Public Shared Sub UnirPDFs(listaArquivos As List(Of String), pdfSaida As String)
+
+        Dim doc As New iTextSharp.text.Document()
+        Using fs As New FileStream(pdfSaida, FileMode.Create)
+
+            Dim copy As New PdfSmartCopy(doc, fs)
+
+            doc.Open()
+
+            For Each arquivo In listaArquivos
+
+                Using reader As New PdfReader(arquivo)
+
+                    For pagina As Integer = 1 To reader.NumberOfPages
+                        copy.AddPage(
+                        copy.GetImportedPage(reader, pagina)
+                    )
+                    Next
+
+                End Using
+
+            Next
+
+            doc.Close()
+
+        End Using
 
     End Sub
 

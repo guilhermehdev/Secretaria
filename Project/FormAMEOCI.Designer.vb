@@ -157,9 +157,9 @@ Partial Class FormAMEOCI
         Me.btnovo = New System.Windows.Forms.Button()
         Me.btExcluirPaciente = New System.Windows.Forms.Button()
         Me.btAtualizarDados = New System.Windows.Forms.Button()
+        Me.btGCASPP = New System.Windows.Forms.Button()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
-        Me.Button1 = New System.Windows.Forms.Button()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.ckbSearchTodos = New System.Windows.Forms.CheckBox()
         Me.dtpSearchData = New System.Windows.Forms.DateTimePicker()
@@ -173,7 +173,6 @@ Partial Class FormAMEOCI
         Me.dgQueueOCI = New System.Windows.Forms.DataGridView()
         Me.btOCIpendente = New System.Windows.Forms.Button()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.Button2 = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -386,6 +385,7 @@ Partial Class FormAMEOCI
         Me.GroupBox2.Controls.Add(Me.dtNascimento)
         Me.GroupBox2.Controls.Add(Me.Label49)
         Me.GroupBox2.Controls.Add(Me.txtDDD)
+        Me.GroupBox2.Controls.Add(Me.btGCASPP)
         Me.GroupBox2.Controls.Add(Me.GroupBox6)
         Me.GroupBox2.Controls.Add(Me.Label27)
         Me.GroupBox2.Controls.Add(Me.txtProntuario)
@@ -423,20 +423,20 @@ Partial Class FormAMEOCI
         Me.txtNomePaciente.DropDownWidth = 1
         Me.txtNomePaciente.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtNomePaciente.FormattingEnabled = True
-        Me.txtNomePaciente.Location = New System.Drawing.Point(99, 39)
+        Me.txtNomePaciente.Location = New System.Drawing.Point(191, 36)
         Me.txtNomePaciente.MaxLength = 30
         Me.txtNomePaciente.Name = "txtNomePaciente"
-        Me.txtNomePaciente.Size = New System.Drawing.Size(378, 21)
+        Me.txtNomePaciente.Size = New System.Drawing.Size(286, 21)
         Me.txtNomePaciente.TabIndex = 8
         '
         'dtNascimento
         '
         Me.dtNascimento.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.dtNascimento.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.dtNascimento.Location = New System.Drawing.Point(13, 39)
+        Me.dtNascimento.Location = New System.Drawing.Point(119, 36)
         Me.dtNascimento.Mask = "00/00/0000"
         Me.dtNascimento.Name = "dtNascimento"
-        Me.dtNascimento.Size = New System.Drawing.Size(82, 21)
+        Me.dtNascimento.Size = New System.Drawing.Size(69, 21)
         Me.dtNascimento.TabIndex = 7
         Me.dtNascimento.ValidatingType = GetType(Date)
         '
@@ -675,7 +675,7 @@ Partial Class FormAMEOCI
         'Label25
         '
         Me.Label25.AutoSize = True
-        Me.Label25.Location = New System.Drawing.Point(10, 23)
+        Me.Label25.Location = New System.Drawing.Point(116, 20)
         Me.Label25.Name = "Label25"
         Me.Label25.Size = New System.Drawing.Size(63, 13)
         Me.Label25.TabIndex = 29
@@ -760,7 +760,7 @@ Partial Class FormAMEOCI
         'Label23
         '
         Me.Label23.AutoSize = True
-        Me.Label23.Location = New System.Drawing.Point(478, 24)
+        Me.Label23.Location = New System.Drawing.Point(478, 20)
         Me.Label23.Name = "Label23"
         Me.Label23.Size = New System.Drawing.Size(31, 13)
         Me.Label23.TabIndex = 27
@@ -780,7 +780,7 @@ Partial Class FormAMEOCI
         'Label20
         '
         Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(95, 23)
+        Me.Label20.Location = New System.Drawing.Point(187, 20)
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(141, 13)
         Me.Label20.TabIndex = 24
@@ -801,7 +801,7 @@ Partial Class FormAMEOCI
         Me.txtSexo.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtSexo.FormattingEnabled = True
         Me.txtSexo.Items.AddRange(New Object() {"M", "F"})
-        Me.txtSexo.Location = New System.Drawing.Point(481, 39)
+        Me.txtSexo.Location = New System.Drawing.Point(481, 35)
         Me.txtSexo.Name = "txtSexo"
         Me.txtSexo.Size = New System.Drawing.Size(52, 23)
         Me.txtSexo.TabIndex = 9
@@ -1465,7 +1465,6 @@ Partial Class FormAMEOCI
         Me.TabPage1.Controls.Add(Me.btExcluirPaciente)
         Me.TabPage1.Controls.Add(Me.btAtualizarDados)
         Me.TabPage1.Controls.Add(Me.GroupBox1)
-        Me.TabPage1.Controls.Add(Me.Button2)
         Me.TabPage1.Controls.Add(Me.GroupBox2)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
@@ -1516,6 +1515,19 @@ Partial Class FormAMEOCI
         Me.btAtualizarDados.Text = "Atualizar dados "
         Me.btAtualizarDados.UseVisualStyleBackColor = False
         '
+        'btGCASPP
+        '
+        Me.btGCASPP.BackColor = System.Drawing.Color.SteelBlue
+        Me.btGCASPP.FlatAppearance.BorderSize = 0
+        Me.btGCASPP.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btGCASPP.ForeColor = System.Drawing.Color.White
+        Me.btGCASPP.Location = New System.Drawing.Point(13, 20)
+        Me.btGCASPP.Name = "btGCASPP"
+        Me.btGCASPP.Size = New System.Drawing.Size(103, 37)
+        Me.btGCASPP.TabIndex = 58
+        Me.btGCASPP.Text = "Colar do GCASPP"
+        Me.btGCASPP.UseVisualStyleBackColor = False
+        '
         'TabPage2
         '
         Me.TabPage2.BackColor = System.Drawing.SystemColors.ButtonFace
@@ -1532,7 +1544,6 @@ Partial Class FormAMEOCI
         'TabPage3
         '
         Me.TabPage3.BackColor = System.Drawing.SystemColors.ButtonFace
-        Me.TabPage3.Controls.Add(Me.Button1)
         Me.TabPage3.Controls.Add(Me.GroupBox5)
         Me.TabPage3.Controls.Add(Me.lbStatusCads)
         Me.TabPage3.Controls.Add(Me.btAddAPAC)
@@ -1541,15 +1552,6 @@ Partial Class FormAMEOCI
         Me.TabPage3.Size = New System.Drawing.Size(550, 488)
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Histórico"
-        '
-        'Button1
-        '
-        Me.Button1.Location = New System.Drawing.Point(353, 458)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 58
-        Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
         '
         'GroupBox5
         '
@@ -1794,15 +1796,6 @@ Partial Class FormAMEOCI
         '
         Me.Timer1.Interval = 200
         '
-        'Button2
-        '
-        Me.Button2.Location = New System.Drawing.Point(280, 455)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(75, 23)
-        Me.Button2.TabIndex = 58
-        Me.Button2.Text = "Button2"
-        Me.Button2.UseVisualStyleBackColor = True
-        '
         'FormAMEOCI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1985,6 +1978,5 @@ Partial Class FormAMEOCI
     Friend WithEvents Timer1 As Timer
     Friend WithEvents btnovo As Button
     Friend WithEvents FecharToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents Button1 As Button
-    Friend WithEvents Button2 As Button
+    Friend WithEvents btGCASPP As Button
 End Class
