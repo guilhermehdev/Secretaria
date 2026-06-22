@@ -2272,6 +2272,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                 popupGrid.Visible = True
                 BuscarPacientes(sender, e, "dtnasc")
                 chkResponsavel()
+                Clipboard.SetText(dtNascimento.Text)
             Else
                 popupGrid.Visible = False
                 result.Clear()
