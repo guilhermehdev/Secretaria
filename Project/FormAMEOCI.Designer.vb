@@ -63,6 +63,7 @@ Partial Class FormAMEOCI
         Me.dtNascimento = New System.Windows.Forms.MaskedTextBox()
         Me.Label49 = New System.Windows.Forms.Label()
         Me.txtDDD = New System.Windows.Forms.TextBox()
+        Me.btGCASPP = New System.Windows.Forms.Button()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.Label12 = New System.Windows.Forms.Label()
         Me.Label11 = New System.Windows.Forms.Label()
@@ -154,10 +155,10 @@ Partial Class FormAMEOCI
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.btCADSUS = New System.Windows.Forms.Button()
         Me.btnovo = New System.Windows.Forms.Button()
         Me.btExcluirPaciente = New System.Windows.Forms.Button()
         Me.btAtualizarDados = New System.Windows.Forms.Button()
-        Me.btGCASPP = New System.Windows.Forms.Button()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
@@ -381,15 +382,15 @@ Partial Class FormAMEOCI
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.btCADSUS)
         Me.GroupBox2.Controls.Add(Me.txtNomePaciente)
         Me.GroupBox2.Controls.Add(Me.dtNascimento)
         Me.GroupBox2.Controls.Add(Me.Label49)
         Me.GroupBox2.Controls.Add(Me.txtDDD)
-        Me.GroupBox2.Controls.Add(Me.btGCASPP)
-        Me.GroupBox2.Controls.Add(Me.GroupBox6)
-        Me.GroupBox2.Controls.Add(Me.Label27)
         Me.GroupBox2.Controls.Add(Me.txtProntuario)
         Me.GroupBox2.Controls.Add(Me.Label18)
+        Me.GroupBox2.Controls.Add(Me.GroupBox6)
+        Me.GroupBox2.Controls.Add(Me.Label27)
         Me.GroupBox2.Controls.Add(Me.txtCnsPaciente)
         Me.GroupBox2.Controls.Add(Me.Label25)
         Me.GroupBox2.Controls.Add(Me.txtCpfPaciente)
@@ -423,7 +424,7 @@ Partial Class FormAMEOCI
         Me.txtNomePaciente.DropDownWidth = 1
         Me.txtNomePaciente.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtNomePaciente.FormattingEnabled = True
-        Me.txtNomePaciente.Location = New System.Drawing.Point(191, 36)
+        Me.txtNomePaciente.Location = New System.Drawing.Point(86, 36)
         Me.txtNomePaciente.MaxLength = 30
         Me.txtNomePaciente.Name = "txtNomePaciente"
         Me.txtNomePaciente.Size = New System.Drawing.Size(286, 21)
@@ -433,17 +434,17 @@ Partial Class FormAMEOCI
         '
         Me.dtNascimento.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.dtNascimento.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.dtNascimento.Location = New System.Drawing.Point(119, 36)
+        Me.dtNascimento.Location = New System.Drawing.Point(13, 36)
         Me.dtNascimento.Mask = "00/00/0000"
         Me.dtNascimento.Name = "dtNascimento"
-        Me.dtNascimento.Size = New System.Drawing.Size(69, 21)
+        Me.dtNascimento.Size = New System.Drawing.Size(72, 21)
         Me.dtNascimento.TabIndex = 7
         Me.dtNascimento.ValidatingType = GetType(Date)
         '
         'Label49
         '
         Me.Label49.AutoSize = True
-        Me.Label49.Location = New System.Drawing.Point(354, 141)
+        Me.Label49.Location = New System.Drawing.Point(359, 141)
         Me.Label49.Name = "Label49"
         Me.Label49.Size = New System.Drawing.Size(31, 13)
         Me.Label49.TabIndex = 33
@@ -452,14 +453,28 @@ Partial Class FormAMEOCI
         'txtDDD
         '
         Me.txtDDD.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtDDD.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtDDD.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtDDD.ForeColor = System.Drawing.Color.OrangeRed
-        Me.txtDDD.Location = New System.Drawing.Point(356, 156)
+        Me.txtDDD.Location = New System.Drawing.Point(361, 156)
         Me.txtDDD.MaxLength = 2
         Me.txtDDD.Name = "txtDDD"
         Me.txtDDD.Size = New System.Drawing.Size(37, 21)
         Me.txtDDD.TabIndex = 12
         Me.txtDDD.Text = "13"
+        '
+        'btGCASPP
+        '
+        Me.btGCASPP.BackColor = System.Drawing.Color.SteelBlue
+        Me.btGCASPP.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btGCASPP.FlatAppearance.BorderSize = 0
+        Me.btGCASPP.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btGCASPP.ForeColor = System.Drawing.Color.White
+        Me.btGCASPP.Location = New System.Drawing.Point(285, 455)
+        Me.btGCASPP.Name = "btGCASPP"
+        Me.btGCASPP.Size = New System.Drawing.Size(106, 23)
+        Me.btGCASPP.TabIndex = 58
+        Me.btGCASPP.Text = "Colar do GCASPP"
+        Me.btGCASPP.UseVisualStyleBackColor = False
         '
         'GroupBox6
         '
@@ -488,7 +503,7 @@ Partial Class FormAMEOCI
         'Label12
         '
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(248, 21)
+        Me.Label12.Location = New System.Drawing.Point(187, 21)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(28, 13)
         Me.Label12.TabIndex = 30
@@ -497,7 +512,7 @@ Partial Class FormAMEOCI
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(320, 97)
+        Me.Label11.Location = New System.Drawing.Point(315, 97)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(71, 13)
         Me.Label11.TabIndex = 29
@@ -515,7 +530,7 @@ Partial Class FormAMEOCI
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(458, 60)
+        Me.Label7.Location = New System.Drawing.Point(453, 60)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(44, 13)
         Me.Label7.TabIndex = 27
@@ -533,7 +548,7 @@ Partial Class FormAMEOCI
         'Label48
         '
         Me.Label48.AutoSize = True
-        Me.Label48.Location = New System.Drawing.Point(332, 20)
+        Me.Label48.Location = New System.Drawing.Point(268, 20)
         Me.Label48.Name = "Label48"
         Me.Label48.Size = New System.Drawing.Size(81, 13)
         Me.Label48.TabIndex = 25
@@ -576,29 +591,29 @@ Partial Class FormAMEOCI
         Me.txtComplemento.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtComplemento.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
         Me.txtComplemento.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtComplemento.Location = New System.Drawing.Point(323, 113)
+        Me.txtComplemento.Location = New System.Drawing.Point(318, 113)
         Me.txtComplemento.Name = "txtComplemento"
-        Me.txtComplemento.Size = New System.Drawing.Size(200, 21)
+        Me.txtComplemento.Size = New System.Drawing.Size(205, 21)
         Me.txtComplemento.TabIndex = 63
         '
         'txtNumero
         '
         Me.txtNumero.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtNumero.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtNumero.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtNumero.ForeColor = System.Drawing.Color.OrangeRed
-        Me.txtNumero.Location = New System.Drawing.Point(461, 75)
+        Me.txtNumero.Location = New System.Drawing.Point(456, 75)
         Me.txtNumero.MaxLength = 5
         Me.txtNumero.Name = "txtNumero"
-        Me.txtNumero.Size = New System.Drawing.Size(62, 21)
+        Me.txtNumero.Size = New System.Drawing.Size(67, 21)
         Me.txtNumero.TabIndex = 15
         '
         'cbTipoLogradouro
         '
         Me.cbTipoLogradouro.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbTipoLogradouro.FormattingEnabled = True
-        Me.cbTipoLogradouro.Location = New System.Drawing.Point(335, 36)
+        Me.cbTipoLogradouro.Location = New System.Drawing.Point(271, 36)
         Me.cbTipoLogradouro.Name = "cbTipoLogradouro"
-        Me.cbTipoLogradouro.Size = New System.Drawing.Size(188, 23)
+        Me.cbTipoLogradouro.Size = New System.Drawing.Size(252, 23)
         Me.cbTipoLogradouro.TabIndex = 60
         '
         'txtLogradouro
@@ -619,7 +634,7 @@ Partial Class FormAMEOCI
         Me.txtMunicipioNome.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtMunicipioNome.Location = New System.Drawing.Point(72, 37)
         Me.txtMunicipioNome.Name = "txtMunicipioNome"
-        Me.txtMunicipioNome.Size = New System.Drawing.Size(173, 21)
+        Me.txtMunicipioNome.Size = New System.Drawing.Size(117, 21)
         Me.txtMunicipioNome.TabIndex = 59
         Me.txtMunicipioNome.Tag = "ign"
         Me.txtMunicipioNome.Text = "PERUIBE"
@@ -627,9 +642,9 @@ Partial Class FormAMEOCI
         'txtCep
         '
         Me.txtCep.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtCep.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCep.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtCep.ForeColor = System.Drawing.Color.OrangeRed
-        Me.txtCep.Location = New System.Drawing.Point(251, 37)
+        Me.txtCep.Location = New System.Drawing.Point(190, 37)
         Me.txtCep.Mask = "99999-999"
         Me.txtCep.Name = "txtCep"
         Me.txtCep.Size = New System.Drawing.Size(80, 21)
@@ -648,15 +663,15 @@ Partial Class FormAMEOCI
         '
         Me.txtProntuario.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtProntuario.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtProntuario.Location = New System.Drawing.Point(235, 78)
+        Me.txtProntuario.Location = New System.Drawing.Point(339, 117)
         Me.txtProntuario.Name = "txtProntuario"
-        Me.txtProntuario.Size = New System.Drawing.Size(75, 21)
+        Me.txtProntuario.Size = New System.Drawing.Size(80, 21)
         Me.txtProntuario.TabIndex = 53
         '
         'Label18
         '
         Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(232, 62)
+        Me.Label18.Location = New System.Drawing.Point(336, 101)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(55, 13)
         Me.Label18.TabIndex = 22
@@ -666,16 +681,16 @@ Partial Class FormAMEOCI
         '
         Me.txtCnsPaciente.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtCnsPaciente.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCnsPaciente.Location = New System.Drawing.Point(123, 78)
+        Me.txtCnsPaciente.Location = New System.Drawing.Point(426, 36)
         Me.txtCnsPaciente.MaxLength = 15
         Me.txtCnsPaciente.Name = "txtCnsPaciente"
-        Me.txtCnsPaciente.Size = New System.Drawing.Size(108, 21)
+        Me.txtCnsPaciente.Size = New System.Drawing.Size(107, 21)
         Me.txtCnsPaciente.TabIndex = 52
         '
         'Label25
         '
         Me.Label25.AutoSize = True
-        Me.Label25.Location = New System.Drawing.Point(116, 20)
+        Me.Label25.Location = New System.Drawing.Point(10, 20)
         Me.Label25.Name = "Label25"
         Me.Label25.Size = New System.Drawing.Size(63, 13)
         Me.Label25.TabIndex = 29
@@ -684,18 +699,18 @@ Partial Class FormAMEOCI
         'txtCpfPaciente
         '
         Me.txtCpfPaciente.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtCpfPaciente.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCpfPaciente.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtCpfPaciente.ForeColor = System.Drawing.Color.OrangeRed
         Me.txtCpfPaciente.Location = New System.Drawing.Point(13, 78)
         Me.txtCpfPaciente.Mask = "99999999999"
         Me.txtCpfPaciente.Name = "txtCpfPaciente"
-        Me.txtCpfPaciente.Size = New System.Drawing.Size(106, 21)
+        Me.txtCpfPaciente.Size = New System.Drawing.Size(101, 21)
         Me.txtCpfPaciente.TabIndex = 10
         '
         'Label17
         '
         Me.Label17.AutoSize = True
-        Me.Label17.Location = New System.Drawing.Point(121, 62)
+        Me.Label17.Location = New System.Drawing.Point(424, 20)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(29, 13)
         Me.Label17.TabIndex = 21
@@ -704,7 +719,7 @@ Partial Class FormAMEOCI
         'Label26
         '
         Me.Label26.AutoSize = True
-        Me.Label26.Location = New System.Drawing.Point(11, 140)
+        Me.Label26.Location = New System.Drawing.Point(128, 140)
         Me.Label26.Name = "Label26"
         Me.Label26.Size = New System.Drawing.Size(32, 13)
         Me.Label26.TabIndex = 30
@@ -722,7 +737,7 @@ Partial Class FormAMEOCI
         'Label24
         '
         Me.Label24.AutoSize = True
-        Me.Label24.Location = New System.Drawing.Point(301, 102)
+        Me.Label24.Location = New System.Drawing.Point(417, 101)
         Me.Label24.Name = "Label24"
         Me.Label24.Size = New System.Drawing.Size(83, 13)
         Me.Label24.TabIndex = 28
@@ -731,7 +746,7 @@ Partial Class FormAMEOCI
         'Label22
         '
         Me.Label22.AutoSize = True
-        Me.Label22.Location = New System.Drawing.Point(10, 102)
+        Me.Label22.Location = New System.Drawing.Point(10, 101)
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(69, 13)
         Me.Label22.TabIndex = 26
@@ -740,7 +755,7 @@ Partial Class FormAMEOCI
         'Label21
         '
         Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(311, 62)
+        Me.Label21.Location = New System.Drawing.Point(178, 62)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(73, 13)
         Me.Label21.TabIndex = 25
@@ -751,16 +766,16 @@ Partial Class FormAMEOCI
         Me.txtEmail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtEmail.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
         Me.txtEmail.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtEmail.Location = New System.Drawing.Point(13, 156)
+        Me.txtEmail.Location = New System.Drawing.Point(130, 156)
         Me.txtEmail.MaxLength = 40
         Me.txtEmail.Name = "txtEmail"
-        Me.txtEmail.Size = New System.Drawing.Size(337, 21)
+        Me.txtEmail.Size = New System.Drawing.Size(230, 21)
         Me.txtEmail.TabIndex = 57
         '
         'Label23
         '
         Me.Label23.AutoSize = True
-        Me.Label23.Location = New System.Drawing.Point(478, 20)
+        Me.Label23.Location = New System.Drawing.Point(370, 20)
         Me.Label23.Name = "Label23"
         Me.Label23.Size = New System.Drawing.Size(31, 13)
         Me.Label23.TabIndex = 27
@@ -769,7 +784,7 @@ Partial Class FormAMEOCI
         'txtTelefone
         '
         Me.txtTelefone.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtTelefone.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTelefone.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTelefone.ForeColor = System.Drawing.Color.OrangeRed
         Me.txtTelefone.Location = New System.Drawing.Point(399, 156)
         Me.txtTelefone.MaxLength = 9
@@ -780,7 +795,7 @@ Partial Class FormAMEOCI
         'Label20
         '
         Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(187, 20)
+        Me.Label20.Location = New System.Drawing.Point(82, 20)
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(141, 13)
         Me.Label20.TabIndex = 24
@@ -790,7 +805,7 @@ Partial Class FormAMEOCI
         '
         Me.txtRaca.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtRaca.FormattingEnabled = True
-        Me.txtRaca.Location = New System.Drawing.Point(304, 118)
+        Me.txtRaca.Location = New System.Drawing.Point(420, 116)
         Me.txtRaca.Name = "txtRaca"
         Me.txtRaca.Size = New System.Drawing.Size(113, 23)
         Me.txtRaca.TabIndex = 55
@@ -801,7 +816,7 @@ Partial Class FormAMEOCI
         Me.txtSexo.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtSexo.FormattingEnabled = True
         Me.txtSexo.Items.AddRange(New Object() {"M", "F"})
-        Me.txtSexo.Location = New System.Drawing.Point(481, 35)
+        Me.txtSexo.Location = New System.Drawing.Point(373, 36)
         Me.txtSexo.Name = "txtSexo"
         Me.txtSexo.Size = New System.Drawing.Size(52, 23)
         Me.txtSexo.TabIndex = 9
@@ -810,7 +825,7 @@ Partial Class FormAMEOCI
         'chkSituacaoRua
         '
         Me.chkSituacaoRua.AutoSize = True
-        Me.chkSituacaoRua.Location = New System.Drawing.Point(423, 120)
+        Me.chkSituacaoRua.Location = New System.Drawing.Point(16, 159)
         Me.chkSituacaoRua.Name = "chkSituacaoRua"
         Me.chkSituacaoRua.Size = New System.Drawing.Size(107, 17)
         Me.chkSituacaoRua.TabIndex = 56
@@ -822,22 +837,22 @@ Partial Class FormAMEOCI
         Me.txtNomeRespPaciente.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtNomeRespPaciente.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
         Me.txtNomeRespPaciente.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtNomeRespPaciente.Location = New System.Drawing.Point(13, 118)
+        Me.txtNomeRespPaciente.Location = New System.Drawing.Point(13, 117)
         Me.txtNomeRespPaciente.MaxLength = 30
         Me.txtNomeRespPaciente.Name = "txtNomeRespPaciente"
-        Me.txtNomeRespPaciente.Size = New System.Drawing.Size(285, 21)
+        Me.txtNomeRespPaciente.Size = New System.Drawing.Size(325, 21)
         Me.txtNomeRespPaciente.TabIndex = 54
         '
         'txtNomeMae
         '
         Me.txtNomeMae.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtNomeMae.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
-        Me.txtNomeMae.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtNomeMae.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtNomeMae.ForeColor = System.Drawing.Color.OrangeRed
-        Me.txtNomeMae.Location = New System.Drawing.Point(314, 78)
+        Me.txtNomeMae.Location = New System.Drawing.Point(181, 78)
         Me.txtNomeMae.MaxLength = 30
         Me.txtNomeMae.Name = "txtNomeMae"
-        Me.txtNomeMae.Size = New System.Drawing.Size(219, 21)
+        Me.txtNomeMae.Size = New System.Drawing.Size(352, 21)
         Me.txtNomeMae.TabIndex = 11
         '
         'GroupBox3
@@ -1466,12 +1481,28 @@ Partial Class FormAMEOCI
         Me.TabPage1.Controls.Add(Me.btAtualizarDados)
         Me.TabPage1.Controls.Add(Me.GroupBox1)
         Me.TabPage1.Controls.Add(Me.GroupBox2)
+        Me.TabPage1.Controls.Add(Me.btGCASPP)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage1.Size = New System.Drawing.Size(550, 488)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Identificação do Paciente"
+        '
+        'btCADSUS
+        '
+        Me.btCADSUS.BackColor = System.Drawing.Color.SeaGreen
+        Me.btCADSUS.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btCADSUS.FlatAppearance.BorderSize = 0
+        Me.btCADSUS.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btCADSUS.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btCADSUS.ForeColor = System.Drawing.Color.White
+        Me.btCADSUS.Location = New System.Drawing.Point(114, 78)
+        Me.btCADSUS.Name = "btCADSUS"
+        Me.btCADSUS.Size = New System.Drawing.Size(65, 21)
+        Me.btCADSUS.TabIndex = 19
+        Me.btCADSUS.Text = "Obter Online"
+        Me.btCADSUS.UseVisualStyleBackColor = False
         '
         'btnovo
         '
@@ -1514,19 +1545,6 @@ Partial Class FormAMEOCI
         Me.btAtualizarDados.TabIndex = 17
         Me.btAtualizarDados.Text = "Atualizar dados "
         Me.btAtualizarDados.UseVisualStyleBackColor = False
-        '
-        'btGCASPP
-        '
-        Me.btGCASPP.BackColor = System.Drawing.Color.SteelBlue
-        Me.btGCASPP.FlatAppearance.BorderSize = 0
-        Me.btGCASPP.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btGCASPP.ForeColor = System.Drawing.Color.White
-        Me.btGCASPP.Location = New System.Drawing.Point(13, 20)
-        Me.btGCASPP.Name = "btGCASPP"
-        Me.btGCASPP.Size = New System.Drawing.Size(103, 37)
-        Me.btGCASPP.TabIndex = 58
-        Me.btGCASPP.Text = "Colar do GCASPP"
-        Me.btGCASPP.UseVisualStyleBackColor = False
         '
         'TabPage2
         '
@@ -1979,4 +1997,5 @@ Partial Class FormAMEOCI
     Friend WithEvents btnovo As Button
     Friend WithEvents FecharToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents btGCASPP As Button
+    Friend WithEvents btCADSUS As Button
 End Class

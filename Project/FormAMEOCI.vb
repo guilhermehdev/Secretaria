@@ -2658,6 +2658,25 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         Loop
 
     End Sub
+    Private Async Sub Button1_Click(sender As Object, e As EventArgs) Handles btCADSUS.Click
+
+        If txtCpfPaciente.Text.Length <> 11 Then
+            MsgBox("CPF inválido. Digite um CPF válido com 11 dígitos.")
+            Exit Sub
+        End If
+        Dim paciente As Paciente = Await CADSUS.consultaCADSUS(txtCpfPaciente.Text)
+
+        If paciente Is Nothing Then
+            MsgBox("Paciente não encontrado.")
+            Exit Sub
+        End If
+
+        txtNomePaciente.Text = paciente.Nome
+        txtNomeMae.Text = paciente.NomeMae
+        dtNascimento.Text = paciente.DataNascimento
+        txtCnsPaciente.Text = paciente.CNS
+
+    End Sub
 
 End Class
 Public Class ApacRegistro
