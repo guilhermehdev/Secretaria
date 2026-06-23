@@ -87,12 +87,8 @@ Public Class CADSUS
     End Function
 
     Private Function formatData(xmlSoap As String) As Paciente
-
         ' Captura o conteúdo da tag <return>
-        Dim match As Match = Regex.Match(
-        xmlSoap,
-        "<return>([\s\S]*?)</return>",
-        RegexOptions.IgnoreCase)
+        Dim match As Match = Regex.Match(xmlSoap, "<return>([\s\S]*?)</return>", RegexOptions.IgnoreCase)
 
         If Not match.Success Then
             Return Nothing
@@ -100,10 +96,10 @@ Public Class CADSUS
 
         ' Decodifica &lt; &gt; &amp;
         Dim xmlInterno As String = WebUtility.HtmlDecode(match.Groups(1).Value)
-
         Dim doc As XDocument = XDocument.Parse(xmlInterno)
-
         Dim retorno = doc...<retorno>.FirstOrDefault()
+
+        'System.IO.File.WriteAllText("D:\Desktop\retorno.xml", xmlInterno)
 
         If retorno Is Nothing Then
             Return Nothing

@@ -105,8 +105,6 @@ Public Class FormAMEOCI
 
         Return String.Empty
     End Function
-
-
     Private Function getProcedID(codProcedimentoPrincipal As String)
         Dim dictProceds As Dictionary(Of String, Integer) = CarregarProcedimentosCodId()
         Dim idProced As Integer
@@ -118,7 +116,6 @@ Public Class FormAMEOCI
 
         Return idProced
     End Function
-
     Private Function saveAPAC()
         If Not txtNumApac.Text.Length = 13 Then
             MessageBox.Show("Preencha o número da APAC corretamente.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -170,7 +167,7 @@ Public Class FormAMEOCI
             If idPac = Nothing Then
 
                 Try
-                    idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento, sexo, raca) VALUES ('{txtNomePaciente.Text.Trim()}', '{m.mysqlDateFormat(dtNascimento.Text)}', '{txtNomeMae.Text.Trim()}', '({txtDDD.Text}){telfixo}', '{txtCpfPaciente.Text.Trim()}',{idEnd}, '{txtNumero.Text.Trim()}', '{txtComplemento.Text.Trim()}', '{txtSexo.Text}', '{txtRaca.SelectedValue}')")
+                    idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento, sexo, raca, sus) VALUES ('{txtNomePaciente.Text.Trim()}', '{m.mysqlDateFormat(dtNascimento.Text)}', '{txtNomeMae.Text.Trim()}', '({txtDDD.Text}){telfixo}', '{txtCpfPaciente.Text.Trim()}',{idEnd}, '{txtNumero.Text.Trim()}', '{txtComplemento.Text.Trim()}', '{txtSexo.Text}', '{txtRaca.SelectedValue}', '{txtCnsPaciente.Text}')")
 
                 Catch ex As Exception
                     'MsgBox(idPac)
@@ -303,7 +300,7 @@ Public Class FormAMEOCI
             End If
 
             Try
-                FormAMEmain.doQuery($"UPDATE pacientes SET dtnasc='{m.mysqlDateFormat(dtNascimento.Text)}', cpf='{txtCpfPaciente.Text.Trim()}', nome='{txtNomePaciente.Text}',mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){telfixo}', id_logradouro={idEnd}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}', raca='{txtRaca.SelectedValue}' WHERE id={idPac}")
+                FormAMEmain.doQuery($"UPDATE pacientes SET dtnasc='{m.mysqlDateFormat(dtNascimento.Text)}', cpf='{txtCpfPaciente.Text.Trim()}', nome='{txtNomePaciente.Text}',mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){telfixo}', id_logradouro={idEnd}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}', raca='{txtRaca.SelectedValue}', sus='{txtCnsPaciente.Text}' WHERE id={idPac}")
                 If txtNumApac.Text.Length = 13 Then
                     UnlockApac(txtNumApac.Text)
                 End If
@@ -2661,13 +2658,13 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     Private Async Sub Button1_Click(sender As Object, e As EventArgs) Handles btCADSUS.Click
 
         If txtCpfPaciente.Text.Length <> 11 Then
-            MsgBox("CPF inválido. Digite um CPF válido com 11 dígitos.")
+            m.msgError("CPF inválido. Digite um CPF válido com 11 dígitos.")
             Exit Sub
         End If
         Dim paciente As Paciente = Await CADSUS.consultaCADSUS(txtCpfPaciente.Text)
 
         If paciente Is Nothing Then
-            MsgBox("Paciente não encontrado.")
+            m.msgError("Paciente não encontrado.")
             Exit Sub
         End If
 
@@ -2675,6 +2672,8 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         txtNomeMae.Text = paciente.NomeMae
         dtNascimento.Text = paciente.DataNascimento
         txtCnsPaciente.Text = paciente.CNS
+
+        m.msgInfo("SUS carregado com sucesso do CADSUS.")
 
     End Sub
 
