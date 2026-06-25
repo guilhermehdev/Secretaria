@@ -1558,11 +1558,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     Private Sub ControleDeCompetênciaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ControleDeCompetênciaToolStripMenuItem.Click
         FormAMEOCIControleCompetencia.ShowDialog()
     End Sub
-    Private Sub NúmerosAPACToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NúmerosAPACToolStripMenuItem.Click
-        FormLogin.Show()
-        FormLogin.system = "NUMAPAC"
-        'Me.WindowState = FormWindowState.Minimized
-    End Sub
+
     Private Sub cep(param As String)
         Try
 
@@ -2064,6 +2060,15 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
     Public Function importFromApacs(caminhoArquivo As String) As List(Of ApacRegistro)
         Dim lista As New List(Of ApacRegistro)
+
+        If caminhoArquivo = "" OrElse Not File.Exists(caminhoArquivo) Then
+            MessageBox.Show("Arquivo APAC não encontrado.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            lista.Add(New ApacRegistro With {
+                .NumeroApac = 0
+                })
+            Return lista
+        End If
+
         Dim linhas = File.ReadAllLines(caminhoArquivo, Encoding.GetEncoding("ISO-8859-1"))
 
         For Each linha As String In linhas
@@ -2237,15 +2242,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         End If
 
     End Sub
-    Private Sub ImportarAPACToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportarAPACToolStripMenuItem.Click
-        Dim desktop As String = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
 
-        If OpenFileDialog1.ShowDialog Then
-            Dim itens = (importFromApacs(OpenFileDialog1.FileName))
-            'ExportarApacsExcel(itens, desktop & "\APAC.xlsx")
-            APACtoDB(itens)
-        End If
-    End Sub
 
     Private Sub TabControl1_Click(sender As Object, e As EventArgs) Handles TabControl1.Click
         popupGrid.Visible = False
@@ -2681,7 +2678,24 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             Clipboard.SetText(txtCnsPaciente.Text.Replace(".", ""))
         End If
     End Sub
+    Private Sub ConsultasToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConsultasToolStripMenuItem.Click
+        FormAMEOCINumAPAC.Show()
+    End Sub
+    Private Sub ImportarToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportarToolStripMenuItem.Click
+        Dim desktop As String = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
 
+        If OpenFileDialog1.ShowDialog Then
+            Dim itens = (importFromApacs(OpenFileDialog1.FileName))
+            If itens.Count = 1 AndAlso itens(0).NumeroApac = "0" Then
+                Exit Sub
+            End If
+            APACtoDB(itens)
+        End If
+    End Sub
+    Private Sub GeradorNumeraaoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles GeradorNumeraaoToolStripMenuItem.Click
+        FormLogin.Show()
+        FormLogin.system = "NUMAPAC"
+    End Sub
 End Class
 Public Class ApacRegistro
     Public Property NumeroApac As String

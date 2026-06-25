@@ -434,9 +434,6 @@ Public Class FormAMEOCINumAPAC
         End If
     End Sub
 
-    Private Sub GeradorNumeraçãoAPACToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles GeradorNumeraçãoAPACToolStripMenuItem.Click
-        FormAMEOCIGeradorAPAC.ShowDialog()
-    End Sub
     Private Sub cbMedico_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbMedico.SelectedIndexChanged
         Dim oci As String = cbOCI.SelectedValue
         Dim comp As String = ""

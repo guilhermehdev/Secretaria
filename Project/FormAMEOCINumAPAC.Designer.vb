@@ -54,20 +54,16 @@ Partial Class FormAMEOCINumAPAC
         Me.tbAPACIni = New System.Windows.Forms.TextBox()
         Me.chkDisponiveis = New System.Windows.Forms.RadioButton()
         Me.rbTodos = New System.Windows.Forms.RadioButton()
-        Me.Button1 = New System.Windows.Forms.Button()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.statusLabelRegistros = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
-        Me.GeradorNumeraçãoAPACToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.btImprimirOCI = New System.Windows.Forms.Button()
         CType(Me.dgvNumerosAPAC, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ctxMenuAPAC.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.gbSearch.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
-        Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'dgvNumerosAPAC
@@ -116,7 +112,7 @@ Partial Class FormAMEOCINumAPAC
         Me.dgvNumerosAPAC.RowHeadersWidth = 4
         Me.dgvNumerosAPAC.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgvNumerosAPAC.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvNumerosAPAC.Size = New System.Drawing.Size(829, 357)
+        Me.dgvNumerosAPAC.Size = New System.Drawing.Size(829, 377)
         Me.dgvNumerosAPAC.TabIndex = 33
         Me.dgvNumerosAPAC.TabStop = False
         '
@@ -150,9 +146,9 @@ Partial Class FormAMEOCINumAPAC
         Me.GroupBox1.Controls.Add(Me.chkDisponiveis)
         Me.GroupBox1.Controls.Add(Me.rbTodos)
         Me.GroupBox1.Controls.Add(Me.dgvNumerosAPAC)
-        Me.GroupBox1.Location = New System.Drawing.Point(12, 32)
+        Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(841, 466)
+        Me.GroupBox1.Size = New System.Drawing.Size(841, 486)
         Me.GroupBox1.TabIndex = 34
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Números gerados"
@@ -357,16 +353,6 @@ Partial Class FormAMEOCINumAPAC
         Me.rbTodos.Text = "Todos"
         Me.rbTodos.UseVisualStyleBackColor = True
         '
-        'Button1
-        '
-        Me.Button1.Location = New System.Drawing.Point(772, 3)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 36
-        Me.Button1.Text = "Correção"
-        Me.Button1.UseVisualStyleBackColor = True
-        Me.Button1.Visible = False
-        '
         'OpenFileDialog1
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
@@ -391,30 +377,18 @@ Partial Class FormAMEOCINumAPAC
         Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(32, 17)
         Me.ToolStripStatusLabel1.Text = "Regs"
         '
-        'MenuStrip1
-        '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GeradorNumeraçãoAPACToolStripMenuItem})
-        Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
-        Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(871, 24)
-        Me.MenuStrip1.TabIndex = 38
-        Me.MenuStrip1.Text = "MenuStrip1"
-        '
-        'GeradorNumeraçãoAPACToolStripMenuItem
-        '
-        Me.GeradorNumeraçãoAPACToolStripMenuItem.Name = "GeradorNumeraçãoAPACToolStripMenuItem"
-        Me.GeradorNumeraçãoAPACToolStripMenuItem.Size = New System.Drawing.Size(157, 20)
-        Me.GeradorNumeraçãoAPACToolStripMenuItem.Text = "Gerador numeração APAC"
-        '
         'btImprimirOCI
         '
+        Me.btImprimirOCI.BackColor = System.Drawing.Color.Firebrick
         Me.btImprimirOCI.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btImprimirOCI.Location = New System.Drawing.Point(761, 504)
+        Me.btImprimirOCI.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btImprimirOCI.ForeColor = System.Drawing.Color.White
+        Me.btImprimirOCI.Location = New System.Drawing.Point(753, 504)
         Me.btImprimirOCI.Name = "btImprimirOCI"
-        Me.btImprimirOCI.Size = New System.Drawing.Size(92, 23)
+        Me.btImprimirOCI.Size = New System.Drawing.Size(100, 23)
         Me.btImprimirOCI.TabIndex = 59
-        Me.btImprimirOCI.Text = "Imprimir OCI"
-        Me.btImprimirOCI.UseVisualStyleBackColor = True
+        Me.btImprimirOCI.Text = "Exportar em PDF"
+        Me.btImprimirOCI.UseVisualStyleBackColor = False
         '
         'FormAMEOCINumAPAC
         '
@@ -422,12 +396,9 @@ Partial Class FormAMEOCINumAPAC
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(871, 553)
         Me.Controls.Add(Me.btImprimirOCI)
-        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.StatusStrip1)
-        Me.Controls.Add(Me.MenuStrip1)
         Me.Controls.Add(Me.GroupBox1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.MainMenuStrip = Me.MenuStrip1
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "FormAMEOCINumAPAC"
@@ -441,15 +412,12 @@ Partial Class FormAMEOCINumAPAC
         Me.gbSearch.PerformLayout()
         Me.StatusStrip1.ResumeLayout(False)
         Me.StatusStrip1.PerformLayout()
-        Me.MenuStrip1.ResumeLayout(False)
-        Me.MenuStrip1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
     Friend WithEvents dgvNumerosAPAC As DataGridView
     Friend WithEvents GroupBox1 As GroupBox
-    Friend WithEvents Button1 As Button
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
     Friend WithEvents StatusStrip1 As StatusStrip
     Friend WithEvents statusLabelRegistros As ToolStripStatusLabel
@@ -476,8 +444,6 @@ Partial Class FormAMEOCINumAPAC
     Friend WithEvents Label4 As Label
     Friend WithEvents tbAPACFim As TextBox
     Friend WithEvents tbAPACIni As TextBox
-    Friend WithEvents MenuStrip1 As MenuStrip
-    Friend WithEvents GeradorNumeraçãoAPACToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Label1 As Label
     Friend WithEvents cbMedico As ComboBox
     Friend WithEvents ExcluirOCIToolStripMenuItem As ToolStripMenuItem
