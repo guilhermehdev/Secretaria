@@ -464,7 +464,7 @@ Public Class FormAMEOCINumAPAC
 
             loadNUMAPAC(dgvNumerosAPAC,,, False,,,, oci, "CONC",,, comp, medico)
         Else
-            loadNUMAPAC(dgvNumerosAPAC,,, False,,,,, "CONC",,,, medico)
+            loadNUMAPAC(dgvNumerosAPAC,,, False,, dtpIni.Value, dtpFim.Value,, "CONC",,,, medico)
         End If
     End Sub
     Private Sub ExcluirOCIToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExcluirOCIToolStripMenuItem.Click
@@ -503,7 +503,7 @@ Public Class FormAMEOCINumAPAC
 
         For Each row As DataGridViewRow In dgvNumerosAPAC.Rows
             If row.IsNewRow Then Continue For
-            Dim pdf As String = $"{dir}\{row.Cells(0).Value}.pdf"
+            Dim pdf As String = $"{dir}\{row.Cells(0).Value}-{row.Cells(3).Value}.pdf"
             oci.printOCI(row.Cells(0).Value, pdf)
             arquivos.Add(pdf)
         Next

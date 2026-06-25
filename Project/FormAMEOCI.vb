@@ -2676,6 +2676,11 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         m.msgInfo("SUS carregado com sucesso do CADSUS.")
 
     End Sub
+    Private Sub txtCnsPaciente_TextChanged(sender As Object, e As EventArgs) Handles txtCnsPaciente.TextChanged
+        If txtCnsPaciente.Text <> "   .   .   .   ." Then
+            Clipboard.SetText(txtCnsPaciente.Text.Replace(".", ""))
+        End If
+    End Sub
 
 End Class
 Public Class ApacRegistro

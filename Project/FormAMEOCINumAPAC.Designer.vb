@@ -408,6 +408,7 @@ Partial Class FormAMEOCINumAPAC
         '
         'btImprimirOCI
         '
+        Me.btImprimirOCI.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btImprimirOCI.Location = New System.Drawing.Point(761, 504)
         Me.btImprimirOCI.Name = "btImprimirOCI"
         Me.btImprimirOCI.Size = New System.Drawing.Size(92, 23)
