@@ -464,7 +464,7 @@ Public Class FormAMEOCI
                         r14.Append(New String(" "c, 8))
                     End If
                     r14.Append(Fmt(txtNomeAutorizador.Text, 30))
-                    r14.Append(If(txtCnsPaciente.Text.Length > 0, txtCnsPaciente.Text.PadLeft(15, "0"c), New String(" "c, 15)))
+                    r14.Append(If(txtCnsPaciente.Text <> "   .   .   .   .", txtCnsPaciente.Text.Replace(".", "").PadLeft(15, "0"c), New String(" "c, 15)))
                     r14.Append(txtNomeMedicoSolicitante.SelectedValue.PadLeft(15, "0"c))
                     r14.Append(txtNomeAutorizador.SelectedValue.PadLeft(15, "0"c))
                     r14.Append(New String(" "c, 4)) ' Reservado
