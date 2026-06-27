@@ -59,6 +59,7 @@ Partial Class FormAMEOCINumAPAC
         Me.statusLabelRegistros = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.btImprimirOCI = New System.Windows.Forms.Button()
+        Me.EditarOCIToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.dgvNumerosAPAC, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ctxMenuAPAC.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -118,26 +119,26 @@ Partial Class FormAMEOCINumAPAC
         '
         'ctxMenuAPAC
         '
-        Me.ctxMenuAPAC.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AlterarStatusToolStripMenuItem, Me.CopiarToolStripMenuItem, Me.ExcluirOCIToolStripMenuItem})
+        Me.ctxMenuAPAC.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AlterarStatusToolStripMenuItem, Me.CopiarToolStripMenuItem, Me.EditarOCIToolStripMenuItem, Me.ExcluirOCIToolStripMenuItem})
         Me.ctxMenuAPAC.Name = "ctxMenuAPAC"
-        Me.ctxMenuAPAC.Size = New System.Drawing.Size(145, 70)
+        Me.ctxMenuAPAC.Size = New System.Drawing.Size(181, 114)
         '
         'AlterarStatusToolStripMenuItem
         '
         Me.AlterarStatusToolStripMenuItem.Name = "AlterarStatusToolStripMenuItem"
-        Me.AlterarStatusToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
+        Me.AlterarStatusToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.AlterarStatusToolStripMenuItem.Text = "Alterar Status"
         '
         'CopiarToolStripMenuItem
         '
         Me.CopiarToolStripMenuItem.Name = "CopiarToolStripMenuItem"
-        Me.CopiarToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
+        Me.CopiarToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.CopiarToolStripMenuItem.Text = "Copiar"
         '
         'ExcluirOCIToolStripMenuItem
         '
         Me.ExcluirOCIToolStripMenuItem.Name = "ExcluirOCIToolStripMenuItem"
-        Me.ExcluirOCIToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
+        Me.ExcluirOCIToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.ExcluirOCIToolStripMenuItem.Text = "Excluir OCI"
         '
         'GroupBox1
@@ -390,6 +391,12 @@ Partial Class FormAMEOCINumAPAC
         Me.btImprimirOCI.Text = "Exportar em PDF"
         Me.btImprimirOCI.UseVisualStyleBackColor = False
         '
+        'EditarOCIToolStripMenuItem
+        '
+        Me.EditarOCIToolStripMenuItem.Name = "EditarOCIToolStripMenuItem"
+        Me.EditarOCIToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.EditarOCIToolStripMenuItem.Text = "Editar OCI"
+        '
         'FormAMEOCINumAPAC
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -448,4 +455,5 @@ Partial Class FormAMEOCINumAPAC
     Friend WithEvents cbMedico As ComboBox
     Friend WithEvents ExcluirOCIToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents btImprimirOCI As Button
+    Friend WithEvents EditarOCIToolStripMenuItem As ToolStripMenuItem
 End Class

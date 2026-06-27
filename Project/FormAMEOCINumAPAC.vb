@@ -169,7 +169,7 @@ Public Class FormAMEOCINumAPAC
                 datagridview.Columns("medico").Width = 200
                 datagridview.Columns("status").HeaderText = "Status"
                 datagridview.Columns("status").Width = 60
-                datagridview.Columns("responsavel").HeaderText = "Responsável"
+                datagridview.Columns("responsavel").HeaderText = "Usuário"
                 datagridview.Columns("responsavel").Width = 150
                 labelCount.Text = $"{data.Rows.Count} registros"
 
@@ -234,7 +234,7 @@ Public Class FormAMEOCINumAPAC
         cbUsuarios.SelectedIndex = -1
         cbStatus.SelectedIndex = -1
         chkDisponiveis.Checked = False
-        loadNUMAPAC(dgvNumerosAPAC,,,,, dtpIni.Value, dtpFim.Value,,,,,, cbMedico.SelectedValue)
+        loadNUMAPAC(dgvNumerosAPAC,,,,, dtpIni.Value, dtpFim.Value,, , , "num_apac", , cbMedico.SelectedValue)
     End Sub
     Private Sub dtpIni_ValueChanged(sender As Object, e As EventArgs) Handles dtpIni.ValueChanged
         loadByData()
@@ -522,6 +522,10 @@ Public Class FormAMEOCINumAPAC
 
         End If
 
+    End Sub
+    Private Sub EditarOCIToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditarOCIToolStripMenuItem.Click
+        FormAMEOCI.editOCI(dgvNumerosAPAC.SelectedRows(0).Cells(0).Value)
+        Me.Close()
     End Sub
 
 End Class

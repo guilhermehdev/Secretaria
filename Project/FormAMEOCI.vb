@@ -464,7 +464,8 @@ Public Class FormAMEOCI
                         r14.Append(New String(" "c, 8))
                     End If
                     r14.Append(Fmt(txtNomeAutorizador.Text, 30))
-                    r14.Append(If(txtCnsPaciente.Text <> "   .   .   .   .", txtCnsPaciente.Text.Replace(".", "").PadLeft(15, "0"c), New String(" "c, 15)))
+                    'r14.Append(If(txtCnsPaciente.Text.Length > 0, txtCnsPaciente.Text.PadLeft(15, "0"c), New String(" "c, 15)))
+                    r14.Append(New String(" "c, 15))
                     r14.Append(txtNomeMedicoSolicitante.SelectedValue.PadLeft(15, "0"c))
                     r14.Append(txtNomeAutorizador.SelectedValue.PadLeft(15, "0"c))
                     r14.Append(New String(" "c, 4)) ' Reservado
@@ -1547,8 +1548,6 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                 MessageBox.Show($"Arquivo exportado com sucesso!{vbCrLf}{saveDialog.FileName}", "Exportação concluída", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 File.WriteAllText(filePath, "")
 
-
-
             End If
 
         End If
@@ -2219,7 +2218,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     End Sub
     Private Sub searchByDate()
         dtpSearchData.CustomFormat = "dd/MM/yyyy"
-        FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC", " AND status <> 'BLOQ'",, lbStatusCads)
+        FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "num_apac", " AND status <> 'BLOQ'",, lbStatusCads)
         ckbSearchTodos.Checked = False
     End Sub
 
@@ -2355,6 +2354,11 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\resultado.txt", sb.ToString(), Encoding.UTF8)
 
     End Sub
+    Public Sub editOCI(idOCI As Integer)
+        updateMode = True
+        getOCIdata(idOCI)
+        TabControl1.SelectedTab = TabControl1.TabPages(0)
+    End Sub
     Private Sub ExcluirRegistroToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExcluirRegistroToolStripMenuItem.Click
 
         '  MsgBox($"14{My.Settings.OCIcompetencia}{dgOCIcadastradas.SelectedRows(0).Cells(1).Value}")
@@ -2366,9 +2370,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
     End Sub
     Private Sub EditarToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditarToolStripMenuItem.Click
-        updateMode = True
-        getOCIdata(dgOCIcadastradas.SelectedRows(0).Cells(0).Value)
-        TabControl1.SelectedTab = TabControl1.TabPages(0)
+        editOCI(dgOCIcadastradas.SelectedRows(0).Cells(0).Value)
     End Sub
     Private Sub dtValidadeIni_ValueChanged(sender As Object, e As EventArgs) Handles dtValidadeIni.ValueChanged
         dtValidadeFim.Value = dtValidadeIni.Value.AddMonths(1)
@@ -2696,6 +2698,44 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         FormLogin.Show()
         FormLogin.system = "NUMAPAC"
     End Sub
+
+    Private Function ExtrairAPACs(ByVal arquivo As String) As HashSet(Of String)
+
+        Dim apacs As New HashSet(Of String)
+
+        For Each linha As String In IO.File.ReadLines(arquivo)
+
+            If linha.StartsWith("14") AndAlso linha.Length >= 21 Then
+
+                Dim competencia As String = linha.Substring(2, 6)
+                Dim apac As String = linha.Substring(8, 13)
+
+                If IsNumeric(competencia) AndAlso IsNumeric(apac) Then
+                    apacs.Add(apac)
+                End If
+
+            End If
+
+        Next
+
+        Return apacs
+
+    End Function
+    Private Sub FiltrarAPACToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FiltrarAPACToolStripMenuItem.Click
+
+        Dim apacs = ExtrairAPACs(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\APTESTE.JUN")
+        File.WriteAllLines("D:\Desktop\Found.TXT", apacs)
+
+    End Sub
+    Private Sub ExcluirToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExcluirToolStripMenuItem.Click
+        If m.msgQuestion("Deseja excluir OCI da fila? Esta ação é irreversível.", "Confirmação") Then
+            If FormAMEmain.doQuery($"DELETE FROM oci_fila WHERE id={dgQueueItens.SelectedRows(0).Cells(0).Value}",, True) Then
+                loadQueueOCI()
+                ' loadQueueItens(dgQueueOCI.SelectedRows(0).Cells(0).Value, dgQueueOCI.SelectedRows(0).Cells(1).Value)
+            End If
+        End If
+    End Sub
+
 End Class
 Public Class ApacRegistro
     Public Property NumeroApac As String
