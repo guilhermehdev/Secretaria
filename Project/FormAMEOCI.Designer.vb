@@ -179,6 +179,7 @@ Partial Class FormAMEOCI
         Me.FiltrarAPACToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.menuDGQueue = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ExcluirToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -422,6 +423,7 @@ Partial Class FormAMEOCI
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.Button1)
         Me.GroupBox2.Controls.Add(Me.btnovo)
         Me.GroupBox2.Controls.Add(Me.btExcluirPaciente)
         Me.GroupBox2.Controls.Add(Me.txtCnsPaciente)
@@ -1840,13 +1842,22 @@ Partial Class FormAMEOCI
         '
         Me.menuDGQueue.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExcluirToolStripMenuItem})
         Me.menuDGQueue.Name = "menuDGQueue"
-        Me.menuDGQueue.Size = New System.Drawing.Size(181, 48)
+        Me.menuDGQueue.Size = New System.Drawing.Size(110, 26)
         '
         'ExcluirToolStripMenuItem
         '
         Me.ExcluirToolStripMenuItem.Name = "ExcluirToolStripMenuItem"
-        Me.ExcluirToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.ExcluirToolStripMenuItem.Size = New System.Drawing.Size(109, 22)
         Me.ExcluirToolStripMenuItem.Text = "Excluir"
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(383, 303)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 59
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
         '
         'FormAMEOCI
         '
@@ -2038,4 +2049,5 @@ Partial Class FormAMEOCI
     Friend WithEvents FiltrarAPACToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents menuDGQueue As ContextMenuStrip
     Friend WithEvents ExcluirToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents Button1 As Button
 End Class

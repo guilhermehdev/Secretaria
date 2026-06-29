@@ -1,9 +1,12 @@
-﻿Imports System.Net
+﻿Imports System.IO
+Imports System.Net
 Imports System.Net.Http
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Threading.Tasks
-Imports System.Xml
+Imports iTextSharp.text
+Imports iTextSharp.text.pdf
+Imports iTextSharp.io
 
 Public Class Paciente
     Public Property CPF As String
@@ -123,5 +126,32 @@ Public Class CADSUS
         Dim cadsus As New CADSUS()
         Return cadsus.apiCADSUS(cpf)
     End Function
+    Public Shared Sub SUS_PDF(paciente As DadosPaciente)
+
+        Dim reader As New PdfReader(Application.StartupPath & "\PDF\ModeloSUS.pdf")
+        Dim stamper As New PdfStamper(reader, New FileStream(Application.StartupPath & $"\PDF\Gerados\{paciente.Nome}.pdf", FileMode.Create))
+        Dim campos = stamper.AcroFields
+
+        campos.SetField("nome_cabecalho", paciente.Nome & ",")
+        campos.SetField("nome_cartao", paciente.Nome)
+        campos.SetField("dtnasc", paciente.DataNascimento)
+        campos.SetField("sexo", paciente.Sexo)
+        campos.SetField("sus", paciente.CNS)
+        campos.SetField("cpf", paciente.CPF)
+
+        stamper.FormFlattening = True
+        stamper.Close()
+        reader.Close()
+
+    End Sub
+
+End Class
+Public Class DadosPaciente
+
+    Public Property Nome As String
+    Public Property CPF As String
+    Public Property CNS As String
+    Public Property DataNascimento As String
+    Public Property Sexo As String
 
 End Class

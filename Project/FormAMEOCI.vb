@@ -2736,6 +2736,18 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             End If
         End If
     End Sub
+    Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
+        Dim p As New DadosPaciente
+
+        p.Nome = "GUILHERME HENRIQUE DOS SANTOS"
+        p.CPF = "331.830.268-64"
+        p.CNS = "700 0078 7333 7906"
+        p.DataNascimento = "05/04/1984"
+        p.Sexo = "M"
+
+        CADSUS.SUS_PDF(p)
+
+    End Sub
 
 End Class
 Public Class ApacRegistro
