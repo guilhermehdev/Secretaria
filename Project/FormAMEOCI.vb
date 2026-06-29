@@ -1082,6 +1082,7 @@ Public Class FormAMEOCI
 
         If dataset.Rows.Count = 0 Then
             dgQueueOCI.DataSource = Nothing
+            dgQueueItens.DataSource = Nothing
             Exit Sub
         End If
 
