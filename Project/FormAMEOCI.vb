@@ -772,85 +772,6 @@ Public Class FormAMEOCI
 
     End Function
 
-    Public Function ExtrairApacsNaoUsadas(usadas As IEnumerable(Of String), caminhoArquivo As String) As List(Of ApacRegistro)
-        Dim lista As New List(Of ApacRegistro)
-        Dim usadasSet As New HashSet(Of String)(usadas) ' busca rápida
-        Dim linhas = File.ReadAllLines(caminhoArquivo, Encoding.GetEncoding("ISO-8859-1"))
-
-        For Each linha As String In linhas
-            If linha.StartsWith("14") AndAlso linha.Length > 80 Then
-                ' Extrai número da APAC
-                Dim numero As String = linha.Substring(8, 13).Trim()
-
-                ' Pula os códigos até achar o nome
-                Dim i As Integer = 21
-                While i < linha.Length AndAlso (Char.IsDigit(linha(i)) OrElse Char.IsWhiteSpace(linha(i)))
-                    i += 1
-                End While
-
-                ' Extrai o nome (até 30 caracteres)
-                Dim nome As String = ""
-                If i < linha.Length Then
-                    Dim tamanho = Math.Min(30, linha.Length - i)
-                    nome = linha.Substring(i, tamanho).Trim()
-                End If
-
-                ' Só adiciona se NÃO estiver na lista de usadas
-                If Not usadasSet.Contains(numero) Then
-                    lista.Add(New ApacRegistro With {
-                    .NumeroApac = numero,
-                    .NomePaciente = nome
-                })
-                End If
-            End If
-        Next
-
-        Return lista
-    End Function
-    Public Function ExtrairApacsOUT_Cruzado(caminhoOut As String, apacsUsadas As IEnumerable(Of String)) As List(Of ApacRegistro)
-        Dim usados = New HashSet(Of String)(apacsUsadas) ' busca O(1)
-        Dim lista As New List(Of ApacRegistro)
-
-        ' Use ISO-8859-1 pois arquivos do SUS costumam vir nessa codificação
-        Dim linhas = File.ReadAllLines(caminhoOut, Encoding.GetEncoding("ISO-8859-1"))
-
-        For Each linha In linhas
-            If Not linha.StartsWith("14") Then Continue For
-
-            ' Procura todos os grupos de 13 dígitos (podem existir outros campos numéricos)
-            Dim m As Match = Regex.Match(linha, "\d{13}")
-            While m.Success
-                Dim apac As String = m.Value
-                If usados.Contains(apac) Then
-                    ' Começa logo após o número da APAC
-                    Dim i As Integer = m.Index + m.Length
-
-                    ' Pula dígitos e espaços que vêm logo em seguida
-                    While i < linha.Length AndAlso (Char.IsDigit(linha(i)) OrElse Char.IsWhiteSpace(linha(i)))
-                        i += 1
-                    End While
-
-                    ' A partir daqui deve começar o nome (letras e espaços). Captura até 30 chars.
-                    Dim maxLen As Integer = Math.Min(30, Math.Max(0, linha.Length - i))
-                    Dim rawNome As String = If(maxLen > 0, linha.Substring(i, maxLen), "").Trim()
-
-                    ' Limpa o nome mantendo letras com acento/ç e espaços (evita pegar ruídos se vier algo fora do padrão)
-                    Dim nomeMatch = Regex.Match(rawNome, "^[A-ZÁÂÃÀÉÊÍÓÔÕÚÜÇ\s]{3,}", RegexOptions.CultureInvariant)
-                    Dim nome As String = If(nomeMatch.Success, nomeMatch.Value.Trim(), rawNome)
-
-                    ' Normaliza para maiúsculas pt-BR
-                    nome = nome.ToUpper(New CultureInfo("pt-BR"))
-
-                    lista.Add(New ApacRegistro With {.NumeroApac = apac, .NomePaciente = nome})
-                    Exit While ' achou a APAC dessa linha que interessa; segue para próxima linha
-                End If
-                m = m.NextMatch()
-            End While
-        Next
-
-        Return lista
-    End Function
-
     Public Sub ExportarApacsExcel(lista As List(Of ApacRegistro), caminho As String)
         Using wb As New XLWorkbook()
 
@@ -2302,17 +2223,18 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     End Sub
     Private Sub txtDDD_TextChanged(sender As Object, e As EventArgs) Handles txtDDD.TextChanged
         If txtDDD.Text.Length >= 2 Then
+            txtTelefone.Clear()
             txtTelefone.Focus()
-            txtTelefone.SelectionStart = 0
         End If
     End Sub
 
     Private Sub FormAMEOCI_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
+        Dim num = m.PasteTelefone()
         If e.Control AndAlso e.KeyCode = Keys.V Then
-            If m.TelefoneValido(Clipboard.GetText) Then
-                txtDDD.Focus()
-                m.PasteTelefone(txtDDD, txtTelefone)
-            End If
+            e.SuppressKeyPress = True
+            e.Handled = True
+            txtDDD.Text = num.DDD
+            txtTelefone.Text = num.Numero
         End If
     End Sub
 
@@ -2320,41 +2242,6 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         Process.Start($"C:\Program Files (x86)\Datasus\APAC\RCONSIST{chkMonthEXT()}")
     End Sub
 
-    Private Sub ExcluirNãoUtilizadosToolStripMenuItem_Click(sender As Object, e As EventArgs)
-        Dim sequencia = File.ReadAllLines(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\sequencia.txt").ToList()
-        Dim usados As New HashSet(Of String)
-
-        For Each linha In File.ReadLines(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\APBKP.NOV")
-            If linha.StartsWith("14") Then
-                Dim numeroApac = linha.Substring(8, 13).Trim()
-                usados.Add(numeroApac)
-            End If
-        Next
-
-        ' Diferença: sequência - usadas
-        Dim naoUsadas = sequencia.Except(usados).ToList()
-
-        ' Monta relatório
-        Dim sb As New StringBuilder()
-        sb.AppendLine("RELATÓRIO DE CONTROLE DE APAC")
-        sb.AppendLine("================================")
-        sb.AppendLine("Data: " & DateTime.Now.ToString("dd/MM/yyyy HH:mm"))
-        sb.AppendLine()
-        sb.AppendLine("Total na sequência original: " & sequencia.Count)
-        sb.AppendLine("Total de APACs usadas: " & usados.Count)
-        sb.AppendLine("Total de APACs NÃO usadas: " & naoUsadas.Count)
-        sb.AppendLine()
-        sb.AppendLine("LISTA DE APACs NÃO UTILIZADAS:")
-        sb.AppendLine("--------------------------------")
-
-        For Each n In naoUsadas
-            sb.AppendLine(n)
-        Next
-
-        ' Grava arquivo TXT
-        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\resultado.txt", sb.ToString(), Encoding.UTF8)
-
-    End Sub
     Public Sub editOCI(idOCI As Integer)
         updateMode = True
         getOCIdata(idOCI)
@@ -2739,15 +2626,16 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
         Dim p As New DadosPaciente
 
-        p.Nome = "GUILHERME HENRIQUE DOS SANTOS"
-        p.CPF = "331.830.268-64"
-        p.CNS = "700 0078 7333 7906"
-        p.DataNascimento = "05/04/1984"
-        p.Sexo = "M"
+        p.Nome = txtNomePaciente.Text
+        p.CPF = txtCpfPaciente.Text
+        p.CNS = txtCnsPaciente.Text
+        p.DataNascimento = dtNascimento.Text
+        p.Sexo = txtSexo.Text
 
         CADSUS.SUS_PDF(p)
 
     End Sub
+
 
 End Class
 Public Class ApacRegistro

@@ -21,7 +21,7 @@ Public Class Paciente
 End Class
 
 Public Class CADSUS
-
+    Dim m As New Main
     Private Async Function apiCADSUS(cpf As String) As Task(Of Paciente)
         ' 1. Limpa qualquer máscara (remove pontos, traços, espaços) mantendo apenas números
         Dim numeroLimpo As String = Regex.Replace(cpf, "[^\d]", "")
@@ -134,16 +134,32 @@ Public Class CADSUS
 
         campos.SetField("nome_cabecalho", paciente.Nome & ",")
         campos.SetField("nome_cartao", paciente.Nome)
-        campos.SetField("dtnasc", paciente.DataNascimento)
+        campos.SetField("dtnasc", CDate(paciente.DataNascimento).ToString("dd/MM/yyyy"))
         campos.SetField("sexo", paciente.Sexo)
-        campos.SetField("sus", paciente.CNS)
-        campos.SetField("cpf", paciente.CPF)
+        campos.SetField("sus", FormatarCNS(paciente.CNS))
+        campos.SetField("cpf", FormatarCPF(paciente.CPF))
 
         stamper.FormFlattening = True
         stamper.Close()
         reader.Close()
 
     End Sub
+    Private Shared Function FormatarCPF(cpf As String) As String
+
+        cpf = Regex.Replace(cpf, "\D", "")
+        If cpf.Length <> 11 Then
+            Return cpf
+        End If
+        Return String.Format("{0}.{1}.{2}-{3}", cpf.Substring(0, 3), cpf.Substring(3, 3), cpf.Substring(6, 3), cpf.Substring(9, 2))
+
+    End Function
+    Private Shared Function FormatarCNS(cns As String) As String
+
+        cns = New String(cns.Where(AddressOf Char.IsDigit).ToArray)
+        If cns.Length <> 15 Then Return cns
+        Return $"{cns.Substring(0, 3)} {cns.Substring(3, 4)} {cns.Substring(7, 4)} {cns.Substring(11, 4)}"
+
+    End Function
 
 End Class
 Public Class DadosPaciente
