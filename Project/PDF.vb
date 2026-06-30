@@ -469,7 +469,7 @@ Public Class PDF
             ' Dim totalPacientes As Integer = 0
             Dim totalPacientesDia As Integer = 0
             Dim diaSemana = dataAgenda.DayOfWeek + 1
-            Dim vagas
+            Dim vagas = ""
             If dataGrade.Select($"id_dia_semana={diaSemana}").Length > 0 Then
                 vagas = dataGrade.Select($"id_dia_semana={diaSemana}")(0).Item("vagas")
             End If

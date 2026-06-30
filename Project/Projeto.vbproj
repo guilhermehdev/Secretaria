@@ -754,6 +754,7 @@
     <Compile Include="OCRParser.vb" />
     <Compile Include="PDF.vb" />
     <Compile Include="PDFPig.vb" />
+    <Compile Include="PDFSERVER.vb" />
     <Compile Include="ReadGCASPP.vb" />
     <Compile Include="WinApi.vb" />
     <Compile Include="XLStoSQL.vb" />

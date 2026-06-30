@@ -1167,6 +1167,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         checkQueue()
         colapse()
+        PDFSERVER.Iniciar()
 
         If My.Settings.databaseAME = "" Then
             FormAMEbd.ShowDialog()
@@ -2229,8 +2230,8 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     End Sub
 
     Private Sub FormAMEOCI_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
-        Dim num = m.PasteTelefone()
         If e.Control AndAlso e.KeyCode = Keys.V Then
+            Dim num = m.PasteTelefone()
             e.SuppressKeyPress = True
             e.Handled = True
             txtDDD.Text = num.DDD
@@ -2624,7 +2625,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         End If
     End Sub
     Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
-        Dim p As New DadosPaciente
+        Dim p As New Paciente
 
         p.Nome = txtNomePaciente.Text
         p.CPF = txtCpfPaciente.Text

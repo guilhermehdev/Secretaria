@@ -47,7 +47,7 @@ Public Class FormLogin
                     Me.Visible = False
                 Case "AME"
                     FormAMEOCI.idUser = cbUsuarios.SelectedValue
-                    FormAMEmain.Show()
+                    FormAMEOCI.Show()
                     Me.Visible = False
                 Case "NUMAPAC"
                     FormAMEOCI.idUser = cbUsuarios.SelectedValue

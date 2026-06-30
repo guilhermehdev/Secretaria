@@ -6,19 +6,6 @@ Imports System.Text.RegularExpressions
 Imports System.Threading.Tasks
 Imports iTextSharp.text
 Imports iTextSharp.text.pdf
-Imports iTextSharp.io
-
-Public Class Paciente
-    Public Property CPF As String
-    Public Property CNS As String
-    Public Property Nome As String
-    Public Property NomeMae As String
-    Public Property NomePai As String
-    Public Property MunicipioNascimento As String
-    Public Property DataNascimento As String
-    Public Property NomeSocial As String
-
-End Class
 
 Public Class CADSUS
     Dim m As New Main
@@ -81,10 +68,12 @@ Public Class CADSUS
 
                 Else
                     Debug.WriteLine($"Erro na requisição: {response.StatusCode} - {response.ReasonPhrase}")
+                    Return Nothing
                 End If
 
             Catch ex As Exception
                 Debug.WriteLine($"Exceção durante a requisição: {ex.Message}")
+                Return Nothing
             End Try
         End Using
     End Function
@@ -102,7 +91,7 @@ Public Class CADSUS
         Dim doc As XDocument = XDocument.Parse(xmlInterno)
         Dim retorno = doc...<retorno>.FirstOrDefault()
 
-        'System.IO.File.WriteAllText("D:\Desktop\retorno.xml", xmlInterno)
+        System.IO.File.WriteAllText("D:\Desktop\retorno.xml", xmlInterno)
 
         If retorno Is Nothing Then
             Return Nothing
@@ -116,7 +105,8 @@ Public Class CADSUS
         .NomePai = If(retorno.<nomePai>.Value, ""),
         .MunicipioNascimento = If(retorno.<municipioNascimento>.Value, ""),
         .DataNascimento = If(retorno.<dtNascimento>.Value, ""),
-        .NomeSocial = If(retorno.<nomeSocial>.Value, "")
+        .NomeSocial = If(retorno.<nomeSocial>.Value, ""),
+        .Sexo = If(retorno.<sexo>.Value, "")
     }
 
         Return dados
@@ -126,10 +116,30 @@ Public Class CADSUS
         Dim cadsus As New CADSUS()
         Return cadsus.apiCADSUS(cpf)
     End Function
-    Public Shared Sub SUS_PDF(paciente As DadosPaciente)
+    'Public Shared Sub SUS_PDF(paciente As DadosPaciente)
 
+    '    Dim reader As New PdfReader(Application.StartupPath & "\PDF\ModeloSUS.pdf")
+    '    Dim stamper As New PdfStamper(reader, New FileStream(Application.StartupPath & $"\PDF\Gerados\{paciente.Nome}.pdf", FileMode.Create))
+    '    Dim campos = stamper.AcroFields
+
+    '    campos.SetField("nome_cabecalho", paciente.Nome & ",")
+    '    campos.SetField("nome_cartao", paciente.Nome)
+    '    campos.SetField("dtnasc", CDate(paciente.DataNascimento).ToString("dd/MM/yyyy"))
+    '    campos.SetField("sexo", paciente.Sexo)
+    '    campos.SetField("sus", FormatarCNS(paciente.CNS))
+    '    campos.SetField("cpf", FormatarCPF(paciente.CPF))
+
+    '    stamper.FormFlattening = True
+    '    stamper.Close()
+    '    reader.Close()
+
+    'End Sub
+
+    Public Shared Function SUS_PDF(paciente As Paciente) As String
+
+        Dim arquivoDestino As String = Application.StartupPath & "\PDF\Gerados\" & paciente.CPF & ".pdf"
         Dim reader As New PdfReader(Application.StartupPath & "\PDF\ModeloSUS.pdf")
-        Dim stamper As New PdfStamper(reader, New FileStream(Application.StartupPath & $"\PDF\Gerados\{paciente.Nome}.pdf", FileMode.Create))
+        Dim stamper As New PdfStamper(reader, New FileStream(arquivoDestino, FileMode.Create))
         Dim campos = stamper.AcroFields
 
         campos.SetField("nome_cabecalho", paciente.Nome & ",")
@@ -140,10 +150,13 @@ Public Class CADSUS
         campos.SetField("cpf", FormatarCPF(paciente.CPF))
 
         stamper.FormFlattening = True
+
         stamper.Close()
         reader.Close()
 
-    End Sub
+        Return arquivoDestino
+
+    End Function
     Private Shared Function FormatarCPF(cpf As String) As String
 
         cpf = Regex.Replace(cpf, "\D", "")
@@ -160,14 +173,55 @@ Public Class CADSUS
         Return $"{cns.Substring(0, 3)} {cns.Substring(3, 4)} {cns.Substring(7, 4)} {cns.Substring(11, 4)}"
 
     End Function
+    Public Shared Async Function GerarCartaoSus(CPF As String, sexo As String) As Task(Of ResultadoPdf)
+
+        Try
+            'Consulta DataSUS
+            Dim paciente As Paciente = Await consultaCADSUS(CPF)
+            paciente.Sexo = sexo
+
+            If paciente Is Nothing Then
+                Return New ResultadoPdf With {
+                    .Sucesso = False,
+                    .Mensagem = "Paciente não encontrado"
+                }
+            End If
+
+            'Gera PDF
+            Dim pdf As String = SUS_PDF(paciente)
+
+            Return New ResultadoPdf With {
+                .Sucesso = True,
+                .Arquivo = pdf
+            }
+
+        Catch ex As Exception
+            Return New ResultadoPdf With {
+                .Sucesso = False,
+                .Mensagem = ex.Message
+            }
+
+        End Try
+
+    End Function
 
 End Class
-Public Class DadosPaciente
 
-    Public Property Nome As String
+Public Class Paciente
     Public Property CPF As String
     Public Property CNS As String
+    Public Property Nome As String
+    Public Property NomeMae As String
+    Public Property NomePai As String
+    Public Property MunicipioNascimento As String
     Public Property DataNascimento As String
+    Public Property NomeSocial As String
     Public Property Sexo As String
 
+End Class
+
+Public Class ResultadoPdf
+    Public Property Sucesso As Boolean
+    Public Property Arquivo As String
+    Public Property Mensagem As String
 End Class

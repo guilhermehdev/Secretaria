@@ -944,7 +944,7 @@ Public Class Main
                 ddd = "13"
                 numero = digits
             Case Else
-                MessageBox.Show("Número inválido: " & digits)
+                'MessageBox.Show("Número inválido: " & digits)
                 Return ("", "")
         End Select
 
