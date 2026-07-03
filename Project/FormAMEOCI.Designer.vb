@@ -147,14 +147,16 @@ Partial Class FormAMEOCI
         Me.Label41 = New System.Windows.Forms.Label()
         Me.Label30 = New System.Windows.Forms.Label()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
-        Me.ConfiguraçõesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ControleDeCompetênciaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.RelatóriosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ConsistênciaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.FecharToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.APACToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConsultasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ImportarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.GeradorNumeraaoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.RelatóriosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ConsistênciaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.FiltrarAPACToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ConfiguraçõesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ControleDeCompetênciaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.FecharToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.dgvSugestoes = New System.Windows.Forms.DataGridView()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
@@ -172,14 +174,11 @@ Partial Class FormAMEOCI
         Me.ExcluirRegistroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.lbStatusCads = New System.Windows.Forms.Label()
         Me.dgQueueItens = New System.Windows.Forms.DataGridView()
+        Me.menuDGQueue = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.ExcluirToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.dgQueueOCI = New System.Windows.Forms.DataGridView()
         Me.btOCIpendente = New System.Windows.Forms.Button()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.GeradorNumeraaoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.FiltrarAPACToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.menuDGQueue = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.ExcluirToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Button1 = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -196,8 +195,8 @@ Partial Class FormAMEOCI
         CType(Me.dgOCIcadastradas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ContextMenuStrip1.SuspendLayout()
         CType(Me.dgQueueItens, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.dgQueueOCI, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.menuDGQueue.SuspendLayout()
+        CType(Me.dgQueueOCI, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'txtApacAnterior
@@ -423,7 +422,6 @@ Partial Class FormAMEOCI
         '
         'GroupBox2
         '
-        Me.GroupBox2.Controls.Add(Me.Button1)
         Me.GroupBox2.Controls.Add(Me.btnovo)
         Me.GroupBox2.Controls.Add(Me.btExcluirPaciente)
         Me.GroupBox2.Controls.Add(Me.txtCnsPaciente)
@@ -1407,6 +1405,50 @@ Partial Class FormAMEOCI
         Me.MenuStrip1.TabIndex = 27
         Me.MenuStrip1.Text = "MenuStrip1"
         '
+        'APACToolStripMenuItem
+        '
+        Me.APACToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConsultasToolStripMenuItem, Me.ImportarToolStripMenuItem, Me.GeradorNumeraaoToolStripMenuItem})
+        Me.APACToolStripMenuItem.Name = "APACToolStripMenuItem"
+        Me.APACToolStripMenuItem.Size = New System.Drawing.Size(49, 20)
+        Me.APACToolStripMenuItem.Text = "APAC"
+        '
+        'ConsultasToolStripMenuItem
+        '
+        Me.ConsultasToolStripMenuItem.Name = "ConsultasToolStripMenuItem"
+        Me.ConsultasToolStripMenuItem.Size = New System.Drawing.Size(179, 22)
+        Me.ConsultasToolStripMenuItem.Text = "Consultas"
+        '
+        'ImportarToolStripMenuItem
+        '
+        Me.ImportarToolStripMenuItem.Name = "ImportarToolStripMenuItem"
+        Me.ImportarToolStripMenuItem.Size = New System.Drawing.Size(179, 22)
+        Me.ImportarToolStripMenuItem.Text = "Importar"
+        '
+        'GeradorNumeraaoToolStripMenuItem
+        '
+        Me.GeradorNumeraaoToolStripMenuItem.Name = "GeradorNumeraaoToolStripMenuItem"
+        Me.GeradorNumeraaoToolStripMenuItem.Size = New System.Drawing.Size(179, 22)
+        Me.GeradorNumeraaoToolStripMenuItem.Text = "Gerador numeração"
+        '
+        'RelatóriosToolStripMenuItem
+        '
+        Me.RelatóriosToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConsistênciaToolStripMenuItem, Me.FiltrarAPACToolStripMenuItem})
+        Me.RelatóriosToolStripMenuItem.Name = "RelatóriosToolStripMenuItem"
+        Me.RelatóriosToolStripMenuItem.Size = New System.Drawing.Size(71, 20)
+        Me.RelatóriosToolStripMenuItem.Text = "Relatórios"
+        '
+        'ConsistênciaToolStripMenuItem
+        '
+        Me.ConsistênciaToolStripMenuItem.Name = "ConsistênciaToolStripMenuItem"
+        Me.ConsistênciaToolStripMenuItem.Size = New System.Drawing.Size(141, 22)
+        Me.ConsistênciaToolStripMenuItem.Text = "Consistência"
+        '
+        'FiltrarAPACToolStripMenuItem
+        '
+        Me.FiltrarAPACToolStripMenuItem.Name = "FiltrarAPACToolStripMenuItem"
+        Me.FiltrarAPACToolStripMenuItem.Size = New System.Drawing.Size(141, 22)
+        Me.FiltrarAPACToolStripMenuItem.Text = "Filtrar APAC "
+        '
         'ConfiguraçõesToolStripMenuItem
         '
         Me.ConfiguraçõesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ControleDeCompetênciaToolStripMenuItem})
@@ -1420,43 +1462,11 @@ Partial Class FormAMEOCI
         Me.ControleDeCompetênciaToolStripMenuItem.Size = New System.Drawing.Size(208, 22)
         Me.ControleDeCompetênciaToolStripMenuItem.Text = "Controle de competência"
         '
-        'RelatóriosToolStripMenuItem
-        '
-        Me.RelatóriosToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConsistênciaToolStripMenuItem, Me.FiltrarAPACToolStripMenuItem})
-        Me.RelatóriosToolStripMenuItem.Name = "RelatóriosToolStripMenuItem"
-        Me.RelatóriosToolStripMenuItem.Size = New System.Drawing.Size(71, 20)
-        Me.RelatóriosToolStripMenuItem.Text = "Relatórios"
-        '
-        'ConsistênciaToolStripMenuItem
-        '
-        Me.ConsistênciaToolStripMenuItem.Name = "ConsistênciaToolStripMenuItem"
-        Me.ConsistênciaToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.ConsistênciaToolStripMenuItem.Text = "Consistência"
-        '
         'FecharToolStripMenuItem
         '
         Me.FecharToolStripMenuItem.Name = "FecharToolStripMenuItem"
         Me.FecharToolStripMenuItem.Size = New System.Drawing.Size(54, 20)
         Me.FecharToolStripMenuItem.Text = "Fechar"
-        '
-        'APACToolStripMenuItem
-        '
-        Me.APACToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConsultasToolStripMenuItem, Me.ImportarToolStripMenuItem, Me.GeradorNumeraaoToolStripMenuItem})
-        Me.APACToolStripMenuItem.Name = "APACToolStripMenuItem"
-        Me.APACToolStripMenuItem.Size = New System.Drawing.Size(49, 20)
-        Me.APACToolStripMenuItem.Text = "APAC"
-        '
-        'ConsultasToolStripMenuItem
-        '
-        Me.ConsultasToolStripMenuItem.Name = "ConsultasToolStripMenuItem"
-        Me.ConsultasToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.ConsultasToolStripMenuItem.Text = "Consultas"
-        '
-        'ImportarToolStripMenuItem
-        '
-        Me.ImportarToolStripMenuItem.Name = "ImportarToolStripMenuItem"
-        Me.ImportarToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.ImportarToolStripMenuItem.Text = "Importar"
         '
         'dgvSugestoes
         '
@@ -1754,6 +1764,18 @@ Partial Class FormAMEOCI
         Me.dgQueueItens.TabIndex = 55
         Me.dgQueueItens.TabStop = False
         '
+        'menuDGQueue
+        '
+        Me.menuDGQueue.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExcluirToolStripMenuItem})
+        Me.menuDGQueue.Name = "menuDGQueue"
+        Me.menuDGQueue.Size = New System.Drawing.Size(110, 26)
+        '
+        'ExcluirToolStripMenuItem
+        '
+        Me.ExcluirToolStripMenuItem.Name = "ExcluirToolStripMenuItem"
+        Me.ExcluirToolStripMenuItem.Size = New System.Drawing.Size(109, 22)
+        Me.ExcluirToolStripMenuItem.Text = "Excluir"
+        '
         'dgQueueOCI
         '
         Me.dgQueueOCI.AllowUserToAddRows = False
@@ -1826,39 +1848,6 @@ Partial Class FormAMEOCI
         '
         Me.Timer1.Interval = 200
         '
-        'GeradorNumeraaoToolStripMenuItem
-        '
-        Me.GeradorNumeraaoToolStripMenuItem.Name = "GeradorNumeraaoToolStripMenuItem"
-        Me.GeradorNumeraaoToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.GeradorNumeraaoToolStripMenuItem.Text = "Gerador numeração"
-        '
-        'FiltrarAPACToolStripMenuItem
-        '
-        Me.FiltrarAPACToolStripMenuItem.Name = "FiltrarAPACToolStripMenuItem"
-        Me.FiltrarAPACToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.FiltrarAPACToolStripMenuItem.Text = "Filtrar APAC "
-        '
-        'menuDGQueue
-        '
-        Me.menuDGQueue.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExcluirToolStripMenuItem})
-        Me.menuDGQueue.Name = "menuDGQueue"
-        Me.menuDGQueue.Size = New System.Drawing.Size(110, 26)
-        '
-        'ExcluirToolStripMenuItem
-        '
-        Me.ExcluirToolStripMenuItem.Name = "ExcluirToolStripMenuItem"
-        Me.ExcluirToolStripMenuItem.Size = New System.Drawing.Size(109, 22)
-        Me.ExcluirToolStripMenuItem.Text = "Excluir"
-        '
-        'Button1
-        '
-        Me.Button1.Location = New System.Drawing.Point(383, 303)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 59
-        Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
-        '
         'FormAMEOCI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1905,8 +1894,8 @@ Partial Class FormAMEOCI
         CType(Me.dgOCIcadastradas, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ContextMenuStrip1.ResumeLayout(False)
         CType(Me.dgQueueItens, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.dgQueueOCI, System.ComponentModel.ISupportInitialize).EndInit()
         Me.menuDGQueue.ResumeLayout(False)
+        CType(Me.dgQueueOCI, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2049,5 +2038,4 @@ Partial Class FormAMEOCI
     Friend WithEvents FiltrarAPACToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents menuDGQueue As ContextMenuStrip
     Friend WithEvents ExcluirToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents Button1 As Button
 End Class

@@ -2230,12 +2230,17 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     End Sub
 
     Private Sub FormAMEOCI_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
+
         If e.Control AndAlso e.KeyCode = Keys.V Then
-            Dim num = m.PasteTelefone()
-            e.SuppressKeyPress = True
-            e.Handled = True
-            txtDDD.Text = num.DDD
-            txtTelefone.Text = num.Numero
+
+            If Main.isCelular(Clipboard.GetText()) OrElse Main.isFixo(Clipboard.GetText()) Then
+                e.SuppressKeyPress = True
+                e.Handled = True
+                Dim num = Main.PasteTelefone()
+                txtDDD.Text = num.DDD
+                txtTelefone.Text = num.Numero
+            End If
+
         End If
     End Sub
 
@@ -2624,20 +2629,6 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             End If
         End If
     End Sub
-    Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
-        Dim p As New Paciente
-
-        p.Nome = txtNomePaciente.Text
-        p.CPF = txtCpfPaciente.Text
-        p.CNS = txtCnsPaciente.Text
-        p.DataNascimento = dtNascimento.Text
-        p.Sexo = txtSexo.Text
-
-        CADSUS.SUS_PDF(p)
-
-    End Sub
-
-
 End Class
 Public Class ApacRegistro
     Public Property NumeroApac As String

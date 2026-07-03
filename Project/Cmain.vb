@@ -918,7 +918,52 @@ Public Class Main
         Return meses
 
     End Function
-    Public Function PasteTelefone() As (DDD As String, Numero As String)
+
+    Public Shared Function isCelular(telefone As String) As Boolean
+
+        Dim numero As String = Regex.Replace(telefone, "\D", "")
+
+        Select Case numero.Length
+
+            Case 11 ' com DDD
+                If numero.Substring(2, 1) = "9" Then
+                    Return True
+                End If
+
+            Case 9 ' sem DDD
+                If numero.StartsWith("9") Then
+                    Return True
+                End If
+
+            Case Else
+                Return False
+
+        End Select
+
+    End Function
+
+    Public Shared Function isFixo(telefone As String) As Boolean
+
+        Dim numero As String = Regex.Replace(telefone, "\D", "")
+
+        Select Case numero.Length
+
+            Case 10 ' com DDD
+                If "2345".Contains(numero.Substring(2, 1)) Then
+                    Return True
+                End If
+
+            Case 8 ' sem DDD
+                If "2345".Contains(numero.Substring(0, 1)) Then
+                    Return True
+                End If
+            Case Else
+                Return False
+
+        End Select
+
+    End Function
+    Public Shared Function PasteTelefone() As (DDD As String, Numero As String)
         Dim raw As String = Clipboard.GetText()
 
         If String.IsNullOrWhiteSpace(raw) Then Return ("", "")
