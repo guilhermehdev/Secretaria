@@ -326,85 +326,100 @@ Public Class FormAMEOCI
         Try
             ' ==================== VALIDAÇÕES ====================
             If CDate(dtValidadeIni.Value).Month <> My.Settings.OCIcompetencia.Substring(4) Then
-                Throw New Exception("Data inicial fora da competência atual.")
                 TabControl1.SelectedTab = TabControl1.TabPages(0)
                 dtValidadeIni.Focus()
+                MessageBox.Show("Data inicial fora da competência atual.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
             End If
 
             If txtNumApac.Text.Trim() = "" Then
-                Throw New Exception("Informe o número da APAC.")
                 TabControl1.SelectedTab = TabControl1.TabPages(0)
                 txtNumApac.Focus()
+                MessageBox.Show("Informe o número da APAC.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
             End If
 
             If Not m.ValidarCPF(txtCpfPaciente.Text) Then
                 MessageBox.Show("CPF inválido. Verifique e tente novamente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                TabControl1.SelectedTab = TabControl1.TabPages(0)
                 txtCpfPaciente.Focus()
                 Return
             End If
 
             If dtNascimento.Text.Trim() = "" Then
-                Throw New Exception("Informe a data de nascimento Do paciente.")
+                MessageBox.Show("Informe a data de nascimento Do paciente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 TabControl1.SelectedTab = TabControl1.TabPages(0)
                 dtNascimento.Focus()
                 chkResponsavel()
+                Return
             End If
 
             If txtProcedimentoPrincipal.SelectedValue = "0905010035" AndAlso CInt(m.AgeInMonths(m.mysqlDateFormat(dtNascimento.Text), m.mysqlDateFormat(dtValidadeIni.Value))) < 108 Then
-                Throw New Exception("Paciente com idade inferior a 9 anos não permitido para procedimento 0905010035.")
+                MessageBox.Show("Paciente com idade inferior a 9 anos não permitido para procedimento 0905010035.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 TabControl1.SelectedTab = TabControl1.TabPages(0)
+                Return
             End If
 
             If txtProcedimentoPrincipal.SelectedValue = "0902010026" AndAlso CInt(m.AgeInMonths(m.mysqlDateFormat(dtNascimento.Text), m.mysqlDateFormat(dtValidadeIni.Value))) < 144 Then
-                Throw New Exception("Paciente com idade inferior a 12 anos não permitido para procedimento 0902010026.")
+                MessageBox.Show("Paciente com idade inferior a 12 anos não permitido para procedimento 0902010026.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 TabControl1.SelectedTab = TabControl1.TabPages(0)
+                Return
             End If
 
             If txtNomePaciente.Text.Trim() = "" Then
                 TabControl1.SelectedTab = TabControl1.TabPages(0)
                 txtNomePaciente.Focus()
-                Throw New Exception("Informe o nome Do paciente.")
+                MessageBox.Show("Informe o nome Do paciente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
             End If
             If txtNomeMae.Text.Trim() = "" Then
                 TabControl1.SelectedTab = TabControl1.TabPages(0)
                 txtNomeMae.Focus()
-                Throw New Exception("Informe o nome da mãe.")
+                MessageBox.Show("Informe o nome da mãe.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
             End If
             If txtSexo.Text = "" Then
                 TabControl1.SelectedTab = TabControl1.TabPages(0)
                 txtSexo.Focus()
-                Throw New Exception("Informe o sexo.")
+                MessageBox.Show("Informe o sexo.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
             End If
             If txtNomeRespPaciente.Text.Trim() = "" Then
                 TabControl1.SelectedTab = TabControl1.TabPages(0)
                 txtNomeRespPaciente.Focus()
-                Throw New Exception("Informe o nome Do responsável.")
+                MessageBox.Show("Informe o nome Do responsável.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
             End If
             If txtDDD.Text.Trim() = "" Then
                 TabControl1.SelectedTab = TabControl1.TabPages(0)
                 txtDDD.Focus()
-                Throw New Exception("Informe o DDD.")
+                MessageBox.Show("Informe o DDD.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
             End If
             If txtTelefone.Text.Trim() = "" Then
                 TabControl1.SelectedTab = TabControl1.TabPages(0)
                 txtTelefone.Focus()
-                Throw New Exception("Informe o telefone.")
+                MessageBox.Show("Informe o telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
             End If
             If txtCep.Text.Length < 8 Then
                 TabControl1.SelectedTab = TabControl1.TabPages(0)
                 txtCep.Focus()
-                Throw New Exception("Informe o CEP corretamente.")
+                MessageBox.Show("Informe o CEP corretamente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
             End If
             If txtNumero.Text.Trim() = "" Then
                 TabControl1.SelectedTab = TabControl1.TabPages(0)
                 txtNumero.Focus()
-                Throw New Exception("Informe o número Do logradouro.")
+                MessageBox.Show("Informe o número Do logradouro.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
             End If
             If txtProcedimentoPrincipal.SelectedIndex < 0 Then
                 TabControl1.SelectedTab = TabControl1.TabPages(1)
                 txtProcedimentoPrincipal.Focus()
                 txtProcedimentoPrincipal.DroppedDown = True
-                Throw New Exception("Selecione o procedimento principal.")
+                MessageBox.Show("Selecione o procedimento principal.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
             End If
 
 
