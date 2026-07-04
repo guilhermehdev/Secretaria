@@ -325,6 +325,12 @@ Public Class FormAMEOCI
     Public Sub addAPAC()
         Try
             ' ==================== VALIDAÇÕES ====================
+            If CDate(dtValidadeIni.Value).Month <> My.Settings.OCIcompetencia.Substring(4) Then
+                Throw New Exception("Data inicial fora da competência atual.")
+                TabControl1.SelectedTab = TabControl1.TabPages(0)
+                dtValidadeIni.Focus()
+            End If
+
             If txtNumApac.Text.Trim() = "" Then
                 Throw New Exception("Informe o número da APAC.")
                 TabControl1.SelectedTab = TabControl1.TabPages(0)
@@ -2561,9 +2567,9 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             Exit Sub
         End If
 
-        txtNomePaciente.Text = paciente.Nome
-        txtNomeMae.Text = paciente.NomeMae
-        dtNascimento.Text = paciente.DataNascimento
+        'txtNomePaciente.Text = paciente.Nome
+        'txtNomeMae.Text = paciente.NomeMae
+        'dtNascimento.Text = paciente.DataNascimento
         txtCnsPaciente.Text = paciente.CNS
 
         m.msgInfo("SUS carregado com sucesso do CADSUS.")
