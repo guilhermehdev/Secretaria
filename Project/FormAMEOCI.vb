@@ -2577,9 +2577,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         frm.FormBorderStyle = FormBorderStyle.None
         frm.StartPosition = FormStartPosition.CenterScreen
         frm.Size = New Size(170, 50)
-
         Dim lbl As New Label
-        lbl.Text = "Consultando CADSUS. Aguarde..."
         lbl.Dock = DockStyle.Fill
         lbl.TextAlign = ContentAlignment.MiddleCenter
         lbl.BackColor = Color.FromArgb(64, 64, 64)
@@ -2587,7 +2585,6 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         lbl.ForeColor = Color.Gold
 
         frm.Controls.Add(lbl)
-        frm.Show()
 
         If txtCpfPaciente.Text.Length <> 11 Then
             m.msgError("CPF inválido. Digite um CPF válido com 11 dígitos.")
@@ -2604,6 +2601,8 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             Dim pacData = getPacientes(paciente.CPF)
 
             If pacData.rows.count > 0 Then
+                frm.Show()
+                lbl.Text = "Consultando CADSUS. Aguarde..."
                 If pacData.rows(0).item("sexo") <> "" Then
                     If m.msgQuestion("Imprimir cartão SUS do paciente?", "Paciente encontrado") Then
 
