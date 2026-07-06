@@ -116,24 +116,6 @@ Public Class CADSUS
         Dim cadsus As New CADSUS()
         Return cadsus.apiCADSUS(cpf)
     End Function
-    'Public Shared Sub SUS_PDF(paciente As DadosPaciente)
-
-    '    Dim reader As New PdfReader(Application.StartupPath & "\PDF\ModeloSUS.pdf")
-    '    Dim stamper As New PdfStamper(reader, New FileStream(Application.StartupPath & $"\PDF\Gerados\{paciente.Nome}.pdf", FileMode.Create))
-    '    Dim campos = stamper.AcroFields
-
-    '    campos.SetField("nome_cabecalho", paciente.Nome & ",")
-    '    campos.SetField("nome_cartao", paciente.Nome)
-    '    campos.SetField("dtnasc", CDate(paciente.DataNascimento).ToString("dd/MM/yyyy"))
-    '    campos.SetField("sexo", paciente.Sexo)
-    '    campos.SetField("sus", FormatarCNS(paciente.CNS))
-    '    campos.SetField("cpf", FormatarCPF(paciente.CPF))
-
-    '    stamper.FormFlattening = True
-    '    stamper.Close()
-    '    reader.Close()
-
-    'End Sub
 
     Public Shared Function SUS_PDF(paciente As Paciente) As String
 
@@ -142,7 +124,7 @@ Public Class CADSUS
         Dim stamper As New PdfStamper(reader, New FileStream(arquivoDestino, FileMode.Create))
         Dim campos = stamper.AcroFields
 
-        campos.SetField("nome_cabecalho", paciente.Nome & ",")
+        campos.SetField("nome_cabecalho", If(paciente.Sexo = "F", "Sra. " & paciente.Nome, "Sr. " & paciente.Nome))
         campos.SetField("nome_cartao", paciente.Nome)
         campos.SetField("dtnasc", CDate(paciente.DataNascimento).ToString("dd/MM/yyyy"))
         campos.SetField("sexo", paciente.Sexo)

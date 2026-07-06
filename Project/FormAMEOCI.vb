@@ -1,6 +1,7 @@
 ﻿
 Imports System.Globalization
 Imports System.IO
+Imports System.Net.Http
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports ClosedXML.Excel
@@ -1924,10 +1925,11 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     End Sub
 
     Private Sub onClose()
-        FormAMEmain.Visible = True
+        'FormAMEmain.Visible = True
         If Not String.IsNullOrEmpty(txtNumApac.Text) Then
             UnlockApac(txtNumApac.Text)
         End If
+        Application.Exit()
     End Sub
     Private Sub FormAMEOCI_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         onClose()
@@ -2570,24 +2572,57 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
     End Sub
     Private Async Sub Button1_Click(sender As Object, e As EventArgs) Handles btCADSUS.Click
+        Dim frm As New Form
+
+        frm.FormBorderStyle = FormBorderStyle.None
+        frm.StartPosition = FormStartPosition.CenterScreen
+        frm.Size = New Size(170, 50)
+
+        Dim lbl As New Label
+        lbl.Text = "Consultando CADSUS. Aguarde..."
+        lbl.Dock = DockStyle.Fill
+        lbl.TextAlign = ContentAlignment.MiddleCenter
+        lbl.BackColor = Color.FromArgb(64, 64, 64)
+        lbl.Font = New Font("Verdana", 8, FontStyle.Bold)
+        lbl.ForeColor = Color.Gold
+
+        frm.Controls.Add(lbl)
+        frm.Show()
 
         If txtCpfPaciente.Text.Length <> 11 Then
             m.msgError("CPF inválido. Digite um CPF válido com 11 dígitos.")
             Exit Sub
         End If
+
         Dim paciente As Paciente = Await CADSUS.consultaCADSUS(txtCpfPaciente.Text)
 
         If paciente Is Nothing Then
             m.msgError("Paciente não encontrado.")
             Exit Sub
+        Else
+            frm.Close()
+            Dim pacData = getPacientes(paciente.CPF)
+
+            If pacData.rows.count > 0 Then
+                If pacData.rows(0).item("sexo") <> "" Then
+                    If m.msgQuestion("Imprimir cartão SUS do paciente?", "Paciente encontrado") Then
+
+                        Dim url As String = $"http://{My.Settings.serverAME}:8080/sus?cpf={Uri.EscapeDataString(paciente.CPF)}&sexo={Uri.EscapeDataString(pacData.rows(0).item("sexo"))}"
+                        Process.Start(New ProcessStartInfo With {.FileName = url, .UseShellExecute = True})
+
+                    End If
+
+                End If
+            Else
+
+            End If
+
         End If
 
         'txtNomePaciente.Text = paciente.Nome
         'txtNomeMae.Text = paciente.NomeMae
         'dtNascimento.Text = paciente.DataNascimento
         txtCnsPaciente.Text = paciente.CNS
-
-        m.msgInfo("SUS carregado com sucesso do CADSUS.")
 
     End Sub
     Private Sub txtCnsPaciente_TextChanged(sender As Object, e As EventArgs) Handles txtCnsPaciente.TextChanged
