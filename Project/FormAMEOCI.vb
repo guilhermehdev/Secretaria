@@ -942,9 +942,6 @@ Public Class FormAMEOCI
         End With
 
     End Sub
-    Private Sub popupGrid_MouseLeave()
-        popupGrid.Visible = False
-    End Sub
 
     Public Function deleteOCI(id As Integer)
         Try
@@ -1242,7 +1239,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         Me.Controls.Add(popupGrid)
         popupGrid.BringToFront()
 
-        AddHandler popupGrid.MouseLeave, AddressOf popupGrid_MouseLeave
+        'AddHandler popupGrid.MouseLeave, AddressOf popupGrid_MouseLeave
         AddHandler debounceTimer.Tick, AddressOf BuscarPacientes
         AddHandler popupGrid.CellClick, AddressOf popupGrid_CellClick
 
@@ -1599,9 +1596,9 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             ' Configura grid
             dgvSugestoes.DataSource = resultado
             If colapsed Then
-                formatGrid(New Point(38, 290))
+                formatGrid(New Point(38, 280))
             Else
-                formatGrid(New Point(481, 290))
+                formatGrid(New Point(481, 280))
             End If
 
         Catch ex As Exception
@@ -1661,9 +1658,9 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             dgvSugestoes.DataSource = resultado
 
             If colapsed Then
-                formatGrid(New Point(38, 328))
+                formatGrid(New Point(38, 318))
             Else
-                formatGrid(New Point(481, 328))
+                formatGrid(New Point(481, 318))
             End If
 
         Catch ex As Exception
@@ -1758,9 +1755,9 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
                 ' Posiciona o grid logo abaixo do textbox
                 If colapsed Then
-                    popupGrid.Location = New Point(36, 243)
+                    popupGrid.Location = New Point(36, 268)
                 Else
-                    popupGrid.Location = New Point(480, 243)
+                    popupGrid.Location = New Point(480, 268)
                 End If
                 ' ======== CONFIGURAÇÃO DE COLUNAS INDIVIDUAIS ========
 
@@ -2191,19 +2188,14 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
     Private Sub TabControl1_Click(sender As Object, e As EventArgs) Handles TabControl1.Click
         popupGrid.Visible = False
+        dgvSugestoes.Visible = False
     End Sub
-    Private Sub GroupBox1_MouseHover(sender As Object, e As EventArgs) Handles GroupBox1.MouseHover
-        popupGrid.Visible = False
-    End Sub
-    Private Sub GroupBox2_MouseHover(sender As Object, e As EventArgs) Handles GroupBox2.MouseHover
-        popupGrid.Visible = False
-    End Sub
+
     Private Sub TabPage1_Click(sender As Object, e As EventArgs) Handles TabPage1.Click
         popupGrid.Visible = False
+        dgvSugestoes.Visible = False
     End Sub
-    Private Sub GroupBox5_MouseHover(sender As Object, e As EventArgs) Handles GroupBox5.MouseHover
-        popupGrid.Visible = False
-    End Sub
+
     Private Sub dtNascimento_TextChanged(sender As Object, e As EventArgs) Handles dtNascimento.TextChanged
         If isLoading Then Exit Sub
         Try
@@ -2684,6 +2676,11 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             End If
         End If
     End Sub
+    Private Sub FormAMEOCI_MouseLeave(sender As Object, e As EventArgs) Handles MyBase.MouseLeave
+        popupGrid.Visible = False
+        dgvSugestoes.Visible = False
+    End Sub
+
 End Class
 Public Class ApacRegistro
     Public Property NumeroApac As String
