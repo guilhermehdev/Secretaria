@@ -1186,7 +1186,6 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         checkQueue()
         colapse()
-        PDFSERVER.Iniciar()
 
         If My.Settings.databaseAME = "" Then
             FormAMEbd.ShowDialog()
@@ -1940,14 +1939,13 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                     resultPacientes(result)
                     popupGrid.Visible = False
                 Else
-                    MsgBox("CPF invalido!")
+                    m.msgAlert("CPF invalido!")
                     txtCpfPaciente.Focus()
                     txtCpfPaciente.Clear()
                 End If
 
-
             Catch ex As Exception
-                MsgBox("CPF invalido!")
+                m.msgAlert("CPF invalido!")
             Finally
                 isLoading = False
             End Try
@@ -2589,12 +2587,12 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             m.msgError("Paciente não encontrado.")
             Exit Sub
         Else
-            frm.Close()
             Dim pacData = getPacientes(paciente.CPF)
+            lbl.Text = "Consultando CADSUS. Aguarde..."
+            frm.Show()
 
             If pacData.rows.count > 0 Then
-                frm.Show()
-                lbl.Text = "Consultando CADSUS. Aguarde..."
+
                 If pacData.rows(0).item("sexo") <> "" Then
                     If m.msgQuestion("Imprimir cartão SUS do paciente?", "Paciente encontrado") Then
 
@@ -2604,10 +2602,9 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                     End If
 
                 End If
-            Else
 
             End If
-
+            frm.Close()
         End If
 
         'txtNomePaciente.Text = paciente.Nome
@@ -2677,8 +2674,13 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         End If
     End Sub
     Private Sub FormAMEOCI_MouseLeave(sender As Object, e As EventArgs) Handles MyBase.MouseLeave
-        popupGrid.Visible = False
-        dgvSugestoes.Visible = False
+        Try
+            popupGrid.Visible = False
+            dgvSugestoes.Visible = False
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
 End Class
