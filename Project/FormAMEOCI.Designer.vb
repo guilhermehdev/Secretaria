@@ -179,6 +179,7 @@ Partial Class FormAMEOCI
         Me.dgQueueOCI = New System.Windows.Forms.DataGridView()
         Me.btOCIpendente = New System.Windows.Forms.Button()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.chkSemCpf = New System.Windows.Forms.CheckBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -422,6 +423,7 @@ Partial Class FormAMEOCI
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.chkSemCpf)
         Me.GroupBox2.Controls.Add(Me.btnovo)
         Me.GroupBox2.Controls.Add(Me.btExcluirPaciente)
         Me.GroupBox2.Controls.Add(Me.txtCnsPaciente)
@@ -504,13 +506,13 @@ Partial Class FormAMEOCI
         Me.btCADSUS.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btCADSUS.FlatAppearance.BorderSize = 0
         Me.btCADSUS.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btCADSUS.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.5!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btCADSUS.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btCADSUS.ForeColor = System.Drawing.Color.White
-        Me.btCADSUS.Location = New System.Drawing.Point(181, 36)
+        Me.btCADSUS.Location = New System.Drawing.Point(258, 36)
         Me.btCADSUS.Name = "btCADSUS"
-        Me.btCADSUS.Size = New System.Drawing.Size(57, 21)
+        Me.btCADSUS.Size = New System.Drawing.Size(29, 21)
         Me.btCADSUS.TabIndex = 19
-        Me.btCADSUS.Text = "Obter SUS"
+        Me.btCADSUS.Text = "SUS"
         Me.btCADSUS.UseVisualStyleBackColor = False
         '
         'txtNomePaciente
@@ -521,10 +523,10 @@ Partial Class FormAMEOCI
         Me.txtNomePaciente.DropDownWidth = 1
         Me.txtNomePaciente.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtNomePaciente.FormattingEnabled = True
-        Me.txtNomePaciente.Location = New System.Drawing.Point(239, 36)
+        Me.txtNomePaciente.Location = New System.Drawing.Point(289, 36)
         Me.txtNomePaciente.MaxLength = 30
         Me.txtNomePaciente.Name = "txtNomePaciente"
-        Me.txtNomePaciente.Size = New System.Drawing.Size(294, 21)
+        Me.txtNomePaciente.Size = New System.Drawing.Size(244, 21)
         Me.txtNomePaciente.TabIndex = 8
         '
         'btAtualizarDados
@@ -777,7 +779,7 @@ Partial Class FormAMEOCI
         Me.txtCpfPaciente.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtCpfPaciente.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtCpfPaciente.ForeColor = System.Drawing.Color.OrangeRed
-        Me.txtCpfPaciente.Location = New System.Drawing.Point(86, 36)
+        Me.txtCpfPaciente.Location = New System.Drawing.Point(163, 36)
         Me.txtCpfPaciente.Mask = "99999999999"
         Me.txtCpfPaciente.Name = "txtCpfPaciente"
         Me.txtCpfPaciente.Size = New System.Drawing.Size(95, 21)
@@ -795,7 +797,7 @@ Partial Class FormAMEOCI
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(83, 20)
+        Me.Label16.Location = New System.Drawing.Point(161, 21)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(27, 13)
         Me.Label16.TabIndex = 20
@@ -873,7 +875,7 @@ Partial Class FormAMEOCI
         'Label20
         '
         Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(236, 20)
+        Me.Label20.Location = New System.Drawing.Point(286, 20)
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(141, 13)
         Me.Label20.TabIndex = 24
@@ -1848,6 +1850,16 @@ Partial Class FormAMEOCI
         '
         Me.Timer1.Interval = 200
         '
+        'chkSemCpf
+        '
+        Me.chkSemCpf.AutoSize = True
+        Me.chkSemCpf.Location = New System.Drawing.Point(91, 38)
+        Me.chkSemCpf.Name = "chkSemCpf"
+        Me.chkSemCpf.Size = New System.Drawing.Size(70, 17)
+        Me.chkSemCpf.TabIndex = 59
+        Me.chkSemCpf.Text = "Sem CPF"
+        Me.chkSemCpf.UseVisualStyleBackColor = True
+        '
         'FormAMEOCI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2038,4 +2050,5 @@ Partial Class FormAMEOCI
     Friend WithEvents FiltrarAPACToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents menuDGQueue As ContextMenuStrip
     Friend WithEvents ExcluirToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents chkSemCpf As CheckBox
 End Class

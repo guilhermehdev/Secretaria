@@ -340,11 +340,13 @@ Public Class FormAMEOCI
                 Return
             End If
 
-            If Not m.ValidarCPF(txtCpfPaciente.Text) Then
-                MessageBox.Show("CPF inválido. Verifique e tente novamente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                TabControl1.SelectedTab = TabControl1.TabPages(0)
-                txtCpfPaciente.Focus()
-                Return
+            If Not chkSemCpf.Checked Then
+                If Not m.ValidarCPF(txtCpfPaciente.Text) Then
+                    MessageBox.Show("CPF inválido. Verifique e tente novamente.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    TabControl1.SelectedTab = TabControl1.TabPages(0)
+                    txtCpfPaciente.Focus()
+                    Return
+                End If
             End If
 
             If dtNascimento.Text.Trim() = "" Then
@@ -509,9 +511,18 @@ Public Class FormAMEOCI
                     r14.Append(txtTelefone.Text.PadLeft(9, " "c))
                     r14.Append(txtEmail.Text.PadRight(40, " "c))
                     r14.Append(txtCNSMedicoExecutante.SelectedValue.PadLeft(15, "0"c))
-                    r14.Append(txtCpfPaciente.Text.Trim)
+                    r14.Append(txtCpfPaciente.Text.Trim.PadLeft(11, "0"c))
                     r14.Append(txtEquipe.Text.PadLeft(10, " "c))
                     r14.Append(If(chkSituacaoRua.Checked, "S", "N"))
+                    ' 49 - Fonte Orçamentária
+                    r14.Append("  ")
+
+                    ' 50 - Emendas Parlamentares
+                    r14.Append(" ")
+
+                    ' 51 - Pessoa sem CPF/Registro Civil
+                    r14.Append(If(chkSemCpf.Checked, "S", "N"))
+
                     sw.WriteLine(r14.ToString())
 
                     ' ================= REGISTRO 06 =================
@@ -1932,23 +1943,28 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     End Sub
     Private Sub txtCpfPaciente_TextChanged(sender As Object, e As EventArgs) Handles txtCpfPaciente.TextChanged
         If isLoading Then Exit Sub
-        If txtCpfPaciente.Text.Length = 11 Then
-            Try
-                If m.ValidarCPF(txtCpfPaciente.Text) Then
-                    result = getPacientes(txtCpfPaciente.Text.Trim())
-                    resultPacientes(result)
-                    popupGrid.Visible = False
-                Else
-                    m.msgAlert("CPF invalido!")
-                    txtCpfPaciente.Focus()
-                    txtCpfPaciente.Clear()
-                End If
 
-            Catch ex As Exception
-                m.msgAlert("CPF invalido!")
-            Finally
-                isLoading = False
-            End Try
+        If Not chkSemCpf.Checked Then
+
+            If txtCpfPaciente.Text.Length = 11 Then
+                Try
+                    If m.ValidarCPF(txtCpfPaciente.Text) Then
+                        result = getPacientes(txtCpfPaciente.Text.Trim())
+                        resultPacientes(result)
+                        popupGrid.Visible = False
+                    Else
+                        m.msgAlert("CPF invalido!")
+                        txtCpfPaciente.Focus()
+                        txtCpfPaciente.Clear()
+                    End If
+
+                Catch ex As Exception
+                    m.msgAlert("CPF invalido!")
+                Finally
+                    isLoading = False
+                End Try
+            End If
+
         End If
     End Sub
 
@@ -2683,6 +2699,16 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
     End Sub
 
+    Private Sub chkSemCpf_CheckedChanged(sender As Object, e As EventArgs) Handles chkSemCpf.CheckedChanged
+        If chkSemCpf.Checked Then
+            txtCpfPaciente.Text = ""
+            txtCpfPaciente.Enabled = False
+            btCADSUS.Enabled = False
+        Else
+            txtCpfPaciente.Enabled = True
+            btCADSUS.Enabled = True
+        End If
+    End Sub
 End Class
 Public Class ApacRegistro
     Public Property NumeroApac As String
