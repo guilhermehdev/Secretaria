@@ -62,6 +62,7 @@ Partial Class FormAMEOCI
         Me.Label2 = New System.Windows.Forms.Label()
         Me.txtMunicipioNome = New System.Windows.Forms.TextBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.chkSemCpf = New System.Windows.Forms.CheckBox()
         Me.btnovo = New System.Windows.Forms.Button()
         Me.btExcluirPaciente = New System.Windows.Forms.Button()
         Me.txtCnsPaciente = New System.Windows.Forms.MaskedTextBox()
@@ -179,7 +180,6 @@ Partial Class FormAMEOCI
         Me.dgQueueOCI = New System.Windows.Forms.DataGridView()
         Me.btOCIpendente = New System.Windows.Forms.Button()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.chkSemCpf = New System.Windows.Forms.CheckBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -461,6 +461,16 @@ Partial Class FormAMEOCI
         Me.GroupBox2.TabIndex = 6
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Identificação do Paciente"
+        '
+        'chkSemCpf
+        '
+        Me.chkSemCpf.AutoSize = True
+        Me.chkSemCpf.Location = New System.Drawing.Point(91, 38)
+        Me.chkSemCpf.Name = "chkSemCpf"
+        Me.chkSemCpf.Size = New System.Drawing.Size(70, 17)
+        Me.chkSemCpf.TabIndex = 59
+        Me.chkSemCpf.Text = "Sem CPF"
+        Me.chkSemCpf.UseVisualStyleBackColor = True
         '
         'btnovo
         '
@@ -1849,16 +1859,6 @@ Partial Class FormAMEOCI
         'Timer1
         '
         Me.Timer1.Interval = 200
-        '
-        'chkSemCpf
-        '
-        Me.chkSemCpf.AutoSize = True
-        Me.chkSemCpf.Location = New System.Drawing.Point(91, 38)
-        Me.chkSemCpf.Name = "chkSemCpf"
-        Me.chkSemCpf.Size = New System.Drawing.Size(70, 17)
-        Me.chkSemCpf.TabIndex = 59
-        Me.chkSemCpf.Text = "Sem CPF"
-        Me.chkSemCpf.UseVisualStyleBackColor = True
         '
         'FormAMEOCI
         '

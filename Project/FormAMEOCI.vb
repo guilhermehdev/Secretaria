@@ -517,10 +517,10 @@ Public Class FormAMEOCI
                     r14.Append(txtEquipe.Text.PadLeft(10, " "c))
                     r14.Append(If(chkSituacaoRua.Checked, "S", "N"))
                     ' 49 - Fonte Orçamentária
-                    r14.Append("  ")
+                    ' r14.Append("  ")
 
                     ' 50 - Emendas Parlamentares
-                    r14.Append(" ")
+                    r14.Append("N")
 
                     ' 51 - Pessoa sem CPF/Registro Civil
                     r14.Append(If(chkSemCpf.Checked, "S", "N"))
