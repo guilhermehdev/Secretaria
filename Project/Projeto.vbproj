@@ -523,6 +523,7 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApacRegistro.vb" />
     <Compile Include="BackupMySQL.vb" />
     <Compile Include="BLH.vb" />
     <Compile Include="CADSUS.vb" />

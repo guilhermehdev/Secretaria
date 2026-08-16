@@ -1,5 +1,4 @@
-﻿
-Imports System.Globalization
+﻿Imports System.Globalization
 Imports System.IO
 Imports System.Net.Http
 Imports System.Text
@@ -282,40 +281,40 @@ Public Class FormAMEOCI
             End If
 
             If txtNomeMae.Text.Length < 3 Then
-                    MessageBox.Show("Nome da mãe inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                    Return False
-                End If
+                MessageBox.Show("Nome da mãe inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return False
+            End If
 
-                If txtTelefone.Text.Length < 8 Or txtDDD.Text.Length < 2 Then
-                    MessageBox.Show("Telefone inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                    Return False
-                Else
-                    If txtTelefone.Text.Length = 8 Then
-                        telfixo = txtTelefone.Text.Insert(4, "-")
-                    Else
-                        telfixo = txtTelefone.Text.Insert(5, "-")
-                    End If
-                End If
-
-                If txtNumero.Text.Length < 1 Then
-                    MessageBox.Show("Número inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                    Return False
-                End If
-
-                Try
-                    FormAMEmain.doQuery($"UPDATE pacientes SET dtnasc='{m.mysqlDateFormat(dtNascimento.Text)}', cpf='{txtCpfPaciente.Text.Trim()}', nome='{txtNomePaciente.Text}',mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){telfixo}', id_logradouro={idEnd}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}', raca='{txtRaca.SelectedValue}', sus='{txtCnsPaciente.Text}' WHERE id={idPac}")
-                    If txtNumApac.Text.Length = 13 Then
-                        UnlockApac(txtNumApac.Text)
-                    End If
-                    Return True
-                    ' MessageBox.Show("✅ Dados do paciente atualizados!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                Catch ex As Exception
-                    MsgBox("UPDATE " & ex.Message)
-                    Return False
-                End Try
-
+            If txtTelefone.Text.Length < 8 Or txtDDD.Text.Length < 2 Then
+                MessageBox.Show("Telefone inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return False
             Else
-                MessageBox.Show("Selecione um paciente por data de nascimento, nome ou CPF", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                If txtTelefone.Text.Length = 8 Then
+                    telfixo = txtTelefone.Text.Insert(4, "-")
+                Else
+                    telfixo = txtTelefone.Text.Insert(5, "-")
+                End If
+            End If
+
+            If txtNumero.Text.Length < 1 Then
+                MessageBox.Show("Número inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return False
+            End If
+
+            Try
+                FormAMEmain.doQuery($"UPDATE pacientes SET dtnasc='{m.mysqlDateFormat(dtNascimento.Text)}', cpf='{txtCpfPaciente.Text.Trim()}', nome='{txtNomePaciente.Text}',mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){telfixo}', id_logradouro={idEnd}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}', raca='{txtRaca.SelectedValue}', sus='{txtCnsPaciente.Text}' WHERE id={idPac}")
+                If txtNumApac.Text.Length = 13 Then
+                    UnlockApac(txtNumApac.Text)
+                End If
+                Return True
+                ' MessageBox.Show("✅ Dados do paciente atualizados!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Catch ex As Exception
+                MsgBox("UPDATE " & ex.Message)
+                Return False
+            End Try
+
+        Else
+            MessageBox.Show("Selecione um paciente por data de nascimento, nome ou CPF", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Return False
         End If
 
@@ -516,8 +515,8 @@ Public Class FormAMEOCI
                     r14.Append(txtCpfPaciente.Text.Trim.PadLeft(11, "0"c))
                     r14.Append(txtEquipe.Text.PadLeft(10, " "c))
                     r14.Append(If(chkSituacaoRua.Checked, "S", "N"))
-                    ' 49 - Fonte Orçamentária
-                    ' r14.Append("  ")
+                    ' 49 - Fonte Orçamentária (2 posições, 534-535) - opcional, mantém em branco
+                    r14.Append("  ")
 
                     ' 50 - Emendas Parlamentares
                     r14.Append("N")
@@ -2712,23 +2711,3 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         End If
     End Sub
 End Class
-Public Class ApacRegistro
-    Public Property NumeroApac As String
-    Public Property NomePaciente As String
-    Public Property DtnascPaciente As Date
-    Public Property CPFPaciente As String
-    Public Property MaePaciente As String
-    Public Property CEPPaciente As String
-    Public Property TipoLograPaciente As String
-    Public Property LograPaciente As String
-    Public Property BairroPaciente As String
-    Public Property numeroResPaciente As String
-    Public Property complementoPaciente As String
-    Public Property TelPaciente As String
-    Public Property ProcedimentoPrincipal As String
-    Public Property SUSMedicoExecutante As String
-    Public Property data As Date
-    Public Property competencia As String
-End Class
-
-
