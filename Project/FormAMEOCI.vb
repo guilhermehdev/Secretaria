@@ -1267,7 +1267,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         LimparData()
         loadQueueOCI()
 
-        Me.Text = $"Gerenciamento de APACs OCI - Competência {competencia(My.Settings.OCIcompetencia)}"
+        Me.Text = $"Gerenciamento de APACs OCI Ver 1.1 - Competência {competencia(My.Settings.OCIcompetencia)}"
         ' loadAPACbyUser(idUser)
         lbRestanteAPAC.Text = loadAPACdisp()
 
