@@ -153,7 +153,12 @@ Public Class FormAMEOCI
         Try
 
             If endereco Is Nothing OrElse endereco.Rows.Count = 0 Then
-                idEnd = 0
+                ' Endereço é obrigatório - antes isso caía em idEnd=0 silenciosamente
+                ' para paciente novo (sem nenhum aviso), permitindo gravar com um
+                ' id_logradouro inválido. Agora bloqueia em qualquer um dos dois casos
+                ' (paciente novo ou existente).
+                MessageBox.Show("Endereço inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return False
             Else
                 idEnd = endereco.Rows(0).Item("id")
             End If
@@ -178,7 +183,12 @@ Public Class FormAMEOCI
             Else
 
                 If detectChanges() Then
-                    atPac()
+                    ' Antes, o retorno de atPac() era ignorado: se o endereço (ou nome,
+                    ' CPF, telefone etc.) fosse inválido, atPac() mostrava o erro mas
+                    ' saveAPAC() continuava e gravava a APAC mesmo assim. Agora aborta.
+                    If Not atPac() Then
+                        Return False
+                    End If
                 End If
 
             End If
@@ -434,6 +444,17 @@ Public Class FormAMEOCI
                 Directory.CreateDirectory(Application.StartupPath & "\APAC\EXPORTADOS")
             End If
 
+            ' ==================== GRAVA NO BANCO PRIMEIRO ====================
+            ' IMPORTANTE: só gravamos no arquivo .JUL DEPOIS que saveAPAC() confirmar
+            ' que passou em todas as validações (CNS, procedimento principal, médicos
+            ' repetidos etc.). Gravar o arquivo antes disso deixava blocos de registros
+            ' (14/06/13) órfãos no .JUL sempre que saveAPAC() falhava - e como a tela
+            ' e a grid de procedimentos não eram limpas nesse caso, o próximo paciente
+            ' herdava/duplicava os procedimentos do atendimento anterior.
+            If Not saveAPAC() Then
+                Return
+            End If
+
             If updateMode Then
                 RemoverRegistroApac($"14{competencia}{txtNumApac.Text}")
             End If
@@ -474,9 +495,9 @@ Public Class FormAMEOCI
                     r14.Append(Fmt(txtNomePaciente.Text, 30))
                     r14.Append(Fmt(txtNomeMae.Text, 30))
                     r14.Append(Fmt(txtLogradouro.Text, 30))
-                    r14.Append(txtNumero.Text.PadRight(5, " "c))
-                    r14.Append(If(txtComplemento.Text <> "", RemoverAcentos(txtComplemento.Text.PadRight(10, " "c)), New String(" "c, 10)))
-                    r14.Append(txtCep.Text.Replace("-", "").PadRight(8, " "c))
+                    r14.Append(FmtR(txtNumero.Text, 5))
+                    r14.Append(If(txtComplemento.Text <> "", RemoverAcentos(FmtR(txtComplemento.Text, 10)), New String(" "c, 10)))
+                    r14.Append(FmtR(txtCep.Text.Replace("-", ""), 8))
                     r14.Append(txtMunIbge.Text.PadLeft(7, "0"c))
                     r14.Append(Format(CDate(dtNascimento.Text).ToString("yyyyMMdd")))
                     r14.Append(txtSexo.Text.PadRight(1, " "c))
@@ -494,7 +515,7 @@ Public Class FormAMEOCI
                     r14.Append(txtNomeMedicoSolicitante.SelectedValue.PadLeft(15, "0"c))
                     r14.Append(txtNomeAutorizador.SelectedValue.PadLeft(15, "0"c))
                     r14.Append(New String(" "c, 4)) ' Reservado
-                    r14.Append(If(txtProntuario.Text <> "", txtProntuario.Text.PadRight(10, " "c), New String(" "c, 10)))
+                    r14.Append(If(txtProntuario.Text <> "", FmtR(txtProntuario.Text, 10), New String(" "c, 10)))
                     r14.Append(txtCnesSolicitante.Text.PadLeft(7, "0"c))
                     r14.Append(dtEmissao.Value.ToString("yyyyMMdd"))
                     r14.Append(dtAutorizacao.Value.ToString("yyyyMMdd"))
@@ -508,12 +529,12 @@ Public Class FormAMEOCI
                     r14.Append(cbTipoLogradouro.SelectedValue.PadLeft(3, "0"c))
                     'r14.Append(txtBairro.Text.PadRight(30, " "c))
                     r14.Append(Fmt(txtBairro.Text, 30))
-                    r14.Append(txtDDD.Text.PadLeft(2, " "c))
-                    r14.Append(txtTelefone.Text.PadLeft(9, " "c))
-                    r14.Append(txtEmail.Text.PadRight(40, " "c))
+                    r14.Append(FmtL(txtDDD.Text, 2))
+                    r14.Append(FmtL(txtTelefone.Text, 9)) ' <- campo que causou o desalinhamento (espaço perdido no telefone)
+                    r14.Append(FmtR(txtEmail.Text, 40))
                     r14.Append(txtCNSMedicoExecutante.SelectedValue.PadLeft(15, "0"c))
                     r14.Append(txtCpfPaciente.Text.Trim.PadLeft(11, "0"c))
-                    r14.Append(txtEquipe.Text.PadLeft(10, " "c))
+                    r14.Append(FmtL(txtEquipe.Text, 10))
                     r14.Append(If(chkSituacaoRua.Checked, "S", "N"))
                     ' 49 - Fonte Orçamentária (2 posições, 534-535) - opcional, mantém em branco
                     r14.Append("  ")
@@ -551,13 +572,18 @@ Public Class FormAMEOCI
                     r13Principal.Append(New String(" "c, 53))
                     sw.WriteLine(r13Principal.ToString())
 
+                    Dim codigosJaGravados As New HashSet(Of String)()
                     For Each row As DataGridViewRow In dgvProcedimentos.Rows
                         If row.IsNewRow Then Continue For
+                        Dim codigoLinha As String = row.Cells(0).Value.ToString()
+                        ' Evita gravar o mesmo código de procedimento secundário mais de uma vez
+                        ' na mesma APAC (proteção extra contra duplicidade na grid).
+                        If Not codigosJaGravados.Add(codigoLinha) Then Continue For
                         Dim r13 As New StringBuilder()
                         r13.Append("13")
                         r13.Append(competencia)
                         r13.Append(txtNumApac.Text.PadLeft(13, "0"c))
-                        r13.Append(row.Cells(0).Value.ToString().PadLeft(10, "0"c))
+                        r13.Append(codigoLinha.PadLeft(10, "0"c))
                         r13.Append(row.Cells(3).Value.ToString().PadLeft(6, "0"c))
                         r13.Append(row.Cells(1).Value.ToString().PadLeft(7, "0"c))
                         r13.Append(New String(" "c, 53))
@@ -566,25 +592,25 @@ Public Class FormAMEOCI
                 End Using
             End Using
 
-            If saveAPAC() Then
-                If updateMode Then
-                    MessageBox.Show("✅ APAC atualizada!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                Else
-                    MessageBox.Show("✅ Paciente adicionado!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                End If
-                Dim selectedCNSExe As Integer = txtCNSMedicoExecutante.SelectedIndex
-                Dim selectedAutorizador As Integer = txtNomeAutorizador.SelectedIndex
-                Dim selectedCIDP As Integer = txtCidPrincipal.SelectedIndex
-                Dim selectedCIDS As Integer = txtCidSecundario.SelectedIndex
-                txtProcedimentoPrincipal_SelectedValueChanged(Nothing, Nothing)
-                TabControl1.SelectedTab = TabControl1.TabPages(0)  ' ativa a terceira aba (0-based)
-                txtCNSMedicoExecutante.SelectedIndex = selectedCNSExe
-                txtNomeAutorizador.SelectedIndex = selectedAutorizador
-                txtCidPrincipal.SelectedIndex = selectedCIDP
-                txtCidSecundario.SelectedIndex = selectedCIDS
-                updateMode = False
-                clearFields()
+            ' saveAPAC() já foi confirmado com sucesso lá em cima (ver "Return" acima
+            ' caso tivesse falhado), então prossegue direto para o pós-gravação/reset da tela.
+            If updateMode Then
+                MessageBox.Show("✅ APAC atualizada!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Else
+                MessageBox.Show("✅ Paciente adicionado!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
+            Dim selectedCNSExe As Integer = txtCNSMedicoExecutante.SelectedIndex
+            Dim selectedAutorizador As Integer = txtNomeAutorizador.SelectedIndex
+            Dim selectedCIDP As Integer = txtCidPrincipal.SelectedIndex
+            Dim selectedCIDS As Integer = txtCidSecundario.SelectedIndex
+            txtProcedimentoPrincipal_SelectedValueChanged(Nothing, Nothing)
+            TabControl1.SelectedTab = TabControl1.TabPages(0)  ' ativa a terceira aba (0-based)
+            txtCNSMedicoExecutante.SelectedIndex = selectedCNSExe
+            txtNomeAutorizador.SelectedIndex = selectedAutorizador
+            txtCidPrincipal.SelectedIndex = selectedCIDP
+            txtCidSecundario.SelectedIndex = selectedCIDS
+            updateMode = False
+            clearFields()
         Catch ex As Exception
             MessageBox.Show("⚠️ Erro ao gravar registro: " & ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
@@ -721,6 +747,34 @@ Public Class FormAMEOCI
         If valor Is Nothing Then valor = ""
         valor = valor.Trim()
         Return RemoverAcentos(valor.PadRight(tamanho, " "c).Substring(0, tamanho))
+    End Function
+
+    ''' <summary>
+    ''' Preenche à direita e GARANTE o tamanho exato (corta o excedente), sem mexer em
+    ''' acentuação/caixa. Diferente de usar .PadRight(tamanho) sozinho: PadRight nunca
+    ''' encurta um texto que já é maior que "tamanho" - se isso acontecer num campo do
+    ''' registro de largura fixa, TODO o resto da linha desliza uma ou mais posições
+    ''' (foi exatamente isso que corrompeu CNS/CPF de um paciente por causa de um
+    ''' espaço perdido no campo de telefone). Usar em campos de texto livre (telefone,
+    ''' complemento, prontuário, e-mail, CEP etc.) em vez de .PadRight puro.
+    ''' </summary>
+    Private Function FmtR(valor As String, tamanho As Integer, Optional padChar As Char = " "c) As String
+        If valor Is Nothing Then valor = ""
+        valor = valor.Trim()
+        Return valor.PadRight(tamanho, padChar).Substring(0, tamanho)
+    End Function
+
+    ''' <summary>
+    ''' Igual ao FmtR, mas preenchendo/cortando pela ESQUERDA (mantém os dígitos mais à
+    ''' direita quando precisa cortar) - usar em campos como DDD, telefone e equipe.
+    ''' </summary>
+    Private Function FmtL(valor As String, tamanho As Integer, Optional padChar As Char = " "c) As String
+        If valor Is Nothing Then valor = ""
+        valor = valor.Trim()
+        If valor.Length > tamanho Then
+            valor = valor.Substring(valor.Length - tamanho)
+        End If
+        Return valor.PadLeft(tamanho, padChar)
     End Function
 
     Public Function deleteProcedSec(APAC As String)
