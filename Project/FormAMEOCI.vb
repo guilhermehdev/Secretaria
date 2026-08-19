@@ -2306,12 +2306,6 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     Private Sub txtCpfPaciente_Click(sender As Object, e As EventArgs) Handles txtCpfPaciente.Click
         m.setCursorStart(txtCpfPaciente)
     End Sub
-    Private Sub txtDDD_TextChanged(sender As Object, e As EventArgs) Handles txtDDD.TextChanged
-        If txtDDD.Text.Length >= 2 Then
-            txtTelefone.Clear()
-            txtTelefone.Focus()
-        End If
-    End Sub
 
     Private Sub FormAMEOCI_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
 

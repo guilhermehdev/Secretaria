@@ -986,7 +986,7 @@ Public Class Main
                 ddd = digits.Substring(0, 2)
                 numero = digits.Substring(2)
             Case 9, 8
-                ddd = "13"
+                ddd = ""
                 numero = digits
             Case Else
                 'MessageBox.Show("Número inválido: " & digits)
