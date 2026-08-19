@@ -986,7 +986,7 @@ Public Class FormAMEOCI
     End Sub
 
     Public Sub loadComp(combobox As ComboBox)
-        Dim comboComp = FormAMEmain.getDataset("SELECT id, compet FROM oci WHERE compet IS NOT NULL AND compet <> '' GROUP BY compet ORDER BY compet DESC")
+        Dim comboComp = FormAMEmain.getDataset("SELECT id, compet, `data` FROM oci WHERE compet IS NOT NULL AND compet <> '' GROUP BY compet ORDER BY `data` DESC")
         Dim dtFinal As DataTable = comboComp.Clone()
 
         ' Adiciona o item TODOS como primeira linha
