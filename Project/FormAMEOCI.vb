@@ -986,7 +986,7 @@ Public Class FormAMEOCI
     End Sub
 
     Public Sub loadComp(combobox As ComboBox)
-        Dim comboComp = FormAMEmain.getDataset("SELECT id, compet, `data` FROM oci WHERE compet IS NOT NULL AND compet <> '' GROUP BY compet ORDER BY `data` DESC")
+        Dim comboComp = FormAMEmain.getDataset("SELECT id, compet FROM oci WHERE compet IS NOT NULL AND compet <> '' GROUP BY compet ORDER BY compet DESC")
         Dim dtFinal As DataTable = comboComp.Clone()
 
         ' Adiciona o item TODOS como primeira linha
@@ -1267,7 +1267,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         LimparData()
         loadQueueOCI()
 
-        Me.Text = $"Gerenciamento de APACs OCI Ver 1.1 - Competência {competencia(My.Settings.OCIcompetencia)}"
+        Me.Text = $"Gerenciamento de APACs OCI - Competência {competencia(My.Settings.OCIcompetencia)}"
         ' loadAPACbyUser(idUser)
         lbRestanteAPAC.Text = loadAPACdisp()
 
@@ -2100,6 +2100,12 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                 End If
 
                 Dim procedimento As String = linha.Substring(216, 10).Trim()
+                ' ATENÇÃO: isto pega o CNS do médico RESPONSÁVEL/solicitante (apa_cnsres,
+                ' posições 282-296 da spec), não o do EXECUTANTE, apesar do nome da variável.
+                ' O CNS do executante de verdade está em apa_cnsexec (497-511) - ver
+                ' "cnsExecutante" mais abaixo. Mantive esse campo como estava pra não mudar
+                ' o comportamento de quem já usa .SUSMedicoExecutante (ex: ExportarApacsExcel) -
+                ' mas provavelmente vale renomear/trocar depois de confirmar o impacto.
                 Dim susMedico As String = linha.Substring(281, 15).Trim()
                 Dim dataTxt As String = linha.Substring(38, 8).Trim()
                 Dim compt As String = linha.Substring(2, 6).Trim()
@@ -2114,6 +2120,40 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                 Dim logradouro As String = linha.Substring(117, 30).Trim()
                 Dim bairro As String = linha.Substring(415, 30).Trim()
 
+                ' ---------- Campos que faltavam (adicionados) - posições conforme o
+                ' layout oficial "Autorização de Procedimentos de Alta Complexidade" ----------
+                Dim uf As String = linha.Substring(21, 2).Trim()                          ' apa_coduf       [22-23]
+                Dim cnesExecutanteHdr As String = linha.Substring(23, 7).Trim()           ' apa_codcnes     [24-30]
+                Dim dtValidadeFimTxt As String = linha.Substring(46, 8).Trim()            ' apa_dtfimval    [47-54]
+                Dim tipoAtendimento As String = linha.Substring(54, 2).Trim()             ' apa_tipate      [55-56]
+                Dim tipoApac As String = linha.Substring(56, 1).Trim()                    ' apa_tipapac     [57]
+                Dim sexo As String = linha.Substring(185, 1).Trim()                       ' apa_sexopcnte   [186]
+                Dim nomeMedicoSolicitante As String = linha.Substring(186, 30).Trim()     ' apa_nomeresp    [187-216]
+                Dim motivoSaida As String = linha.Substring(226, 2).Trim()                ' apa_motsaida    [227-228]
+                Dim dtAltaObitoTxt As String = linha.Substring(228, 8).Trim()              ' apa_dtobitoalta [229-236]
+                Dim nomeAutorizador As String = linha.Substring(236, 30).Trim()           ' apa_nomediretor [237-266]
+                Dim cnsPaciente As String = linha.Substring(266, 15).Trim()               ' apa_cnspct      [267-281]
+                Dim cnsAutorizador As String = linha.Substring(296, 15).Trim()            ' apa_cnsdir      [297-311]
+                Dim cidCausasAssoc As String = linha.Substring(311, 4).Trim()             ' apa_cidca       [312-315]
+                Dim prontuario As String = linha.Substring(315, 10).Trim()                ' apa_npront      [316-325]
+                Dim cnesSolicitante As String = linha.Substring(325, 7).Trim()            ' apa_codsol      [326-332]
+                Dim dtSolicitacao As String = linha.Substring(332, 8).Trim()               ' apa_datsol      [333-340]
+                Dim dtAutorizacaoTxt As String = linha.Substring(340, 8).Trim()            ' apa_dataut      [341-348]
+                Dim codigoEmissor As String = linha.Substring(348, 10).Trim()             ' apa_codemis     [349-358]
+                Dim caraterAtendimento As String = linha.Substring(358, 2).Trim()         ' apa_carate      [359-360]
+                Dim apacAnterior As String = linha.Substring(360, 13).Trim()              ' apa_apacant     [361-373]
+                Dim raca As String = linha.Substring(373, 2).Trim()                       ' apa_raca        [374-375]
+                Dim nomeResponsavelPaciente As String = linha.Substring(375, 30).Trim()   ' apa_nomeresp    [376-405] (responsável pelo paciente)
+                Dim nacionalidade As String = linha.Substring(405, 3).Trim()              ' apa_nascpcnte   [406-408]
+                Dim etnia As String = linha.Substring(408, 4).Trim()                      ' APA_etnia       [409-412]
+                Dim email As String = linha.Substring(456, 40).Trim()                     ' apa_email       [457-496]
+                Dim cnsExecutante As String = linha.Substring(496, 15).Trim()             ' apa_cnsexec     [497-511] <- CNS do executante de verdade
+                Dim equipe As String = linha.Substring(522, 10).Trim()                    ' apa_ine         [523-532]
+                Dim situacaoRua As String = If(linha.Length > 532, linha.Substring(532, 1).Trim(), "")       ' apa_strua       [533]
+                Dim fonteOrcamentaria As String = If(linha.Length > 534, linha.Substring(533, 2).Trim(), "") ' apa_fntorca     [534-535]
+                Dim emendasParlamentares As String = If(linha.Length > 535, linha.Substring(535, 1).Trim(), "") ' apa_emenpar [536]
+                Dim semCpf As String = If(linha.Length > 536, linha.Substring(536, 1).Trim(), "")            ' apa_semcpf      [537]
+
                 lista.Add(New ApacRegistro With {
                 .NumeroApac = numero,
                 .NomePaciente = nome,
@@ -2124,6 +2164,37 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                 .CPFPaciente = cpf,
                 .DtnascPaciente = DateTime.ParseExact(dtnasc, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None),
                 .CEPPaciente = cep,
+                .UF = uf,
+                .CnesExecutante = cnesExecutanteHdr,
+                .DtValidadeFim = dtValidadeFimTxt,
+                .TipoAtendimento = tipoAtendimento,
+                .TipoApac = tipoApac,
+                .SexoPaciente = sexo,
+                .NomeMedicoSolicitante = nomeMedicoSolicitante,
+                .MotivoSaida = motivoSaida,
+                .DtAltaObito = dtAltaObitoTxt,
+                .NomeAutorizador = nomeAutorizador,
+                .CnsPaciente = cnsPaciente,
+                .CnsAutorizador = cnsAutorizador,
+                .CidCausasAssociadas = cidCausasAssoc,
+                .Prontuario = prontuario,
+                .CnesSolicitante = cnesSolicitante,
+                .DtSolicitacao = dtSolicitacao,
+                .DtAutorizacao = dtAutorizacaoTxt,
+                .CodigoEmissor = codigoEmissor,
+                .CaraterAtendimento = caraterAtendimento,
+                .ApacAnterior = apacAnterior,
+                .Raca = raca,
+                .NomeResponsavelPaciente = nomeResponsavelPaciente,
+                .Nacionalidade = nacionalidade,
+                .Etnia = etnia,
+                .Email = email,
+                .CnsExecutante = cnsExecutante,
+                .Equipe = equipe,
+                .SituacaoRua = situacaoRua,
+                .FonteOrcamentaria = fonteOrcamentaria,
+                .EmendasParlamentares = emendasParlamentares,
+                .SemCpf = semCpf,
                 .MaePaciente = mae,
                 .TelPaciente = tel,
                 .numeroResPaciente = numeroRes,
@@ -2132,6 +2203,20 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                 .LograPaciente = logradouro,
                 .BairroPaciente = bairro
             })
+            ElseIf linha.StartsWith("06") Then
+                ' Registro 06 (CID) - vem depois do registro 14 da mesma APAC no arquivo.
+                ' corpo[1-2]="06", cmp[3-8], num_apac[9-21], cid_principal[22-25], cid_secundario[26-29]
+                Dim numeroApac06 As String = If(linha.Length >= 21, linha.Substring(8, 13).Trim(), "")
+                Dim cidPrincipal06 As String = If(linha.Length > 21, linha.Substring(21, Math.Min(4, linha.Length - 21)).Trim(), "")
+                Dim cidSecundario06 As String = If(linha.Length > 25, linha.Substring(25, Math.Min(4, linha.Length - 25)).Trim(), "")
+
+                If numeroApac06 <> "" Then
+                    Dim apacCorrespondente = lista.Find(Function(x) x.NumeroApac = numeroApac06)
+                    If apacCorrespondente IsNot Nothing Then
+                        apacCorrespondente.CidPrincipal = cidPrincipal06
+                        apacCorrespondente.CidSecundario = cidSecundario06
+                    End If
+                End If
             End If
         Next
 
@@ -2209,7 +2294,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                     num = apac.numeroResPaciente
                 End If
 
-                idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento, sexo) VALUES ('{apac.NomePaciente.ToUpper}', '{m.mysqlDateFormat(apac.DtnascPaciente)}', '{apac.MaePaciente.ToUpper}', '{ddd}{tel}', '{apac.CPFPaciente}',{idLogra}, {num}, '{apac.complementoPaciente.ToUpper}', '{txtSexo.Text}')")
+                idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento, sexo) VALUES ('{apac.NomePaciente.ToUpper}', '{m.mysqlDateFormat(apac.DtnascPaciente)}', '{apac.MaePaciente.ToUpper}', '{ddd}{tel}', '{apac.CPFPaciente}',{idLogra}, {num}, '{apac.complementoPaciente.ToUpper}', '{apac.SexoPaciente}')")
             Catch ex As Exception
 
                 Try
@@ -2221,7 +2306,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             End Try
 
             Try
-                FormAMEmain.doQuery($"UPDATE oci SET data='{m.mysqlDateFormat(apac.data)}', id_paciente='{idPac}', id_medico='{apac.SUSMedicoExecutante}', id_cod_principal={idProced}, status='CONC', id_usuario={idUser} WHERE num_apac='{apac.NumeroApac}'")
+                FormAMEmain.doQuery($"UPDATE oci SET data='{m.mysqlDateFormat(apac.data)}', id_paciente='{idPac}', id_medico='{apac.SUSMedicoExecutante}', id_autorizador='{apac.CnsAutorizador}', id_cod_principal={idProced}, cid_principal='{apac.CidPrincipal}', cid_sec='{apac.CidSecundario}', status='CONC', id_usuario={idUser} WHERE num_apac='{apac.NumeroApac}'")
             Catch ex As Exception
 
             End Try
@@ -2305,6 +2390,12 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     End Sub
     Private Sub txtCpfPaciente_Click(sender As Object, e As EventArgs) Handles txtCpfPaciente.Click
         m.setCursorStart(txtCpfPaciente)
+    End Sub
+    Private Sub txtDDD_TextChanged(sender As Object, e As EventArgs) Handles txtDDD.TextChanged
+        If txtDDD.Text.Length >= 2 Then
+            txtTelefone.Clear()
+            txtTelefone.Focus()
+        End If
     End Sub
 
     Private Sub FormAMEOCI_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
