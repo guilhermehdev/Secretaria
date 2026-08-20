@@ -2393,7 +2393,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     End Sub
     Private Sub txtDDD_TextChanged(sender As Object, e As EventArgs) Handles txtDDD.TextChanged
         If txtDDD.Text.Length >= 2 Then
-            txtTelefone.Clear()
+            txtTelefone.SelectAll()
             txtTelefone.Focus()
         End If
     End Sub

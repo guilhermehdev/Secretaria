@@ -1427,19 +1427,19 @@ Partial Class FormAMEOCI
         'ConsultasToolStripMenuItem
         '
         Me.ConsultasToolStripMenuItem.Name = "ConsultasToolStripMenuItem"
-        Me.ConsultasToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.ConsultasToolStripMenuItem.Size = New System.Drawing.Size(179, 22)
         Me.ConsultasToolStripMenuItem.Text = "Consultar"
         '
         'ImportarToolStripMenuItem
         '
         Me.ImportarToolStripMenuItem.Name = "ImportarToolStripMenuItem"
-        Me.ImportarToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.ImportarToolStripMenuItem.Size = New System.Drawing.Size(179, 22)
         Me.ImportarToolStripMenuItem.Text = "Importar"
         '
         'GeradorNumeraaoToolStripMenuItem
         '
         Me.GeradorNumeraaoToolStripMenuItem.Name = "GeradorNumeraaoToolStripMenuItem"
-        Me.GeradorNumeraaoToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.GeradorNumeraaoToolStripMenuItem.Size = New System.Drawing.Size(179, 22)
         Me.GeradorNumeraaoToolStripMenuItem.Text = "Gerador numeração"
         '
         'RelatóriosToolStripMenuItem
@@ -1878,7 +1878,6 @@ Partial Class FormAMEOCI
         Me.KeyPreview = True
         Me.MainMenuStrip = Me.MenuStrip1
         Me.MaximizeBox = False
-        Me.MinimizeBox = False
         Me.Name = "FormAMEOCI"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "OCI"
