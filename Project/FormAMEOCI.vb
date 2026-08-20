@@ -972,11 +972,13 @@ Public Class FormAMEOCI
     End Sub
     Public Function loadAPACdisp()
         Dim apacDisp = FormAMEmain.getDataset("SELECT count(num_apac) AS apacs FROM oci WHERE status='DISP'").Rows(0).Item("apacs")
-        If apacDisp = 0 Then
+
+        'MsgBox(apacDisp)
+        If apacDisp < 1 Then
             btNovonumeroAPAC.Enabled = False
             Return "0 restante(s)"
         Else
-            ' btNovonumeroAPAC.Enabled = True
+            btNovonumeroAPAC.Enabled = True
             Return apacDisp & " restante(s)"
         End If
     End Function

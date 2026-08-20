@@ -46,7 +46,7 @@ Public Class FormAMEOCIGeradorAPAC
 
             MessageBox.Show("Arquivo gerado com sucesso em:" & vbCrLf & caminho, "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
             FormAMEOCINumAPAC.loadAPACAvailable()
-            FormAMEOCI.loadAPACdisp()
+            FormAMEOCI.lbRestanteAPAC.Text = FormAMEOCI.loadAPACdisp()
         Else
             MessageBox.Show("Os números devem ter 13 dígitos.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Return
