@@ -60,4 +60,36 @@
     Public Property CidPrincipal As String
     Public Property CidSecundario As String
 
+    ' ---------- Campos usados pra GERAR a APAC (addAPAC), não pela importação ----------
+    ' Esta classe passou a ser usada também como parâmetro de addAPAC()/saveAPAC()/
+    ' atPac() - em vez dessas funções lerem só dos controles da tela, agora também
+    ' aceitam um ApacRegistro pronto (montado a partir do banco, por ex. em geração
+    ' de lote). Os campos abaixo cobrem o que faltava em relação ao que addAPAC() lê.
+
+    ' IDs já resolvidos no banco - quando informados, pulam a busca/seleção manual
+    ' de paciente e endereço (equivalente a já ter clicado no resultado da busca).
+    Public Property IdPaciente As Integer?
+    Public Property IdEndereco As Integer?
+
+    Public Property Gestor As String
+    Public Property DDD As String
+    Public Property Telefone As String
+    Public Property CboMedico As String ' CBO do médico executante (registro 13 principal)
+
+    ' Procedimentos secundários (registro 13) explícitos - usado principalmente pro
+    ' código 0903010011, cuja lista vem de procedimentos_secundarios e não é fixa
+    ' feito os outros códigos (que a tela já recria sozinha ao selecionar o principal).
+    Public Property ProcedimentosSecundarios As List(Of ApacProcedimentoSecundario)
+
+End Class
+
+''' <summary>
+''' Uma linha do registro 13 secundário: código do procedimento, quantidade,
+''' descrição (só usada pra exibição na grid) e CBO do profissional que executou.
+''' </summary>
+Public Class ApacProcedimentoSecundario
+    Public Property Codigo As String
+    Public Property Quantidade As String
+    Public Property Descricao As String
+    Public Property Cbo As String
 End Class
