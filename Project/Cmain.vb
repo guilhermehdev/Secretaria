@@ -989,7 +989,11 @@ Public Class Main
                 ddd = digits.Substring(0, 2)
                 numero = digits.Substring(2)
             Case 9, 8
-                ddd = ""
+                If String.IsNullOrEmpty(FormAMEOCI.txtDDD.Text) Then
+                    ddd = "13"
+                Else
+                    ddd = FormAMEOCI.txtDDD.Text
+                End If
                 numero = digits
             Case Else
                 'MessageBox.Show("Número inválido: " & digits)
