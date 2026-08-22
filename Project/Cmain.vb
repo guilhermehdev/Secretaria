@@ -887,23 +887,26 @@ Public Class Main
         Dim tbBase As TextBoxBase = TryCast(ctrl, TextBoxBase)
         If tbBase Is Nothing Then Exit Sub
 
-        Dim textoDigitado As String = ""
+        Dim mtb As MaskedTextBox = TryCast(ctrl, MaskedTextBox)
+        Dim vazio As Boolean
 
-        ' MaskedTextBox: pega só o que o usuário digitou (sem máscara)
-        Dim m As MaskedTextBox = TryCast(ctrl, MaskedTextBox)
-        If m IsNot Nothing Then
-            Dim oldFormat = m.TextMaskFormat
-            m.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals
-            textoDigitado = m.Text
-            m.TextMaskFormat = oldFormat
+        If mtb IsNot Nothing Then
+            ' Pergunta direto pro MaskedTextProvider se alguma posição foi preenchida,
+            ' em vez do round-trip TextMaskFormat + IsNullOrWhiteSpace (frágil com mask
+            ' de dígito opcional "9" e PromptChar = espaço, como no txtCnsPaciente).
+            vazio = mtb.MaskedTextProvider.AssignedEditPositionCount = 0
         Else
-            ' TextBox normal
-            textoDigitado = tbBase.Text
+            vazio = String.IsNullOrWhiteSpace(tbBase.Text)
         End If
 
-        ' Se NÃO tem nada digitado → cursor no início
-        If String.IsNullOrWhiteSpace(textoDigitado) Then
-            tbBase.SelectionStart = 0
+        If vazio Then
+            ' O MaskedTextBox reposiciona o cursor sozinho logo depois do Enter/Click
+            ' terminar, sobrescrevendo um SelectionStart setado aqui dentro. BeginInvoke
+            ' empurra pra rodar DEPOIS desse reposicionamento interno.
+            tbBase.BeginInvoke(Sub()
+                                   tbBase.SelectionStart = 0
+                                   tbBase.SelectionLength = 0
+                               End Sub)
         End If
     End Sub
     Public Function AgeInMonths(dtNasc As Date, dataFinal As Date) As Integer

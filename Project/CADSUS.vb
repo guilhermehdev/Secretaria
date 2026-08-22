@@ -1,4 +1,5 @@
-﻿Imports System.IO
+﻿Imports System.Globalization
+Imports System.IO
 Imports System.Net
 Imports System.Net.Http
 Imports System.Text
@@ -6,6 +7,7 @@ Imports System.Text.RegularExpressions
 Imports System.Threading.Tasks
 Imports iTextSharp.text
 Imports iTextSharp.text.pdf
+Imports Newtonsoft.Json.Linq
 
 Public Class CADSUS
     Dim m As New Main
@@ -185,6 +187,200 @@ Public Class CADSUS
 
         End Try
 
+    End Function
+
+    Public Async Function PuxadaSUS(CPF_NOME_SUS As String) As Threading.Tasks.Task(Of Boolean)
+        Dim frm As New Form
+        Dim m As Main = New Main
+
+        frm.FormBorderStyle = FormBorderStyle.None
+        frm.StartPosition = FormStartPosition.CenterScreen
+        frm.Size = New Size(170, 50)
+        Dim lbl As New Label
+        lbl.Dock = DockStyle.Fill
+        lbl.TextAlign = ContentAlignment.MiddleCenter
+        lbl.BackColor = Color.FromArgb(64, 64, 64)
+        lbl.ForeColor = Color.Gold
+        lbl.Text = "Consultando CADSUS. Aguarde..."
+        frm.Controls.Add(lbl)
+
+        Dim entrada As String = CPF_NOME_SUS.Trim()
+        Dim apenasDigitos As String = New String(entrada.Where(Function(c) Char.IsDigit(c)).ToArray())
+
+        Dim modo As String
+        If apenasDigitos.Length = 11 Then
+            modo = "cpf"
+        ElseIf apenasDigitos.Length = 15 Then
+            modo = "cns"
+        ElseIf entrada.Length > 0 Then
+            modo = "nome"
+        Else
+            m.msgError("Digite um CPF, CNS ou nome pra buscar.")
+            Return False
+        End If
+
+        Dim item As JObject = Nothing
+
+        frm.Show()
+        Try
+            Using client As New HttpClient()
+                client.DefaultRequestHeaders.Add("X-API-Key", "pxs_YsvC8sVxDUb7cMkgJ4r76PhXBFBtEBnZQFqyTeNx")
+                client.DefaultRequestHeaders.Add("User-Agent", "AME-Peruibe/1.0")
+                client.DefaultRequestHeaders.Add("X-Municipio", "3537602") ' IBGE de Peruíbe (o exemplo da documentação usa outro município, não usar o deles)
+
+                If modo = "cpf" OrElse modo = "cns" Then
+                    Dim resp = Await client.GetAsync($"https://puxadasus.blancsystem.com.br/v1/pessoas/{modo}/{apenasDigitos}")
+                    Dim textoResposta As String = Await resp.Content.ReadAsStringAsync()
+
+                    ' MsgBox(textoResposta)
+
+                    If Not resp.IsSuccessStatusCode Then
+                        m.msgError($"Erro na consulta CADSUS ({CInt(resp.StatusCode)}): {textoResposta}")
+                        Return False
+                    End If
+
+                    item = ExtrairRegistroCadsus(JObject.Parse(textoResposta))
+                    If item Is Nothing Then
+                        m.msgError("Paciente não encontrado.")
+                        Return False
+                    End If
+                Else
+                    ' Busca por nome - só o /pesquisas atende, e pode devolver um
+                    ' resumo (ver ExtrairRegistroCadsus). Se vier resumido (sem
+                    ' endereço), complementa buscando o cadastro completo pelo CPF
+                    ' que a busca por nome retornou.
+                    Dim corpoBusca As New JObject
+                    corpoBusca("nome") = entrada
+                    Dim conteudo As New StringContent(corpoBusca.ToString(Newtonsoft.Json.Formatting.None), Encoding.UTF8, "application/json")
+                    Dim resp = Await client.PostAsync("https://puxadasus.blancsystem.com.br/v1/pesquisas", conteudo)
+                    Dim textoResposta As String = Await resp.Content.ReadAsStringAsync()
+
+                    If Not resp.IsSuccessStatusCode Then
+                        m.msgError($"Erro na consulta CADSUS ({CInt(resp.StatusCode)}): {textoResposta}")
+                        Return False
+                    End If
+
+                    item = ExtrairRegistroCadsus(JObject.Parse(textoResposta))
+                    If item Is Nothing Then
+                        m.msgError("Paciente não encontrado.")
+                        Return False
+                    End If
+
+                    If item("enderecoLogradouro") Is Nothing Then
+                        Dim cpfBusca As String = New String(If(item("cpf")?.ToString(), "").Where(Function(c) Char.IsDigit(c)).ToArray())
+                        If cpfBusca.Length = 11 Then
+                            Dim respCompleto = Await client.GetAsync($"https://puxadasus.blancsystem.com.br/v1/pessoas/cpf/{cpfBusca}")
+                            If respCompleto.IsSuccessStatusCode Then
+                                Dim itemCompleto = ExtrairRegistroCadsus(JObject.Parse(Await respCompleto.Content.ReadAsStringAsync()))
+                                If itemCompleto IsNot Nothing Then item = itemCompleto
+                            End If
+                        End If
+                    End If
+
+
+                End If
+            End Using
+        Catch ex As Exception
+            m.msgError("Erro ao consultar CADSUS: " & ex.Message)
+            Return False
+        Finally
+            frm.Close()
+        End Try
+
+        If item Is Nothing Then Return False
+
+        ' Campos confirmados numa consulta real (GET /v1/pessoas/cpf/{cpf}) - CPF vem
+        ' formatado com pontuação, por isso limpa antes de usar/comparar com o banco
+        ' local (que guarda só dígitos).
+        Dim cpfRetornado As String = New String(If(item("cpf")?.ToString(), "").Where(Function(c) Char.IsDigit(c)).ToArray())
+        Dim cns As String = item("numeroCns")?.ToString()
+        Dim nome As String = item("nome")?.ToString()
+        Dim nomeMae As String = item("nomeMae")?.ToString()
+        Dim sexo As String = item("sexo")?.ToString() ' já vem "M"/"F", igual o sistema usa
+        Dim racaCor As String = item("racaCor")?.ToString() ' código IBGE tipo "01" - assumindo mesma tabela usada em txtRaca
+        Dim dataNascStr As String = item("dataNascimento")?.ToString() ' já vem dd/MM/yyyy
+
+        Dim cepApi As String = New String(If(item("enderecoCep")?.ToString(), "").Where(Function(c) Char.IsDigit(c)).ToArray())
+        Dim numeroApi As String = item("enderecoNumero")?.ToString()
+        Dim complementoApi As String = item("enderecoComplemento")?.ToString()
+        Dim bairroApi As String = item("enderecoBairro")?.ToString()
+
+        Dim primeiroTelefone As JObject = Nothing
+        If item("telefone") IsNot Nothing AndAlso item("telefone").HasValues Then
+            primeiroTelefone = CType(item("telefone")(0), JObject)
+        End If
+
+        ' Mesma lógica de antes (perguntar se quer imprimir o cartão SUS), só que
+        ' usando o CPF que voltou da API em vez do texto digitado - cobre também o
+        ' caso de ter buscado por CNS ou nome, sem CPF nenhum digitado na tela.
+        'If Not String.IsNullOrEmpty(cpfRetornado) Then
+        '    Dim pacData = FormAMEOCI.getPacientes(cpfRetornado)
+        '    If pacData IsNot Nothing AndAlso pacData.Rows.Count > 0 Then
+
+        '    End If
+        'End If
+
+        FormAMEOCI.isLoading = True
+        Try
+            If Not String.IsNullOrEmpty(cpfRetornado) Then FormAMEOCI.txtCpfPaciente.Text = cpfRetornado
+            If Not String.IsNullOrEmpty(nome) Then FormAMEOCI.txtNomePaciente.Text = nome
+            If Not String.IsNullOrEmpty(nomeMae) Then FormAMEOCI.txtNomeMae.Text = nomeMae
+            If Not String.IsNullOrEmpty(sexo) Then FormAMEOCI.txtSexo.Text = sexo
+            If Not String.IsNullOrEmpty(racaCor) Then FormAMEOCI.txtRaca.SelectedValue = racaCor
+
+            If Not String.IsNullOrEmpty(dataNascStr) Then
+                Dim dtNasc As Date
+                If Date.TryParseExact(dataNascStr, {"dd/MM/yyyy", "yyyy-MM-dd"}, CultureInfo.InvariantCulture, DateTimeStyles.None, dtNasc) Then
+                    FormAMEOCI.dtNascimento.Text = dtNasc.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
+                End If
+            End If
+
+            If cepApi.Length = 8 Then
+                If FormAMEOCI.cep(cepApi.Insert(5, "-")) Then
+                    FormAMEOCI.txtCep.Text = cepApi.Insert(5, "-")
+                Else
+                    FormAMEOCI.txtCep.Text = ""
+                    If Not String.IsNullOrEmpty(bairroApi) Then FormAMEOCI.txtBairro.Text = bairroApi
+                End If
+            End If
+            If Not String.IsNullOrEmpty(numeroApi) Then FormAMEOCI.txtNumero.Text = numeroApi
+            If Not String.IsNullOrEmpty(complementoApi) Then FormAMEOCI.txtComplemento.Text = complementoApi
+
+            If primeiroTelefone IsNot Nothing Then
+                Dim ddd As String = primeiroTelefone("ddd")?.ToString()
+                Dim numeroTel As String = New String(If(primeiroTelefone("numero")?.ToString(), "").Where(Function(c) Char.IsDigit(c)).ToArray())
+                If Not String.IsNullOrEmpty(ddd) Then FormAMEOCI.txtDDD.Text = ddd
+                If numeroTel.Length > 0 Then FormAMEOCI.txtTelefone.Text = numeroTel
+            End If
+
+            If Not String.IsNullOrEmpty(cns) Then FormAMEOCI.txtCnsPaciente.Text = cns
+        Finally
+            FormAMEOCI.isLoading = False
+            FormAMEOCI.popupGrid.Visible = False
+        End Try
+
+        Return False
+    End Function
+
+    ''' <summary>
+    ''' A resposta da API vem em dois formatos possíveis: direto (GET /v1/pessoas/...,
+    ''' o cadastro completo sem envelope) ou dentro de {"total":N,"registro":[...]}
+    ''' (POST /v1/pesquisas). Essa função aceita os dois e sempre devolve o registro
+    ''' como JObject, ou Nothing se não achou nada.
+    ''' </summary>
+    Private Function ExtrairRegistroCadsus(json As JObject) As JObject
+        If json Is Nothing Then Return Nothing
+
+        If json("registro") IsNot Nothing Then
+            If Not json("registro").HasValues Then Return Nothing
+            Return CType(json("registro")(0), JObject)
+        End If
+
+        ' Sem "registro": ou é o cadastro completo direto, ou é {"registro":[]} vazio
+        ' (já tratado acima) - se chegou aqui e tem "nome"/"cpf", é o cadastro direto.
+        If json("nome") IsNot Nothing OrElse json("cpf") IsNot Nothing Then Return json
+
+        Return Nothing
     End Function
 
 End Class

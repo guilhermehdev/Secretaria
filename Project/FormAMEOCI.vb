@@ -1,10 +1,7 @@
 ﻿Imports System.Globalization
 Imports System.IO
-Imports System.Net.Http
 Imports System.Text
-Imports System.Text.RegularExpressions
 Imports ClosedXML.Excel
-Imports iTextSharp.text.pdf
 
 Public Class FormAMEOCI
     Private linhas As New List(Of String)
@@ -13,10 +10,11 @@ Public Class FormAMEOCI
     Dim endereco As DataTable
     Dim queue As DataTable
     Dim cepObj As New CEP()
+    Dim consulta As New CADSUS
     ' Variáveis globais
-    Private popupGrid As DataGridView
+    Public popupGrid As DataGridView
     Private debounceTimer As New Timer() With {.Interval = 300}
-    Private isLoading As Boolean = False
+    Friend isLoading As Boolean = False
     Private isQueue As Boolean = False
     Private IDpacienteSelecionado As Integer? = Nothing
     Private updateMode As Boolean = False
@@ -50,10 +48,8 @@ Public Class FormAMEOCI
     End Function
 
     Public Function competencia(compet As String)
-
         compet = CompetenciaParaBanco(compet)
         Return compet
-
     End Function
 
     Private Function hasCPF(cpfValue As Object) As Boolean
@@ -437,8 +433,10 @@ Public Class FormAMEOCI
                 Return False
             End If
             If txtNomeRespPaciente.Text.Trim() = "" Then
-                FalharValidacao(mensagemErro, silencioso, "Informe o nome Do responsável.", txtNomeRespPaciente, 0)
-                Return False
+                If Not chkResponsavel() Then
+                    FalharValidacao(mensagemErro, silencioso, "Informe o nome Do responsável.", txtNomeRespPaciente, 0)
+                    Return False
+                End If
             End If
             If txtDDD.Text.Trim() = "" Then
                 FalharValidacao(mensagemErro, silencioso, "Informe o DDD.", txtDDD, 0)
@@ -538,8 +536,7 @@ Public Class FormAMEOCI
                         r14.Append(New String(" "c, 8))
                     End If
                     r14.Append(Fmt(txtNomeAutorizador.Text, 30))
-                    'r14.Append(If(txtCnsPaciente.Text.Length > 0, txtCnsPaciente.Text.PadLeft(15, "0"c), New String(" "c, 15)))
-                    r14.Append(New String(" "c, 15))
+                    r14.Append(New String(" "c, 15)) 'SUS paciente em branco para evitar conflito
                     r14.Append(txtNomeMedicoSolicitante.SelectedValue.PadLeft(15, "0"c))
                     r14.Append(txtNomeAutorizador.SelectedValue.PadLeft(15, "0"c))
                     r14.Append(New String(" "c, 4)) ' Reservado
@@ -882,7 +879,7 @@ Public Class FormAMEOCI
         main.loadComboBox($"Select SUS, nome FROM servidores WHERE oci_autorizador=1", txtNomeAutorizador, "nome", "SUS", True)
 
     End Sub
-    Private Function getPacientes(Optional ByVal cpf As String = Nothing, Optional nome As String = Nothing, Optional dtnasc As String = Nothing, Optional id As Integer = 0)
+    Shared Function getPacientes(Optional ByVal cpf As String = Nothing, Optional nome As String = Nothing, Optional dtnasc As String = Nothing, Optional id As Integer = 0)
         Dim data As DataTable = Nothing
         Dim query As String = "Select pacientes.*, ceps_peruibe.cep As CEP,ceps_peruibe.tipo,ceps_peruibe.logradouro,ceps_peruibe.bairro
           FROM pacientes
@@ -1035,7 +1032,7 @@ Public Class FormAMEOCI
     End Sub
 
     Public Sub loadComp(combobox As ComboBox)
-        Dim comboComp = FormAMEmain.getDataset("SELECT id, compet FROM oci WHERE compet IS NOT NULL AND compet <> '' GROUP BY compet ORDER BY compet DESC")
+        Dim comboComp = FormAMEmain.getDataset("SELECT id, compet FROM oci WHERE compet IS NOT NULL AND compet <> '' GROUP BY compet ORDER BY data DESC")
         Dim dtFinal As DataTable = comboComp.Clone()
 
         ' Adiciona o item TODOS como primeira linha
@@ -1859,11 +1856,11 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         FormAMEOCIControleCompetencia.ShowDialog()
     End Sub
 
-    Private Sub cep(param As String)
+    Public Function cep(param As String)
         Try
 
-            Dim CEP As New CEP()
-            endereco = CEP.getAddress(param)
+            Dim CODPOSTAL As New CEP()
+            endereco = CODPOSTAL.getAddress(param)
 
             If endereco IsNot Nothing Then
 
@@ -1880,15 +1877,17 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
                 txtLogradouro.Text = logra
                 txtBairro.Text = bairro
-
+                Return True
             Else
                 MsgBox("CEP não encontrado ou erro na consulta.")
+                Return False
             End If
 
         Catch ex As Exception
-
+            Return False
         End Try
-    End Sub
+
+    End Function
 
     Private Sub txtCep_Leave(sender As Object, e As EventArgs) Handles txtCep.Leave
         cep(txtCep.Text.Trim())
@@ -2055,9 +2054,8 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         If Char.IsLetter(e.KeyChar) Then e.KeyChar = Char.ToUpper(e.KeyChar)
     End Sub
     Private Sub cbo_TextChanged(sender As Object, e As EventArgs) Handles txtNomePaciente.TextChanged
+        If isLoading Then Exit Sub
         Try
-
-            If isLoading Then Exit Sub
             debounceTimer.Stop()
 
             If _upperLock Then Return
@@ -2074,7 +2072,8 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                 _upperLock = False
             End If
 
-            If txtNomePaciente.Text.Length >= 4 Then
+
+            If txtNomePaciente.Text.Length >= 4 AndAlso isLoading = False Then
                 popupGrid.Visible = True
                 BuscarPacientes(sender, e, "nome")
                 'debounceTimer.Start()
@@ -2278,17 +2277,18 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             'MsgBox(ex.Message)
         End Try
     End Sub
-    Private Sub chkResponsavel()
+    Private Function chkResponsavel()
         Try
             If m.CalcularIdade(CDate(dtNascimento.Text)) >= 18 Then
                 txtNomeRespPaciente.Text = txtNomePaciente.Text.ToString
             Else
                 txtNomeRespPaciente.Text = txtNomeMae.Text.ToString
             End If
+            Return True
         Catch ex As Exception
-            ' MsgBox(ex.Message)
+            Return False
         End Try
-    End Sub
+    End Function
 
     Private Sub dtValidadeIni_Leave(sender As Object, e As EventArgs) Handles dtValidadeIni.Leave
         'dtValidadeFim.Value = dtValidadeIni.Value.AddMonths(1)
@@ -2721,8 +2721,8 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     End Sub
     Private Sub txtDDD_TextChanged(sender As Object, e As EventArgs) Handles txtDDD.TextChanged
         If txtDDD.Text.Length >= 2 Then
-            txtTelefone.Clear()
             txtTelefone.Focus()
+            txtTelefone.SelectAll()
         End If
     End Sub
 
@@ -3234,60 +3234,81 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         Loop
 
     End Sub
+
+    'Private Async Sub Button1_Click(sender As Object, e As EventArgs) Handles btCADSUS.Click
+    '    Dim frm As New Form
+
+    '    frm.FormBorderStyle = FormBorderStyle.None
+    '    frm.StartPosition = FormStartPosition.CenterScreen
+    '    frm.Size = New Size(170, 50)
+    '    Dim lbl As New Label
+    '    lbl.Dock = DockStyle.Fill
+    '    lbl.TextAlign = ContentAlignment.MiddleCenter
+    '    lbl.BackColor = Color.FromArgb(64, 64, 64)
+    '    lbl.Font = New Font("Verdana", 8, FontStyle.Bold)
+    '    lbl.ForeColor = Color.Gold
+
+    '    frm.Controls.Add(lbl)
+
+    '    If txtCpfPaciente.Text.Length <> 11 Then
+    '        m.msgError("CPF inválido. Digite um CPF válido com 11 dígitos.")
+    '        Exit Sub
+    '    End If
+
+    '    Dim paciente As Paciente = Await CADSUS.consultaCADSUS(txtCpfPaciente.Text)
+
+    '    If paciente Is Nothing Then
+    '        m.msgError("Paciente não encontrado.")
+    '        Exit Sub
+    '    Else
+    '        Dim pacData = getPacientes(paciente.CPF)
+    '        lbl.Text = "Consultando CADSUS. Aguarde..."
+    '        frm.Show()
+
+    '        If pacData.rows.count > 0 Then
+
+    '            If pacData.rows(0).item("sexo") <> "" Then
+    '                If m.msgQuestion("Imprimir cartão SUS do paciente?", "Paciente encontrado") Then
+
+    '                    Dim url As String = $"http://{My.Settings.serverAME}:8080/sus?cpf={Uri.EscapeDataString(paciente.CPF)}&sexo={Uri.EscapeDataString(pacData.rows(0).item("sexo"))}"
+    '                    Process.Start(New ProcessStartInfo With {.FileName = url, .UseShellExecute = True})
+
+    '                End If
+
+    '            End If
+
+    '        End If
+    '        frm.Close()
+    '    End If
+
+    '    'txtNomePaciente.Text = paciente.Nome
+    '    'txtNomeMae.Text = paciente.NomeMae
+    '    'dtNascimento.Text = paciente.DataNascimento
+    '    txtCnsPaciente.Text = paciente.CNS
+
+    'End Sub
+
+
     Private Async Sub Button1_Click(sender As Object, e As EventArgs) Handles btCADSUS.Click
-        Dim frm As New Form
-
-        frm.FormBorderStyle = FormBorderStyle.None
-        frm.StartPosition = FormStartPosition.CenterScreen
-        frm.Size = New Size(170, 50)
-        Dim lbl As New Label
-        lbl.Dock = DockStyle.Fill
-        lbl.TextAlign = ContentAlignment.MiddleCenter
-        lbl.BackColor = Color.FromArgb(64, 64, 64)
-        lbl.Font = New Font("Verdana", 8, FontStyle.Bold)
-        lbl.ForeColor = Color.Gold
-
-        frm.Controls.Add(lbl)
-
-        If txtCpfPaciente.Text.Length <> 11 Then
-            m.msgError("CPF inválido. Digite um CPF válido com 11 dígitos.")
+        Dim busca As String = ""
+        If txtCpfPaciente.Text.Length >= 11 Then
+            busca = txtCpfPaciente.Text
+        ElseIf txtCnsPaciente.Text.Length >= 15 Then
+            busca = txtCnsPaciente.Text
+        ElseIf txtNomePaciente.Text.Length >= 10 AndAlso txtCpfPaciente.Text.Length < 11 AndAlso txtCnsPaciente.Text.Length < 15 Then
+            busca = txtNomePaciente.Text
+        End If
+        If busca.Length < 10 Then
+            m.msgInfo("Informe nome completo do paciente.")
             Exit Sub
         End If
+        If Await consulta.PuxadaSUS(busca) Then
 
-        Dim paciente As Paciente = Await CADSUS.consultaCADSUS(txtCpfPaciente.Text)
-
-        If paciente Is Nothing Then
-            m.msgError("Paciente não encontrado.")
-            Exit Sub
-        Else
-            Dim pacData = getPacientes(paciente.CPF)
-            lbl.Text = "Consultando CADSUS. Aguarde..."
-            frm.Show()
-
-            If pacData.rows.count > 0 Then
-
-                If pacData.rows(0).item("sexo") <> "" Then
-                    If m.msgQuestion("Imprimir cartão SUS do paciente?", "Paciente encontrado") Then
-
-                        Dim url As String = $"http://{My.Settings.serverAME}:8080/sus?cpf={Uri.EscapeDataString(paciente.CPF)}&sexo={Uri.EscapeDataString(pacData.rows(0).item("sexo"))}"
-                        Process.Start(New ProcessStartInfo With {.FileName = url, .UseShellExecute = True})
-
-                    End If
-
-                End If
-
-            End If
-            frm.Close()
         End If
-
-        'txtNomePaciente.Text = paciente.Nome
-        'txtNomeMae.Text = paciente.NomeMae
-        'dtNascimento.Text = paciente.DataNascimento
-        txtCnsPaciente.Text = paciente.CNS
 
     End Sub
     Private Sub txtCnsPaciente_TextChanged(sender As Object, e As EventArgs) Handles txtCnsPaciente.TextChanged
-        If txtCnsPaciente.Text <> "   .   .   .   ." Then
+        If txtCnsPaciente.Text.Length >= 15 Then
             Clipboard.SetText(txtCnsPaciente.Text.Replace(".", ""))
         End If
     End Sub
@@ -3366,4 +3387,19 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             btCADSUS.Enabled = True
         End If
     End Sub
+
+    Private Sub btPrintSUS_Click(sender As Object, e As EventArgs) Handles btPrintSUS.Click
+        If IDpacienteSelecionado IsNot Nothing And txtCpfPaciente.Text.Length >= 11 Then
+            If m.msgQuestion("Imprimir cartão SUS do paciente?", "Paciente encontrado") Then
+                Dim url As String = $"http://{My.Settings.serverAME}:8080/sus?cpf={Uri.EscapeDataString(txtCpfPaciente.Text)}&sexo={Uri.EscapeDataString(txtSexo.Text)}"
+                Process.Start(New ProcessStartInfo With {.FileName = url, .UseShellExecute = True})
+            End If
+        Else
+            m.msgAlert("Selecione um paciente com CPF válido para imprimir o cartão SUS.")
+        End If
+    End Sub
+    Private Sub txtCnsPaciente_Enter(sender As Object, e As EventArgs) Handles txtCnsPaciente.Enter
+        m.setCursorStart(txtCnsPaciente)
+    End Sub
+
 End Class

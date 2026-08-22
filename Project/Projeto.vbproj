@@ -976,6 +976,7 @@
     <None Include="Resources\small.png" />
     <None Include="Resources\small1.png" />
     <None Include="Resources\ame-icon.ico" />
+    <None Include="Resources\sus.png" />
     <Content Include="sec-icon.ico" />
     <None Include="Resources\icone_e-ouv.png" />
     <None Include="Resources\sendmail.png" />
