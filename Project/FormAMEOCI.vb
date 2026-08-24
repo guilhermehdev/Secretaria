@@ -166,11 +166,23 @@ Public Class FormAMEOCI
                 idEnd = endereco.Rows(0).Item("id")
             End If
 
-            If txtTelefone.Text.Length = 8 Then
-                telfixo = txtTelefone.Text.Insert(4, "-")
+
+            If txtTelefone.Text.Length < 8 Or txtDDD.Text.Length < 2 Then
+                FalharValidacao(mensagemErro, silencioso, "Telefone inválido.")
+                Return False
             Else
-                telfixo = txtTelefone.Text.Insert(5, "-")
+                If txtTelefone.Text.Length = 8 Then
+                    telfixo = txtTelefone.Text.Insert(4, "-")
+                Else
+                    telfixo = txtTelefone.Text.Insert(5, "-")
+                End If
             End If
+
+            'If txtTelefone.Text.Length = 8 Then
+            '    telfixo = txtTelefone.Text.Insert(4, "-")
+            'Else
+            '    telfixo = txtTelefone.Text.Insert(5, "-")
+            'End If
 
             If idPac = Nothing Then
 
@@ -438,11 +450,11 @@ Public Class FormAMEOCI
                     Return False
                 End If
             End If
-            If txtDDD.Text.Trim() = "" Then
+            If txtDDD.Text.Trim() = "" OrElse txtDDD.Text.Length < 2 Then
                 FalharValidacao(mensagemErro, silencioso, "Informe o DDD.", txtDDD, 0)
                 Return False
             End If
-            If txtTelefone.Text.Trim() = "" Then
+            If txtTelefone.Text.Trim() = "" OrElse txtTelefone.Text.Length < 8 Then
                 FalharValidacao(mensagemErro, silencioso, "Informe o telefone.", txtTelefone, 0)
                 Return False
             End If
