@@ -487,6 +487,13 @@ Public Class FormAMEOCI
             ' (14/06/13) órfãos no .JUL sempre que saveAPAC() falhava - e como a tela
             ' e a grid de procedimentos não eram limpas nesse caso, o próximo paciente
             ' herdava/duplicava os procedimentos do atendimento anterior.
+            If Not updateMode Then
+                If ExisteLancamentoDuplicado(competencia, txtNumApac.Text, txtProcedimentoPrincipal.SelectedValue, dtValidadeIni.Value) Then
+                    FalharValidacao(mensagemErro, silencioso, $"Já existe uma APAC {txtNumApac.Text.Trim()} gravada com o mesmo procedimento principal e a mesma data inicial. Confira se não é duplicidade antes de gravar de novo.", txtNumApac, 0)
+                    Return False
+                End If
+            End If
+
             If Not saveAPAC(silencioso, mensagemErro) Then
                 Return False
             End If
@@ -661,6 +668,50 @@ Public Class FormAMEOCI
             End If
             Return False
         End Try
+    End Function
+
+    ''' <summary>
+    ''' Verifica se já existe, no .JUL da competência informada, um lançamento com o
+    ''' MESMO num_apac + MESMO procedimento principal + MESMA data inicial (dtValidadeIni).
+    ''' Usado antes de saveAPAC() pra barrar duplicidade de verdade (ex: dois cliques em
+    ''' "Gravar" sem querer) antes que vire registro duplicado no banco E no arquivo -
+    ''' se a checagem só rodasse na hora de escrever o .JUL, o INSERT no banco já teria
+    ''' acontecido de qualquer jeito.
+    '''
+    ''' Posições calculadas direto da ordem de r14.Append(...)/r13Principal.Append(...)
+    ''' em addAPAC(): "14"(2) + competencia(6) + numApac(13) + uf(2) + cnes(7) +
+    ''' dataGeracao(8) + dtValidadeIni(8) -> numApac começa em 8, dtValidadeIni em 38.
+    ''' "13"(2) + competencia(6) + numApac(13) + procedimento(10) -> procedimento
+    ''' começa em 21.
+    ''' </summary>
+    Public Function ExisteLancamentoDuplicado(competencia As String, numApac As String, procedimentoPrincipal As String, dataInicial As Date) As Boolean
+        Dim caminhoArquivo As String = Path.Combine(Application.StartupPath & "\APAC\EXPORTADOS", "AP" & competencia & chkMonthEXT())
+        If Not File.Exists(caminhoArquivo) Then Return False
+
+        Dim linhas = File.ReadAllLines(caminhoArquivo, Encoding.GetEncoding("iso-8859-1"))
+        Dim numApacAlvo As String = numApac.Trim().PadLeft(13, "0"c)
+        Dim dataAlvo As String = dataInicial.ToString("yyyyMMdd")
+        Dim procedAlvo As String = procedimentoPrincipal.Trim().PadLeft(10, "0"c)
+
+        For i As Integer = 0 To linhas.Length - 1
+            Dim linha = linhas(i)
+            If Not linha.StartsWith("14") OrElse linha.Length < 46 Then Continue For
+            If linha.Substring(8, 13) <> numApacAlvo Then Continue For
+            If linha.Substring(38, 8) <> dataAlvo Then Continue For
+
+            ' Achou "14" com mesmo num_apac + mesma data - confere o procedimento
+            ' principal, que é sempre o "13" duas linhas depois (14, 06, 13-principal).
+            If i + 2 < linhas.Length Then
+                Dim linha13Principal = linhas(i + 2)
+                If linha13Principal.StartsWith("13") AndAlso linha13Principal.Length >= 31 Then
+                    If linha13Principal.Substring(21, 10) = procedAlvo Then
+                        Return True
+                    End If
+                End If
+            End If
+        Next
+
+        Return False
     End Function
     Private Sub btnAddPacAPAC_Click(sender As Object, e As EventArgs) Handles btnGerarArquivo.Click
         addAPAC()
@@ -3302,22 +3353,27 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
 
     Private Async Sub Button1_Click(sender As Object, e As EventArgs) Handles btCADSUS.Click
+        Dim cpfDigitos As String = New String(txtCpfPaciente.Text.Where(AddressOf Char.IsDigit).ToArray())
+        Dim cnsDigitos As String = New String(txtCnsPaciente.Text.Where(AddressOf Char.IsDigit).ToArray())
+        Dim nome As String = txtNomePaciente.Text.Trim()
+
         Dim busca As String = ""
-        If txtCpfPaciente.Text.Length >= 11 Then
-            busca = txtCpfPaciente.Text
-        ElseIf txtCnsPaciente.Text.Length >= 15 Then
-            busca = txtCnsPaciente.Text
-        ElseIf txtNomePaciente.Text.Length >= 10 AndAlso txtCpfPaciente.Text.Length < 11 AndAlso txtCnsPaciente.Text.Length < 15 Then
-            busca = txtNomePaciente.Text
+        If cpfDigitos.Length >= 11 Then
+            busca = cpfDigitos
+        ElseIf cnsDigitos.Length >= 15 Then
+            busca = cnsDigitos
+        ElseIf nome.Length >= 10 Then
+            busca = nome
         End If
+
         If busca.Length < 10 Then
-            m.msgInfo("Informe nome completo do paciente.")
+            m.msgInfo("Informe CPF, CNS ou nome completo do paciente.")
             Exit Sub
         End If
+
         If Await consulta.PuxadaSUS(busca) Then
 
         End If
-
     End Sub
     Private Sub txtCnsPaciente_TextChanged(sender As Object, e As EventArgs) Handles txtCnsPaciente.TextChanged
         If txtCnsPaciente.Text.Length >= 15 Then
