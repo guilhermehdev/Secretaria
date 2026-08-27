@@ -16,7 +16,7 @@ Public Class FormAMEOCI
     Private debounceTimer As New Timer() With {.Interval = 300}
     Friend isLoading As Boolean = False
     Private isQueue As Boolean = False
-    Private IDpacienteSelecionado As Integer? = Nothing
+    Friend IDpacienteSelecionado As Integer? = Nothing
     Private updateMode As Boolean = False
 
     Private nasc = Nothing

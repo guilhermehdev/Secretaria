@@ -53,13 +53,12 @@ Partial Class FormAMEOCINumAPAC
         Me.Label4 = New System.Windows.Forms.Label()
         Me.tbAPACFim = New System.Windows.Forms.TextBox()
         Me.tbAPACIni = New System.Windows.Forms.TextBox()
-        Me.chkDisponiveis = New System.Windows.Forms.RadioButton()
-        Me.rbTodos = New System.Windows.Forms.RadioButton()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.statusLabelRegistros = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.btImprimirOCI = New System.Windows.Forms.Button()
+        Me.chkDisponiveis = New System.Windows.Forms.CheckBox()
         CType(Me.dgvNumerosAPAC, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ctxMenuAPAC.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -98,7 +97,7 @@ Partial Class FormAMEOCINumAPAC
         DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dgvNumerosAPAC.DefaultCellStyle = DataGridViewCellStyle2
         Me.dgvNumerosAPAC.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
-        Me.dgvNumerosAPAC.Location = New System.Drawing.Point(6, 103)
+        Me.dgvNumerosAPAC.Location = New System.Drawing.Point(6, 122)
         Me.dgvNumerosAPAC.Name = "dgvNumerosAPAC"
         Me.dgvNumerosAPAC.ReadOnly = True
         Me.dgvNumerosAPAC.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
@@ -113,7 +112,7 @@ Partial Class FormAMEOCINumAPAC
         Me.dgvNumerosAPAC.RowHeadersWidth = 4
         Me.dgvNumerosAPAC.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgvNumerosAPAC.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvNumerosAPAC.Size = New System.Drawing.Size(829, 377)
+        Me.dgvNumerosAPAC.Size = New System.Drawing.Size(829, 358)
         Me.dgvNumerosAPAC.TabIndex = 33
         Me.dgvNumerosAPAC.TabStop = False
         '
@@ -150,8 +149,6 @@ Partial Class FormAMEOCINumAPAC
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.gbSearch)
-        Me.GroupBox1.Controls.Add(Me.chkDisponiveis)
-        Me.GroupBox1.Controls.Add(Me.rbTodos)
         Me.GroupBox1.Controls.Add(Me.dgvNumerosAPAC)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox1.Name = "GroupBox1"
@@ -162,6 +159,7 @@ Partial Class FormAMEOCINumAPAC
         '
         'gbSearch
         '
+        Me.gbSearch.Controls.Add(Me.chkDisponiveis)
         Me.gbSearch.Controls.Add(Me.Label1)
         Me.gbSearch.Controls.Add(Me.cbMedico)
         Me.gbSearch.Controls.Add(Me.Label28)
@@ -180,16 +178,16 @@ Partial Class FormAMEOCINumAPAC
         Me.gbSearch.Controls.Add(Me.Label4)
         Me.gbSearch.Controls.Add(Me.tbAPACFim)
         Me.gbSearch.Controls.Add(Me.tbAPACIni)
-        Me.gbSearch.Location = New System.Drawing.Point(93, 0)
+        Me.gbSearch.Location = New System.Drawing.Point(6, 19)
         Me.gbSearch.Name = "gbSearch"
-        Me.gbSearch.Size = New System.Drawing.Size(748, 97)
+        Me.gbSearch.Size = New System.Drawing.Size(829, 97)
         Me.gbSearch.TabIndex = 51
         Me.gbSearch.TabStop = False
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(366, 14)
+        Me.Label1.Location = New System.Drawing.Point(306, 14)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(42, 13)
         Me.Label1.TabIndex = 81
@@ -198,9 +196,9 @@ Partial Class FormAMEOCINumAPAC
         'cbMedico
         '
         Me.cbMedico.FormattingEnabled = True
-        Me.cbMedico.Location = New System.Drawing.Point(369, 29)
+        Me.cbMedico.Location = New System.Drawing.Point(309, 29)
         Me.cbMedico.Name = "cbMedico"
-        Me.cbMedico.Size = New System.Drawing.Size(373, 21)
+        Me.cbMedico.Size = New System.Drawing.Size(393, 21)
         Me.cbMedico.TabIndex = 80
         '
         'Label28
@@ -223,7 +221,7 @@ Partial Class FormAMEOCINumAPAC
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(629, 52)
+        Me.Label10.Location = New System.Drawing.Point(707, 52)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(37, 13)
         Me.Label10.TabIndex = 77
@@ -233,9 +231,9 @@ Partial Class FormAMEOCINumAPAC
         '
         Me.cbStatus.FormattingEnabled = True
         Me.cbStatus.Items.AddRange(New Object() {"DISP", "CONC", "CANC", "BLOQ"})
-        Me.cbStatus.Location = New System.Drawing.Point(632, 68)
+        Me.cbStatus.Location = New System.Drawing.Point(710, 68)
         Me.cbStatus.Name = "cbStatus"
-        Me.cbStatus.Size = New System.Drawing.Size(110, 21)
+        Me.cbStatus.Size = New System.Drawing.Size(113, 21)
         Me.cbStatus.TabIndex = 76
         '
         'Label9
@@ -250,7 +248,7 @@ Partial Class FormAMEOCINumAPAC
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(453, 53)
+        Me.Label8.Location = New System.Drawing.Point(531, 53)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(30, 13)
         Me.Label8.TabIndex = 73
@@ -259,7 +257,7 @@ Partial Class FormAMEOCINumAPAC
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(536, 71)
+        Me.Label7.Location = New System.Drawing.Point(614, 71)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(13, 13)
         Me.Label7.TabIndex = 72
@@ -270,13 +268,13 @@ Partial Class FormAMEOCINumAPAC
         Me.cbOCI.FormattingEnabled = True
         Me.cbOCI.Location = New System.Drawing.Point(110, 29)
         Me.cbOCI.Name = "cbOCI"
-        Me.cbOCI.Size = New System.Drawing.Size(255, 21)
+        Me.cbOCI.Size = New System.Drawing.Size(196, 21)
         Me.cbOCI.TabIndex = 74
         '
         'dtpFim
         '
         Me.dtpFim.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtpFim.Location = New System.Drawing.Point(550, 68)
+        Me.dtpFim.Location = New System.Drawing.Point(628, 68)
         Me.dtpFim.Name = "dtpFim"
         Me.dtpFim.Size = New System.Drawing.Size(78, 20)
         Me.dtpFim.TabIndex = 71
@@ -284,7 +282,7 @@ Partial Class FormAMEOCINumAPAC
         'dtpIni
         '
         Me.dtpIni.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtpIni.Location = New System.Drawing.Point(456, 68)
+        Me.dtpIni.Location = New System.Drawing.Point(534, 68)
         Me.dtpIni.Name = "dtpIni"
         Me.dtpIni.Size = New System.Drawing.Size(78, 20)
         Me.dtpIni.TabIndex = 70
@@ -303,7 +301,7 @@ Partial Class FormAMEOCINumAPAC
         Me.cbUsuarios.FormattingEnabled = True
         Me.cbUsuarios.Location = New System.Drawing.Point(208, 68)
         Me.cbUsuarios.Name = "cbUsuarios"
-        Me.cbUsuarios.Size = New System.Drawing.Size(244, 21)
+        Me.cbUsuarios.Size = New System.Drawing.Size(323, 21)
         Me.cbUsuarios.TabIndex = 68
         '
         'Label5
@@ -311,9 +309,9 @@ Partial Class FormAMEOCINumAPAC
         Me.Label5.AutoSize = True
         Me.Label5.Location = New System.Drawing.Point(6, 52)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(48, 13)
+        Me.Label5.Size = New System.Drawing.Size(79, 13)
         Me.Label5.TabIndex = 67
-        Me.Label5.Text = "Intervalo"
+        Me.Label5.Text = "Intervalo APAC"
         '
         'Label4
         '
@@ -339,26 +337,6 @@ Partial Class FormAMEOCINumAPAC
         Me.tbAPACIni.Name = "tbAPACIni"
         Me.tbAPACIni.Size = New System.Drawing.Size(91, 20)
         Me.tbAPACIni.TabIndex = 64
-        '
-        'chkDisponiveis
-        '
-        Me.chkDisponiveis.AutoSize = True
-        Me.chkDisponiveis.Location = New System.Drawing.Point(10, 58)
-        Me.chkDisponiveis.Name = "chkDisponiveis"
-        Me.chkDisponiveis.Size = New System.Drawing.Size(79, 17)
-        Me.chkDisponiveis.TabIndex = 50
-        Me.chkDisponiveis.Text = "Disponiveis"
-        Me.chkDisponiveis.UseVisualStyleBackColor = True
-        '
-        'rbTodos
-        '
-        Me.rbTodos.AutoSize = True
-        Me.rbTodos.Location = New System.Drawing.Point(10, 33)
-        Me.rbTodos.Name = "rbTodos"
-        Me.rbTodos.Size = New System.Drawing.Size(55, 17)
-        Me.rbTodos.TabIndex = 49
-        Me.rbTodos.Text = "Todos"
-        Me.rbTodos.UseVisualStyleBackColor = True
         '
         'OpenFileDialog1
         '
@@ -397,6 +375,16 @@ Partial Class FormAMEOCINumAPAC
         Me.btImprimirOCI.Text = "Exportar em PDF"
         Me.btImprimirOCI.UseVisualStyleBackColor = False
         '
+        'chkDisponiveis
+        '
+        Me.chkDisponiveis.AutoSize = True
+        Me.chkDisponiveis.Location = New System.Drawing.Point(710, 31)
+        Me.chkDisponiveis.Name = "chkDisponiveis"
+        Me.chkDisponiveis.Size = New System.Drawing.Size(114, 17)
+        Me.chkDisponiveis.TabIndex = 82
+        Me.chkDisponiveis.Text = "APACs disponiveis"
+        Me.chkDisponiveis.UseVisualStyleBackColor = True
+        '
         'FormAMEOCINumAPAC
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -414,7 +402,6 @@ Partial Class FormAMEOCINumAPAC
         CType(Me.dgvNumerosAPAC, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ctxMenuAPAC.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
         Me.gbSearch.ResumeLayout(False)
         Me.gbSearch.PerformLayout()
         Me.StatusStrip1.ResumeLayout(False)
@@ -428,12 +415,9 @@ Partial Class FormAMEOCINumAPAC
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
     Friend WithEvents StatusStrip1 As StatusStrip
     Friend WithEvents statusLabelRegistros As ToolStripStatusLabel
-    Friend WithEvents ToolStripStatusLabel1 As ToolStripStatusLabel
     Friend WithEvents ctxMenuAPAC As ContextMenuStrip
     Friend WithEvents AlterarStatusToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CopiarToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents rbTodos As RadioButton
-    Friend WithEvents chkDisponiveis As RadioButton
     Friend WithEvents gbSearch As GroupBox
     Friend WithEvents Label28 As Label
     Friend WithEvents cbSearchComp As ComboBox
@@ -456,4 +440,6 @@ Partial Class FormAMEOCINumAPAC
     Friend WithEvents ExcluirOCIToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents btImprimirOCI As Button
     Friend WithEvents EditarOCIToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripStatusLabel1 As ToolStripStatusLabel
+    Friend WithEvents chkDisponiveis As CheckBox
 End Class

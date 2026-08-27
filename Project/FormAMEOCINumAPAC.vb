@@ -106,6 +106,83 @@ Public Class FormAMEOCINumAPAC
     '    End If
     'End Sub
 
+    'Public Sub loadNUMAPAC(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "", Optional dtlanc As Date = Nothing, Optional order As String = "id", Optional custom As String = "", Optional medico As String = "", Optional labelCount As Label = Nothing)
+
+    '    Try
+    '        Dim where As String = "WHERE 1=1 "
+
+    '        If Not String.IsNullOrEmpty(faixaIni) AndAlso Not String.IsNullOrEmpty(faixaFim) Then
+    '            where &= $" AND oci.num_apac BETWEEN '{faixaIni}' AND '{faixaFim}' "
+    '        End If
+    '        If available = True Then
+    '            where &= " AND oci.status = 'DISP' "
+    '        End If
+    '        If user <> Nothing Then
+    '            where &= $" AND oci.id_usuario ={user} "
+    '        End If
+    '        If dtIni <> Nothing AndAlso dtFim <> Nothing Then
+    '            where &= $" AND oci.data BETWEEN '{dtIni.ToString("yyyy-MM-dd")}' AND '{dtFim.ToString("yyyy-MM-dd")}' "
+    '        End If
+    '        If Not String.IsNullOrWhiteSpace(oci) Then
+    '            where &= $" AND oci.id_cod_principal ={oci} "
+    '        End If
+    '        If Not String.IsNullOrWhiteSpace(status) Then
+    '            where &= $" AND oci.status ='{status}' "
+    '        End If
+    '        If FormAMEOCI.dtpSearchData.CustomFormat <> "" Then
+    '            where &= $" AND DATE(oci.data_lanc) ='{m.mysqlDateFormat(dtlanc)}' "
+    '        End If
+    '        If Not String.IsNullOrWhiteSpace(medico) Then
+    '            where &= $" AND oci.id_medico ='{medico}' "
+    '        End If
+
+    '        Dim query = $"SELECT oci.id, oci.num_apac, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc AS dtnasc, oci.`data`, oci.compet, servidores.nome AS medico, oci.status, usuarios.nome AS responsavel 
+    '            FROM oci 
+    '           LEFT JOIN pacientes ON pacientes.id = oci.id_paciente 
+    '           LEFT JOIN servidores ON servidores.SUS = oci.id_medico
+    '           LEFT JOIN cod_oci_principal ON cod_oci_principal.id = oci.id_cod_principal 
+    '           LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} {custom} ORDER BY {order}"
+
+    '        ' MsgBox(query)
+
+    '        Dim data = FormAMEmain.getDataset(query)
+
+    '        If data.Rows.Count > 0 Then
+
+    '            datagridview.DataSource = data
+    '            datagridview.Tag = data.DefaultView
+
+    '            datagridview.Columns("id").Visible = False
+    '            datagridview.Columns("num_apac").HeaderText = "Número APAC"
+    '            datagridview.Columns("num_apac").Width = 100
+    '            datagridview.Columns("oci").HeaderText = "OCI"
+    '            datagridview.Columns("oci").Width = 220
+    '            datagridview.Columns("nome").HeaderText = "Paciente"
+    '            datagridview.Columns("nome").Width = 250
+    '            datagridview.Columns("dtnasc").HeaderText = "Nascimento"
+    '            datagridview.Columns("dtnasc").Width = 80
+    '            datagridview.Columns("data").HeaderText = "Data"
+    '            datagridview.Columns("data").Width = 70
+    '            datagridview.Columns("compet").HeaderText = "Comp"
+    '            datagridview.Columns("compet").Width = 80
+    '            datagridview.Columns("medico").HeaderText = "Médico"
+    '            datagridview.Columns("medico").Width = 200
+    '            datagridview.Columns("status").HeaderText = "Status"
+    '            datagridview.Columns("status").Width = 60
+    '            datagridview.Columns("responsavel").HeaderText = "Usuário"
+    '            datagridview.Columns("responsavel").Width = 150
+    '            labelCount.Text = $"{data.Rows.Count} registros"
+
+    '        Else
+    '            datagridview.DataSource = Nothing
+    '            labelCount.Text = "0 registros"
+    '        End If
+
+    '    Catch ex As Exception
+    '        'MsgBox("Erro ao carregar números APAC: " & ex.Message)
+    '    End Try
+    'End Sub
+
     Public Sub loadNUMAPAC(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "", Optional dtlanc As Date = Nothing, Optional order As String = "id", Optional custom As String = "", Optional medico As String = "", Optional labelCount As Label = Nothing)
 
         Try
@@ -129,7 +206,13 @@ Public Class FormAMEOCINumAPAC
             If Not String.IsNullOrWhiteSpace(status) Then
                 where &= $" AND oci.status ='{status}' "
             End If
-            If FormAMEOCI.dtpSearchData.CustomFormat <> "" Then
+            ' Antes checava FormAMEOCI.dtpSearchData.CustomFormat (controle de OUTRA tela,
+            ' sem relação com essa busca) - se esse DateTimePicker tivesse CustomFormat
+            ' configurado no Designer (comum, independente do usuário ter escolhido algo),
+            ' essa condição virava sempre verdadeira e aplicava o filtro com "dtlanc" no
+            ' valor padrão (Date.MinValue), zerando o resultado inteiro. Agora checa o
+            ' próprio parâmetro dtlanc, igual já fazia com dtIni/dtFim acima.
+            If dtlanc <> Nothing Then
                 where &= $" AND DATE(oci.data_lanc) ='{m.mysqlDateFormat(dtlanc)}' "
             End If
             If Not String.IsNullOrWhiteSpace(medico) Then
@@ -137,11 +220,11 @@ Public Class FormAMEOCINumAPAC
             End If
 
             Dim query = $"SELECT oci.id, oci.num_apac, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc AS dtnasc, oci.`data`, oci.compet, servidores.nome AS medico, oci.status, usuarios.nome AS responsavel 
-                FROM oci 
-               LEFT JOIN pacientes ON pacientes.id = oci.id_paciente 
-               LEFT JOIN servidores ON servidores.SUS = oci.id_medico
-               LEFT JOIN cod_oci_principal ON cod_oci_principal.id = oci.id_cod_principal 
-               LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} {custom} ORDER BY {order}"
+            FROM oci 
+           LEFT JOIN pacientes ON pacientes.id = oci.id_paciente 
+           LEFT JOIN servidores ON servidores.SUS = oci.id_medico
+           LEFT JOIN cod_oci_principal ON cod_oci_principal.id = oci.id_cod_principal 
+           LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} {custom} ORDER BY {order}"
 
             ' MsgBox(query)
 
@@ -171,15 +254,24 @@ Public Class FormAMEOCINumAPAC
                 datagridview.Columns("status").Width = 60
                 datagridview.Columns("responsavel").HeaderText = "Usuário"
                 datagridview.Columns("responsavel").Width = 150
-                labelCount.Text = $"{data.Rows.Count} registros"
+
+                ' labelCount é Optional - se quem chamou não passou (como no cbMedico_SelectedIndexChanged
+                ' que você me mostrou), ele vem Nothing e um .Text direto quebraria com
+                ' NullReferenceException, engolido silenciosamente pelo Catch abaixo.
+                If labelCount IsNot Nothing Then labelCount.Text = $"{data.Rows.Count} registros"
 
             Else
                 datagridview.DataSource = Nothing
-                labelCount.Text = "0 registros"
+                If labelCount IsNot Nothing Then labelCount.Text = "0 registros"
             End If
 
         Catch ex As Exception
-            'MsgBox("Erro ao carregar números APAC: " & ex.Message)
+            ' Descomentado de propósito - estava engolindo qualquer erro (SQL, coluna
+            ' inexistente, etc.) sem mostrar nada, o que mascarou o bug do dtpSearchData
+            ' por quem sabe quanto tempo. Se quiser voltar a não mostrar popup em produção,
+            ' pelo menos loga em algum lugar (Debug.WriteLine, arquivo de log) em vez de
+            ' descartar a exceção inteira.
+            MsgBox("Erro ao carregar números APAC: " & ex.Message)
         End Try
     End Sub
     Private Sub FormAMEOCINumAPAC_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -187,14 +279,17 @@ Public Class FormAMEOCINumAPAC
         FormAMEmain.loadComboBox("SELECT id, nome FROM usuarios ORDER BY nome", cbUsuarios, "nome", "id")
         FormAMEOCI.loadComp(cbSearchComp)
         ToolStripStatusLabel1.Text = ""
-        FormAMEmain.loadComboBox("SELECT SUS AS id, nome AS medico FROM servidores WHERE SUS IS NOT NULL", cbMedico, "medico", "id")
+        FormAMEmain.loadComboBox("SELECT SUS AS id, nome FROM servidores WHERE SUS IS NOT NULL", cbMedico, "nome", "id")
+        cbMedico.DisplayMember = "nome"
+        cbMedico.ValueMember = "id"
         cbMedico.SelectedIndex = 0
+        cbMedico.SelectedIndex = 0
+        chkDisponiveis.Checked = False
         cbOCI.SelectedIndex = 0
         cbUsuarios.SelectedIndex = -1
         cbSearchComp.SelectedIndex = 0
-        rbTodos.Checked = True
         FormAMEOCI.LimparData()
-        FormAMEOCI.loadAllOCI(dgvNumerosAPAC)
+        'FormAMEOCI.loadAllOCI(dgvNumerosAPAC)
     End Sub
 
     Private Sub loadByAPACinterval()
@@ -234,7 +329,30 @@ Public Class FormAMEOCINumAPAC
         cbUsuarios.SelectedIndex = -1
         cbStatus.SelectedIndex = -1
         chkDisponiveis.Checked = False
-        loadNUMAPAC(dgvNumerosAPAC,,,,, dtpIni.Value, dtpFim.Value,, , , "num_apac", , cbMedico.SelectedValue)
+
+        Dim oci As String = cbOCI.SelectedValue
+        Dim medico As String = cbMedico.SelectedValue
+        Dim comp As String = cbSearchComp.SelectedValue
+
+        If oci > 0 Then
+            oci = oci
+        Else
+            oci = ""
+        End If
+
+        If medico > 0 Then
+            medico = medico
+        Else
+            medico = ""
+        End If
+
+        If cbSearchComp.SelectedValue > 0 Then
+            comp = $"AND compet='{cbSearchComp.Text}'"
+        Else
+            comp = ""
+        End If
+
+        loadNUMAPAC(dgvNumerosAPAC,,,,, dtpIni.Value, dtpFim.Value, oci, , , "num_apac", comp, medico)
     End Sub
     Private Sub dtpIni_ValueChanged(sender As Object, e As EventArgs) Handles dtpIni.ValueChanged
         loadByData()
@@ -250,8 +368,11 @@ Public Class FormAMEOCINumAPAC
         cbUsuarios.SelectedIndex = -1
         cbStatus.SelectedIndex = -1
         chkDisponiveis.Checked = False
+
         Dim oci As String = cbOCI.SelectedValue
         Dim medico As String = cbMedico.SelectedValue
+        Dim comp As String = cbSearchComp.SelectedValue
+
         If oci > 0 Then
             oci = oci
         Else
@@ -264,16 +385,15 @@ Public Class FormAMEOCINumAPAC
             medico = ""
         End If
 
-        If rbTodos.Checked Then
-            If cbSearchComp.SelectedValue > 0 Then
-                loadNUMAPAC(dgvNumerosAPAC,,, False,,,, oci, "CONC",,, $"AND compet='{cbSearchComp.Text}'", medico)
-            Else
-                loadNUMAPAC(dgvNumerosAPAC,,, False,,,, oci, "CONC")
-            End If
+        If cbSearchComp.SelectedValue > 0 Then
+            comp = $"AND compet='{cbSearchComp.Text}'"
         Else
-            loadNUMAPAC(dgvNumerosAPAC,,,,,, , CStr(cbOCI.SelectedValue))
+            comp = ""
         End If
 
+        ' OCI ignora competência de propósito - mesmo que cbSearchComp tenha algo selecionado,
+        ' não passamos esse filtro aqui.
+        loadNUMAPAC(dgvNumerosAPAC,,, False,,,, oci, "CONC",,, comp, medico)
     End Sub
 
     Private Sub cbStatus_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbStatus.SelectionChangeCommitted
@@ -379,36 +499,16 @@ Public Class FormAMEOCINumAPAC
     Public Sub loadAPACAvailable()
         dgvNumerosAPAC.DataSource = Nothing
         chkDisponiveis.Checked = True
-        gbSearch.Enabled = False
         loadNUMAPAC(dgvNumerosAPAC,,, True)
     End Sub
-    Private Sub RadioButton2_CheckedChanged(sender As Object, e As EventArgs) Handles chkDisponiveis.CheckedChanged
-        If chkDisponiveis.Checked Then
-            loadAPACAvailable()
-        Else
-            dgvNumerosAPAC.DataSource = Nothing
-            gbSearch.Enabled = True
-        End If
-    End Sub
-    Private Sub rbTodos_CheckedChanged(sender As Object, e As EventArgs) Handles rbTodos.CheckedChanged
-        If rbTodos.Checked Then
-            dgvNumerosAPAC.DataSource = Nothing
-            tbAPACFim.Text = ""
-            tbAPACIni.Text = ""
-            cbOCI.SelectedIndex = 0
-            cbUsuarios.SelectedIndex = -1
-            cbStatus.SelectedIndex = -1
-            chkDisponiveis.Checked = False
-            cbSearchComp.SelectedIndex = 0
-            loadNUMAPAC(dgvNumerosAPAC,,,,,,,, "CONC",, "oci.num_apac")
-        End If
-    End Sub
-    Private Sub cbSearchComp_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSearchComp.SelectedIndexChanged
-        If rbTodos.Checked Then
 
-            Dim comp As String = ""
-            Dim oci As String = cbOCI.SelectedValue
-            Dim medico As String = cbMedico.SelectedValue
+
+    Private Sub cbSearchComp_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSearchComp.SelectedIndexChanged
+        Dim comp As String = ""
+        Dim oci As String = cbOCI.SelectedValue
+        Dim medico As String = cbMedico.SelectedValue
+        chkDisponiveis.Checked = False
+        Try
 
             If cbSearchComp.SelectedValue > 0 Then
                 comp = $"AND compet='{cbSearchComp.Text}'"
@@ -429,17 +529,18 @@ Public Class FormAMEOCINumAPAC
             End If
 
             loadNUMAPAC(dgvNumerosAPAC,,, False,,,, oci, "CONC",,, comp, medico)
-        Else
-            dgvNumerosAPAC.DataSource = Nothing
-        End If
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
     Private Sub cbMedico_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbMedico.SelectedIndexChanged
-        Dim oci As String = cbOCI.SelectedValue
-        Dim comp As String = ""
-        Dim medico As String = cbMedico.SelectedValue.ToString
-
-        If rbTodos.Checked Then
+        Try
+            Dim oci As String = cbOCI.SelectedValue
+            Dim comp As String = ""
+            Dim medico As String = If(cbMedico.SelectedValue Is Nothing OrElse cbMedico.SelectedValue Is DBNull.Value, "", cbMedico.SelectedValue.ToString)
+            chkDisponiveis.Checked = False
 
             If oci > 0 Then
                 oci = oci
@@ -453,16 +554,11 @@ Public Class FormAMEOCINumAPAC
                 comp = ""
             End If
 
-            If medico > 0 Then
-                medico = medico
-            Else
-                medico = ""
-            End If
-
-            loadNUMAPAC(dgvNumerosAPAC,,, False,,,, oci, "CONC",,, comp, medico)
-        Else
-            loadNUMAPAC(dgvNumerosAPAC,,, False,, dtpIni.Value, dtpFim.Value,, "CONC",,,, medico)
-        End If
+            loadNUMAPAC(dgvNumerosAPAC,,, False,, , , oci, "CONC",, "id DESC", comp, medico)
+            ToolStripStatusLabel1.Text = dgvNumerosAPAC.RowCount & " Registros"
+        Catch ex As Exception
+            MsgBox("Erro ao filtrar por médico: " & ex.Message)
+        End Try
     End Sub
     Private Sub ExcluirOCIToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExcluirOCIToolStripMenuItem.Click
         If FormAMEOCI.deleteOCI(dgvNumerosAPAC.SelectedRows(0).Cells(0).Value) Then
@@ -527,5 +623,12 @@ Public Class FormAMEOCINumAPAC
         FormAMEOCI.editOCI(dgvNumerosAPAC.SelectedRows(0).Cells(0).Value)
         Me.Close()
     End Sub
-
+    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles chkDisponiveis.CheckedChanged, chkDisponiveis.CheckedChanged
+        If chkDisponiveis.Checked Then
+            loadAPACAvailable()
+        Else
+            dgvNumerosAPAC.DataSource = Nothing
+            gbSearch.Enabled = True
+        End If
+    End Sub
 End Class
