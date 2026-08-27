@@ -1004,6 +1004,11 @@ Public Class Main
 
     End Function
 
+    Public Function monthNumber(monthName As String) As String
+        Dim months As String() = {"JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"}
+        Dim index As Integer = Array.IndexOf(months, monthName.ToUpper())
+        Return If(index >= 0, (index + 1).ToString("00"), "00")
+    End Function
 
 End Class
 

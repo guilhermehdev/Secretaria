@@ -631,4 +631,19 @@ Public Class FormAMEOCINumAPAC
             gbSearch.Enabled = True
         End If
     End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btGerarLoteAPAC.Click
+        If cbSearchComp.SelectedIndex > 0 Then
+
+            Dim data As String = cbSearchComp.Text
+            Dim ano As String = data.Substring(4)
+            Dim mes As String = m.monthNumber(data.Substring(0, 3))
+
+            FormAMEOCI.RegenerarLoteCompetencia(ano & mes)
+        Else
+            m.msgAlert("Selecione uma competência")
+        End If
+
+    End Sub
+
 End Class

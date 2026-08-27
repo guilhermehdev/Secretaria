@@ -2895,9 +2895,6 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         RegenerarArquivoPorId(Convert.ToInt32(dgOCIcadastradas.SelectedRows(0).Cells(0).Value))
     End Sub
 
-    Private Sub RegerarLoteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RegerarLoteToolStripMenuItem.Click
-        RegenerarLoteCompetencia()
-    End Sub
 
     ''' <summary>
     ''' Monta a linha de cabeçalho (registro "01") do .JUL. Extraída de addAPAC() pra
@@ -2934,8 +2931,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     ''' PreencherTelaComDados) - não é um caminho 100% desacoplado da UI, mas quem
     ''' chama essa função não precisa saber ou se preocupar com isso.
     ''' </summary>
-    Public Sub RegenerarLoteCompetencia()
-        Dim competenciaAtiva As String = My.Settings.OCIcompetencia
+    Friend Sub RegenerarLoteCompetencia(competenciaAtiva As String)
         If competenciaAtiva = "" Then
             MessageBox.Show("Nenhuma competência configurada.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Return
