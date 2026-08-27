@@ -1432,7 +1432,7 @@ Partial Class FormAMEOCI
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.APACToolStripMenuItem, Me.RelatóriosToolStripMenuItem, Me.ConfiguraçõesToolStripMenuItem, Me.FecharToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(1019, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(1020, 24)
         Me.MenuStrip1.TabIndex = 27
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -1542,7 +1542,7 @@ Partial Class FormAMEOCI
         DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.dgvSugestoes.DefaultCellStyle = DataGridViewCellStyle6
         Me.dgvSugestoes.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
-        Me.dgvSugestoes.Location = New System.Drawing.Point(1015, 54)
+        Me.dgvSugestoes.Location = New System.Drawing.Point(1016, 52)
         Me.dgvSugestoes.MultiSelect = False
         Me.dgvSugestoes.Name = "dgvSugestoes"
         Me.dgvSugestoes.ReadOnly = True
@@ -1575,9 +1575,9 @@ Partial Class FormAMEOCI
         '
         'StatusStrip1
         '
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 559)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 555)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(1019, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(1020, 22)
         Me.StatusStrip1.TabIndex = 52
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -1803,7 +1803,7 @@ Partial Class FormAMEOCI
         Me.dgQueueItens.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgQueueItens.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.dgQueueItens.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgQueueItens.Size = New System.Drawing.Size(450, 367)
+        Me.dgQueueItens.Size = New System.Drawing.Size(450, 363)
         Me.dgQueueItens.TabIndex = 55
         Me.dgQueueItens.TabStop = False
         '
@@ -1867,7 +1867,7 @@ Partial Class FormAMEOCI
         Me.dgQueueOCI.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgQueueOCI.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.dgQueueOCI.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgQueueOCI.Size = New System.Drawing.Size(450, 134)
+        Me.dgQueueOCI.Size = New System.Drawing.Size(450, 130)
         Me.dgQueueOCI.TabIndex = 56
         Me.dgQueueOCI.TabStop = False
         '
@@ -1904,7 +1904,7 @@ Partial Class FormAMEOCI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1019, 581)
+        Me.ClientSize = New System.Drawing.Size(1020, 577)
         Me.Controls.Add(Me.btOCIpendente)
         Me.Controls.Add(Me.dgQueueOCI)
         Me.Controls.Add(Me.dgQueueItens)
