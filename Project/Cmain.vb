@@ -1010,6 +1010,25 @@ Public Class Main
         Return If(index >= 0, (index + 1).ToString("00"), "00")
     End Function
 
+    Friend Sub PreencherLogradouroSeparado(logradouroCompleto As String)
+        If String.IsNullOrWhiteSpace(logradouroCompleto) Then Return
+
+        Dim itens = CType(FormAMEOCI.cbTipoLogradouro.DataSource, BindingSource) _
+        .Cast(Of KeyValuePair(Of String, String))() _
+        .OrderByDescending(Function(x) x.Value.Length) ' testa os tipos mais longos primeiro
+
+        For Each par In itens
+            If logradouroCompleto.StartsWith(par.Value, StringComparison.OrdinalIgnoreCase) Then
+                FormAMEOCI.cbTipoLogradouro.SelectedValue = par.Key
+                FormAMEOCI.txtLogradouro.Text = logradouroCompleto.Substring(par.Value.Length).Trim()
+                Return
+            End If
+        Next
+
+        ' Não achou tipo conhecido como prefixo - deixa o texto inteiro no nome.
+        FormAMEOCI.txtLogradouro.Text = logradouroCompleto
+    End Sub
+
 End Class
 
 

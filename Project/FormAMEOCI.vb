@@ -3242,7 +3242,9 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             End If
             If txtNumero.Text = "" Then txtNumero.Text = p.Numero
             If txtBairro.Text = "" Then txtBairro.Text = p.Bairro
-            If txtLogradouro.Text = "" Then txtLogradouro.Text = p.Logradouro
+            If txtLogradouro.Text = "" Then
+                m.PreencherLogradouroSeparado(If(p.Logradouro Is Nothing, "", p.Logradouro.ToString()))
+            End If
             chkResponsavel()
 
         Catch ex As Exception
