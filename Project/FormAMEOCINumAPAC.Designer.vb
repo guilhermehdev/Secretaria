@@ -35,6 +35,7 @@ Partial Class FormAMEOCINumAPAC
         Me.ExcluirOCIToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.gbSearch = New System.Windows.Forms.GroupBox()
+        Me.chkDisponiveis = New System.Windows.Forms.CheckBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.cbMedico = New System.Windows.Forms.ComboBox()
         Me.Label28 = New System.Windows.Forms.Label()
@@ -58,7 +59,6 @@ Partial Class FormAMEOCINumAPAC
         Me.statusLabelRegistros = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.btImprimirOCI = New System.Windows.Forms.Button()
-        Me.chkDisponiveis = New System.Windows.Forms.CheckBox()
         Me.btGerarLoteAPAC = New System.Windows.Forms.Button()
         CType(Me.dgvNumerosAPAC, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ctxMenuAPAC.SuspendLayout()
@@ -184,6 +184,16 @@ Partial Class FormAMEOCINumAPAC
         Me.gbSearch.Size = New System.Drawing.Size(829, 97)
         Me.gbSearch.TabIndex = 51
         Me.gbSearch.TabStop = False
+        '
+        'chkDisponiveis
+        '
+        Me.chkDisponiveis.AutoSize = True
+        Me.chkDisponiveis.Location = New System.Drawing.Point(710, 31)
+        Me.chkDisponiveis.Name = "chkDisponiveis"
+        Me.chkDisponiveis.Size = New System.Drawing.Size(114, 17)
+        Me.chkDisponiveis.TabIndex = 82
+        Me.chkDisponiveis.Text = "APACs disponiveis"
+        Me.chkDisponiveis.UseVisualStyleBackColor = True
         '
         'Label1
         '
@@ -376,16 +386,6 @@ Partial Class FormAMEOCINumAPAC
         Me.btImprimirOCI.TabIndex = 59
         Me.btImprimirOCI.Text = "Exportar em PDF"
         Me.btImprimirOCI.UseVisualStyleBackColor = False
-        '
-        'chkDisponiveis
-        '
-        Me.chkDisponiveis.AutoSize = True
-        Me.chkDisponiveis.Location = New System.Drawing.Point(710, 31)
-        Me.chkDisponiveis.Name = "chkDisponiveis"
-        Me.chkDisponiveis.Size = New System.Drawing.Size(114, 17)
-        Me.chkDisponiveis.TabIndex = 82
-        Me.chkDisponiveis.Text = "APACs disponiveis"
-        Me.chkDisponiveis.UseVisualStyleBackColor = True
         '
         'btGerarLoteAPAC
         '

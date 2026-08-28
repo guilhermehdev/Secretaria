@@ -471,7 +471,10 @@ Public Class FormAMEOCI
                 FalharValidacao(mensagemErro, silencioso, "Selecione o procedimento principal.", txtProcedimentoPrincipal, 1)
                 Return False
             End If
-
+            If txtRaca.SelectedIndex < 0 Then
+                FalharValidacao(mensagemErro, silencioso, "Informe a raça.", txtRaca, 0)
+                Return False
+            End If
 
             ' ==================== CONFIGURAÇÕES ====================
             Dim competencia As String = My.Settings.OCIcompetencia
@@ -664,7 +667,7 @@ Public Class FormAMEOCI
         Catch ex As Exception
             mensagemErro = ex.Message
             If Not silencioso Then
-                MessageBox.Show("⚠️ Erro ao gravar registro: " & ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show("⚠️ Erro ao gravar registro: " & ex.ToString(), "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End If
             Return False
         End Try
@@ -2866,25 +2869,23 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     ''' pior, carregar um registro diferente do que estava selecionado na tela).
     ''' </summary>
     Public Sub RegenerarArquivoPorId(id As Integer)
-        ' Mesmo caminho usado por RegenerarLoteCompetencia (lê tudo pronto do banco via
-        ' MontarDadosApacDoOCI e entrega pra addAPAC numa chamada só, com dados:=...),
-        ' só que pra UM registro e sem apagar/recriar o arquivo. Trocado do antigo
-        ' editOCI(id) + addAPAC() separados porque esses dois passos dependiam da tela
-        ' já estar com os dados certos entre uma chamada e outra - qualquer diferença de
-        ' timing/estado ali causava erro de conversão de data mesmo com o paciente
-        ' correto e com data de nascimento preenchida no banco.
-        Dim dados = MontarDadosApacDoOCI(id)
-        If dados Is Nothing Then
-            MessageBox.Show("OCI não encontrado!", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            Return
-        End If
+        Try
 
-        updateMode = True ' já existe uma entrada dessa APAC no arquivo - remove a antiga antes de gravar a nova
-        Dim erro As String = ""
-        If Not addAPAC(dados, silencioso:=False, mensagemErro:=erro) Then
-            ' addAPAC() já mostra o popup de erro específico quando silencioso=False -
-            ' não precisa duplicar mensagem aqui.
-        End If
+            Dim dados = MontarDadosApacDoOCI(id)
+            If dados Is Nothing Then
+                MessageBox.Show("OCI não encontrado!", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
+            End If
+
+            updateMode = True ' já existe uma entrada dessa APAC no arquivo - remove a antiga antes de gravar a nova
+            Dim erro As String = ""
+            If Not addAPAC(dados, silencioso:=False, mensagemErro:=erro) Then
+                ' addAPAC() já mostra o popup de erro específico quando silencioso=False -
+                ' não precisa duplicar mensagem aqui.
+            End If
+        Catch ex As Exception
+            MsgBox($"Erro ao regenerar arquivo: {ex.Message}")
+        End Try
     End Sub
 
     Private Sub GerarArquivoNovamenteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles GerarArquivoNovamenteToolStripMenuItem.Click
