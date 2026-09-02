@@ -603,7 +603,10 @@ Public Class FormAMEOCINumAPAC
 
         Dim lotePdf As String = $"{dir}\{cbMedico.Text & "_" & dgData}.pdf"
 
-        OCI.UnirPDFs(arquivos, lotePdf)
+        If Not oci.UnirPDFs(arquivos, lotePdf) Then
+            Exit Sub
+        End If
+
         If File.Exists(lotePdf) Then
 
             For Each arquivo In arquivos

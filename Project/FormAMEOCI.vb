@@ -278,8 +278,8 @@ Public Class FormAMEOCI
     End Function
     Private Function atPac(Optional silencioso As Boolean = False, Optional ByRef mensagemErro As String = "")
         Dim idPac As Object = IDpacienteSelecionado
-        Dim idEnd As Integer = 0
-        Dim telfixo As String = ""
+        Dim idEnd As Integer
+        Dim telfixo As String
 
         If Not idPac = Nothing Then
 
@@ -302,6 +302,11 @@ Public Class FormAMEOCI
 
             If txtSexo.Text = Nothing Then
                 FalharValidacao(mensagemErro, silencioso, "Sexo inválido.")
+                Return False
+            End If
+
+            If txtRaca.SelectedValue < 0 Then
+                FalharValidacao(mensagemErro, silencioso, "Raça inválida.")
                 Return False
             End If
 

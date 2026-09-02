@@ -29,11 +29,129 @@ Public Class OCI
         Return FormAMEmain.getDataset(query)
 
     End Function
+
+    Private Function ValidarOCI(oci As DataTable) As List(Of String)
+
+        Dim erros As New List(Of String)
+
+        If oci Is Nothing OrElse oci.Rows.Count = 0 Then
+            erros.Add("DataTable 'oci' está vazio ou nulo.")
+            Return erros
+        End If
+
+        Dim linha = oci.Rows(0)
+
+        ' --- Campos de texto obrigatórios ---
+        Dim camposObrigatorios As String() = {
+        "nome", "cpf", "mae", "tel", "cep", "tipo", "logradouro",
+        "numero", "bairro", "cod", "descricao", "cid_principal",
+        "data_solicitacao", "medico_solicitante", "sus_medico_solicitante",
+        "medico_autorizador", "sus_medico_autorizador", "num_apac"
+    }
+
+        For Each campo In camposObrigatorios
+            If Not oci.Columns.Contains(campo) Then
+                erros.Add($"Coluna '{campo}' não existe no DataTable.")
+            ElseIf String.IsNullOrWhiteSpace(linha(campo).ToString()) Then
+                erros.Add($"Campo '{campo}' está vazio.")
+            End If
+        Next
+
+        If erros.Count > 0 Then Return erros ' evita quebrar validações abaixo por coluna ausente
+
+        ' --- Sexo ---
+        Dim sexo = linha("sexo").ToString().Trim().ToUpper()
+        If sexo <> "M" AndAlso sexo <> "F" Then
+            erros.Add($"Campo 'sexo' inválido: '{sexo}' (esperado 'M' ou 'F').")
+        End If
+
+        ' --- Data de nascimento ---
+        If Not IsDate(linha("dtnasc")) Then
+            erros.Add("Campo 'dtnasc' não é uma data válida.")
+        Else
+            Dim dtNasc As Date = CDate(linha("dtnasc"))
+            If dtNasc > DateTime.Today Then
+                erros.Add("Campo 'dtnasc' está no futuro.")
+            End If
+        End If
+
+        ' --- Raça ---
+        Dim racasValidas As String() = {"01", "02", "03", "04", "05"}
+        Dim idRaca = linha("raca").ToString().Trim()
+        If Not racasValidas.Contains(idRaca) Then
+            erros.Add($"Código de raça '{idRaca}' inválido.")
+        End If
+
+        ' --- CPF ---
+        Dim cpf = New String(linha("cpf").ToString().Where(AddressOf Char.IsDigit).ToArray())
+        If cpf.Length <> 11 Then
+            erros.Add($"CPF '{linha("cpf")}' inválido: deve conter 11 dígitos.")
+        ElseIf Not m.ValidarCPF(cpf) Then
+            erros.Add($"CPF '{linha("cpf")}' inválido: dígitos verificadores incorretos.")
+        End If
+
+        ' --- Telefone ---
+        Dim telDigitos = New String(linha("tel").ToString().Where(AddressOf Char.IsDigit).ToArray())
+        If telDigitos.Length < 10 OrElse telDigitos.Length > 11 Then
+            erros.Add($"Telefone '{linha("tel")}' inválido: esperado 10 ou 11 dígitos (DDD + número).")
+        End If
+
+        ' --- CEP ---
+        Dim cepDigitos = New String(linha("cep").ToString().Where(AddressOf Char.IsDigit).ToArray())
+        If cepDigitos.Length <> 8 Then
+            erros.Add($"CEP '{linha("cep")}' inválido: esperado 8 dígitos.")
+        End If
+
+        ' --- Código do procedimento principal ---
+        Dim codigosConhecidos As String() = {
+        "0904010015", "0902010026", "0902010018", "0905010035",
+        "0904010031", "0903010011"
+    }
+        Dim cod = linha("cod").ToString().Trim()
+        If String.IsNullOrWhiteSpace(cod) Then
+            erros.Add("Campo 'cod' (procedimento principal) está vazio.")
+        ElseIf Not codigosConhecidos.Contains(cod) Then
+            ' Não é erro fatal, mas alerta que não há regra de procedimentos secundários mapeada
+            erros.Add($"Aviso: código de procedimento '{cod}' não possui procedimentos secundários mapeados no OCI_PDF.")
+        End If
+
+        ' --- Data de solicitação ---
+        If Not IsDate(linha("data_solicitacao")) Then
+            erros.Add("Campo 'data_solicitacao' não é uma data válida.")
+        End If
+
+        ' --- CID principal (formato básico: letra + 2 dígitos, opcionalmente + subcategoria) ---
+        Dim cid = linha("cid_principal").ToString().Trim()
+        If Not System.Text.RegularExpressions.Regex.IsMatch(cid, "^[A-Z]\d{2}(\.\d)?$") Then
+            erros.Add($"CID principal '{cid}' fora do formato esperado (ex: A00 ou A00.0).")
+        End If
+
+        ' --- CNS (15 dígitos) dos médicos ---
+        Dim cnsSolic = New String(linha("sus_medico_solicitante").ToString().Where(AddressOf Char.IsDigit).ToArray())
+        If cnsSolic.Length <> 15 Then
+            erros.Add("CNS do médico solicitante inválido: esperado 15 dígitos.")
+        End If
+
+        Dim cnsAutor = New String(linha("sus_medico_autorizador").ToString().Where(AddressOf Char.IsDigit).ToArray())
+        If cnsAutor.Length <> 15 Then
+            erros.Add("CNS do médico autorizador inválido: esperado 15 dígitos.")
+        End If
+
+        Return erros
+
+    End Function
+
     Private Sub OCI_PDF(pdfOrigem As String, pdfDestino As String, oci As DataTable, Optional procedimentoSecundario As DataTable = Nothing)
 
         Dim reader As New PdfReader(pdfOrigem)
         Dim stamper As New PdfStamper(reader, New FileStream(pdfDestino, FileMode.Create))
         Dim campos = stamper.AcroFields
+
+        Dim erros = ValidarOCI(oci)
+        If erros.Count > 0 Then
+            MsgBox("Não foi possível gerar o PDF. Erros encontrados:" & vbCrLf & vbCrLf & String.Join(vbCrLf, erros))
+            Exit Sub
+        End If
 
         campos.SetField("NOME_PACIENTE", oci.Rows(0)("nome").ToString())
 
@@ -52,6 +170,8 @@ Public Class OCI
         Dim raca As String = "BRANCA"
 
         Select Case idRaca
+            Case "99"
+                raca = "BRANCA"
             Case "01"
                 raca = "BRANCA"
             Case "02"
@@ -184,8 +304,6 @@ Public Class OCI
             Catch ex As Exception
                 MsgBox("Erro ao preencher procedimentos secundários: " & ex.Message)
             End Try
-
-
         End If
 
         campos.SetField("CID1", oci.Rows(0)("cid_principal").ToString())
@@ -214,34 +332,41 @@ Public Class OCI
 
     End Sub
 
-    Public Shared Sub UnirPDFs(listaArquivos As List(Of String), pdfSaida As String)
+    Public Function UnirPDFs(listaArquivos As List(Of String), pdfSaida As String)
+        Try
 
-        Dim doc As New iTextSharp.text.Document()
-        Using fs As New FileStream(pdfSaida, FileMode.Create)
+            Dim doc As New iTextSharp.text.Document()
+            Using fs As New FileStream(pdfSaida, FileMode.Create)
 
-            Dim copy As New PdfSmartCopy(doc, fs)
+                Dim copy As New PdfSmartCopy(doc, fs)
 
-            doc.Open()
+                doc.Open()
 
-            For Each arquivo In listaArquivos
+                For Each arquivo In listaArquivos
 
-                Using reader As New PdfReader(arquivo)
+                    Using reader As New PdfReader(arquivo)
 
-                    For pagina As Integer = 1 To reader.NumberOfPages
-                        copy.AddPage(
-                        copy.GetImportedPage(reader, pagina)
-                    )
-                    Next
+                        For pagina As Integer = 1 To reader.NumberOfPages
+                            copy.AddPage(
+                            copy.GetImportedPage(reader, pagina)
+                        )
+                        Next
 
-                End Using
+                    End Using
 
-            Next
+                Next
 
-            doc.Close()
+                doc.Close()
 
-        End Using
+            End Using
 
-    End Sub
+            Return True
+        Catch ex As Exception
+            m.msgError("Erro ao unir PDFs: " & ex.Message)
+            Return False
+        End Try
+
+    End Function
 
     Private Sub MarcarCheckBox(campos As AcroFields, nomeCampo As String, marcado As Boolean)
         Dim estado As String = If(marcado, "On", "Off")

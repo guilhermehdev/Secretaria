@@ -1726,7 +1726,7 @@ Partial Class FormAMEOCI
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.EditarToolStripMenuItem, Me.ExcluirRegistroToolStripMenuItem, Me.GerarArquivoNovamenteToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(209, 92)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(209, 70)
         '
         'EditarToolStripMenuItem
         '
