@@ -624,7 +624,6 @@ Public Class FormAMEOCINumAPAC
     End Sub
     Private Sub EditarOCIToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditarOCIToolStripMenuItem.Click
         FormAMEOCI.editOCI(dgvNumerosAPAC.SelectedRows(0).Cells(0).Value)
-        Me.Close()
     End Sub
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles chkDisponiveis.CheckedChanged, chkDisponiveis.CheckedChanged
         If chkDisponiveis.Checked Then

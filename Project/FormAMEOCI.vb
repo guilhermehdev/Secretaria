@@ -2999,8 +2999,24 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         Dim resumo As String = $"Regeração concluída: {sucesso} de {idsOci.Rows.Count} APACs gravadas."
         If falhas.Count > 0 Then
             resumo &= vbCrLf & vbCrLf & $"Falharam ({falhas.Count}):" & vbCrLf & String.Join(vbCrLf, falhas)
+            m.msgAlert("Alguns erros foran encontrados durante a geração do arquivo. Veja o log em Configurações > Logs > Lote.")
         End If
-        MessageBox.Show(resumo, "Regerar lote da competência", MessageBoxButtons.OK, If(falhas.Count > 0, MessageBoxIcon.Warning, MessageBoxIcon.Information))
+        ' --- Geração do log ---
+        Dim pastaLog As String = Path.Combine(Application.StartupPath, "Logs")
+        If Not Directory.Exists(pastaLog) Then
+            Directory.CreateDirectory(pastaLog)
+        End If
+
+        Dim caminhoLog As String = Path.Combine(pastaLog, "geracaoemlotelog.txt")
+
+        Dim conteudoLog As New StringBuilder()
+        conteudoLog.AppendLine("========================================")
+        conteudoLog.AppendLine($"Regerar lote da competência - {DateTime.Now:dd/MM/yyyy HH:mm:ss}")
+        conteudoLog.AppendLine("========================================")
+        conteudoLog.AppendLine(resumo)
+        conteudoLog.AppendLine()
+
+        File.AppendAllText(caminhoLog, conteudoLog.ToString(), Encoding.UTF8)
 
         FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC",,, lbStatusCads)
     End Sub
@@ -3472,6 +3488,15 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     End Sub
     Private Sub txtCnsPaciente_Enter(sender As Object, e As EventArgs) Handles txtCnsPaciente.Enter
         m.setCursorStart(txtCnsPaciente)
+    End Sub
+    Private Sub LoteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoteToolStripMenuItem.Click
+        Dim caminhoLog As String = Path.Combine(Application.StartupPath, "Logs", "geracaoemlotelog.txt")
+
+        If File.Exists(caminhoLog) Then
+            Process.Start(New ProcessStartInfo(caminhoLog) With {.UseShellExecute = True})
+        Else
+            MessageBox.Show("Nenhum log encontrado ainda.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        End If
     End Sub
 
 End Class

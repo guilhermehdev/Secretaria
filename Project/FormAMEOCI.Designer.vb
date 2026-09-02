@@ -185,6 +185,8 @@ Partial Class FormAMEOCI
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Button1 = New System.Windows.Forms.Button()
         Me.ToolTipSUS = New System.Windows.Forms.ToolTip(Me.components)
+        Me.LogsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LoteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -1488,7 +1490,7 @@ Partial Class FormAMEOCI
         '
         'ConfiguraçõesToolStripMenuItem
         '
-        Me.ConfiguraçõesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ControleDeCompetênciaToolStripMenuItem})
+        Me.ConfiguraçõesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ControleDeCompetênciaToolStripMenuItem, Me.LogsToolStripMenuItem})
         Me.ConfiguraçõesToolStripMenuItem.Name = "ConfiguraçõesToolStripMenuItem"
         Me.ConfiguraçõesToolStripMenuItem.Size = New System.Drawing.Size(96, 20)
         Me.ConfiguraçõesToolStripMenuItem.Text = "Configurações"
@@ -1900,6 +1902,19 @@ Partial Class FormAMEOCI
         Me.Button1.Text = "Button1"
         Me.Button1.UseVisualStyleBackColor = True
         '
+        'LogsToolStripMenuItem
+        '
+        Me.LogsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LoteToolStripMenuItem})
+        Me.LogsToolStripMenuItem.Name = "LogsToolStripMenuItem"
+        Me.LogsToolStripMenuItem.Size = New System.Drawing.Size(208, 22)
+        Me.LogsToolStripMenuItem.Text = "Logs"
+        '
+        'LoteToolStripMenuItem
+        '
+        Me.LoteToolStripMenuItem.Name = "LoteToolStripMenuItem"
+        Me.LoteToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.LoteToolStripMenuItem.Text = "Lote"
+        '
         'FormAMEOCI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2095,4 +2110,6 @@ Partial Class FormAMEOCI
     Friend WithEvents btPrintSUS As Button
     Friend WithEvents Button1 As Button
     Friend WithEvents ToolTipSUS As ToolTip
+    Friend WithEvents LogsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents LoteToolStripMenuItem As ToolStripMenuItem
 End Class
