@@ -120,11 +120,11 @@ Public Class OCI
             erros.Add("Campo 'data_solicitacao' não é uma data válida.")
         End If
 
-        ' --- CID principal (formato básico: letra + 2 dígitos, opcionalmente + subcategoria) ---
-        Dim cid = linha("cid_principal").ToString().Trim()
-        If Not System.Text.RegularExpressions.Regex.IsMatch(cid, "^[A-Z]\d{2}(\.\d)?$") Then
-            erros.Add($"CID principal '{cid}' fora do formato esperado (ex: A00 ou A00.0).")
-        End If
+        '' --- CID principal (formato básico: letra + 2 dígitos, opcionalmente + subcategoria) ---
+        'Dim cid = linha("cid_principal").ToString().Trim()
+        'If Not System.Text.RegularExpressions.Regex.IsMatch(cid, "^[A-Z]\d{2}(\.\d)?$") Then
+        '    erros.Add($"CID principal '{cid}' fora do formato esperado (ex: A00 ou A00.0).")
+        'End If
 
         ' --- CNS (15 dígitos) dos médicos ---
         Dim cnsSolic = New String(linha("sus_medico_solicitante").ToString().Where(AddressOf Char.IsDigit).ToArray())

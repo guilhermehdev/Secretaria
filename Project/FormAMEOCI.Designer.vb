@@ -159,6 +159,8 @@ Partial Class FormAMEOCI
         Me.FiltrarAPACToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConfiguraçõesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ControleDeCompetênciaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LogsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LoteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.FecharToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.dgvSugestoes = New System.Windows.Forms.DataGridView()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
@@ -185,8 +187,6 @@ Partial Class FormAMEOCI
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Button1 = New System.Windows.Forms.Button()
         Me.ToolTipSUS = New System.Windows.Forms.ToolTip(Me.components)
-        Me.LogsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.LoteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -1501,6 +1501,19 @@ Partial Class FormAMEOCI
         Me.ControleDeCompetênciaToolStripMenuItem.Size = New System.Drawing.Size(208, 22)
         Me.ControleDeCompetênciaToolStripMenuItem.Text = "Controle de competência"
         '
+        'LogsToolStripMenuItem
+        '
+        Me.LogsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LoteToolStripMenuItem})
+        Me.LogsToolStripMenuItem.Name = "LogsToolStripMenuItem"
+        Me.LogsToolStripMenuItem.Size = New System.Drawing.Size(208, 22)
+        Me.LogsToolStripMenuItem.Text = "Logs"
+        '
+        'LoteToolStripMenuItem
+        '
+        Me.LoteToolStripMenuItem.Name = "LoteToolStripMenuItem"
+        Me.LoteToolStripMenuItem.Size = New System.Drawing.Size(97, 22)
+        Me.LoteToolStripMenuItem.Text = "Lote"
+        '
         'FecharToolStripMenuItem
         '
         Me.FecharToolStripMenuItem.Name = "FecharToolStripMenuItem"
@@ -1901,19 +1914,6 @@ Partial Class FormAMEOCI
         Me.Button1.TabIndex = 60
         Me.Button1.Text = "Button1"
         Me.Button1.UseVisualStyleBackColor = True
-        '
-        'LogsToolStripMenuItem
-        '
-        Me.LogsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LoteToolStripMenuItem})
-        Me.LogsToolStripMenuItem.Name = "LogsToolStripMenuItem"
-        Me.LogsToolStripMenuItem.Size = New System.Drawing.Size(208, 22)
-        Me.LogsToolStripMenuItem.Text = "Logs"
-        '
-        'LoteToolStripMenuItem
-        '
-        Me.LoteToolStripMenuItem.Name = "LoteToolStripMenuItem"
-        Me.LoteToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.LoteToolStripMenuItem.Text = "Lote"
         '
         'FormAMEOCI
         '

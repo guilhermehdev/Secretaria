@@ -196,15 +196,22 @@ Public Class FormAMEOCI
                 End Try
 
             Else
+                Try
 
-                If detectChanges() Then
-                    ' Antes, o retorno de atPac() era ignorado: se o endereço (ou nome,
-                    ' CPF, telefone etc.) fosse inválido, atPac() mostrava o erro mas
-                    ' saveAPAC() continuava e gravava a APAC mesmo assim. Agora aborta.
-                    If Not atPac(silencioso, mensagemErro) Then
-                        Return False
+                    If detectChanges() Then
+                        ' Antes, o retorno de atPac() era ignorado: se o endereço (ou nome,
+                        ' CPF, telefone etc.) fosse inválido, atPac() mostrava o erro mas
+                        ' saveAPAC() continuava e gravava a APAC mesmo assim. Agora aborta.
+                        If Not atPac(silencioso, mensagemErro) Then
+                            Return False
+                        End If
                     End If
-                End If
+
+                Catch ex As Exception
+                    mensagemErro = ex.Message
+                    If Not silencioso Then MsgBox(ex.Message)
+                    Return False
+                End Try
 
             End If
 
@@ -2302,12 +2309,12 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                 txtCpfPaciente.Text = result.Rows(0).Item("cpf").ToString
                 txtNomeMae.Text = result.Rows(0).Item("mae").ToString
 
-                If IsDBNull(result.Rows(0).Item("raca")) Then
+                Dim _raca As Boolean = IsDBNull(result.Rows(0).Item("raca"))
+                If _raca Then
                     txtRaca.SelectedValue = "01"
                 Else
                     txtRaca.SelectedValue = result.Rows(0).Item("raca")
                 End If
-                'chkSituacaoRua.Checked = CBool(result.Rows(0).Item("situacao_rua"))
 
                 Try
                     Dim fullTel = result.Rows(0).Item("tel").ToString
@@ -2336,7 +2343,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                 sexo = txtSexo.Text
                 cpf = txtCpfPaciente.Text
                 mae = txtNomeMae.Text
-                raca = txtRaca.SelectedValue
+                raca = If(_raca, Nothing, txtRaca.SelectedValue)
                 ddd = txtDDD.Text
                 telefone = txtTelefone.Text
                 cepRes = txtCep.Text
@@ -2688,7 +2695,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                     num = apac.numeroResPaciente
                 End If
 
-                idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento, sexo) VALUES ('{apac.NomePaciente.ToUpper}', '{m.mysqlDateFormat(apac.DtnascPaciente)}', '{apac.MaePaciente.ToUpper}', '{ddd}{tel}', '{apac.CPFPaciente}',{idLogra}, {num}, '{apac.complementoPaciente.ToUpper}', '{apac.SexoPaciente}')")
+                idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento, sexo, raca) VALUES ('{apac.NomePaciente.ToUpper}', '{m.mysqlDateFormat(apac.DtnascPaciente)}', '{apac.MaePaciente.ToUpper}', '{ddd}{tel}', '{apac.CPFPaciente}',{idLogra}, {num}, '{apac.complementoPaciente.ToUpper}', '{apac.SexoPaciente}', '{apac.Raca}')")
             Catch ex As Exception
 
                 Try
