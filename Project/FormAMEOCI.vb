@@ -3018,6 +3018,8 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
         File.AppendAllText(caminhoLog, conteudoLog.ToString(), Encoding.UTF8)
 
+        m.msgInfo($"Geração em lote de {competenciaAtiva} realizada com sucesso.")
+
         FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC",,, lbStatusCads)
     End Sub
     Private Sub ExcluirRegistroToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExcluirRegistroToolStripMenuItem.Click
