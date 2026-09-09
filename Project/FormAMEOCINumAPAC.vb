@@ -579,17 +579,28 @@ Public Class FormAMEOCINumAPAC
     End Sub
     Private Sub btImprimirOCI_Click(sender As Object, e As EventArgs) Handles btImprimirOCI.Click
         Dim oci As New OCI
+        Dim pastaContainer As String
+        Dim dir As String
 
         If dgvNumerosAPAC.RowCount = 0 Then
             MsgBox("Nenhum registro para imprimir.")
             Exit Sub
         End If
 
+        SaveFileDialog1.Title = "Salvar APAC"
+        SaveFileDialog1.FileName = cbMedico.Text
         Dim dgData = CDate(dgvNumerosAPAC.SelectedRows(0).Cells(5).Value).ToString("dd-MM-yyyy")
-        Dim dir As String = $"D:\Desktop\{cbMedico.Text}\{dgData}"
 
-        If Not Directory.Exists(dir) Then
-            Directory.CreateDirectory(dir)
+        If SaveFileDialog1.ShowDialog() = DialogResult.OK Then
+            pastaContainer = Path.GetDirectoryName(SaveFileDialog1.FileName)
+            dir = Path.Combine(pastaContainer, cbMedico.Text, dgData)
+            'Dim dir As String = SaveFileDialog1.FileName.Substring(SaveFileDialog1.FileName.Length - 4, 4) & $"\{cbMedico.Text}\{dgData}"
+
+            If Not Directory.Exists(dir) Then
+                Directory.CreateDirectory(dir)
+            End If
+        Else
+            Exit Sub
         End If
 
         Dim arquivos As New List(Of String)

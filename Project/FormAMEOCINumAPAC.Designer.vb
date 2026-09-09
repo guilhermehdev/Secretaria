@@ -60,6 +60,7 @@ Partial Class FormAMEOCINumAPAC
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.btImprimirOCI = New System.Windows.Forms.Button()
         Me.btGerarLoteAPAC = New System.Windows.Forms.Button()
+        Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         CType(Me.dgvNumerosAPAC, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ctxMenuAPAC.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -401,6 +402,11 @@ Partial Class FormAMEOCINumAPAC
         Me.btGerarLoteAPAC.Text = "Gerar lote da competência"
         Me.btGerarLoteAPAC.UseVisualStyleBackColor = False
         '
+        'SaveFileDialog1
+        '
+        Me.SaveFileDialog1.DefaultExt = "PDF"
+        Me.SaveFileDialog1.Filter = "PDF (*.pdf)|*.pdf"
+        '
         'FormAMEOCINumAPAC
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -460,4 +466,5 @@ Partial Class FormAMEOCINumAPAC
     Friend WithEvents ToolStripStatusLabel1 As ToolStripStatusLabel
     Friend WithEvents chkDisponiveis As CheckBox
     Friend WithEvents btGerarLoteAPAC As Button
+    Friend WithEvents SaveFileDialog1 As SaveFileDialog
 End Class
