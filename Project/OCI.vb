@@ -8,7 +8,9 @@ Public Class OCI
 
     Public Sub printOCI(idOCI As Integer, pdfDestino As String)
         Dim oci = datatableOCI(idOCI)
-        OCI_PDF(Application.StartupPath & "\PDF\ModeloOCI.pdf", pdfDestino, oci)
+        Dim procedSec = datatableProcedSecundarios(oci.Rows(0)("num_apac"))
+
+        OCI_PDF(Application.StartupPath & "\PDF\ModeloOCI.pdf", pdfDestino, oci, procedSec)
     End Sub
     Private Function datatableOCI(idOCI As Integer, Optional parametros As String = "")
         If parametros <> "" Then
@@ -26,6 +28,17 @@ Public Class OCI
         JOIN pacientes ON pacientes.id = oci.id_paciente
         JOIN ceps_peruibe ON ceps_peruibe.id = pacientes.id_logradouro
         WHERE oci.id={idOCI} {parametros}"
+        Return FormAMEmain.getDataset(query)
+
+    End Function
+
+    Private Function datatableProcedSecundarios(numAPAC As String)
+
+        Dim query = $"SELECT procedimentos_secundarios.cod_proced_secundario, cod_oci_secundario.descricao, procedimentos_secundarios.qtd
+        FROM procedimentos_secundarios
+        JOIN cod_oci_secundario ON cod_oci_secundario.cod = procedimentos_secundarios.cod_proced_secundario
+        WHERE procedimentos_secundarios.num_apac='{numAPAC}'"
+
         Return FormAMEmain.getDataset(query)
 
     End Function
@@ -142,7 +155,6 @@ Public Class OCI
     End Function
 
     Private Sub OCI_PDF(pdfOrigem As String, pdfDestino As String, oci As DataTable, Optional procedimentoSecundario As DataTable = Nothing)
-
         Dim reader As New PdfReader(pdfOrigem)
         Dim stamper As New PdfStamper(reader, New FileStream(pdfDestino, FileMode.Create))
         Dim campos = stamper.AcroFields
@@ -259,47 +271,80 @@ Public Class OCI
 
             Try
 
-                For i As Integer = 0 To procedimentoSecundario.Rows.Count - 1
+                If procedimentoSecundario.Rows.Count > 0 Then
 
-                    Dim codigo = procedimentoSecundario.Rows(i)("cod_proced_secundario").ToString()
-                    Dim descricao = procedimentoSecundario.Rows(i)("descricao").ToString()
-                    Dim qtd = procedimentoSecundario.Rows(i)("qtd").ToString()
+                    For i As Integer = 0 To procedimentoSecundario.Rows.Count - 1
 
-                    Select Case i
+                        Dim codigo = procedimentoSecundario.Rows(i)("cod_proced_secundario").ToString()
+                        Dim descricaoComCod = procedimentoSecundario.Rows(i)("descricao").ToString()
+                        Dim posicaoHifen As Integer = descricaoComCod.IndexOf("-")
+                        Dim descricao As String = ""
+                        If posicaoHifen >= 0 Then
+                            descricao = descricaoComCod.Substring(posicaoHifen + 1).Trim()
+                        End If
+                        Dim qtd = procedimentoSecundario.Rows(i)("qtd").ToString()
 
-                        Case 0
+                        Select Case i
 
-                            campos.SetField("CODPROCED_SECUNDARIO_1", codigo)
-                            campos.SetField("DESCRICAO_PROCED_SECUNDARIO_1", descricao)
-                            campos.SetField("QTD_PROCED_SECUNDARIO_1", qtd)
+                            Case 0
 
-                        Case 1
+                                campos.SetField("CODPROCED_SECUNDARIO_1", codigo)
+                                campos.SetField("DESCRICAO_PROCED_SECUNDARIO_1", descricao)
+                                campos.SetField("QTD_PROCED_SECUNDARIO_1", qtd)
 
-                            campos.SetField("CODPROCED_SECUNDARIO_2", codigo)
-                            campos.SetField("DESCRICAO_PROCED_SECUNDARIO_2", descricao)
-                            campos.SetField("QTD_PROCED_SECUNDARIO_2", qtd)
+                            Case 1
 
-                        Case 2
+                                campos.SetField("CODPROCED_SECUNDARIO_2", codigo)
+                                campos.SetField("DESCRICAO_PROCED_SECUNDARIO_2", descricao)
+                                campos.SetField("QTD_PROCED_SECUNDARIO_2", qtd)
 
-                            campos.SetField("CODPROCED_SECUNDARIO_3", codigo)
-                            campos.SetField("DESCRICAO_PROCED_SECUNDARIO_3", descricao)
-                            campos.SetField("QTD_PROCED_SECUNDARIO_3", qtd)
+                            Case 2
 
-                        Case 3
+                                campos.SetField("CODPROCED_SECUNDARIO_3", codigo)
+                                campos.SetField("DESCRICAO_PROCED_SECUNDARIO_3", descricao)
+                                campos.SetField("QTD_PROCED_SECUNDARIO_3", qtd)
 
-                            campos.SetField("CODPROCED_SECUNDARIO_4", codigo)
-                            campos.SetField("DESCRICAO_PROCED_SECUNDARIO_4", descricao)
-                            campos.SetField("QTD_PROCED_SECUNDARIO_4", qtd)
+                            Case 3
 
-                        Case 4
+                                campos.SetField("CODPROCED_SECUNDARIO_4", codigo)
+                                campos.SetField("DESCRICAO_PROCED_SECUNDARIO_4", descricao)
+                                campos.SetField("QTD_PROCED_SECUNDARIO_4", qtd)
 
-                            campos.SetField("CODPROCED_SECUNDARIO_5", codigo)
-                            campos.SetField("DESCRICAO_PROCED_SECUNDARIO_5", descricao)
-                            campos.SetField("QTD_PROCED_SECUNDARIO_5", qtd)
+                            Case 4
 
-                    End Select
+                                campos.SetField("CODPROCED_SECUNDARIO_5", codigo)
+                                campos.SetField("DESCRICAO_PROCED_SECUNDARIO_5", descricao)
+                                campos.SetField("QTD_PROCED_SECUNDARIO_5", qtd)
 
-                Next
+                        End Select
+
+                    Next
+
+                Else
+
+                    m.msgAlert("Não foram encontrados procedimentos secundários para o número de APAC: " & oci.Rows(0)("num_apac").ToString())
+
+                    campos.SetField("CODPROCED_SECUNDARIO_1", "")
+                    campos.SetField("DESCRICAO_PROCED_SECUNDARIO_1", "")
+                    campos.SetField("QTD_PROCED_SECUNDARIO_1", "")
+
+                    campos.SetField("CODPROCED_SECUNDARIO_2", "")
+                    campos.SetField("DESCRICAO_PROCED_SECUNDARIO_2", "")
+                    campos.SetField("QTD_PROCED_SECUNDARIO_2", "")
+
+                    campos.SetField("CODPROCED_SECUNDARIO_3", "")
+                    campos.SetField("DESCRICAO_PROCED_SECUNDARIO_3", "")
+                    campos.SetField("QTD_PROCED_SECUNDARIO_3", "")
+
+                    campos.SetField("CODPROCED_SECUNDARIO_4", "")
+                    campos.SetField("DESCRICAO_PROCED_SECUNDARIO_4", "")
+                    campos.SetField("QTD_PROCED_SECUNDARIO_4", "")
+
+                    campos.SetField("CODPROCED_SECUNDARIO_5", "")
+                    campos.SetField("DESCRICAO_PROCED_SECUNDARIO_5", "")
+                    campos.SetField("QTD_PROCED_SECUNDARIO_5", "")
+
+                End If
 
             Catch ex As Exception
                 MsgBox("Erro ao preencher procedimentos secundários: " & ex.Message)

@@ -577,10 +577,14 @@ Public Class FormAMEOCINumAPAC
             ToolStripStatusLabel1.Text = $"{dgvNumerosAPAC.Rows.Count} registros."
         End If
     End Sub
-    Private Sub btImprimirOCI_Click(sender As Object, e As EventArgs) Handles btImprimirOCI.Click
+    Private Sub btImprimirOCI_Click(sender As Object, e As EventArgs, Optional modoUnico As Boolean = False) Handles btImprimirOCI.Click
         Dim oci As New OCI
         Dim pastaContainer As String
         Dim dir As String
+        Dim lotePdf As String
+        Dim arquivos As New List(Of String)
+        Dim dgData = CDate(dgvNumerosAPAC.SelectedRows(0).Cells(5).Value).ToString("dd-MM-yyyy")
+        Dim nameOnfile As String
 
         If dgvNumerosAPAC.RowCount = 0 Then
             MsgBox("Nenhum registro para imprimir.")
@@ -588,31 +592,47 @@ Public Class FormAMEOCINumAPAC
         End If
 
         SaveFileDialog1.Title = "Salvar APAC"
-        SaveFileDialog1.FileName = cbMedico.Text
-        Dim dgData = CDate(dgvNumerosAPAC.SelectedRows(0).Cells(5).Value).ToString("dd-MM-yyyy")
+        If modoUnico Then
+            nameOnfile = dgvNumerosAPAC.SelectedRows(0).Cells(3).Value.ToString()
+        Else
+            nameOnfile = cbMedico.Text
+        End If
+
+        SaveFileDialog1.FileName = nameOnfile
 
         If SaveFileDialog1.ShowDialog() = DialogResult.OK Then
             pastaContainer = Path.GetDirectoryName(SaveFileDialog1.FileName)
             dir = Path.Combine(pastaContainer, cbMedico.Text, dgData)
-            'Dim dir As String = SaveFileDialog1.FileName.Substring(SaveFileDialog1.FileName.Length - 4, 4) & $"\{cbMedico.Text}\{dgData}"
 
-            If Not Directory.Exists(dir) Then
-                Directory.CreateDirectory(dir)
-            End If
         Else
             Exit Sub
         End If
 
-        Dim arquivos As New List(Of String)
+        If modoUnico Then
 
-        For Each row As DataGridViewRow In dgvNumerosAPAC.Rows
-            If row.IsNewRow Then Continue For
-            Dim pdf As String = $"{dir}\{row.Cells(0).Value}-{row.Cells(3).Value}.pdf"
-            oci.printOCI(row.Cells(0).Value, pdf)
+            Dim pac = dgvNumerosAPAC.SelectedRows(0).Cells(3).Value.ToString()
+            Dim pdf As String = $"{pastaContainer}\{dgvNumerosAPAC.SelectedRows(0).Cells(1).Value}-{dgvNumerosAPAC.SelectedRows(0).Cells(3).Value}.pdf"
+
+            oci.printOCI($"{dgvNumerosAPAC.SelectedRows(0).Cells(0).Value}", pdf)
             arquivos.Add(pdf)
-        Next
 
-        Dim lotePdf As String = $"{dir}\{cbMedico.Text & "_" & dgData}.pdf"
+            lotePdf = $"{pastaContainer & "\" & pac & "_" & dgData}.pdf"
+        Else
+
+            If Not Directory.Exists(dir) Then
+                Directory.CreateDirectory(dir)
+            End If
+
+            For Each row As DataGridViewRow In dgvNumerosAPAC.Rows
+                If row.IsNewRow Then Continue For
+                Dim pdf As String = $"{dir}\{row.Cells(0).Value}-{row.Cells(3).Value}.pdf"
+                oci.printOCI(row.Cells(0).Value, pdf)
+                arquivos.Add(pdf)
+            Next
+
+            lotePdf = $"{dir}\{cbMedico.Text & "_" & dgData}.pdf"
+
+        End If
 
         If Not oci.UnirPDFs(arquivos, lotePdf) Then
             Exit Sub
@@ -620,15 +640,19 @@ Public Class FormAMEOCINumAPAC
 
         If File.Exists(lotePdf) Then
 
+            If m.msgQuestion("Deseja abrir o arquivo PDF gerado?", "Abrir PDF") Then
+                Process.Start(New ProcessStartInfo(lotePdf) With {.UseShellExecute = True})
+            End If
+
             For Each arquivo In arquivos
 
-                If File.Exists(arquivo) Then
-                    File.Delete(arquivo)
-                End If
+                    If File.Exists(arquivo) Then
+                        File.Delete(arquivo)
+                    End If
 
-            Next
+                Next
 
-            m.msgInfo("PDF gerado com sucesso: " & lotePdf)
+            m.msgInfo("PDF gerado com sucesso em " & lotePdf)
 
         End If
 
@@ -657,6 +681,10 @@ Public Class FormAMEOCINumAPAC
             m.msgAlert("Selecione uma competência")
         End If
 
+    End Sub
+
+    Private Sub ExportarEmPDFToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExportarEmPDFToolStripMenuItem.Click
+        btImprimirOCI_Click(sender, e, True)
     End Sub
 
 End Class

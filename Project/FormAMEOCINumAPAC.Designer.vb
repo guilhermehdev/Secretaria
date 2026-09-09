@@ -61,6 +61,7 @@ Partial Class FormAMEOCINumAPAC
         Me.btImprimirOCI = New System.Windows.Forms.Button()
         Me.btGerarLoteAPAC = New System.Windows.Forms.Button()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
+        Me.ExportarEmPDFToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.dgvNumerosAPAC, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ctxMenuAPAC.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -120,32 +121,32 @@ Partial Class FormAMEOCINumAPAC
         '
         'ctxMenuAPAC
         '
-        Me.ctxMenuAPAC.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AlterarStatusToolStripMenuItem, Me.CopiarToolStripMenuItem, Me.EditarOCIToolStripMenuItem, Me.ExcluirOCIToolStripMenuItem})
+        Me.ctxMenuAPAC.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AlterarStatusToolStripMenuItem, Me.CopiarToolStripMenuItem, Me.EditarOCIToolStripMenuItem, Me.ExportarEmPDFToolStripMenuItem, Me.ExcluirOCIToolStripMenuItem})
         Me.ctxMenuAPAC.Name = "ctxMenuAPAC"
-        Me.ctxMenuAPAC.Size = New System.Drawing.Size(145, 92)
+        Me.ctxMenuAPAC.Size = New System.Drawing.Size(226, 136)
         '
         'AlterarStatusToolStripMenuItem
         '
         Me.AlterarStatusToolStripMenuItem.Name = "AlterarStatusToolStripMenuItem"
-        Me.AlterarStatusToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
+        Me.AlterarStatusToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
         Me.AlterarStatusToolStripMenuItem.Text = "Alterar Status"
         '
         'CopiarToolStripMenuItem
         '
         Me.CopiarToolStripMenuItem.Name = "CopiarToolStripMenuItem"
-        Me.CopiarToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
-        Me.CopiarToolStripMenuItem.Text = "Copiar"
+        Me.CopiarToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
+        Me.CopiarToolStripMenuItem.Text = "Copiar Número APAC"
         '
         'EditarOCIToolStripMenuItem
         '
         Me.EditarOCIToolStripMenuItem.Name = "EditarOCIToolStripMenuItem"
-        Me.EditarOCIToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
+        Me.EditarOCIToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
         Me.EditarOCIToolStripMenuItem.Text = "Editar OCI"
         '
         'ExcluirOCIToolStripMenuItem
         '
         Me.ExcluirOCIToolStripMenuItem.Name = "ExcluirOCIToolStripMenuItem"
-        Me.ExcluirOCIToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
+        Me.ExcluirOCIToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
         Me.ExcluirOCIToolStripMenuItem.Text = "Excluir OCI"
         '
         'GroupBox1
@@ -407,6 +408,12 @@ Partial Class FormAMEOCINumAPAC
         Me.SaveFileDialog1.DefaultExt = "PDF"
         Me.SaveFileDialog1.Filter = "PDF (*.pdf)|*.pdf"
         '
+        'ExportarEmPDFToolStripMenuItem
+        '
+        Me.ExportarEmPDFToolStripMenuItem.Name = "ExportarEmPDFToolStripMenuItem"
+        Me.ExportarEmPDFToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
+        Me.ExportarEmPDFToolStripMenuItem.Text = "Exportar em PDF (individual)"
+        '
         'FormAMEOCINumAPAC
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -467,4 +474,5 @@ Partial Class FormAMEOCINumAPAC
     Friend WithEvents chkDisponiveis As CheckBox
     Friend WithEvents btGerarLoteAPAC As Button
     Friend WithEvents SaveFileDialog1 As SaveFileDialog
+    Friend WithEvents ExportarEmPDFToolStripMenuItem As ToolStripMenuItem
 End Class
