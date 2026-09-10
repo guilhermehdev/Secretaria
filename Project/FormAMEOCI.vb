@@ -3175,15 +3175,18 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         If IDpacienteSelecionado IsNot Nothing Then
 
             If m.msgQuestion("Tem certeza que deseja excluir este paciente? Essa ação é irreversível.", "Confirmar exclusão") Then
-                FormAMEmain.doQuery("DELETE FROM pacientes WHERE id=" & IDpacienteSelecionado)
-                MessageBox.Show("Paciente excluído com sucesso.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                If txtNumApac.Text.Length = 13 Then
-                    UnlockApac(txtNumApac.Text)
+                If FormAMEmain.doQuery("DELETE FROM pacientes WHERE id=" & IDpacienteSelecionado) Then
+                    MessageBox.Show("Paciente excluído com sucesso.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    If txtNumApac.Text.Length = 13 Then
+                        UnlockApac(txtNumApac.Text)
+                    End If
+                    clearFields()
+                Else
+                    m.msgError("Erro ao excluir paciente. Verifique se ele não está vinculado a algum registro de APAC/OCI.")
                 End If
-                clearFields()
             End If
 
-            btNovonumeroAPAC.Enabled = True
+                btNovonumeroAPAC.Enabled = True
 
         Else
             MessageBox.Show("Selecione um paciente por data de nascimento, nome ou CPF", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)

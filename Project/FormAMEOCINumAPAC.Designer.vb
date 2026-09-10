@@ -32,6 +32,7 @@ Partial Class FormAMEOCINumAPAC
         Me.AlterarStatusToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CopiarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.EditarOCIToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ExportarEmPDFToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ExcluirOCIToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.gbSearch = New System.Windows.Forms.GroupBox()
@@ -61,7 +62,6 @@ Partial Class FormAMEOCINumAPAC
         Me.btImprimirOCI = New System.Windows.Forms.Button()
         Me.btGerarLoteAPAC = New System.Windows.Forms.Button()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
-        Me.ExportarEmPDFToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.dgvNumerosAPAC, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ctxMenuAPAC.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -123,7 +123,7 @@ Partial Class FormAMEOCINumAPAC
         '
         Me.ctxMenuAPAC.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AlterarStatusToolStripMenuItem, Me.CopiarToolStripMenuItem, Me.EditarOCIToolStripMenuItem, Me.ExportarEmPDFToolStripMenuItem, Me.ExcluirOCIToolStripMenuItem})
         Me.ctxMenuAPAC.Name = "ctxMenuAPAC"
-        Me.ctxMenuAPAC.Size = New System.Drawing.Size(226, 136)
+        Me.ctxMenuAPAC.Size = New System.Drawing.Size(226, 114)
         '
         'AlterarStatusToolStripMenuItem
         '
@@ -142,6 +142,12 @@ Partial Class FormAMEOCINumAPAC
         Me.EditarOCIToolStripMenuItem.Name = "EditarOCIToolStripMenuItem"
         Me.EditarOCIToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
         Me.EditarOCIToolStripMenuItem.Text = "Editar OCI"
+        '
+        'ExportarEmPDFToolStripMenuItem
+        '
+        Me.ExportarEmPDFToolStripMenuItem.Name = "ExportarEmPDFToolStripMenuItem"
+        Me.ExportarEmPDFToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
+        Me.ExportarEmPDFToolStripMenuItem.Text = "Exportar em PDF (individual)"
         '
         'ExcluirOCIToolStripMenuItem
         '
@@ -407,12 +413,6 @@ Partial Class FormAMEOCINumAPAC
         '
         Me.SaveFileDialog1.DefaultExt = "PDF"
         Me.SaveFileDialog1.Filter = "PDF (*.pdf)|*.pdf"
-        '
-        'ExportarEmPDFToolStripMenuItem
-        '
-        Me.ExportarEmPDFToolStripMenuItem.Name = "ExportarEmPDFToolStripMenuItem"
-        Me.ExportarEmPDFToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
-        Me.ExportarEmPDFToolStripMenuItem.Text = "Exportar em PDF (individual)"
         '
         'FormAMEOCINumAPAC
         '
