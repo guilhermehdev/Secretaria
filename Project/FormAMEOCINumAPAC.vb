@@ -554,7 +554,7 @@ Public Class FormAMEOCINumAPAC
                 comp = ""
             End If
 
-            loadNUMAPAC(dgvNumerosAPAC,,, False,, , , oci, "CONC",, "id DESC", comp, medico)
+            loadNUMAPAC(dgvNumerosAPAC,,, False,, dtpIni.Value, dtpFim.Value, oci, "CONC",, "id DESC", comp, medico)
             ToolStripStatusLabel1.Text = dgvNumerosAPAC.RowCount & " Registros"
         Catch ex As Exception
             MsgBox("Erro ao filtrar por médico: " & ex.Message)
