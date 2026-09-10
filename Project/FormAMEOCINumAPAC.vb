@@ -640,19 +640,17 @@ Public Class FormAMEOCINumAPAC
 
         If File.Exists(lotePdf) Then
 
-            If m.msgQuestion("Deseja abrir o arquivo PDF gerado?", "Abrir PDF") Then
+            If m.msgQuestion("PDF gerado com sucesso! Deseja abrir o arquivo gerado?", "Abrir PDF") Then
                 Process.Start(New ProcessStartInfo(lotePdf) With {.UseShellExecute = True})
             End If
 
             For Each arquivo In arquivos
 
-                    If File.Exists(arquivo) Then
-                        File.Delete(arquivo)
-                    End If
+                If File.Exists(arquivo) Then
+                    File.Delete(arquivo)
+                End If
 
-                Next
-
-            m.msgInfo("PDF gerado com sucesso em " & lotePdf)
+            Next
 
         End If
 
