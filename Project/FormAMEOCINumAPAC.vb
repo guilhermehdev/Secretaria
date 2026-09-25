@@ -9,180 +9,6 @@ Public Class FormAMEOCINumAPAC
     Dim m As New Main
     Dim iduser As Integer = FormAMEOCI.idUser
 
-    'Public Sub substituirNumAPAC(caminhoArquivo As String)
-    '    ' Dicionário de números errados → certos
-    '    Dim mapa As New Dictionary(Of String, String) From {
-    '        {"3525705636574", "3525706138724"},
-    '        {"3525705636585", "3525706138735"},
-    '        {"3525705636596", "3525706138746"},
-    '        {"3525705636607", "3525706138757"},
-    '        {"3525705636618", "3525706138768"},
-    '        {"3525705636629", "3525706138779"},
-    '        {"3525705636630", "3525706138780"},
-    '        {"3525705636640", "3525706138790"},
-    '        {"3525705636651", "3525706138801"},
-    '        {"3525705636662", "3525706138812"},
-    '        {"3525705636673", "3525706138823"},
-    '        {"3525705636684", "3525706138834"},
-    '        {"3525705636695", "3525706138845"},
-    '        {"3525705636706", "3525706138856"},
-    '        {"3525705636717", "3525706138867"},
-    '        {"3525705636728", "3525706138878"},
-    '        {"3525705636739", "3525706138889"},
-    '        {"3525705636740", "3525706138890"},
-    '        {"3525705636750", "3525706138900"},
-    '        {"3525705636761", "3525706138911"},
-    '        {"3525705636772", "3525706138922"},
-    '        {"3525705636783", "3525706138933"},
-    '        {"3525705636805", "3525706138944"},
-    '        {"3525705636816", "3525706138955"},
-    '        {"3525705636827", "3525706138966"},
-    '        {"3525705636838", "3525706138977"},
-    '        {"3525705636849", "3525706138988"},
-    '        {"3525705636850", "3525706138999"},
-    '        {"3525705636860", "3525706139000"},
-    '        {"3525705636871", "3525706139010"},
-    '        {"3525705636882", "3525706139021"},
-    '        {"3525705636893", "3525706139032"},
-    '        {"3525705636904", "3525706139043"},
-    '        {"3525705636915", "3525706139054"},
-    '        {"3525705636926", "3525706139065"},
-    '        {"3525705636937", "3525706139076"},
-    '        {"3525705636948", "3525706139087"},
-    '        {"3525705636959", "3525706139098"},
-    '        {"3525705636960", "3525706139109"},
-    '        {"3525705636970", "3525706139110"},
-    '        {"3525705636981", "3525706139120"},
-    '        {"3525705636992", "3525706139131"},
-    '        {"3525705637003", "3525706139142"},
-    '        {"3525705637014", "3525706139153"},
-    '        {"3525705637025", "3525706139164"},
-    '        {"3525705637036", "3525706139175"},
-    '        {"3525705637047", "3525706139186"},
-    '        {"3525705637058", "3525706139197"},
-    '        {"3525705637069", "3525706139208"},
-    '        {"3525705637070", "3525706139219"},
-    '        {"3525705637080", "3525706139220"},
-    '        {"3525705637091", "3525706139230"},
-    '        {"3525705637102", "3525706139241"}
-    '    }
-
-    '    ' --- 1. Lê o arquivo original em bytes (mantendo codificação ANSI) ---
-    '    Dim conteudoBytes As Byte() = File.ReadAllBytes(caminhoArquivo)
-    '    Dim conteudo As String = Encoding.Default.GetString(conteudoBytes)
-
-    '    ' --- 2. Substitui literalmente, sem regex ---
-    '    For Each par In mapa
-    '        conteudo = conteudo.Replace(par.Key, par.Value)
-    '    Next
-
-    '    ' --- 3. Força CRLF em todas as quebras ---
-    '    conteudo = conteudo.Replace(vbCrLf, vbLf) ' normaliza
-    '    conteudo = conteudo.Replace(vbCr, vbLf)
-    '    conteudo = conteudo.Replace(vbLf, vbCrLf)
-
-    '    ' --- 4. Divide por linhas e checa comprimento ---
-    '    Dim linhas = conteudo.Split({vbCrLf}, StringSplitOptions.None)
-    '    Dim linhasComErro As New List(Of String)
-    '    For i = 0 To linhas.Length - 1
-    '        If linhas(i).Trim().Length > 0 AndAlso linhas(i).Length <> 533 Then
-    '            linhasComErro.Add($"Linha {i + 1}: {linhas(i).Length} caracteres (esperado: 533)")
-    '        End If
-    '    Next
-
-    '    ' --- 5. Salva novamente em ANSI (sem mudar tamanho) ---
-    '    Dim novoCaminho As String = Path.Combine(
-    '    Path.GetDirectoryName(caminhoArquivo),
-    '    Path.GetFileNameWithoutExtension(caminhoArquivo) & "_corrigido" & Path.GetExtension(caminhoArquivo)
-    ')
-
-    '    File.WriteAllText(novoCaminho, conteudo, Encoding.Default)
-
-    '    ' --- 6. Relatório visual ---
-    '    If linhasComErro.Count > 0 Then
-    '        MsgBox("⚠️ Linhas desalinhadas detectadas:" & vbCrLf & String.Join(vbCrLf, linhasComErro))
-    '    Else
-    '        MsgBox($"✅ Arquivo corrigido com sucesso e validado: {novoCaminho}")
-    '    End If
-    'End Sub
-
-    'Public Sub loadNUMAPAC(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "", Optional dtlanc As Date = Nothing, Optional order As String = "id", Optional custom As String = "", Optional medico As String = "", Optional labelCount As Label = Nothing)
-
-    '    Try
-    '        Dim where As String = "WHERE 1=1 "
-
-    '        If Not String.IsNullOrEmpty(faixaIni) AndAlso Not String.IsNullOrEmpty(faixaFim) Then
-    '            where &= $" AND oci.num_apac BETWEEN '{faixaIni}' AND '{faixaFim}' "
-    '        End If
-    '        If available = True Then
-    '            where &= " AND oci.status = 'DISP' "
-    '        End If
-    '        If user <> Nothing Then
-    '            where &= $" AND oci.id_usuario ={user} "
-    '        End If
-    '        If dtIni <> Nothing AndAlso dtFim <> Nothing Then
-    '            where &= $" AND oci.data BETWEEN '{dtIni.ToString("yyyy-MM-dd")}' AND '{dtFim.ToString("yyyy-MM-dd")}' "
-    '        End If
-    '        If Not String.IsNullOrWhiteSpace(oci) Then
-    '            where &= $" AND oci.id_cod_principal ={oci} "
-    '        End If
-    '        If Not String.IsNullOrWhiteSpace(status) Then
-    '            where &= $" AND oci.status ='{status}' "
-    '        End If
-    '        If FormAMEOCI.dtpSearchData.CustomFormat <> "" Then
-    '            where &= $" AND DATE(oci.data_lanc) ='{m.mysqlDateFormat(dtlanc)}' "
-    '        End If
-    '        If Not String.IsNullOrWhiteSpace(medico) Then
-    '            where &= $" AND oci.id_medico ='{medico}' "
-    '        End If
-
-    '        Dim query = $"SELECT oci.id, oci.num_apac, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc AS dtnasc, oci.`data`, oci.compet, servidores.nome AS medico, oci.status, usuarios.nome AS responsavel 
-    '            FROM oci 
-    '           LEFT JOIN pacientes ON pacientes.id = oci.id_paciente 
-    '           LEFT JOIN servidores ON servidores.SUS = oci.id_medico
-    '           LEFT JOIN cod_oci_principal ON cod_oci_principal.id = oci.id_cod_principal 
-    '           LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} {custom} ORDER BY {order}"
-
-    '        ' MsgBox(query)
-
-    '        Dim data = FormAMEmain.getDataset(query)
-
-    '        If data.Rows.Count > 0 Then
-
-    '            datagridview.DataSource = data
-    '            datagridview.Tag = data.DefaultView
-
-    '            datagridview.Columns("id").Visible = False
-    '            datagridview.Columns("num_apac").HeaderText = "Número APAC"
-    '            datagridview.Columns("num_apac").Width = 100
-    '            datagridview.Columns("oci").HeaderText = "OCI"
-    '            datagridview.Columns("oci").Width = 220
-    '            datagridview.Columns("nome").HeaderText = "Paciente"
-    '            datagridview.Columns("nome").Width = 250
-    '            datagridview.Columns("dtnasc").HeaderText = "Nascimento"
-    '            datagridview.Columns("dtnasc").Width = 80
-    '            datagridview.Columns("data").HeaderText = "Data"
-    '            datagridview.Columns("data").Width = 70
-    '            datagridview.Columns("compet").HeaderText = "Comp"
-    '            datagridview.Columns("compet").Width = 80
-    '            datagridview.Columns("medico").HeaderText = "Médico"
-    '            datagridview.Columns("medico").Width = 200
-    '            datagridview.Columns("status").HeaderText = "Status"
-    '            datagridview.Columns("status").Width = 60
-    '            datagridview.Columns("responsavel").HeaderText = "Usuário"
-    '            datagridview.Columns("responsavel").Width = 150
-    '            labelCount.Text = $"{data.Rows.Count} registros"
-
-    '        Else
-    '            datagridview.DataSource = Nothing
-    '            labelCount.Text = "0 registros"
-    '        End If
-
-    '    Catch ex As Exception
-    '        'MsgBox("Erro ao carregar números APAC: " & ex.Message)
-    '    End Try
-    'End Sub
-
     Public Sub loadNUMAPAC(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "", Optional dtlanc As Date = Nothing, Optional order As String = "id", Optional custom As String = "", Optional medico As String = "", Optional labelCount As Label = Nothing)
 
         Try
@@ -226,7 +52,7 @@ Public Class FormAMEOCINumAPAC
            LEFT JOIN cod_oci_principal ON cod_oci_principal.id = oci.id_cod_principal 
            LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} {custom} ORDER BY {order}"
 
-            ' MsgBox(query)
+            Debug.Write(query)
 
             Dim data = FormAMEmain.getDataset(query)
 
@@ -419,7 +245,9 @@ Public Class FormAMEOCINumAPAC
 
                 For Each row As DataGridViewRow In dgvNumerosAPAC.SelectedRows
                     Dim id As Integer = CInt(row.Cells("id").Value)
-                    Dim sql As String = $"UPDATE oci SET status = '{novoStatus}' WHERE id = {id}"
+                    ' Ao mudar o status, o registro deixa de representar o lote
+                    ' exportado atual e deve voltar a ser considerado pendente.
+                    Dim sql As String = $"UPDATE oci SET status = '{novoStatus}', exportado = 0 WHERE id = {id}"
                     FormAMEmain.doQuery(sql)
                     row.Cells("status").Value = novoStatus
                 Next
@@ -540,6 +368,9 @@ Public Class FormAMEOCINumAPAC
             Dim oci As String = cbOCI.SelectedValue
             Dim comp As String = ""
             Dim medico As String = If(cbMedico.SelectedValue Is Nothing OrElse cbMedico.SelectedValue Is DBNull.Value, "", cbMedico.SelectedValue.ToString)
+            Dim dtini
+            Dim dtfim
+
             chkDisponiveis.Checked = False
 
             If oci > 0 Then
@@ -550,11 +381,15 @@ Public Class FormAMEOCINumAPAC
 
             If cbSearchComp.SelectedValue > 0 Then
                 comp = $"AND compet='{cbSearchComp.Text}'"
+                dtini = Nothing
+                dtfim = Nothing
             Else
                 comp = ""
+                dtini = dtpIni.Value
+                dtfim = dtpFim.Value
             End If
 
-            loadNUMAPAC(dgvNumerosAPAC,,, False,, dtpIni.Value, dtpFim.Value, oci, "CONC",, "id DESC", comp, medico)
+            loadNUMAPAC(dgvNumerosAPAC,,, False,, dtini, dtfim, oci, "CONC",, "id DESC", comp, medico)
             ToolStripStatusLabel1.Text = dgvNumerosAPAC.RowCount & " Registros"
         Catch ex As Exception
             MsgBox("Erro ao filtrar por médico: " & ex.Message)
@@ -577,84 +412,147 @@ Public Class FormAMEOCINumAPAC
             ToolStripStatusLabel1.Text = $"{dgvNumerosAPAC.Rows.Count} registros."
         End If
     End Sub
-    Private Sub btImprimirOCI_Click(sender As Object, e As EventArgs, Optional modoUnico As Boolean = False) Handles btImprimirOCI.Click
-        Dim oci As New OCI
-        Dim pastaContainer As String
-        Dim dir As String
-        Dim lotePdf As String
-        Dim arquivos As New List(Of String)
-        Dim dgData = CDate(dgvNumerosAPAC.SelectedRows(0).Cells(5).Value).ToString("dd-MM-yyyy")
-        Dim nameOnfile As String
+    Private Sub btImprimirOCI_Click(sender As Object, e As EventArgs) Handles btImprimirOCI.Click
+        ExportarParaAssinatura()
+    End Sub
 
+    Private Sub ExportarParaAssinatura()
         If dgvNumerosAPAC.RowCount = 0 Then
-            MsgBox("Nenhum registro para imprimir.")
+            MsgBox("Nenhum registro para exportar.")
             Exit Sub
         End If
 
-        SaveFileDialog1.Title = "Salvar APAC"
-        If modoUnico Then
-            nameOnfile = dgvNumerosAPAC.SelectedRows(0).Cells(3).Value.ToString()
-        Else
-            nameOnfile = cbMedico.Text
-        End If
+        Dim oci As New OCI
+        Dim quantidade As Integer = 0
+        Dim pastaServidorBase As String = $"\\{My.Settings.server}\Gerenciador\AME\Impressos\OCI\Gerados"
 
-        SaveFileDialog1.FileName = nameOnfile
+        Try
+            For Each row As DataGridViewRow In dgvNumerosAPAC.Rows
+                If row.IsNewRow Then Continue For
 
-        If SaveFileDialog1.ShowDialog() = DialogResult.OK Then
-            pastaContainer = Path.GetDirectoryName(SaveFileDialog1.FileName)
-            dir = Path.Combine(pastaContainer, cbMedico.Text, dgData)
+                Dim medico As String = cbMedico.Text
+                Dim dataOCI As Date = CDate(row.Cells(5).Value)
+                Dim pastaServidor As String = Path.Combine(
+                    pastaServidorBase,
+                    NomeSeguroParaPasta(medico),
+                    dataOCI.ToString("dd-MM-yyyy")
+                )
 
-        Else
+                Directory.CreateDirectory(pastaServidor)
+
+                Dim nomeArquivo As String = $"{row.Cells(0).Value}-{row.Cells(3).Value}.pdf"
+                Dim pdfServidor As String = Path.Combine(pastaServidor, nomeArquivo)
+
+                ' Gera diretamente no servidor. Não abre diálogo e não cria
+                ' uma cópia local para o fluxo de assinatura.
+                oci.printOCI(CInt(row.Cells(0).Value), pdfServidor)
+                quantidade += 1
+            Next
+
+            m.msgAlert($"{quantidade} PDF(s) enviado(s) para assinatura digital.")
+        Catch ex As Exception
+            MsgBox("Não foi possível exportar os PDFs para assinatura:" & vbCrLf & ex.Message)
+        End Try
+    End Sub
+
+    Private Sub btImprimirDia_Click(sender As Object, e As EventArgs) Handles btImprimirDia.Click
+        ExportarParaConferencia()
+    End Sub
+
+    Private Sub ExportarParaConferencia()
+        If dgvNumerosAPAC.RowCount = 0 Then
+            MsgBox("Nenhum registro para exportar.")
             Exit Sub
         End If
 
-        If modoUnico Then
+        SaveFileDialog1.Title = "Salvar PDF"
+        SaveFileDialog1.FileName = $"{NomeSeguroParaPasta(cbMedico.Text)}_conferencia.pdf"
 
-            Dim pac = dgvNumerosAPAC.SelectedRows(0).Cells(3).Value.ToString()
-            Dim pdf As String = $"{pastaContainer}\{dgvNumerosAPAC.SelectedRows(0).Cells(1).Value}-{dgvNumerosAPAC.SelectedRows(0).Cells(3).Value}.pdf"
+        If SaveFileDialog1.ShowDialog() <> DialogResult.OK Then
+            Exit Sub
+        End If
 
-            oci.printOCI($"{dgvNumerosAPAC.SelectedRows(0).Cells(0).Value}", pdf)
-            arquivos.Add(pdf)
+        Dim pdfDestino As String = SaveFileDialog1.FileName
+        Dim pastaTemporaria As String = Path.Combine(
+            Path.GetTempPath(),
+            "OCI_Conferencia_" & Guid.NewGuid().ToString("N")
+        )
+        Dim arquivosTemporarios As New List(Of String)
+        Dim oci As New OCI
+        Dim quantidade As Integer = 0
 
-            lotePdf = $"{pastaContainer & "\" & pac & "_" & dgData}.pdf"
-        Else
-
-            If Not Directory.Exists(dir) Then
-                Directory.CreateDirectory(dir)
-            End If
+        Try
+            Directory.CreateDirectory(pastaTemporaria)
 
             For Each row As DataGridViewRow In dgvNumerosAPAC.Rows
                 If row.IsNewRow Then Continue For
-                Dim pdf As String = $"{dir}\{row.Cells(0).Value}-{row.Cells(3).Value}.pdf"
-                oci.printOCI(row.Cells(0).Value, pdf)
-                arquivos.Add(pdf)
+
+                Dim nomeArquivo As String = $"{row.Cells(0).Value}-{row.Cells(3).Value}.pdf"
+                Dim pdfLocal As String = Path.Combine(pastaTemporaria, nomeArquivo)
+                oci.printOCI(CInt(row.Cells(0).Value), pdfLocal)
+                arquivosTemporarios.Add(pdfLocal)
+                quantidade += 1
             Next
 
-            lotePdf = $"{dir}\{cbMedico.Text & "_" & dgData}.pdf"
+            If arquivosTemporarios.Count = 0 OrElse Not oci.UnirPDFs(arquivosTemporarios, pdfDestino) Then
+                MsgBox("Não foi possível unir os PDFs para conferência.")
+                Exit Sub
+            End If
 
-        End If
+            If m.msgQuestion($"Deseja abrir o arquivo?", "Conferência") Then
+                Process.Start(New ProcessStartInfo(pdfDestino) With {.UseShellExecute = True})
+            End If
+        Catch ex As Exception
+            MsgBox("Não foi possível exportar os PDFs:" & vbCrLf & ex.Message)
+        Finally
+            If Directory.Exists(pastaTemporaria) Then
+                Try
+                    Directory.Delete(pastaTemporaria, True)
+                Catch
+                End Try
+            End If
+        End Try
+    End Sub
 
-        If Not oci.UnirPDFs(arquivos, lotePdf) Then
+    Private Sub CopiarPdfOCIParaServidor(pdfLocal As String, medico As String, dataOCI As Date)
+        If Not File.Exists(pdfLocal) Then
             Exit Sub
         End If
 
-        If File.Exists(lotePdf) Then
+        Try
+            Dim pastaServidorBase As String = $"\\{My.Settings.server}\Gerenciador\AME\Impressos\OCI\Gerados"
+            Dim nomeMedico As String = NomeSeguroParaPasta(medico)
+            Dim pastaServidor As String = Path.Combine(
+                pastaServidorBase,
+                nomeMedico,
+                dataOCI.ToString("dd-MM-yyyy")
+            )
 
-            For Each arquivo In arquivos
-
-                If File.Exists(arquivo) Then
-                    File.Delete(arquivo)
-                End If
-
-            Next
-
-            If m.msgQuestion("PDF gerado com sucesso! Deseja abrir o arquivo gerado?", "Abrir PDF") Then
-                Process.Start(New ProcessStartInfo(lotePdf) With {.UseShellExecute = True})
+            If Not Directory.Exists(pastaServidor) Then
+                Directory.CreateDirectory(pastaServidor)
             End If
 
+            Dim pdfServidor As String = Path.Combine(pastaServidor, Path.GetFileName(pdfLocal))
+            File.Copy(pdfLocal, pdfServidor, True)
+        Catch ex As Exception
+            Debug.Write("PDF local gerado, mas não foi possível copiar para o servidor:" & vbCrLf & ex.Message)
+        End Try
+    End Sub
+
+    Private Function NomeSeguroParaPasta(nome As String) As String
+        Dim resultado As String = If(nome, String.Empty).Trim()
+
+        For Each caractere As Char In Path.GetInvalidFileNameChars()
+            resultado = resultado.Replace(caractere, "_"c)
+        Next
+
+        If String.IsNullOrWhiteSpace(resultado) Then
+            resultado = "Sem medico"
         End If
 
-    End Sub
+        Return resultado
+    End Function
+
     Private Sub EditarOCIToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditarOCIToolStripMenuItem.Click
         FormAMEOCI.editOCI(dgvNumerosAPAC.SelectedRows(0).Cells(0).Value)
     End Sub
@@ -667,22 +565,30 @@ Public Class FormAMEOCINumAPAC
         End If
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btGerarLoteAPAC.Click
-        If cbSearchComp.SelectedIndex > 0 Then
-
-            Dim data As String = cbSearchComp.Text
-            Dim ano As String = data.Substring(4)
-            Dim mes As String = m.monthNumber(data.Substring(0, 3))
-
-            FormAMEOCI.RegenerarLoteCompetencia(ano & mes)
-        Else
-            m.msgAlert("Selecione uma competência")
+    Private Sub ExportarEmPDFToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExportarEmPDFToolStripMenuItem.Click
+        If dgvNumerosAPAC.SelectedRows.Count = 0 Then
+            MsgBox("Selecione uma OCI para exportar.")
+            Exit Sub
         End If
 
-    End Sub
+        SaveFileDialog1.Title = "Salvar OCI para conferência"
+        SaveFileDialog1.FileName = $"{dgvNumerosAPAC.SelectedRows(0).Cells(1).Value}-{dgvNumerosAPAC.SelectedRows(0).Cells(3).Value}.pdf"
 
-    Private Sub ExportarEmPDFToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExportarEmPDFToolStripMenuItem.Click
-        btImprimirOCI_Click(sender, e, True)
+        If SaveFileDialog1.ShowDialog() <> DialogResult.OK Then
+            Exit Sub
+        End If
+
+        Try
+            Dim oci As New OCI
+            oci.printOCI(
+                CInt(dgvNumerosAPAC.SelectedRows(0).Cells(0).Value),
+                SaveFileDialog1.FileName
+            )
+
+            m.msgAlert("PDF individual salvo para conferência no computador.")
+        Catch ex As Exception
+            MsgBox("Não foi possível exportar o PDF individual:" & vbCrLf & ex.Message)
+        End Try
     End Sub
 
 End Class

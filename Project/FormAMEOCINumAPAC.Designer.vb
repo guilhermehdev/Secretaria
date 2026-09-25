@@ -60,7 +60,7 @@ Partial Class FormAMEOCINumAPAC
         Me.statusLabelRegistros = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.btImprimirOCI = New System.Windows.Forms.Button()
-        Me.btGerarLoteAPAC = New System.Windows.Forms.Button()
+        Me.btImprimirDia = New System.Windows.Forms.Button()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         CType(Me.dgvNumerosAPAC, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ctxMenuAPAC.SuspendLayout()
@@ -364,7 +364,7 @@ Partial Class FormAMEOCINumAPAC
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.statusLabelRegistros, Me.ToolStripStatusLabel1})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 531)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 549)
         Me.StatusStrip1.Name = "StatusStrip1"
         Me.StatusStrip1.Size = New System.Drawing.Size(864, 22)
         Me.StatusStrip1.TabIndex = 37
@@ -388,26 +388,26 @@ Partial Class FormAMEOCINumAPAC
         Me.btImprimirOCI.FlatAppearance.BorderSize = 0
         Me.btImprimirOCI.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btImprimirOCI.ForeColor = System.Drawing.Color.White
-        Me.btImprimirOCI.Location = New System.Drawing.Point(753, 504)
+        Me.btImprimirOCI.Location = New System.Drawing.Point(753, 503)
         Me.btImprimirOCI.Name = "btImprimirOCI"
-        Me.btImprimirOCI.Size = New System.Drawing.Size(100, 23)
+        Me.btImprimirOCI.Size = New System.Drawing.Size(100, 43)
         Me.btImprimirOCI.TabIndex = 59
-        Me.btImprimirOCI.Text = "Exportar em PDF"
+        Me.btImprimirOCI.Text = "Enviar para assinatura digital"
         Me.btImprimirOCI.UseVisualStyleBackColor = False
         '
-        'btGerarLoteAPAC
+        'btImprimirDia
         '
-        Me.btGerarLoteAPAC.BackColor = System.Drawing.Color.SteelBlue
-        Me.btGerarLoteAPAC.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btGerarLoteAPAC.FlatAppearance.BorderSize = 0
-        Me.btGerarLoteAPAC.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btGerarLoteAPAC.ForeColor = System.Drawing.Color.White
-        Me.btGerarLoteAPAC.Location = New System.Drawing.Point(599, 504)
-        Me.btGerarLoteAPAC.Name = "btGerarLoteAPAC"
-        Me.btGerarLoteAPAC.Size = New System.Drawing.Size(148, 23)
-        Me.btGerarLoteAPAC.TabIndex = 61
-        Me.btGerarLoteAPAC.Text = "Gerar lote da competência"
-        Me.btGerarLoteAPAC.UseVisualStyleBackColor = False
+        Me.btImprimirDia.BackColor = System.Drawing.Color.DarkOrange
+        Me.btImprimirDia.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btImprimirDia.FlatAppearance.BorderSize = 0
+        Me.btImprimirDia.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btImprimirDia.ForeColor = System.Drawing.Color.White
+        Me.btImprimirDia.Location = New System.Drawing.Point(652, 503)
+        Me.btImprimirDia.Name = "btImprimirDia"
+        Me.btImprimirDia.Size = New System.Drawing.Size(100, 43)
+        Me.btImprimirDia.TabIndex = 62
+        Me.btImprimirDia.Text = "Exportar para conferência"
+        Me.btImprimirDia.UseVisualStyleBackColor = False
         '
         'SaveFileDialog1
         '
@@ -418,8 +418,8 @@ Partial Class FormAMEOCINumAPAC
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(864, 553)
-        Me.Controls.Add(Me.btGerarLoteAPAC)
+        Me.ClientSize = New System.Drawing.Size(864, 571)
+        Me.Controls.Add(Me.btImprimirDia)
         Me.Controls.Add(Me.btImprimirOCI)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.GroupBox1)
@@ -472,7 +472,7 @@ Partial Class FormAMEOCINumAPAC
     Friend WithEvents EditarOCIToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripStatusLabel1 As ToolStripStatusLabel
     Friend WithEvents chkDisponiveis As CheckBox
-    Friend WithEvents btGerarLoteAPAC As Button
+    Friend WithEvents btImprimirDia As Button
     Friend WithEvents SaveFileDialog1 As SaveFileDialog
     Friend WithEvents ExportarEmPDFToolStripMenuItem As ToolStripMenuItem
 End Class

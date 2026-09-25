@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.13.35931.197
+# Visual Studio Version 18
+VisualStudioVersion = 18.9.12120.119 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Projeto", "Project\Projeto.vbproj", "{6D62ADBE-11C7-46F8-A10A-831E5CA4E394}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GeradorOCI.Servico", "GeradorOCI.Servico\GeradorOCI.Servico.vbproj", "{7A7F8D99-B9B0-4ED6-A0A5-E99328536A37}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GeradorOCI.Core", "GeradorOCI.Core\GeradorOCI.Core.vbproj", "{E4653154-D90B-4415-8C49-9DB4473AC2AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,22 @@ Global
 		{6D62ADBE-11C7-46F8-A10A-831E5CA4E394}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6D62ADBE-11C7-46F8-A10A-831E5CA4E394}.Release|x86.ActiveCfg = Release|x86
 		{6D62ADBE-11C7-46F8-A10A-831E5CA4E394}.Release|x86.Build.0 = Release|x86
+		{7A7F8D99-B9B0-4ED6-A0A5-E99328536A37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A7F8D99-B9B0-4ED6-A0A5-E99328536A37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A7F8D99-B9B0-4ED6-A0A5-E99328536A37}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7A7F8D99-B9B0-4ED6-A0A5-E99328536A37}.Debug|x86.Build.0 = Debug|Any CPU
+		{7A7F8D99-B9B0-4ED6-A0A5-E99328536A37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A7F8D99-B9B0-4ED6-A0A5-E99328536A37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A7F8D99-B9B0-4ED6-A0A5-E99328536A37}.Release|x86.ActiveCfg = Release|Any CPU
+		{7A7F8D99-B9B0-4ED6-A0A5-E99328536A37}.Release|x86.Build.0 = Release|Any CPU
+		{E4653154-D90B-4415-8C49-9DB4473AC2AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4653154-D90B-4415-8C49-9DB4473AC2AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4653154-D90B-4415-8C49-9DB4473AC2AF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E4653154-D90B-4415-8C49-9DB4473AC2AF}.Debug|x86.Build.0 = Debug|Any CPU
+		{E4653154-D90B-4415-8C49-9DB4473AC2AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4653154-D90B-4415-8C49-9DB4473AC2AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4653154-D90B-4415-8C49-9DB4473AC2AF}.Release|x86.ActiveCfg = Release|Any CPU
+		{E4653154-D90B-4415-8C49-9DB4473AC2AF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

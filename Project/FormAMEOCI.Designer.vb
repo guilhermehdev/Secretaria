@@ -170,6 +170,10 @@ Partial Class FormAMEOCI
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.btGerarLoteAPAC = New System.Windows.Forms.Button()
+        Me.Label28 = New System.Windows.Forms.Label()
+        Me.lbStatusCads = New System.Windows.Forms.Label()
+        Me.cbSearchCompHistorico = New System.Windows.Forms.ComboBox()
         Me.ckbSearchTodos = New System.Windows.Forms.CheckBox()
         Me.dtpSearchData = New System.Windows.Forms.DateTimePicker()
         Me.Label29 = New System.Windows.Forms.Label()
@@ -178,7 +182,6 @@ Partial Class FormAMEOCI
         Me.EditarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ExcluirRegistroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GerarArquivoNovamenteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.lbStatusCads = New System.Windows.Forms.Label()
         Me.dgQueueItens = New System.Windows.Forms.DataGridView()
         Me.menuDGQueue = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ExcluirToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -545,6 +548,7 @@ Partial Class FormAMEOCI
         Me.btCADSUS.TabIndex = 19
         Me.btCADSUS.Text = "Buscar CADSUS"
         Me.btCADSUS.UseVisualStyleBackColor = False
+        Me.btCADSUS.Visible = False
         '
         'txtNomePaciente
         '
@@ -592,7 +596,7 @@ Partial Class FormAMEOCI
         Me.btGCASPP.FlatAppearance.BorderSize = 0
         Me.btGCASPP.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btGCASPP.ForeColor = System.Drawing.Color.White
-        Me.btGCASPP.Location = New System.Drawing.Point(320, 303)
+        Me.btGCASPP.Location = New System.Drawing.Point(427, 11)
         Me.btGCASPP.Name = "btGCASPP"
         Me.btGCASPP.Size = New System.Drawing.Size(106, 23)
         Me.btGCASPP.TabIndex = 58
@@ -1169,13 +1173,17 @@ Partial Class FormAMEOCI
         '
         'btAddAPAC
         '
+        Me.btAddAPAC.BackColor = System.Drawing.Color.Firebrick
         Me.btAddAPAC.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btAddAPAC.Location = New System.Drawing.Point(434, 458)
+        Me.btAddAPAC.FlatAppearance.BorderSize = 0
+        Me.btAddAPAC.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btAddAPAC.ForeColor = System.Drawing.Color.White
+        Me.btAddAPAC.Location = New System.Drawing.Point(389, 438)
         Me.btAddAPAC.Name = "btAddAPAC"
-        Me.btAddAPAC.Size = New System.Drawing.Size(107, 23)
+        Me.btAddAPAC.Size = New System.Drawing.Size(149, 41)
         Me.btAddAPAC.TabIndex = 51
-        Me.btAddAPAC.Text = "Exportar registros"
-        Me.btAddAPAC.UseVisualStyleBackColor = True
+        Me.btAddAPAC.Text = "Exportar registros para APAC magnético"
+        Me.btAddAPAC.UseVisualStyleBackColor = False
         '
         'Label47
         '
@@ -1601,7 +1609,7 @@ Partial Class FormAMEOCI
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.TabPage3)
-        Me.TabControl1.Location = New System.Drawing.Point(457, 43)
+        Me.TabControl1.Location = New System.Drawing.Point(457, 35)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(558, 511)
@@ -1636,8 +1644,6 @@ Partial Class FormAMEOCI
         '
         Me.TabPage3.BackColor = System.Drawing.SystemColors.ButtonFace
         Me.TabPage3.Controls.Add(Me.GroupBox5)
-        Me.TabPage3.Controls.Add(Me.lbStatusCads)
-        Me.TabPage3.Controls.Add(Me.btAddAPAC)
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
         Me.TabPage3.Name = "TabPage3"
         Me.TabPage3.Size = New System.Drawing.Size(550, 485)
@@ -1646,16 +1652,61 @@ Partial Class FormAMEOCI
         '
         'GroupBox5
         '
+        Me.GroupBox5.Controls.Add(Me.btGerarLoteAPAC)
+        Me.GroupBox5.Controls.Add(Me.Label28)
+        Me.GroupBox5.Controls.Add(Me.lbStatusCads)
+        Me.GroupBox5.Controls.Add(Me.cbSearchCompHistorico)
+        Me.GroupBox5.Controls.Add(Me.btAddAPAC)
         Me.GroupBox5.Controls.Add(Me.ckbSearchTodos)
         Me.GroupBox5.Controls.Add(Me.dtpSearchData)
         Me.GroupBox5.Controls.Add(Me.Label29)
         Me.GroupBox5.Controls.Add(Me.dgOCIcadastradas)
         Me.GroupBox5.Location = New System.Drawing.Point(3, 3)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(544, 452)
+        Me.GroupBox5.Size = New System.Drawing.Size(544, 490)
         Me.GroupBox5.TabIndex = 55
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "OCI cadastradas"
+        '
+        'btGerarLoteAPAC
+        '
+        Me.btGerarLoteAPAC.BackColor = System.Drawing.Color.SteelBlue
+        Me.btGerarLoteAPAC.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btGerarLoteAPAC.FlatAppearance.BorderSize = 0
+        Me.btGerarLoteAPAC.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btGerarLoteAPAC.ForeColor = System.Drawing.Color.White
+        Me.btGerarLoteAPAC.Location = New System.Drawing.Point(389, 8)
+        Me.btGerarLoteAPAC.Name = "btGerarLoteAPAC"
+        Me.btGerarLoteAPAC.Size = New System.Drawing.Size(149, 41)
+        Me.btGerarLoteAPAC.TabIndex = 82
+        Me.btGerarLoteAPAC.Text = "Gerar lote da competência selecionada" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
+        Me.btGerarLoteAPAC.UseVisualStyleBackColor = False
+        '
+        'Label28
+        '
+        Me.Label28.AutoSize = True
+        Me.Label28.Location = New System.Drawing.Point(210, 30)
+        Me.Label28.Name = "Label28"
+        Me.Label28.Size = New System.Drawing.Size(69, 13)
+        Me.Label28.TabIndex = 81
+        Me.Label28.Text = "Competência"
+        '
+        'lbStatusCads
+        '
+        Me.lbStatusCads.AutoSize = True
+        Me.lbStatusCads.Location = New System.Drawing.Point(4, 466)
+        Me.lbStatusCads.Name = "lbStatusCads"
+        Me.lbStatusCads.Size = New System.Drawing.Size(55, 13)
+        Me.lbStatusCads.TabIndex = 56
+        Me.lbStatusCads.Text = "0 registros"
+        '
+        'cbSearchCompHistorico
+        '
+        Me.cbSearchCompHistorico.FormattingEnabled = True
+        Me.cbSearchCompHistorico.Location = New System.Drawing.Point(285, 28)
+        Me.cbSearchCompHistorico.Name = "cbSearchCompHistorico"
+        Me.cbSearchCompHistorico.Size = New System.Drawing.Size(98, 21)
+        Me.cbSearchCompHistorico.TabIndex = 80
         '
         'ckbSearchTodos
         '
@@ -1733,7 +1784,7 @@ Partial Class FormAMEOCI
         Me.dgOCIcadastradas.RowHeadersWidth = 4
         Me.dgOCIcadastradas.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgOCIcadastradas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgOCIcadastradas.Size = New System.Drawing.Size(532, 393)
+        Me.dgOCIcadastradas.Size = New System.Drawing.Size(532, 379)
         Me.dgOCIcadastradas.TabIndex = 54
         Me.dgOCIcadastradas.TabStop = False
         '
@@ -1760,15 +1811,6 @@ Partial Class FormAMEOCI
         Me.GerarArquivoNovamenteToolStripMenuItem.Name = "GerarArquivoNovamenteToolStripMenuItem"
         Me.GerarArquivoNovamenteToolStripMenuItem.Size = New System.Drawing.Size(208, 22)
         Me.GerarArquivoNovamenteToolStripMenuItem.Text = "Gerar arquivo novamente"
-        '
-        'lbStatusCads
-        '
-        Me.lbStatusCads.AutoSize = True
-        Me.lbStatusCads.Location = New System.Drawing.Point(9, 463)
-        Me.lbStatusCads.Name = "lbStatusCads"
-        Me.lbStatusCads.Size = New System.Drawing.Size(55, 13)
-        Me.lbStatusCads.TabIndex = 56
-        Me.lbStatusCads.Text = "0 registros"
         '
         'dgQueueItens
         '
@@ -1954,7 +1996,6 @@ Partial Class FormAMEOCI
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage3.ResumeLayout(False)
-        Me.TabPage3.PerformLayout()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
         CType(Me.dgOCIcadastradas, System.ComponentModel.ISupportInitialize).EndInit()
@@ -2112,4 +2153,7 @@ Partial Class FormAMEOCI
     Friend WithEvents ToolTipSUS As ToolTip
     Friend WithEvents LogsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents LoteToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents Label28 As Label
+    Friend WithEvents cbSearchCompHistorico As ComboBox
+    Friend WithEvents btGerarLoteAPAC As Button
 End Class

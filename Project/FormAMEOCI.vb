@@ -1,5 +1,6 @@
 ﻿Imports System.Globalization
 Imports System.IO
+Imports System.Runtime.InteropServices.ComTypes
 Imports System.Text
 Imports ClosedXML.Excel
 
@@ -150,6 +151,15 @@ Public Class FormAMEOCI
             Return False
         End If
 
+        Dim nivelExecutante As Integer = ObterNivelOCI(Convert.ToString(txtCNSMedicoExecutante.SelectedValue))
+        Dim nivelAutorizador As Integer = ObterNivelOCI(Convert.ToString(txtNomeAutorizador.SelectedValue))
+        Dim autorizadorValido As Boolean = (nivelExecutante = 0 AndAlso (nivelAutorizador = 1 OrElse nivelAutorizador = 2)) OrElse
+                                           (nivelExecutante = 1 AndAlso nivelAutorizador = 2)
+        If Not autorizadorValido Then
+            FalharValidacao(mensagemErro, silencioso, "Selecione um autorizador permitido para o nível do executante (nível 1 ou 2 para executante 0; nível 2 para executante 1).", txtNomeAutorizador, 1)
+            Return False
+        End If
+
         Dim idPac As Object = IDpacienteSelecionado
         Dim idEnd As Integer = 0
         Dim telfixo As String = ""
@@ -229,7 +239,7 @@ Public Class FormAMEOCI
                 Dim situacaoRuaVal As Integer = If(chkSituacaoRua.Checked, 1, 0)
                 Dim semCpfVal As Integer = If(chkSemCpf.Checked, 1, 0)
 
-                Dim query = $"UPDATE oci SET compet='{competencia(My.Settings.OCIcompetencia)}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', id_paciente={idPac}, id_medico='{txtCNSMedicoExecutante.SelectedValue}',  id_autorizador='{txtNomeAutorizador.SelectedValue}',  id_cod_principal={getProcedID(txtProcedimentoPrincipal.SelectedValue)}, cid_principal='{txtCidPrincipal.SelectedValue}', cid_sec={cidSec}, situacao_rua={situacaoRuaVal}, motivo_saida='{txtMotivoSaida.SelectedValue}', sem_cpf={semCpfVal}, status='CONC', id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
+                Dim query = $"UPDATE oci SET compet='{competencia(My.Settings.OCIcompetencia)}', data='{m.mysqlDateFormat(dtValidadeIni.Value)}', data_lanc=CURRENT_TIMESTAMP, id_paciente={idPac}, id_medico='{txtCNSMedicoExecutante.SelectedValue}',  id_autorizador='{txtNomeAutorizador.SelectedValue}',  id_cod_principal={getProcedID(txtProcedimentoPrincipal.SelectedValue)}, cid_principal='{txtCidPrincipal.SelectedValue}', cid_sec={cidSec}, situacao_rua={situacaoRuaVal}, motivo_saida='{txtMotivoSaida.SelectedValue}', sem_cpf={semCpfVal}, status='CONC', exportado=0, id_usuario={idUser} WHERE num_apac='{txtNumApac.Text}'"
 
 
                 If FormAMEmain.doQuery(query) Then
@@ -397,15 +407,21 @@ Public Class FormAMEOCI
     ''' "mensagemErro" (ByRef) e retornar False/True - essencial pra rodar em lote sem
     ''' travar esperando clique em cada uma de possivelmente centenas de APACs.
     ''' </summary>
-    Public Function addAPAC(Optional dados As ApacRegistro = Nothing, Optional silencioso As Boolean = False, Optional ByRef mensagemErro As String = "") As Boolean
+    Public Function addAPAC(Optional dados As ApacRegistro = Nothing, Optional silencioso As Boolean = False, Optional ByRef mensagemErro As String = "", Optional competenciaArquivo As String = Nothing, Optional persistirNoBanco As Boolean = True) As Boolean
         Try
             If dados IsNot Nothing Then
                 PreencherTelaComDados(dados)
             End If
 
             ' ==================== VALIDAÇÕES ====================
-            If CDate(dtValidadeIni.Value).Month <> My.Settings.OCIcompetencia.Substring(4) Then
-                FalharValidacao(mensagemErro, silencioso, "Data inicial fora da competência atual.", dtValidadeIni, 0)
+            Dim competencia As String = If(String.IsNullOrWhiteSpace(competenciaArquivo), My.Settings.OCIcompetencia, competenciaArquivo)
+            If competencia.Length <> 6 OrElse Not IsNumeric(competencia) OrElse Convert.ToInt32(competencia.Substring(4, 2)) < 1 OrElse Convert.ToInt32(competencia.Substring(4, 2)) > 12 Then
+                FalharValidacao(mensagemErro, silencioso, "Competência inválida. Use o formato AAAAMM.", Nothing, 0)
+                Return False
+            End If
+
+            If dtValidadeIni.Value.ToString("yyyyMM", CultureInfo.InvariantCulture) <> competencia Then
+                FalharValidacao(mensagemErro, silencioso, "Data inicial fora da competência selecionada.", dtValidadeIni, 0)
                 Return False
             End If
 
@@ -439,8 +455,8 @@ Public Class FormAMEOCI
                 Return False
             End If
 
-            If txtProcedimentoPrincipal.SelectedValue = "0902010026" AndAlso CInt(m.AgeInMonths(m.mysqlDateFormat(dtNascimento.Text), m.mysqlDateFormat(dtValidadeIni.Value))) < 144 Then
-                FalharValidacao(mensagemErro, silencioso, "Paciente com idade inferior a 12 anos não permitido para procedimento 0902010026.", Nothing, 0)
+            If txtProcedimentoPrincipal.SelectedValue = "0902010026" AndAlso CInt(m.AgeInMonths(m.mysqlDateFormat(dtNascimento.Text), m.mysqlDateFormat(dtValidadeIni.Value))) < 216 Then
+                FalharValidacao(mensagemErro, silencioso, "Paciente com idade inferior a 18 anos não permitido para procedimento 0902010026.", Nothing, 0)
                 Return False
             End If
 
@@ -489,19 +505,15 @@ Public Class FormAMEOCI
             End If
 
             ' ==================== CONFIGURAÇÕES ====================
-            Dim competencia As String = My.Settings.OCIcompetencia
-            Dim caminhoArquivo As String = Path.Combine(Application.StartupPath & "\APAC\EXPORTADOS", "AP" & competencia & chkMonthEXT())
+            Dim caminhoArquivo As String = Path.Combine(Application.StartupPath & "\APAC\EXPORTADOS", "AP" & competencia & chkMonthEXT(competencia))
             If Not Directory.Exists(Application.StartupPath & "\APAC\EXPORTADOS") Then
                 Directory.CreateDirectory(Application.StartupPath & "\APAC\EXPORTADOS")
             End If
 
-            ' ==================== GRAVA NO BANCO PRIMEIRO ====================
-            ' IMPORTANTE: só gravamos no arquivo .JUL DEPOIS que saveAPAC() confirmar
-            ' que passou em todas as validações (CNS, procedimento principal, médicos
-            ' repetidos etc.). Gravar o arquivo antes disso deixava blocos de registros
-            ' (14/06/13) órfãos no .JUL sempre que saveAPAC() falhava - e como a tela
-            ' e a grid de procedimentos não eram limpas nesse caso, o próximo paciente
-            ' herdava/duplicava os procedimentos do atendimento anterior.
+            ' ==================== VALIDAÇÃO/PERSISTÊNCIA ====================
+            ' Na inclusão normal, só escreve no arquivo após saveAPAC() concluir as
+            ' validações e persistir. Na regeneração de lote, persistirNoBanco=False:
+            ' os dados já existem e não devem ser alterados durante a reconstrução.
             If Not updateMode Then
                 If ExisteLancamentoDuplicado(competencia, txtNumApac.Text, txtProcedimentoPrincipal.SelectedValue, dtValidadeIni.Value) Then
                     FalharValidacao(mensagemErro, silencioso, $"Já existe uma APAC {txtNumApac.Text.Trim()} gravada com o mesmo procedimento principal e a mesma data inicial. Confira se não é duplicidade antes de gravar de novo.", txtNumApac, 0)
@@ -509,8 +521,10 @@ Public Class FormAMEOCI
                 End If
             End If
 
-            If Not saveAPAC(silencioso, mensagemErro) Then
-                Return False
+            If persistirNoBanco Then
+                If Not saveAPAC(silencioso, mensagemErro) Then
+                    Return False
+                End If
             End If
 
             If updateMode Then
@@ -651,8 +665,8 @@ Public Class FormAMEOCI
                 End Using
             End Using
 
-            ' saveAPAC() já foi confirmado com sucesso lá em cima (ver "Return" acima
-            ' caso tivesse falhado), então prossegue direto para o pós-gravação/reset da tela.
+            ' A gravação no banco (quando habilitada) e a escrita do arquivo terminaram;
+            ' prossegue para o pós-gravação/reset da tela.
             If Not silencioso Then
                 If updateMode Then
                     MessageBox.Show("✅ APAC atualizada!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -700,7 +714,7 @@ Public Class FormAMEOCI
     ''' começa em 21.
     ''' </summary>
     Public Function ExisteLancamentoDuplicado(competencia As String, numApac As String, procedimentoPrincipal As String, dataInicial As Date) As Boolean
-        Dim caminhoArquivo As String = Path.Combine(Application.StartupPath & "\APAC\EXPORTADOS", "AP" & competencia & chkMonthEXT())
+        Dim caminhoArquivo As String = Path.Combine(Application.StartupPath & "\APAC\EXPORTADOS", "AP" & competencia & chkMonthEXT(competencia))
         If Not File.Exists(caminhoArquivo) Then Return False
 
         Dim linhas = File.ReadAllLines(caminhoArquivo, Encoding.GetEncoding("iso-8859-1"))
@@ -954,7 +968,8 @@ Public Class FormAMEOCI
             txtNomeMedicoSolicitante.SelectedValue = idstartIndexMedico
         End If
 
-        main.loadComboBox($"Select SUS, nome FROM servidores WHERE oci_autorizador=1", txtNomeAutorizador, "nome", "SUS", True)
+        main.loadComboBox($"SELECT SUS, nome FROM servidores WHERE COALESCE(oci_autorizador, 0) IN (1, 2) ORDER BY oci_autorizador, nome", txtNomeAutorizador, "nome", "SUS", True)
+        AtualizarAutorizadorOCI()
 
     End Sub
     Shared Function getPacientes(Optional ByVal cpf As String = Nothing, Optional nome As String = Nothing, Optional dtnasc As String = Nothing, Optional id As Integer = 0)
@@ -1065,7 +1080,7 @@ Public Class FormAMEOCI
             Dim apac As String = dt.Rows(0)("num_apac").ToString()
 
             ' 2️⃣ Bloqueia a APAC encontrada
-            Dim sqlUpdate As String = "UPDATE oci SET status='BLOQ' WHERE num_apac=@apac"
+            Dim sqlUpdate As String = "UPDATE oci SET status='BLOQ', exportado=0 WHERE num_apac=@apac"
             Dim p As New Dictionary(Of String, Object) From {{"@apac", apac}}
             FormAMEmain.doQuery(sqlUpdate, p)
 
@@ -1082,7 +1097,7 @@ Public Class FormAMEOCI
         If String.IsNullOrWhiteSpace(numApac) Then Exit Sub
 
         Try
-            Dim sql As String = "UPDATE oci SET status='DISP' WHERE num_apac=@apac AND status='BLOQ'"
+            Dim sql As String = "UPDATE oci SET status='DISP', exportado=0 WHERE num_apac=@apac AND status='BLOQ'"
             Dim p As New Dictionary(Of String, Object) From {{"@apac", numApac}}
             FormAMEmain.doQuery(sql, p)
         Catch ex As Exception
@@ -1116,7 +1131,7 @@ Public Class FormAMEOCI
         ' Adiciona o item TODOS como primeira linha
         Dim rowTodos As DataRow = dtFinal.NewRow()
         rowTodos("id") = 0
-        rowTodos("compet") = "TODOS"
+        rowTodos("compet") = "Competência"
         dtFinal.Rows.Add(rowTodos)
 
         ' Copia os dados originais
@@ -1136,7 +1151,7 @@ Public Class FormAMEOCI
     Public Function deleteOCI(id As Integer)
         Try
             If m.msgQuestion("Excluir OCI?", "Atenção") Then
-                FormAMEmain.doQuery($"UPDATE oci Set compet='', data=NULL, id_paciente=NULL, id_medico=NULL, id_cod_principal=NULL, status='DISP', id_usuario=NULL WHERE id={id}",, True)
+                FormAMEmain.doQuery($"UPDATE oci Set compet='', data=NULL, id_paciente=NULL, id_medico=NULL, id_cod_principal=NULL, status='DISP', exportado=0, id_usuario=NULL WHERE id={id}",, True)
                 lbRestanteAPAC.Text = loadAPACdisp()
                 Return True
             Else
@@ -1818,8 +1833,9 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             txtNomeAutorizador.SelectedIndex = -1
             CBOmed.SelectedIndex = -1
             txtRaca.SelectedIndex = 0
-
-            searchByDate()
+            loadComp(cbSearchCompHistorico)
+            'searchByDate()
+            btAddAPAC.Text = $"Exportar registros competência " & competencia(My.Settings.OCIcompetencia)
 
         Catch ex As Exception
             ' MsgBox(ex.Message)
@@ -1828,9 +1844,12 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
     End Sub
 
-    Private Function chkMonthEXT()
+    Private Function chkMonthEXT(Optional competenciaAAAAMM As String = Nothing)
 
-        Select Case My.Settings.OCIcompetencia.Substring(4, 2)
+        If String.IsNullOrWhiteSpace(competenciaAAAAMM) Then competenciaAAAAMM = My.Settings.OCIcompetencia
+        If competenciaAAAAMM.Length < 6 Then Return ""
+
+        Select Case competenciaAAAAMM.Substring(4, 2)
             Case "01"
                 Return ".JAN"
             Case "02"
@@ -1887,6 +1906,60 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
     End Sub
 
+    ''' <summary>
+    ''' Lê os registros 14 do arquivo APAC e recupera os números das OCIs que
+    ''' realmente foram colocadas no TXT. O número da APAC ocupa 13 posições,
+    ''' logo depois da competência gravada no registro.
+    ''' </summary>
+    Private Function ObterNumerosApacDoArquivo(caminhoArquivo As String, competencia As String) As List(Of String)
+        Dim numeros As New List(Of String)()
+        Dim inicioNumero As Integer = 2 + competencia.Length
+
+        For Each linha As String In File.ReadLines(caminhoArquivo, Encoding.GetEncoding("iso-8859-1"))
+            If Not linha.StartsWith("14", StringComparison.Ordinal) Then Continue For
+            If linha.Length < inicioNumero + 13 Then Continue For
+
+            Dim numeroApac As String = linha.Substring(inicioNumero, 13).Trim()
+            If numeroApac <> "" AndAlso Not numeros.Contains(numeroApac) Then
+                numeros.Add(numeroApac)
+            End If
+        Next
+
+        Return numeros
+    End Function
+
+    ''' <summary>
+    ''' Marca como exportadas somente as OCIs encontradas no arquivo que acabou
+    ''' de ser copiado. Retorna os números que não foram localizados no banco para
+    ''' que o TXT de origem não seja apagado silenciosamente nesse caso.
+    ''' </summary>
+    Private Function MarcarOCIsExportadas(numerosApac As List(Of String), competencia As String) As List(Of String)
+        Dim naoEncontradas As New List(Of String)()
+        Dim competenciaBanco As String = CompetenciaParaBanco(competencia)
+
+        For Each numeroApacFormatado As String In numerosApac
+            Dim numeroApac As String = numeroApacFormatado.TrimStart("0"c)
+            If numeroApac = "" Then numeroApac = "0"
+
+            ' O mesmo número pode existir em registros ainda disponíveis/reutilizáveis.
+            ' Somente a OCI concluída participa do TXT e deve ser marcada como exportada.
+            Dim encontrados As DataTable = FormAMEmain.getDataset(
+                $"Select id FROM oci WHERE compet='{competenciaBanco}' AND status='CONC' AND (num_apac='{numeroApacFormatado}' OR num_apac='{numeroApac}')")
+
+            If encontrados Is Nothing OrElse encontrados.Rows.Count = 0 Then
+                naoEncontradas.Add(numeroApacFormatado)
+                Continue For
+            End If
+
+            For Each linha As DataRow In encontrados.Rows
+                Dim idOci As Integer = Convert.ToInt32(linha.Item("id"))
+                FormAMEmain.doQuery($"UPDATE oci SET exportado=1 WHERE id={idOci}")
+            Next
+        Next
+
+        Return naoEncontradas
+    End Function
+
     Private Sub btAddAPAC_Click(sender As Object, e As EventArgs) Handles btAddAPAC.Click
         ' Caminho padrão
         Dim pastaDestino As String = Application.StartupPath & "\APAC\EXPORTADOS"
@@ -1920,9 +1993,26 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         If saveDialog.ShowDialog() = DialogResult.OK Then
             'File.Copy(filePath, saveDialog.FileName, True)
             If File.Exists(filePath) Then
-                File.Copy(filePath, saveDialog.FileName)
-                MessageBox.Show($"Arquivo exportado com sucesso!{vbCrLf}{saveDialog.FileName}", "Exportação concluída", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                File.WriteAllText(filePath, "")
+                Try
+                    ' Lê os números antes de limpar o arquivo de origem.
+                    Dim numerosApac As List(Of String) = ObterNumerosApacDoArquivo(filePath, My.Settings.OCIcompetencia)
+
+                    File.Copy(filePath, saveDialog.FileName)
+
+                    Dim naoEncontradas As List(Of String) = MarcarOCIsExportadas(numerosApac, My.Settings.OCIcompetencia)
+                    If naoEncontradas.Count > 0 Then
+                        MessageBox.Show(
+                            $"O arquivo foi copiado, mas algumas OCIs não foram localizadas no banco e o arquivo de origem não foi apagado:" & vbCrLf &
+                            String.Join(", ", naoEncontradas),
+                            "Exportação parcial", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        Exit Sub
+                    End If
+
+                    MessageBox.Show($"Arquivo exportado com sucesso!{vbCrLf}{saveDialog.FileName}", "Exportação concluída", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    File.WriteAllText(filePath, "")
+                Catch ex As Exception
+                    MessageBox.Show($"O arquivo foi copiado, mas não foi possível concluir a exportação e limpar o arquivo de origem. Verifique o campo exportado e tente novamente." & vbCrLf & vbCrLf & ex.Message, "Erro na exportação", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End Try
 
             End If
 
@@ -2379,12 +2469,54 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         'MsgBox(m.SafeValue(result, "id", 0))
     End Sub
 
+    Private Function ObterNivelOCI(cns As String) As Integer
+        If String.IsNullOrWhiteSpace(cns) Then Return -1
+
+        Dim cnsSeguro As String = cns.Trim().Replace("'", "''")
+        Dim dadosNivel As DataTable = FormAMEmain.getDataset(
+            $"SELECT COALESCE(oci_autorizador, 0) AS nivel FROM servidores WHERE SUS='{cnsSeguro}' LIMIT 1"
+        )
+
+        If dadosNivel Is Nothing OrElse dadosNivel.Rows.Count = 0 OrElse IsDBNull(dadosNivel.Rows(0)("nivel")) Then
+            Return -1
+        End If
+
+        Return Convert.ToInt32(dadosNivel.Rows(0)("nivel"))
+    End Function
+
+    Private Function AtualizarAutorizadorOCI() As Boolean
+        If txtCNSMedicoExecutante.SelectedIndex < 0 OrElse txtCNSMedicoExecutante.SelectedValue Is Nothing Then
+            Return False
+        End If
+
+        Dim nivelExecutante As Integer = ObterNivelOCI(Convert.ToString(txtCNSMedicoExecutante.SelectedValue))
+        If nivelExecutante < 0 OrElse nivelExecutante >= 2 Then
+            txtNomeAutorizador.SelectedIndex = -1
+            Return False
+        End If
+
+        Dim filtroNivelAutorizador As String = If(nivelExecutante = 0, "IN (1, 2)", "= 2")
+        Dim dadosAutorizador As DataTable = FormAMEmain.getDataset(
+            $"SELECT SUS FROM servidores WHERE COALESCE(oci_autorizador, 0) {filtroNivelAutorizador} ORDER BY oci_autorizador, nome LIMIT 1"
+        )
+
+        If dadosAutorizador Is Nothing OrElse dadosAutorizador.Rows.Count = 0 Then
+            txtNomeAutorizador.SelectedIndex = -1
+            Return False
+        End If
+
+        txtNomeAutorizador.SelectedValue = Convert.ToString(dadosAutorizador.Rows(0)("SUS"))
+        Return txtNomeAutorizador.SelectedIndex >= 0
+    End Function
+
     Private Sub txtCNSMedicoExecutante_SelectedIndexChanged(sender As Object, e As EventArgs) Handles txtCNSMedicoExecutante.SelectedIndexChanged
         Try
             txtNomeMedicoSolicitante.SelectedIndex = txtCNSMedicoExecutante.SelectedIndex
         Catch ex As Exception
 
         End Try
+
+        AtualizarAutorizadorOCI()
     End Sub
 
     Private Sub onClose()
@@ -2712,7 +2844,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                 Dim situacaoRuaVal As Integer = If(apac.SituacaoRua = "S", 1, 0)
                 Dim semCpfVal As Integer = If(apac.SemCpf = "S", 1, 0)
 
-                FormAMEmain.doQuery($"UPDATE oci SET data='{m.mysqlDateFormat(apac.data)}', id_paciente='{idPac}', id_medico='{apac.SUSMedicoExecutante}', id_autorizador='{apac.CnsAutorizador}', id_cod_principal={idProced}, cid_principal='{apac.CidPrincipal}', cid_sec='{apac.CidSecundario}', situacao_rua={situacaoRuaVal}, motivo_saida='{apac.MotivoSaida}', sem_cpf={semCpfVal}, status='CONC', id_usuario={idUser} WHERE num_apac='{apac.NumeroApac}'")
+                FormAMEmain.doQuery($"UPDATE oci SET data='{m.mysqlDateFormat(apac.data)}', data_lanc=CURRENT_TIMESTAMP, id_paciente='{idPac}', id_medico='{apac.SUSMedicoExecutante}', id_autorizador='{apac.CnsAutorizador}', id_cod_principal={idProced}, cid_principal='{apac.CidPrincipal}', cid_sec='{apac.CidSecundario}', situacao_rua={situacaoRuaVal}, motivo_saida='{apac.MotivoSaida}', sem_cpf={semCpfVal}, status='CONC', exportado=0, id_usuario={idUser} WHERE num_apac='{apac.NumeroApac}'")
             Catch ex As Exception
 
             End Try
@@ -2720,9 +2852,28 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         MsgBox("Importação concluída!")
     End Sub
     Private Sub searchByDate()
-        dtpSearchData.CustomFormat = "dd/MM/yyyy"
-        FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "num_apac", " AND status <> 'BLOQ'",, lbStatusCads)
-        ckbSearchTodos.Checked = False
+        Try
+            dtpSearchData.CustomFormat = "dd/MM/yyyy"
+            FormAMEOCINumAPAC.loadNUMAPAC(
+                datagridview:=dgOCIcadastradas,
+                status:="CONC",
+                dtlanc:=dtpSearchData.Value.Date,
+                order:="data_lanc DESC",
+                labelCount:=lbStatusCads)
+            ckbSearchTodos.Checked = False
+
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub searchByCompetencia()
+        Try
+            FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False,,,,,,, "num_apac", $"AND status <> 'BLOQ' AND status <> 'CANC' AND compet='{cbSearchCompHistorico.Text}'",, lbStatusCads)
+            ckbSearchTodos.Checked = False
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Sub FormAMEOCI_Click(sender As Object, e As EventArgs) Handles MyBase.Click
@@ -2731,6 +2882,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     Private Sub clickDtpSearchData(sender As Object, e As EventArgs) Handles dtpSearchData.ValueChanged
         searchByDate()
     End Sub
+
     Public Sub loadAllOCI(dg As DataGridView)
         FormAMEOCINumAPAC.loadNUMAPAC(dg,,,, idUser,,,, "CONC", , "oci.data_lanc DESC, id_cod_principal, pacientes.nome",,, lbStatusCads)
     End Sub
@@ -2932,25 +3084,27 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     End Function
 
     ''' <summary>
-    ''' Regera do zero o arquivo .JUL da competência ATUALMENTE configurada em
-    ''' My.Settings.OCIcompetencia, a partir de tudo que estiver com status='CONC' na
-    ''' oci pra essa competência - decisão confirmada com o usuário: apaga o arquivo
+    ''' Regera do zero o arquivo .JUL da competência solicitada, a partir de tudo que
+    ''' estiver com status='CONC' na oci pra essa competência - apaga o arquivo
     ''' existente e recria (em vez de tentar mesclar com o que já tinha nele).
     '''
     ''' Não é preciso abrir a tela pra cada APAC manualmente: MontarDadosApacDoOCI lê
     ''' tudo direto do banco e addAPAC() roda em modo silencioso (sem popup nenhum) -
     ''' só um resumo de sucesso/falha no final. Internamente addAPAC() ainda usa a
-    ''' tela como "transporte" de dados pra saveAPAC()/atPac() (ver
-    ''' PreencherTelaComDados) - não é um caminho 100% desacoplado da UI, mas quem
-    ''' chama essa função não precisa saber ou se preocupar com isso.
+    ''' tela para preparar os campos, mas não grava novamente no banco: os dados já
+    ''' estão persistidos e a geração não deve alterar data_lanc nem outros campos.
     ''' </summary>
     Friend Sub RegenerarLoteCompetencia(competenciaAtiva As String)
         If competenciaAtiva = "" Then
             MessageBox.Show("Nenhuma competência configurada.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Return
         End If
+        If competenciaAtiva.Length <> 6 OrElse Not IsNumeric(competenciaAtiva) OrElse Convert.ToInt32(competenciaAtiva.Substring(4, 2)) < 1 OrElse Convert.ToInt32(competenciaAtiva.Substring(4, 2)) > 12 Then
+            MessageBox.Show("Competência inválida. Selecione uma competência no formato AAAAMM.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
+        End If
 
-        Dim caminhoArquivo As String = Path.Combine(Application.StartupPath & "\APAC\EXPORTADOS", "AP" & competenciaAtiva & chkMonthEXT())
+        Dim caminhoArquivo As String = Path.Combine(Application.StartupPath & "\APAC\EXPORTADOS", "AP" & competenciaAtiva & chkMonthEXT(competenciaAtiva))
 
         Dim idsOci As DataTable = FormAMEmain.getDataset($"SELECT id, num_apac FROM oci WHERE compet='{CompetenciaParaBanco(competenciaAtiva)}' AND status='CONC' ORDER BY num_apac")
         If idsOci Is Nothing OrElse idsOci.Rows.Count = 0 Then
@@ -2959,7 +3113,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         End If
 
         Dim confirmar = MessageBox.Show(
-            $"Isso vai APAGAR o arquivo AP{competenciaAtiva}{chkMonthEXT()} atual (se existir) e recriar do zero, com as {idsOci.Rows.Count} APACs marcadas como CONC na competência {competenciaAtiva}." & vbCrLf & vbCrLf &
+            $"Isso vai APAGAR o arquivo AP{competenciaAtiva}{chkMonthEXT(competenciaAtiva)} atual (se existir) e recriar do zero, com as {idsOci.Rows.Count} APACs marcadas como CONC na competência {competenciaAtiva}." & vbCrLf & vbCrLf &
             "Confirma?", "Regerar lote da competência", MessageBoxButtons.YesNo, MessageBoxIcon.Warning)
         If confirmar <> DialogResult.Yes Then Return
 
@@ -2996,7 +3150,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
             updateMode = False ' inserção nova no arquivo recém-recriado, não "atualização"
             Dim erro As String = ""
-            If addAPAC(dados, silencioso:=True, mensagemErro:=erro) Then
+            If addAPAC(dados, silencioso:=True, mensagemErro:=erro, competenciaArquivo:=competenciaAtiva, persistirNoBanco:=False) Then
                 sucesso += 1
             Else
                 falhas.Add($"{numApac}: {erro}")
@@ -3006,7 +3160,9 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         Dim resumo As String = $"Regeração concluída: {sucesso} de {idsOci.Rows.Count} APACs gravadas."
         If falhas.Count > 0 Then
             resumo &= vbCrLf & vbCrLf & $"Falharam ({falhas.Count}):" & vbCrLf & String.Join(vbCrLf, falhas)
-            m.msgAlert("Alguns erros foran encontrados durante a geração do arquivo. Veja o log em Configurações > Logs > Lote.")
+            m.msgAlert("Alguns erros foram encontrados durante a geração do arquivo. Veja o log em Configurações > Logs > Lote.")
+        Else
+            m.msgInfo($"Geração em lote de {competenciaAtiva} realizada com sucesso ({sucesso} APACs).")
         End If
         ' --- Geração do log ---
         Dim pastaLog As String = Path.Combine(Application.StartupPath, "Logs")
@@ -3024,8 +3180,6 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         conteudoLog.AppendLine()
 
         File.AppendAllText(caminhoLog, conteudoLog.ToString(), Encoding.UTF8)
-
-        m.msgInfo($"Geração em lote de {competenciaAtiva} realizada com sucesso.")
 
         FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False, idUser,,,, , (dtpSearchData.Value), "data_lanc DESC",,, lbStatusCads)
     End Sub
@@ -3186,7 +3340,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                 End If
             End If
 
-                btNovonumeroAPAC.Enabled = True
+            btNovonumeroAPAC.Enabled = True
 
         Else
             MessageBox.Show("Selecione um paciente por data de nascimento, nome ou CPF", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -3509,6 +3663,22 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         Else
             MessageBox.Show("Nenhum log encontrado ainda.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
+    End Sub
+
+    Private Sub btGerarLoteAPAC_Click(sender As Object, e As EventArgs) Handles btGerarLoteAPAC.Click
+        If cbSearchCompHistorico.SelectedIndex > 0 Then
+
+            Dim data As String = cbSearchCompHistorico.Text
+            Dim ano As String = data.Substring(4)
+            Dim mes As String = m.monthNumber(data.Substring(0, 3))
+
+            RegenerarLoteCompetencia(ano & mes)
+        Else
+            m.msgAlert("Selecione uma competência")
+        End If
+    End Sub
+    Private Sub cbSearchCompHistorico_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbSearchCompHistorico.SelectedValueChanged
+        searchByCompetencia()
     End Sub
 
 End Class

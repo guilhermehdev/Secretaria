@@ -617,25 +617,6 @@ Public Class FormAMEmain
             vconexao.Close()
         End If
     End Sub
-    'Public Function doQuery(ByVal sql As String, Optional params As Dictionary(Of String, Object) = Nothing, Optional ByVal errorMsg As Boolean = False) As Boolean
-    '    Try
-    '        connection(True)
-    '        Using command As New MySqlCommand(sql, vconexao)
-    '            If params IsNot Nothing Then
-    '                For Each kvp In params
-    '                    command.Parameters.AddWithValue(kvp.Key, kvp.Value)
-    '                Next
-    '            End If
-    '            command.ExecuteNonQuery()
-    '        End Using
-    '        Return True
-    '    Catch ex As Exception
-    '        If errorMsg Then MsgBox($"{ex}{vbCrLf}{sql}")
-    '        Throw
-    '    Finally
-    '        connection(False)
-    '    End Try
-    'End Function
 
     Public Function doQuery(ByVal sql As String, Optional params As Dictionary(Of String, Object) = Nothing, Optional ByVal errorMsg As Boolean = False) As Object
         Try
@@ -724,6 +705,9 @@ Public Class FormAMEmain
         FormSystemStart.Visible = True
     End Sub
 
+    Private Sub FormAMEmain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
 End Class
 
 Public Class Consulta
