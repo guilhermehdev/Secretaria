@@ -127,6 +127,44 @@ Public Class FormAMEOCI
 
         Return idProced
     End Function
+
+    ''' <summary>
+    ''' Garante que os procedimentos secundários exibidos para esta APAC
+    ''' pertencem ao procedimento principal selecionado e que cada código
+    ''' aparece no máximo uma vez na mesma APAC.
+    '''
+    ''' Isso evita que uma lista carregada de outra OCI (mesmo paciente/data)
+    ''' seja gravada ou exportada junto com a APAC atual.
+    ''' </summary>
+    Private Function ValidarProcedimentosSecundarios(Optional silencioso As Boolean = False, Optional ByRef mensagemErro As String = "") As Boolean
+        Dim idPrincipal As Integer = Convert.ToInt32(getProcedID(Convert.ToString(txtProcedimentoPrincipal.SelectedValue)))
+        If idPrincipal <= 0 Then
+            FalharValidacao(mensagemErro, silencioso, "Procedimento principal inválido.", txtProcedimentoPrincipal, 1)
+            Return False
+        End If
+
+        Dim codigos As New HashSet(Of String)(StringComparer.Ordinal)
+        For Each row As DataGridViewRow In dgvProcedimentos.Rows
+            If row.IsNewRow Then Continue For
+
+            Dim codigo As String = Convert.ToString(row.Cells(0).Value).Trim()
+            If codigo = "" Then Continue For
+
+            If Not codigos.Add(codigo) Then
+                FalharValidacao(mensagemErro, silencioso, $"O procedimento secundário {codigo} está duplicado nesta APAC.", Nothing, 1)
+                Return False
+            End If
+
+            Dim permitido = FormAMEmain.getDataset($"SELECT 1 FROM cod_oci_secundario WHERE cod='{codigo.Replace("'", "''")}' AND id_cod_principal={idPrincipal} LIMIT 1")
+            If permitido Is Nothing OrElse permitido.Rows.Count = 0 Then
+                FalharValidacao(mensagemErro, silencioso, $"O procedimento secundário {codigo} não pertence ao procedimento principal {txtProcedimentoPrincipal.SelectedValue}.", Nothing, 1)
+                Return False
+            End If
+        Next
+
+        Return True
+    End Function
+
     Private Function saveAPAC(Optional silencioso As Boolean = False, Optional ByRef mensagemErro As String = "")
         If Not txtNumApac.Text.Length = 13 Then
             FalharValidacao(mensagemErro, silencioso, "Preencha o número da APAC corretamente.", txtNumApac)
@@ -143,6 +181,9 @@ Public Class FormAMEOCI
         If dgvProcedimentos.Rows.Count <= 1 Then
             If Not silencioso Then CodProcedimento.DroppedDown = True
             FalharValidacao(mensagemErro, silencioso, "Adicione um procedimento secundário.", CodProcedimento, 1)
+            Return False
+        End If
+        If Not ValidarProcedimentosSecundarios(silencioso, mensagemErro) Then
             Return False
         End If
         If txtNomeMedicoSolicitante.Text = txtNomeAutorizador.Text Then
@@ -243,6 +284,11 @@ Public Class FormAMEOCI
 
 
                 If FormAMEmain.doQuery(query) Then
+
+                    ' Os secundários pertencem à APAC, não apenas ao paciente/data/médico.
+                    ' Limpar antes de inserir também remove itens antigos quando uma APAC
+                    ' de ortopedia é editada e seus exames são alterados.
+                    FormAMEmain.doQuery($"DELETE FROM procedimentos_secundarios WHERE num_apac='{txtNumApac.Text.Trim().Replace("'", "''")}'")
 
                     If txtProcedimentoPrincipal.SelectedValue = "0903010011" Then
 
@@ -501,6 +547,12 @@ Public Class FormAMEOCI
             End If
             If txtRaca.SelectedIndex < 0 Then
                 FalharValidacao(mensagemErro, silencioso, "Informe a raça.", txtRaca, 0)
+                Return False
+            End If
+
+            ' Na regeneração em lote não há chamada a saveAPAC(), mas a lista
+            ' também precisa ser validada antes de entrar no arquivo magnético.
+            If Not persistirNoBanco AndAlso Not ValidarProcedimentosSecundarios(silencioso, mensagemErro) Then
                 Return False
             End If
 
@@ -1279,9 +1331,10 @@ Public Class FormAMEOCI
                 Dim secData = FormAMEmain.getDataset($"SELECT DISTINCT cod_oci_secundario.cod, procedimentos_secundarios.qtd, cod_oci_secundario.descricao, procedimentos_secundarios.cbo
 FROM procedimentos_secundarios
 JOIN cod_oci_secundario ON cod_oci_secundario.cod = procedimentos_secundarios.cod_proced_secundario
-WHERE procedimentos_secundarios.`data`='{dados.data:yyyy-MM-dd}'
-AND procedimentos_secundarios.id_paciente = {idPac}
-AND procedimentos_secundarios.medico_solicitante ='{medicoCns}'")
+                 WHERE procedimentos_secundarios.`data`='{dados.data:yyyy-MM-dd}'
+                 AND procedimentos_secundarios.num_apac = '{dados.NumeroApac}'
+                 AND procedimentos_secundarios.id_paciente = {idPac}
+                 AND procedimentos_secundarios.medico_solicitante ='{medicoCns}'")
 
                 If secData IsNot Nothing AndAlso secData.Rows.Count > 0 Then
                     dados.ProcedimentosSecundarios = New List(Of ApacProcedimentoSecundario)
@@ -1525,11 +1578,12 @@ AND procedimentos_secundarios.medico_solicitante ='{medicoCns}'")
         End Try
     End Sub
 
-    Private Sub getProcedSecundario(data As Date, idPac As Integer, medico As String)
+    Private Sub getProcedSecundario(data As Date, idPac As Integer, medico As String, numApac As String)
         Dim proceds As DataTable = FormAMEmain.getDataset($"SELECT DISTINCT cod_oci_secundario.cod, procedimentos_secundarios.qtd, cod_oci_secundario.descricao, procedimentos_secundarios.cbo
 FROM procedimentos_secundarios
 JOIN cod_oci_secundario ON cod_oci_secundario.cod = procedimentos_secundarios.cod_proced_secundario
 WHERE procedimentos_secundarios.`data`='{data:yyyy-MM-dd}'
+AND procedimentos_secundarios.num_apac = '{numApac}'
 AND procedimentos_secundarios.id_paciente = {idPac}
 AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
@@ -1572,9 +1626,10 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             txtCidPrincipal.SelectedValue = row("cid_principal")
             txtCidSecundario.SelectedValue = row("cid_secundario")
 
-            If txtProcedimentoPrincipal.SelectedValue = "0903010011" Then
-                getProcedSecundario(row("data"), idPac, txtCNSMedicoExecutante.SelectedValue)
-            End If
+            ' A fila ainda não possui num_apac; portanto não é seguro buscar
+            ' procedimentos secundários por paciente/data/médico. A seleção
+            ' disponível para o procedimento principal permanece na tela e será
+            ' vinculada à APAC quando ela for gravada.
         End If
 
         Clipboard.SetText(result(0)("dtnasc").ToString())
@@ -2972,7 +3027,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     End Sub
 
     Private Sub ConsistênciaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConsistênciaToolStripMenuItem.Click
-        Process.Start($"C:\Program Files (x86)\Datasus\APAC\RCONSIST{chkMonthEXT()}")
+        Process.Start($"D:\Program Files (x86)\Datasus\APAC\RCONSIST{chkMonthEXT()}")
     End Sub
 
     Public Sub editOCI(idOCI As Integer)
@@ -3121,7 +3176,9 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             Directory.CreateDirectory(Application.StartupPath & "\APAC\EXPORTADOS")
         End If
 
-        ' Apaga o arquivo atual e escreve só o cabeçalho, já com a contagem final certa.
+        ' Apaga o arquivo atual e escreve um cabeçalho provisório. A quantidade final
+        ' será atualizada depois que as APACs forem validadas, porque algumas podem
+        ' ser rejeitadas (por exemplo, idade mínima ou mistura de procedimentos).
         ' addAPAC() só escreve header quando o arquivo está vazio (fs.Length=0) - como
         ' o arquivo já vai existir com o header dentro, as chamadas seguintes só
         ' anexam os registros 14/06/13 de cada APAC.
@@ -3131,7 +3188,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
         Using fs As New FileStream(caminhoArquivo, FileMode.Create, FileAccess.Write, FileShare.None)
             Using sw As New StreamWriter(fs, Encoding.GetEncoding("iso-8859-1"))
-                sw.WriteLine(MontarHeaderApac(competenciaAtiva, idsOci.Rows.Count))
+                sw.WriteLine(MontarHeaderApac(competenciaAtiva, 0))
             End Using
         End Using
 
@@ -3156,6 +3213,14 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                 falhas.Add($"{numApac}: {erro}")
             End If
         Next
+
+        ' Corrige o cabeçalho para refletir somente as APACs que passaram pelas
+        ' validações e foram efetivamente escritas no arquivo.
+        Dim linhasArquivo() As String = File.ReadAllLines(caminhoArquivo, Encoding.GetEncoding("iso-8859-1"))
+        If linhasArquivo.Length > 0 Then
+            linhasArquivo(0) = MontarHeaderApac(competenciaAtiva, sucesso)
+            File.WriteAllLines(caminhoArquivo, linhasArquivo, Encoding.GetEncoding("iso-8859-1"))
+        End If
 
         Dim resumo As String = $"Regeração concluída: {sucesso} de {idsOci.Rows.Count} APACs gravadas."
         If falhas.Count > 0 Then
@@ -3607,12 +3672,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         Return apacs
 
     End Function
-    Private Sub FiltrarAPACToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FiltrarAPACToolStripMenuItem.Click
 
-        Dim apacs = ExtrairAPACs(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\APTESTE.JUN")
-        File.WriteAllLines("D:\Desktop\Found.TXT", apacs)
-
-    End Sub
     Private Sub ExcluirToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExcluirToolStripMenuItem.Click
         If m.msgQuestion("Deseja excluir OCI da fila? Esta ação é irreversível.", "Confirmação") Then
             If FormAMEmain.doQuery($"DELETE FROM oci_fila WHERE id={dgQueueItens.SelectedRows(0).Cells(0).Value}",, True) Then
