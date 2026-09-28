@@ -1487,7 +1487,7 @@ Partial Class FormAMEOCI
         'ConsistênciaToolStripMenuItem
         '
         Me.ConsistênciaToolStripMenuItem.Name = "ConsistênciaToolStripMenuItem"
-        Me.ConsistênciaToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.ConsistênciaToolStripMenuItem.Size = New System.Drawing.Size(141, 22)
         Me.ConsistênciaToolStripMenuItem.Text = "Consistência"
         '
         'FiltrarAPACToolStripMenuItem
@@ -1495,7 +1495,7 @@ Partial Class FormAMEOCI
         Me.FiltrarAPACToolStripMenuItem.Enabled = False
         Me.FiltrarAPACToolStripMenuItem.Name = "FiltrarAPACToolStripMenuItem"
         Me.FiltrarAPACToolStripMenuItem.ShowShortcutKeys = False
-        Me.FiltrarAPACToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.FiltrarAPACToolStripMenuItem.Size = New System.Drawing.Size(141, 22)
         Me.FiltrarAPACToolStripMenuItem.Text = " "
         '
         'ConfiguraçõesToolStripMenuItem
