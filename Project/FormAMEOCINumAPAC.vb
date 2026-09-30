@@ -45,7 +45,9 @@ Public Class FormAMEOCINumAPAC
                 where &= $" AND oci.id_medico ='{medico}' "
             End If
 
-            Dim query = $"SELECT oci.id, oci.num_apac, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc AS dtnasc, oci.`data`, oci.compet, servidores.nome AS medico, oci.status, usuarios.nome AS responsavel 
+            ' exportado fica no final para preservar os índices das colunas já
+            ' utilizados pelos menus e pelas telas que chamam esta rotina.
+            Dim query = $"SELECT oci.id, oci.num_apac, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc AS dtnasc, oci.`data`, oci.compet, servidores.nome AS medico, oci.status, usuarios.nome AS responsavel, IF(COALESCE(oci.exportado, 0) <> 0, 'SIM', 'NÃO') AS exportado
             FROM oci 
            LEFT JOIN pacientes ON pacientes.id = oci.id_paciente 
            LEFT JOIN servidores ON servidores.SUS = oci.id_medico
@@ -80,6 +82,8 @@ Public Class FormAMEOCINumAPAC
                 datagridview.Columns("status").Width = 60
                 datagridview.Columns("responsavel").HeaderText = "Usuário"
                 datagridview.Columns("responsavel").Width = 150
+                datagridview.Columns("exportado").HeaderText = "Exportado"
+                datagridview.Columns("exportado").Width = 65
 
                 ' labelCount é Optional - se quem chamou não passou (como no cbMedico_SelectedIndexChanged
                 ' que você me mostrou), ele vem Nothing e um .Text direto quebraria com
