@@ -1479,18 +1479,20 @@ JOIN cod_oci_secundario ON cod_oci_secundario.cod = procedimentos_secundarios.co
         End Try
     End Sub
 
-    Public Sub getOCIdata(id As Integer)
+    Public Function getOCIdata(id As Integer)
         Try
             Dim dados = MontarDadosApacDoOCI(id)
             If dados Is Nothing Then
                 m.msgAlert("OCI não encontrado!")
-                Return
+                Return False
             End If
             PreencherTelaComDados(dados)
+            Return True
         Catch ex As Exception
             MsgBox("Erro ao carregar dados do OCI: " & ex.Message)
+            Return False
         End Try
-    End Sub
+    End Function
     Private Function detectChanges()
         If dtNascimento.Text <> nasc OrElse txtNomePaciente.Text <> nome OrElse txtSexo.Text <> sexo OrElse txtCpfPaciente.Text <> cpf OrElse txtNomeMae.Text <> mae OrElse txtRaca.SelectedValue <> raca OrElse txtDDD.Text <> ddd OrElse txtTelefone.Text <> telefone OrElse txtCep.Text <> cepRes OrElse txtNumero.Text <> numero OrElse txtComplemento.Text <> complemento Then
             Return True
@@ -3030,11 +3032,15 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         Process.Start($"D:\Program Files (x86)\Datasus\APAC\RCONSIST{chkMonthEXT()}")
     End Sub
 
-    Public Sub editOCI(idOCI As Integer)
+    Public Function editOCI(idOCI As Integer) As Boolean
         updateMode = True
-        getOCIdata(idOCI)
-        TabControl1.SelectedTab = TabControl1.TabPages(0)
-    End Sub
+        If getOCIdata(idOCI) Then
+            TabControl1.SelectedTab = TabControl1.TabPages(0)
+            Return True
+        Else
+            Return False
+        End If
+    End Function
 
     ''' <summary>
     ''' Busca o id interno da OCI a partir do número da APAC (13 dígitos).
@@ -3259,7 +3265,9 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
     End Sub
     Private Sub EditarToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditarToolStripMenuItem.Click
-        editOCI(dgOCIcadastradas.SelectedRows(0).Cells(0).Value)
+        If editOCI(dgOCIcadastradas.SelectedRows(0).Cells(0).Value) Then
+            searchByDate()
+        End If
     End Sub
     Private Sub dtValidadeIni_ValueChanged(sender As Object, e As EventArgs) Handles dtValidadeIni.ValueChanged
         dtValidadeFim.Value = dtValidadeIni.Value.AddMonths(1)

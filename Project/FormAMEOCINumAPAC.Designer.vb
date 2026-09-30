@@ -123,7 +123,7 @@ Partial Class FormAMEOCINumAPAC
         '
         Me.ctxMenuAPAC.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AlterarStatusToolStripMenuItem, Me.CopiarToolStripMenuItem, Me.EditarOCIToolStripMenuItem, Me.ExportarEmPDFToolStripMenuItem, Me.ExcluirOCIToolStripMenuItem})
         Me.ctxMenuAPAC.Name = "ctxMenuAPAC"
-        Me.ctxMenuAPAC.Size = New System.Drawing.Size(226, 114)
+        Me.ctxMenuAPAC.Size = New System.Drawing.Size(226, 136)
         '
         'AlterarStatusToolStripMenuItem
         '

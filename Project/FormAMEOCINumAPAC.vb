@@ -147,7 +147,7 @@ Public Class FormAMEOCINumAPAC
         chkDisponiveis.Checked = False
         loadNUMAPAC(dgvNumerosAPAC,,,, iduser)
     End Sub
-    Private Sub loadByData()
+    Friend Sub loadByData()
         dgvNumerosAPAC.DataSource = Nothing
         tbAPACIni.Text = ""
         tbAPACFim.Text = ""
@@ -554,7 +554,9 @@ Public Class FormAMEOCINumAPAC
     End Function
 
     Private Sub EditarOCIToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EditarOCIToolStripMenuItem.Click
-        FormAMEOCI.editOCI(dgvNumerosAPAC.SelectedRows(0).Cells(0).Value)
+        If FormAMEOCI.editOCI(dgvNumerosAPAC.SelectedRows(0).Cells(0).Value) Then
+            loadByData()
+        End If
     End Sub
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles chkDisponiveis.CheckedChanged, chkDisponiveis.CheckedChanged
         If chkDisponiveis.Checked Then
