@@ -33,6 +33,7 @@ Public Class FormAMEOCI
     Private complemento = Nothing
     Private colapsed As Boolean = False
     Public Property idUser As Integer
+    Private tabControlPainter As TabControlBackgroundPainter
 
     ''' <summary>
     ''' Converte a competência no formato usado pelos arquivos .JUL e por
@@ -1691,6 +1692,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     End Sub
 
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ConfigurarAparenciaTabControl()
         checkQueue()
         colapse()
 
@@ -1900,6 +1902,128 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         End Try
 
     End Sub
+
+    Private Sub ConfigurarAparenciaTabControl()
+        TabControl1.DrawMode = TabDrawMode.OwnerDrawFixed
+        TabControl1.SizeMode = TabSizeMode.Fixed
+        TabControl1.ItemSize = New Size(170, 25)
+        TabControl1.BackColor = Color.FromArgb(40, 40, 40)
+        TabControl1.ForeColor = Color.White
+
+        If tabControlPainter Is Nothing Then
+            tabControlPainter = New TabControlBackgroundPainter()
+            tabControlPainter.Attach(TabControl1)
+        End If
+
+        For Each pagina As TabPage In TabControl1.TabPages
+            pagina.UseVisualStyleBackColor = False
+        Next
+    End Sub
+
+    Private Sub TabControl1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles TabControl1.DrawItem
+        Dim tabControl As TabControl = DirectCast(sender, TabControl)
+        Dim pagina As TabPage = tabControl.TabPages(e.Index)
+        Dim area As Rectangle = e.Bounds
+        Dim selecionada As Boolean = (e.Index = tabControl.SelectedIndex)
+
+        Dim corFundo As Color = If(selecionada,
+                                   Color.FromArgb(255, 128, 0),
+                                   Color.FromArgb(64, 64, 64))
+        Dim corBorda As Color = If(selecionada,
+                                   Color.FromArgb(255, 192, 0),
+                                   Color.FromArgb(40, 40, 40))
+
+        Using pincel As New SolidBrush(corFundo)
+            e.Graphics.FillRectangle(pincel, area)
+        End Using
+
+        Using caneta As New Pen(corBorda)
+            e.Graphics.DrawRectangle(caneta, area.X, area.Y, area.Width - 1, area.Height - 1)
+        End Using
+
+        TextRenderer.DrawText(
+            e.Graphics,
+            pagina.Text,
+            pagina.Font,
+            area,
+            Color.White,
+            TextFormatFlags.HorizontalCenter Or TextFormatFlags.VerticalCenter Or TextFormatFlags.NoPrefix)
+    End Sub
+
+    Private Sub TabControl1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TabControl1.SelectedIndexChanged
+        TabControl1.Invalidate()
+    End Sub
+
+    Private Sub FormAMEOCI_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
+        If tabControlPainter IsNot Nothing Then
+            tabControlPainter.Detach()
+            tabControlPainter = Nothing
+        End If
+    End Sub
+
+    Private Class TabControlBackgroundPainter
+        Inherits NativeWindow
+
+        Private Const WM_PAINT As Integer = &HF
+        Private ReadOnly corFundo As Color = Color.FromArgb(40, 40, 40)
+        Private controle As TabControl
+
+        Public Sub Attach(tabControl As TabControl)
+            controle = tabControl
+            If controle IsNot Nothing AndAlso controle.IsHandleCreated Then
+                AssignHandle(controle.Handle)
+            End If
+        End Sub
+
+        Public Sub Detach()
+            If Handle <> IntPtr.Zero Then
+                ReleaseHandle()
+            End If
+            controle = Nothing
+        End Sub
+
+        Protected Overrides Sub WndProc(ByRef m As Message)
+            MyBase.WndProc(m)
+
+            If m.Msg = WM_PAINT Then
+                PintarAreasSemAba()
+            End If
+        End Sub
+
+        Private Sub PintarAreasSemAba()
+            If controle Is Nothing OrElse controle.IsDisposed OrElse controle.TabPages.Count = 0 Then Return
+
+            Using grafico As Graphics = Graphics.FromHwnd(controle.Handle)
+                Using pincel As New SolidBrush(corFundo)
+                    Dim xAtual As Integer = 0
+                    Dim limiteCabecalho As Integer = 0
+
+                    For indice As Integer = 0 To controle.TabPages.Count - 1
+                        Dim areaAba As Rectangle = controle.GetTabRect(indice)
+                        limiteCabecalho = Math.Max(limiteCabecalho, areaAba.Bottom)
+
+                        If areaAba.Left > xAtual Then
+                            grafico.FillRectangle(pincel, xAtual, 0, areaAba.Left - xAtual, limiteCabecalho)
+                        End If
+
+                        xAtual = Math.Max(xAtual, areaAba.Right)
+                    Next
+
+                    If xAtual < controle.ClientSize.Width Then
+                        grafico.FillRectangle(pincel, xAtual, 0, controle.ClientSize.Width - xAtual, limiteCabecalho)
+                    End If
+                End Using
+
+                Dim areaPagina As Rectangle = controle.DisplayRectangle
+                Using caneta As New Pen(corFundo)
+                    grafico.DrawRectangle(caneta, areaPagina.X - 1, areaPagina.Y - 1, areaPagina.Width + 1, areaPagina.Height + 1)
+
+                    Dim areaControle As Rectangle = controle.ClientRectangle
+                    grafico.DrawRectangle(caneta, areaControle.X, areaControle.Y, areaControle.Width - 1, areaControle.Height - 1)
+                End Using
+            End Using
+        End Sub
+    End Class
 
     Private Function chkMonthEXT(Optional competenciaAAAAMM As String = Nothing)
 
