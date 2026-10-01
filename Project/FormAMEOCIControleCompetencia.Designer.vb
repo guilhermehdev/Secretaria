@@ -71,6 +71,7 @@ Partial Class FormAMEOCIControleCompetencia
         Me.GroupBox5.Controls.Add(Me.txtOrgaoOrigem)
         Me.GroupBox5.Controls.Add(Me.txtCGC)
         Me.GroupBox5.Controls.Add(Me.txtCnsDiretor)
+        Me.GroupBox5.ForeColor = System.Drawing.Color.White
         Me.GroupBox5.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(497, 157)
@@ -80,6 +81,8 @@ Partial Class FormAMEOCIControleCompetencia
         '
         'txtUf
         '
+        Me.txtUf.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.txtUf.ForeColor = System.Drawing.SystemColors.Info
         Me.txtUf.FormattingEnabled = True
         Me.txtUf.Location = New System.Drawing.Point(83, 48)
         Me.txtUf.Name = "txtUf"
@@ -97,6 +100,8 @@ Partial Class FormAMEOCIControleCompetencia
         '
         'txtDestinoTipo
         '
+        Me.txtDestinoTipo.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.txtDestinoTipo.ForeColor = System.Drawing.SystemColors.Info
         Me.txtDestinoTipo.FormattingEnabled = True
         Me.txtDestinoTipo.Items.AddRange(New Object() {"M", "E"})
         Me.txtDestinoTipo.Location = New System.Drawing.Point(446, 124)
@@ -115,6 +120,8 @@ Partial Class FormAMEOCIControleCompetencia
         '
         'txtOrgaoDestino
         '
+        Me.txtOrgaoDestino.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.txtOrgaoDestino.ForeColor = System.Drawing.SystemColors.Info
         Me.txtOrgaoDestino.Location = New System.Drawing.Point(134, 125)
         Me.txtOrgaoDestino.Name = "txtOrgaoDestino"
         Me.txtOrgaoDestino.Size = New System.Drawing.Size(306, 20)
@@ -131,6 +138,8 @@ Partial Class FormAMEOCIControleCompetencia
         '
         'txtCPFDiretor
         '
+        Me.txtCPFDiretor.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.txtCPFDiretor.ForeColor = System.Drawing.SystemColors.Info
         Me.txtCPFDiretor.Location = New System.Drawing.Point(14, 125)
         Me.txtCPFDiretor.Name = "txtCPFDiretor"
         Me.txtCPFDiretor.Size = New System.Drawing.Size(113, 20)
@@ -183,7 +192,9 @@ Partial Class FormAMEOCIControleCompetencia
         '
         'txtNomeDiretor
         '
+        Me.txtNomeDiretor.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.txtNomeDiretor.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
+        Me.txtNomeDiretor.ForeColor = System.Drawing.SystemColors.Info
         Me.txtNomeDiretor.Location = New System.Drawing.Point(256, 87)
         Me.txtNomeDiretor.Name = "txtNomeDiretor"
         Me.txtNomeDiretor.Size = New System.Drawing.Size(235, 20)
@@ -191,6 +202,8 @@ Partial Class FormAMEOCIControleCompetencia
         '
         'txtCompetencia
         '
+        Me.txtCompetencia.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.txtCompetencia.ForeColor = System.Drawing.SystemColors.Info
         Me.txtCompetencia.Location = New System.Drawing.Point(13, 48)
         Me.txtCompetencia.Name = "txtCompetencia"
         Me.txtCompetencia.Size = New System.Drawing.Size(64, 20)
@@ -198,6 +211,8 @@ Partial Class FormAMEOCIControleCompetencia
         '
         'txtSiglaOrgao
         '
+        Me.txtSiglaOrgao.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.txtSiglaOrgao.ForeColor = System.Drawing.SystemColors.Info
         Me.txtSiglaOrgao.Location = New System.Drawing.Point(442, 48)
         Me.txtSiglaOrgao.Name = "txtSiglaOrgao"
         Me.txtSiglaOrgao.Size = New System.Drawing.Size(49, 20)
@@ -223,7 +238,9 @@ Partial Class FormAMEOCIControleCompetencia
         '
         'txtOrgaoOrigem
         '
+        Me.txtOrgaoOrigem.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.txtOrgaoOrigem.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
+        Me.txtOrgaoOrigem.ForeColor = System.Drawing.SystemColors.Info
         Me.txtOrgaoOrigem.Location = New System.Drawing.Point(134, 48)
         Me.txtOrgaoOrigem.Name = "txtOrgaoOrigem"
         Me.txtOrgaoOrigem.Size = New System.Drawing.Size(302, 20)
@@ -231,6 +248,8 @@ Partial Class FormAMEOCIControleCompetencia
         '
         'txtCGC
         '
+        Me.txtCGC.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.txtCGC.ForeColor = System.Drawing.SystemColors.Info
         Me.txtCGC.Location = New System.Drawing.Point(13, 87)
         Me.txtCGC.Name = "txtCGC"
         Me.txtCGC.Size = New System.Drawing.Size(115, 20)
@@ -238,6 +257,8 @@ Partial Class FormAMEOCIControleCompetencia
         '
         'txtCnsDiretor
         '
+        Me.txtCnsDiretor.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.txtCnsDiretor.ForeColor = System.Drawing.SystemColors.Info
         Me.txtCnsDiretor.Location = New System.Drawing.Point(134, 87)
         Me.txtCnsDiretor.Name = "txtCnsDiretor"
         Me.txtCnsDiretor.Size = New System.Drawing.Size(116, 20)
@@ -265,6 +286,7 @@ Partial Class FormAMEOCIControleCompetencia
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(40, Byte), Integer), CType(CType(40, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(526, 215)
         Me.Controls.Add(Me.btSair)
         Me.Controls.Add(Me.btSalvar)

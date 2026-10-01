@@ -45,6 +45,8 @@ Partial Class FormAMEOCIGeradorAPAC
         '
         'numQtd
         '
+        Me.numQtd.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.numQtd.ForeColor = System.Drawing.SystemColors.Info
         Me.numQtd.Location = New System.Drawing.Point(29, 110)
         Me.numQtd.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.numQtd.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
@@ -64,6 +66,8 @@ Partial Class FormAMEOCIGeradorAPAC
         '
         'tbFaixaFim
         '
+        Me.tbFaixaFim.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.tbFaixaFim.ForeColor = System.Drawing.SystemColors.Info
         Me.tbFaixaFim.Location = New System.Drawing.Point(29, 70)
         Me.tbFaixaFim.MaxLength = 13
         Me.tbFaixaFim.Name = "tbFaixaFim"
@@ -81,6 +85,8 @@ Partial Class FormAMEOCIGeradorAPAC
         '
         'tbFaixaInicio
         '
+        Me.tbFaixaInicio.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.tbFaixaInicio.ForeColor = System.Drawing.SystemColors.Info
         Me.tbFaixaInicio.Location = New System.Drawing.Point(29, 31)
         Me.tbFaixaInicio.MaxLength = 13
         Me.tbFaixaInicio.Name = "tbFaixaInicio"
@@ -89,6 +95,7 @@ Partial Class FormAMEOCIGeradorAPAC
         '
         'Button2
         '
+        Me.Button2.ForeColor = System.Drawing.Color.Black
         Me.Button2.Location = New System.Drawing.Point(29, 136)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(115, 23)
@@ -98,6 +105,7 @@ Partial Class FormAMEOCIGeradorAPAC
         '
         'btFechar
         '
+        Me.btFechar.ForeColor = System.Drawing.Color.Black
         Me.btFechar.Location = New System.Drawing.Point(29, 162)
         Me.btFechar.Name = "btFechar"
         Me.btFechar.Size = New System.Drawing.Size(115, 23)
@@ -109,6 +117,7 @@ Partial Class FormAMEOCIGeradorAPAC
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(40, Byte), Integer), CType(CType(40, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(174, 204)
         Me.Controls.Add(Me.btFechar)
         Me.Controls.Add(Me.Label3)
@@ -118,6 +127,7 @@ Partial Class FormAMEOCIGeradorAPAC
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.tbFaixaInicio)
         Me.Controls.Add(Me.Button2)
+        Me.ForeColor = System.Drawing.Color.White
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.MaximizeBox = False
         Me.MinimizeBox = False

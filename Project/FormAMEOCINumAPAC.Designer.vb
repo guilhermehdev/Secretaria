@@ -78,7 +78,7 @@ Partial Class FormAMEOCINumAPAC
         Me.dgvNumerosAPAC.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.dgvNumerosAPAC.BackgroundColor = System.Drawing.Color.White
+        Me.dgvNumerosAPAC.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.dgvNumerosAPAC.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvNumerosAPAC.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
         DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
@@ -92,10 +92,10 @@ Partial Class FormAMEOCINumAPAC
         Me.dgvNumerosAPAC.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvNumerosAPAC.ContextMenuStrip = Me.ctxMenuAPAC
         DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.SteelBlue
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Calibri", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.LightSkyBlue
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.OrangeRed
         DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.Window
         DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dgvNumerosAPAC.DefaultCellStyle = DataGridViewCellStyle2
@@ -123,7 +123,7 @@ Partial Class FormAMEOCINumAPAC
         '
         Me.ctxMenuAPAC.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AlterarStatusToolStripMenuItem, Me.CopiarToolStripMenuItem, Me.EditarOCIToolStripMenuItem, Me.ExportarEmPDFToolStripMenuItem, Me.ExcluirOCIToolStripMenuItem})
         Me.ctxMenuAPAC.Name = "ctxMenuAPAC"
-        Me.ctxMenuAPAC.Size = New System.Drawing.Size(226, 136)
+        Me.ctxMenuAPAC.Size = New System.Drawing.Size(226, 114)
         '
         'AlterarStatusToolStripMenuItem
         '
@@ -159,6 +159,7 @@ Partial Class FormAMEOCINumAPAC
         '
         Me.GroupBox1.Controls.Add(Me.gbSearch)
         Me.GroupBox1.Controls.Add(Me.dgvNumerosAPAC)
+        Me.GroupBox1.ForeColor = System.Drawing.Color.White
         Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(841, 486)
@@ -214,6 +215,8 @@ Partial Class FormAMEOCINumAPAC
         '
         'cbMedico
         '
+        Me.cbMedico.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.cbMedico.ForeColor = System.Drawing.SystemColors.Info
         Me.cbMedico.FormattingEnabled = True
         Me.cbMedico.Location = New System.Drawing.Point(309, 29)
         Me.cbMedico.Name = "cbMedico"
@@ -231,6 +234,8 @@ Partial Class FormAMEOCINumAPAC
         '
         'cbSearchComp
         '
+        Me.cbSearchComp.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.cbSearchComp.ForeColor = System.Drawing.SystemColors.Info
         Me.cbSearchComp.FormattingEnabled = True
         Me.cbSearchComp.Location = New System.Drawing.Point(9, 29)
         Me.cbSearchComp.Name = "cbSearchComp"
@@ -248,6 +253,8 @@ Partial Class FormAMEOCINumAPAC
         '
         'cbStatus
         '
+        Me.cbStatus.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.cbStatus.ForeColor = System.Drawing.SystemColors.Info
         Me.cbStatus.FormattingEnabled = True
         Me.cbStatus.Items.AddRange(New Object() {"DISP", "CONC", "CANC", "BLOQ"})
         Me.cbStatus.Location = New System.Drawing.Point(710, 68)
@@ -284,6 +291,8 @@ Partial Class FormAMEOCINumAPAC
         '
         'cbOCI
         '
+        Me.cbOCI.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.cbOCI.ForeColor = System.Drawing.SystemColors.Info
         Me.cbOCI.FormattingEnabled = True
         Me.cbOCI.Location = New System.Drawing.Point(110, 29)
         Me.cbOCI.Name = "cbOCI"
@@ -292,6 +301,7 @@ Partial Class FormAMEOCINumAPAC
         '
         'dtpFim
         '
+        Me.dtpFim.CalendarMonthBackground = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.dtpFim.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.dtpFim.Location = New System.Drawing.Point(628, 68)
         Me.dtpFim.Name = "dtpFim"
@@ -300,6 +310,7 @@ Partial Class FormAMEOCINumAPAC
         '
         'dtpIni
         '
+        Me.dtpIni.CalendarMonthBackground = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.dtpIni.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.dtpIni.Location = New System.Drawing.Point(534, 68)
         Me.dtpIni.Name = "dtpIni"
@@ -317,6 +328,8 @@ Partial Class FormAMEOCINumAPAC
         '
         'cbUsuarios
         '
+        Me.cbUsuarios.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.cbUsuarios.ForeColor = System.Drawing.SystemColors.Info
         Me.cbUsuarios.FormattingEnabled = True
         Me.cbUsuarios.Location = New System.Drawing.Point(208, 68)
         Me.cbUsuarios.Name = "cbUsuarios"
@@ -343,6 +356,8 @@ Partial Class FormAMEOCINumAPAC
         '
         'tbAPACFim
         '
+        Me.tbAPACFim.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.tbAPACFim.ForeColor = System.Drawing.SystemColors.Info
         Me.tbAPACFim.Location = New System.Drawing.Point(114, 68)
         Me.tbAPACFim.MaxLength = 13
         Me.tbAPACFim.Name = "tbAPACFim"
@@ -351,6 +366,8 @@ Partial Class FormAMEOCINumAPAC
         '
         'tbAPACIni
         '
+        Me.tbAPACIni.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.tbAPACIni.ForeColor = System.Drawing.SystemColors.Info
         Me.tbAPACIni.Location = New System.Drawing.Point(9, 68)
         Me.tbAPACIni.MaxLength = 13
         Me.tbAPACIni.Name = "tbAPACIni"
@@ -363,6 +380,8 @@ Partial Class FormAMEOCINumAPAC
         '
         'StatusStrip1
         '
+        Me.StatusStrip1.BackColor = System.Drawing.Color.Black
+        Me.StatusStrip1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.statusLabelRegistros, Me.ToolStripStatusLabel1})
         Me.StatusStrip1.Location = New System.Drawing.Point(0, 549)
         Me.StatusStrip1.Name = "StatusStrip1"
@@ -388,7 +407,7 @@ Partial Class FormAMEOCINumAPAC
         Me.btImprimirOCI.FlatAppearance.BorderSize = 0
         Me.btImprimirOCI.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btImprimirOCI.ForeColor = System.Drawing.Color.White
-        Me.btImprimirOCI.Location = New System.Drawing.Point(753, 503)
+        Me.btImprimirOCI.Location = New System.Drawing.Point(753, 502)
         Me.btImprimirOCI.Name = "btImprimirOCI"
         Me.btImprimirOCI.Size = New System.Drawing.Size(100, 43)
         Me.btImprimirOCI.TabIndex = 59
@@ -402,7 +421,7 @@ Partial Class FormAMEOCINumAPAC
         Me.btImprimirDia.FlatAppearance.BorderSize = 0
         Me.btImprimirDia.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btImprimirDia.ForeColor = System.Drawing.Color.White
-        Me.btImprimirDia.Location = New System.Drawing.Point(652, 503)
+        Me.btImprimirDia.Location = New System.Drawing.Point(652, 502)
         Me.btImprimirDia.Name = "btImprimirDia"
         Me.btImprimirDia.Size = New System.Drawing.Size(100, 43)
         Me.btImprimirDia.TabIndex = 62
@@ -418,11 +437,13 @@ Partial Class FormAMEOCINumAPAC
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(40, Byte), Integer), CType(CType(40, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(864, 571)
         Me.Controls.Add(Me.btImprimirDia)
         Me.Controls.Add(Me.btImprimirOCI)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.GroupBox1)
+        Me.ForeColor = System.Drawing.Color.White
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
