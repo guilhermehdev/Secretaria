@@ -2021,7 +2021,22 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                     Dim areaControle As Rectangle = controle.ClientRectangle
                     grafico.DrawRectangle(caneta, areaControle.X, areaControle.Y, areaControle.Width - 1, areaControle.Height - 1)
                 End Using
+
+                PintarBordasDasAbas(grafico)
             End Using
+        End Sub
+
+        Private Sub PintarBordasDasAbas(grafico As Graphics)
+            For indice As Integer = 0 To controle.TabPages.Count - 1
+                Dim areaAba As Rectangle = controle.GetTabRect(indice)
+                Dim corBorda As Color = If(indice = controle.SelectedIndex,
+                                           Color.FromArgb(255, 192, 0),
+                                           corFundo)
+
+                Using caneta As New Pen(corBorda)
+                    grafico.DrawRectangle(caneta, areaAba.X, areaAba.Y, areaAba.Width - 1, areaAba.Height - 1)
+                End Using
+            Next
         End Sub
     End Class
 
