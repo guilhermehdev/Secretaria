@@ -1633,6 +1633,9 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             ' procedimentos secundários por paciente/data/médico. A seleção
             ' disponível para o procedimento principal permanece na tela e será
             ' vinculada à APAC quando ela for gravada.
+        Else
+            checkQueue()
+            colapse()
         End If
 
         Clipboard.SetText(result(0)("dtnasc").ToString())
