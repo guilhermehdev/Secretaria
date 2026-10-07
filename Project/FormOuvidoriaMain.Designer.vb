@@ -33,6 +33,7 @@ Partial Class FormOuvidoriaMain
         Me.RelatóriosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PrazosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.LogsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ExportarOuvidoriasExcelToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OuvidoriasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AguardandoAprovaçãoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ProntasParaEnvioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -95,7 +96,7 @@ Partial Class FormOuvidoriaMain
         '
         'RelatóriosToolStripMenuItem
         '
-        Me.RelatóriosToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PrazosToolStripMenuItem, Me.LogsToolStripMenuItem})
+        Me.RelatóriosToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PrazosToolStripMenuItem, Me.ExportarOuvidoriasExcelToolStripMenuItem, Me.LogsToolStripMenuItem})
         Me.RelatóriosToolStripMenuItem.Name = "RelatóriosToolStripMenuItem"
         Me.RelatóriosToolStripMenuItem.Size = New System.Drawing.Size(71, 20)
         Me.RelatóriosToolStripMenuItem.Text = "Relatórios"
@@ -111,6 +112,12 @@ Partial Class FormOuvidoriaMain
         Me.LogsToolStripMenuItem.Name = "LogsToolStripMenuItem"
         Me.LogsToolStripMenuItem.Size = New System.Drawing.Size(108, 22)
         Me.LogsToolStripMenuItem.Text = "Logs"
+        '
+        'ExportarOuvidoriasExcelToolStripMenuItem
+        '
+        Me.ExportarOuvidoriasExcelToolStripMenuItem.Name = "ExportarOuvidoriasExcelToolStripMenuItem"
+        Me.ExportarOuvidoriasExcelToolStripMenuItem.Size = New System.Drawing.Size(253, 22)
+        Me.ExportarOuvidoriasExcelToolStripMenuItem.Text = "Exportar ouvidorias para Excel"
         '
         'OuvidoriasToolStripMenuItem
         '
@@ -410,6 +417,7 @@ Partial Class FormOuvidoriaMain
     Friend WithEvents BackupToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents UsuáriosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents LogsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ExportarOuvidoriasExcelToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents dgListProtocolos As System.Windows.Forms.DataGridView
     Friend WithEvents statusBar As System.Windows.Forms.StatusStrip
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox

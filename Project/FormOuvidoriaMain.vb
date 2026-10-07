@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports System.Threading
 Imports ServiceStack.Redis
+Imports ClosedXML.Excel
 
 Public Class FormOuvidoriaMain
     Dim m As New Main
@@ -53,6 +54,105 @@ Public Class FormOuvidoriaMain
 
     Private Sub LogsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles LogsToolStripMenuItem.Click
         FormSystemLogs.ShowDialog()
+    End Sub
+
+    Private Sub ExportarOuvidoriasExcelToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExportarOuvidoriasExcelToolStripMenuItem.Click
+        Using saveDialog As New SaveFileDialog()
+            saveDialog.Title = "Exportar ouvidorias"
+            saveDialog.Filter = "Arquivo Excel (*.xlsx)|*.xlsx"
+            saveDialog.DefaultExt = "xlsx"
+            saveDialog.AddExtension = True
+            saveDialog.FileName = "Ouvidorias_EmAndamento_Vencidas_" & Date.Now.ToString("yyyyMMdd_HHmm")
+
+            If saveDialog.ShowDialog() <> DialogResult.OK Then Return
+
+            Try
+                Dim emAndamento = ObterOuvidoriasPorStatus("Em andamento")
+                Dim vencidas = ObterOuvidoriasPorStatus("Vencido")
+
+                If emAndamento.Rows.Count = 0 AndAlso vencidas.Rows.Count = 0 Then
+                    MsgBox("Não há ouvidorias em andamento ou vencidas para exportar.", MsgBoxStyle.Information)
+                    Return
+                End If
+
+                Using workbook As New XLWorkbook()
+                    ExportarOuvidoriasParaPlanilha(workbook, "Em andamento", emAndamento)
+                    ExportarOuvidoriasParaPlanilha(workbook, "Vencidas", vencidas)
+                    workbook.SaveAs(saveDialog.FileName)
+                End Using
+
+                MsgBox("Arquivo Excel exportado com sucesso." & vbCrLf & saveDialog.FileName, MsgBoxStyle.Information)
+            Catch ex As Exception
+                MsgBox("Não foi possível exportar as ouvidorias para o Excel:" & vbCrLf & ex.Message, MsgBoxStyle.Critical)
+            End Try
+        End Using
+    End Sub
+
+    Private Function ObterOuvidoriasPorStatus(status As String) As DataTable
+        Dim statusSeguro = status.Replace("'", "''")
+        Dim query = "SELECT ouvidoria.protocolo AS Protocolo, " &
+                    "ouvidoria.abertura AS Abertura, " &
+                    "ouvidoria.1contato AS `1º contato`, " &
+                    "ouvidoria.encerramento AS Encerramento, " &
+                    "ouvidoria.`status` AS Status, " &
+                    "destinos.descricao AS Destino, " &
+                    "coordenador.nome AS Coordenador, " &
+                    "DATEDIFF(CURDATE(), ouvidoria.abertura) AS `Dias desde abertura`, " &
+                    "CASE " &
+                    "WHEN ouvidoria.`status` = 'Vencido' AND ouvidoria.sistema <> 'OuvidorSUS' " &
+                    "THEN CONCAT('vencido a ', GREATEST(DATEDIFF(CURDATE(), ouvidoria.abertura) - 30, 0), ' dias') " &
+                    "WHEN ouvidoria.`status` = 'Em andamento' " &
+                    "THEN CONCAT(DATEDIFF(CURDATE(), ouvidoria.abertura), ' dias') " &
+                    "ELSE '' END AS Prazo " &
+                    "FROM ouvidoria " &
+                    "JOIN destinos ON ouvidoria.id_destino = destinos.id " &
+                    "JOIN coordenador ON coordenador.id = destinos.id_coordenador " &
+                    "WHERE ouvidoria.`status` = '" & statusSeguro & "' " &
+                    "ORDER BY ouvidoria.protocolo DESC"
+
+        Return m.getDataset(query)
+    End Function
+
+    Private Sub ExportarOuvidoriasParaPlanilha(workbook As XLWorkbook, nomePlanilha As String, dados As DataTable)
+        Dim worksheet = workbook.Worksheets.Add(nomePlanilha)
+        Dim totalColunas As Integer = dados.Columns.Count
+
+        For coluna As Integer = 0 To totalColunas - 1
+            worksheet.Cell(1, coluna + 1).Value = dados.Columns(coluna).ColumnName
+        Next
+
+        If totalColunas > 0 Then
+            Dim cabecalho = worksheet.Range(1, 1, 1, totalColunas)
+            cabecalho.Style.Font.Bold = True
+            cabecalho.Style.Font.FontColor = XLColor.White
+            cabecalho.Style.Fill.BackgroundColor = XLColor.FromArgb(79, 129, 189)
+        End If
+
+        For linha As Integer = 0 To dados.Rows.Count - 1
+            For coluna As Integer = 0 To totalColunas - 1
+                Dim valor = dados.Rows(linha).Item(coluna)
+                Dim celula = worksheet.Cell(linha + 2, coluna + 1)
+
+                If valor Is DBNull.Value OrElse valor Is Nothing Then
+                    celula.Value = String.Empty
+                ElseIf TypeOf valor Is DateTime Then
+                    celula.Value = DirectCast(valor, DateTime)
+                    celula.Style.DateFormat.Format = "dd/MM/yyyy"
+                Else
+                    celula.Value = valor.ToString()
+                End If
+            Next
+        Next
+
+        If dados.Rows.Count > 0 AndAlso totalColunas > 0 Then
+            Dim tabela = worksheet.Range(1, 1, dados.Rows.Count + 1, totalColunas)
+            tabela.Style.Border.OutsideBorder = XLBorderStyleValues.Thin
+            tabela.Style.Border.InsideBorder = XLBorderStyleValues.Thin
+            tabela.SetAutoFilter()
+        End If
+
+        worksheet.SheetView.FreezeRows(1)
+        worksheet.Columns().AdjustToContents()
     End Sub
 
     Private Function getData()
