@@ -1228,9 +1228,9 @@ Partial Class FormAMEOCI
         Me.btAddAPAC.FlatAppearance.BorderSize = 0
         Me.btAddAPAC.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btAddAPAC.ForeColor = System.Drawing.Color.White
-        Me.btAddAPAC.Location = New System.Drawing.Point(389, 435)
+        Me.btAddAPAC.Location = New System.Drawing.Point(389, 436)
         Me.btAddAPAC.Name = "btAddAPAC"
-        Me.btAddAPAC.Size = New System.Drawing.Size(149, 41)
+        Me.btAddAPAC.Size = New System.Drawing.Size(149, 37)
         Me.btAddAPAC.TabIndex = 51
         Me.btAddAPAC.Text = "Exportar registros para APAC magnético"
         Me.btAddAPAC.UseVisualStyleBackColor = False
@@ -1772,7 +1772,7 @@ Partial Class FormAMEOCI
         'lbStatusCads
         '
         Me.lbStatusCads.AutoSize = True
-        Me.lbStatusCads.Location = New System.Drawing.Point(4, 466)
+        Me.lbStatusCads.Location = New System.Drawing.Point(6, 459)
         Me.lbStatusCads.Name = "lbStatusCads"
         Me.lbStatusCads.Size = New System.Drawing.Size(55, 13)
         Me.lbStatusCads.TabIndex = 56

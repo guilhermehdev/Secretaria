@@ -24,6 +24,7 @@ Public Class FormAMEOCI
     Private nome = Nothing
     Private sexo = Nothing
     Private cpf = Nothing
+    Private sus = Nothing
     Private mae = Nothing
     Private raca = Nothing
     Private ddd = Nothing
@@ -239,7 +240,10 @@ Public Class FormAMEOCI
             If idPac = Nothing Then
 
                 Try
-                    idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento, sexo, raca, sus) VALUES ('{txtNomePaciente.Text.Trim()}', '{m.mysqlDateFormat(dtNascimento.Text)}', '{txtNomeMae.Text.Trim()}', '({txtDDD.Text}){telfixo}', '{txtCpfPaciente.Text.Trim()}',{idEnd}, '{txtNumero.Text.Trim()}', '{txtComplemento.Text.Trim()}', '{txtSexo.Text}', '{txtRaca.SelectedValue}', '{txtCnsPaciente.Text}')")
+                    Dim cpfSql As String = If(chkSemCpf.Checked,
+                                              "NULL",
+                                              "'" & txtCpfPaciente.Text.Trim().Replace("'", "''") & "'")
+                    idPac = FormAMEmain.doQuery($"INSERT INTO pacientes (nome, dtnasc, mae, tel, cpf, id_logradouro, numero, complemento, sexo, raca, sus) VALUES ('{txtNomePaciente.Text.Trim()}', '{m.mysqlDateFormat(dtNascimento.Text)}', '{txtNomeMae.Text.Trim()}', '({txtDDD.Text}){telfixo}', {cpfSql},{idEnd}, '{txtNumero.Text.Trim()}', '{txtComplemento.Text.Trim()}', '{txtSexo.Text}', '{txtRaca.SelectedValue}', '{txtCnsPaciente.Text}')")
 
                 Catch ex As Exception
                     mensagemErro = ex.Message
@@ -403,7 +407,10 @@ Public Class FormAMEOCI
             End If
 
             Try
-                FormAMEmain.doQuery($"UPDATE pacientes SET dtnasc='{m.mysqlDateFormat(dtNascimento.Text)}', cpf='{txtCpfPaciente.Text.Trim()}', nome='{txtNomePaciente.Text}',mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){telfixo}', id_logradouro={idEnd}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}', raca='{txtRaca.SelectedValue}', sus='{txtCnsPaciente.Text}' WHERE id={idPac}")
+                Dim cpfSql As String = If(chkSemCpf.Checked,
+                                          "NULLIF(cpf, '')",
+                                          "'" & txtCpfPaciente.Text.Trim().Replace("'", "''") & "'")
+                FormAMEmain.doQuery($"UPDATE pacientes SET dtnasc='{m.mysqlDateFormat(dtNascimento.Text)}', cpf={cpfSql}, nome='{txtNomePaciente.Text}',mae='{txtNomeMae.Text.Trim()}', tel='({txtDDD.Text}){telfixo}', id_logradouro={idEnd}, numero='{txtNumero.Text.Trim()}', complemento='{txtComplemento.Text.Trim()}', sexo='{txtSexo.Text}', raca='{txtRaca.SelectedValue}', sus='{txtCnsPaciente.Text}' WHERE id={idPac}")
                 If txtNumApac.Text.Length = 13 Then
                     UnlockApac(txtNumApac.Text)
                 End If
@@ -659,7 +666,10 @@ Public Class FormAMEOCI
                     r14.Append(FmtL(txtTelefone.Text, 9)) ' <- campo que causou o desalinhamento (espaço perdido no telefone)
                     r14.Append(FmtR(txtEmail.Text, 40))
                     r14.Append(txtCNSMedicoExecutante.SelectedValue.PadLeft(15, "0"c))
-                    r14.Append(txtCpfPaciente.Text.Trim.PadLeft(11, "0"c))
+                    Dim cpfArquivo As String = If(chkSemCpf.Checked,
+                                                 New String("0"c, 11),
+                                                 txtCpfPaciente.Text.Trim.PadLeft(11, "0"c))
+                    r14.Append(cpfArquivo)
                     r14.Append(FmtL(txtEquipe.Text, 10))
                     r14.Append(If(chkSituacaoRua.Checked, "S", "N"))
                     ' 49 - Fonte Orçamentária (2 posições, 534-535) - opcional, mantém em branco
@@ -2597,6 +2607,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                 txtSexo.Text = result.Rows(0).Item("sexo").ToString
                 txtCpfPaciente.Text = result.Rows(0).Item("cpf").ToString
                 txtNomeMae.Text = result.Rows(0).Item("mae").ToString
+                txtCnsPaciente.Text = result.Rows(0).Item("sus").ToString
 
                 Dim _raca As Boolean = IsDBNull(result.Rows(0).Item("raca"))
                 If _raca Then
@@ -2627,10 +2638,12 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
                 chkResponsavel()
 
+
                 nasc = dtNascimento.Text
                 nome = txtNomePaciente.Text
                 sexo = txtSexo.Text
                 cpf = txtCpfPaciente.Text
+                sus = txtCnsPaciente.Text
                 mae = txtNomeMae.Text
                 raca = If(_raca, Nothing, txtRaca.SelectedValue)
                 ddd = txtDDD.Text
@@ -3095,7 +3108,6 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         End If
 
     End Sub
-
 
     Private Sub TabControl1_Click(sender As Object, e As EventArgs) Handles TabControl1.Click
         popupGrid.Visible = False
@@ -3843,7 +3855,6 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
     Private Sub chkSemCpf_CheckedChanged(sender As Object, e As EventArgs) Handles chkSemCpf.CheckedChanged
         If chkSemCpf.Checked Then
-            txtCpfPaciente.Text = ""
             txtCpfPaciente.Enabled = False
             btCADSUS.Enabled = False
         Else
