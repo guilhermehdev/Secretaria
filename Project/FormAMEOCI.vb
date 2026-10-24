@@ -3902,4 +3902,8 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         searchByCompetencia()
     End Sub
 
+    Private Sub ProfissionaisToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ProfissionaisToolStripMenuItem.Click
+        FormAMECadastroProfissionais.ShowDialog()
+    End Sub
+
 End Class

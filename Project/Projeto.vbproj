@@ -578,6 +578,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Cmain.vb" />
+    <Compile Include="FormCadastroProfissionais.Designer.vb">
+      <DependentUpon>FormCadastroProfissionais.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormCadastroProfissionais.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormSystemBackground.Designer.vb">
       <DependentUpon>FormSystemBackground.vb</DependentUpon>
     </Compile>
@@ -789,6 +795,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormBLHSorologias.resx">
       <DependentUpon>FormBLHSorologias.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCadastroProfissionais.resx">
+      <DependentUpon>FormCadastroProfissionais.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormSystemBackground.resx">
       <DependentUpon>FormSystemBackground.vb</DependentUpon>

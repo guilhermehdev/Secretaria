@@ -17,7 +17,7 @@ Public Class OCI
             parametros = " AND " & parametros
         End If
         Dim query = $"SELECT oci.num_apac, oci.`data` AS data_solicitacao, cod_oci_principal.cod, cod_oci_principal.descricao, oci.cid_principal, 
-        oci.cid_sec, solicitante.nome AS medico_solicitante, solicitante.SUS AS sus_medico_solicitante, 
+        oci.cid_sec, oci.sem_cpf, solicitante.nome AS medico_solicitante, solicitante.SUS AS sus_medico_solicitante,
         autorizador.nome AS medico_autorizador, autorizador.SUS AS sus_medico_autorizador,
         pacientes.nome, pacientes.dtnasc, pacientes.sexo, pacientes.raca, pacientes.cpf, pacientes.mae, pacientes.tel, 
         ceps_peruibe.cep, ceps_peruibe.tipo, ceps_peruibe.logradouro, pacientes.numero, ceps_peruibe.bairro
@@ -43,6 +43,20 @@ Public Class OCI
 
     End Function
 
+    Private Function RegistroSemCpf(oci As DataTable) As Boolean
+        If oci Is Nothing OrElse oci.Rows.Count = 0 OrElse Not oci.Columns.Contains("sem_cpf") Then
+            Return False
+        End If
+
+        Dim valor = oci.Rows(0)("sem_cpf")
+        If valor Is Nothing OrElse IsDBNull(valor) Then
+            Return False
+        End If
+
+        Dim texto = valor.ToString().Trim()
+        Return texto = "1" OrElse texto.Equals("S", StringComparison.OrdinalIgnoreCase) OrElse texto.Equals("SIM", StringComparison.OrdinalIgnoreCase)
+    End Function
+
     Private Function ValidarOCI(oci As DataTable) As List(Of String)
 
         Dim erros As New List(Of String)
@@ -56,7 +70,7 @@ Public Class OCI
 
         ' --- Campos de texto obrigatórios ---
         Dim camposObrigatorios As String() = {
-        "nome", "cpf", "mae", "tel", "cep", "tipo", "logradouro",
+        "nome", "mae", "tel", "cep", "tipo", "logradouro",
         "numero", "bairro", "cod", "descricao", "cid_principal",
         "data_solicitacao", "medico_solicitante", "sus_medico_solicitante",
         "medico_autorizador", "sus_medico_autorizador", "num_apac"
@@ -97,10 +111,12 @@ Public Class OCI
 
         ' --- CPF ---
         Dim cpf = New String(linha("cpf").ToString().Where(AddressOf Char.IsDigit).ToArray())
-        If cpf.Length <> 11 Then
-            erros.Add($"CPF '{linha("cpf")}' inválido: deve conter 11 dígitos.")
-        ElseIf Not m.ValidarCPF(cpf) Then
-            erros.Add($"CPF '{linha("cpf")}' inválido: dígitos verificadores incorretos.")
+        If Not RegistroSemCpf(oci) Then
+            If cpf.Length <> 11 Then
+                erros.Add($"CPF '{linha("cpf")}' inválido: deve conter 11 dígitos.")
+            ElseIf Not m.ValidarCPF(cpf) Then
+                erros.Add($"CPF '{linha("cpf")}' inválido: dígitos verificadores incorretos.")
+            End If
         End If
 
         ' --- Telefone ---
@@ -175,7 +191,7 @@ Public Class OCI
             MarcarCheckBox(campos, "SEXO_F", True)
         End If
 
-        campos.SetField("CPF_PACIENTE", oci.Rows(0)("cpf").ToString())
+        campos.SetField("CPF_PACIENTE", If(RegistroSemCpf(oci), String.Empty, oci.Rows(0)("cpf").ToString()))
         campos.SetField("DN_PACIENTE", DirectCast(oci.Rows(0)("dtnasc"), Date).ToString("dd/MM/yyyy"))
 
         Dim idRaca = oci.Rows(0)("raca").ToString()
