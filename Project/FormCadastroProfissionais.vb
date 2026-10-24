@@ -259,7 +259,9 @@ Public Class FormAMECadastroProfissionais
             cbEspecialidades.SelectedValue = Convert.ToInt32(linha.Cells("id_espec").Value)
         End If
 
+        btSalvarProfissional.Enabled = False
         btAtualizarProfissional.Enabled = True
+        btCancelarProfissional.Enabled = True
     End Sub
 
     Private Sub LimparFormulario()
@@ -271,8 +273,15 @@ Public Class FormAMECadastroProfissionais
         tbCBO.Clear()
         If cbNivelautorizador.Items.Count > 0 Then cbNivelautorizador.SelectedValue = 0
         cbEspecialidades.SelectedIndex = -1
+        btSalvarProfissional.Enabled = True
         btAtualizarProfissional.Enabled = False
+        btCancelarProfissional.Enabled = False
+        dgProfissionais.ClearSelection()
         tbNomeProfissional.Focus()
+    End Sub
+
+    Private Sub btCancelarProfissional_Click(sender As Object, e As EventArgs) Handles btCancelarProfissional.Click
+        LimparFormulario()
     End Sub
 
     Private Sub ExibirErroBanco(ex As Exception)

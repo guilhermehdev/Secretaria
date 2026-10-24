@@ -40,6 +40,7 @@ Partial Class FormAMECadastroProfissionais
         Me.cbNivelautorizador = New System.Windows.Forms.ComboBox()
         Me.Label24 = New System.Windows.Forms.Label()
         Me.cbEspecialidades = New System.Windows.Forms.ComboBox()
+        Me.btCancelarProfissional = New System.Windows.Forms.Button()
         Me.btSalvarProfissional = New System.Windows.Forms.Button()
         Me.btAtualizarProfissional = New System.Windows.Forms.Button()
         Me.dgProfissionais = New System.Windows.Forms.DataGridView()
@@ -163,12 +164,13 @@ Partial Class FormAMECadastroProfissionais
         'cbNivelautorizador
         '
         Me.cbNivelautorizador.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.cbNivelautorizador.DropDownWidth = 175
         Me.cbNivelautorizador.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbNivelautorizador.ForeColor = System.Drawing.Color.Orange
         Me.cbNivelautorizador.FormattingEnabled = True
         Me.cbNivelautorizador.Location = New System.Drawing.Point(329, 73)
         Me.cbNivelautorizador.Name = "cbNivelautorizador"
-        Me.cbNivelautorizador.Size = New System.Drawing.Size(175, 21)
+        Me.cbNivelautorizador.Size = New System.Drawing.Size(110, 21)
         Me.cbNivelautorizador.TabIndex = 79
         '
         'Label24
@@ -192,6 +194,21 @@ Partial Class FormAMECadastroProfissionais
         Me.cbEspecialidades.TabIndex = 81
         Me.cbEspecialidades.Tag = "ign"
         '
+        'btCancelarProfissional
+        '
+        Me.btCancelarProfissional.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.btCancelarProfissional.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btCancelarProfissional.Enabled = False
+        Me.btCancelarProfissional.FlatAppearance.BorderSize = 0
+        Me.btCancelarProfissional.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btCancelarProfissional.ForeColor = System.Drawing.Color.Black
+        Me.btCancelarProfissional.Location = New System.Drawing.Point(577, 72)
+        Me.btCancelarProfissional.Name = "btCancelarProfissional"
+        Me.btCancelarProfissional.Size = New System.Drawing.Size(60, 22)
+        Me.btCancelarProfissional.TabIndex = 82
+        Me.btCancelarProfissional.Text = "Cancelar"
+        Me.btCancelarProfissional.UseVisualStyleBackColor = False
+        '
         'btSalvarProfissional
         '
         Me.btSalvarProfissional.BackColor = System.Drawing.Color.DarkSeaGreen
@@ -199,10 +216,10 @@ Partial Class FormAMECadastroProfissionais
         Me.btSalvarProfissional.FlatAppearance.BorderSize = 0
         Me.btSalvarProfissional.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btSalvarProfissional.ForeColor = System.Drawing.Color.Transparent
-        Me.btSalvarProfissional.Location = New System.Drawing.Point(511, 71)
+        Me.btSalvarProfissional.Location = New System.Drawing.Point(445, 72)
         Me.btSalvarProfissional.Name = "btSalvarProfissional"
         Me.btSalvarProfissional.Size = New System.Drawing.Size(60, 22)
-        Me.btSalvarProfissional.TabIndex = 82
+        Me.btSalvarProfissional.TabIndex = 83
         Me.btSalvarProfissional.Text = "Salvar"
         Me.btSalvarProfissional.UseVisualStyleBackColor = False
         '
@@ -213,10 +230,10 @@ Partial Class FormAMECadastroProfissionais
         Me.btAtualizarProfissional.FlatAppearance.BorderSize = 0
         Me.btAtualizarProfissional.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btAtualizarProfissional.ForeColor = System.Drawing.Color.Transparent
-        Me.btAtualizarProfissional.Location = New System.Drawing.Point(577, 71)
+        Me.btAtualizarProfissional.Location = New System.Drawing.Point(511, 72)
         Me.btAtualizarProfissional.Name = "btAtualizarProfissional"
         Me.btAtualizarProfissional.Size = New System.Drawing.Size(60, 22)
-        Me.btAtualizarProfissional.TabIndex = 83
+        Me.btAtualizarProfissional.TabIndex = 84
         Me.btAtualizarProfissional.Text = "Atualizar"
         Me.btAtualizarProfissional.UseVisualStyleBackColor = False
         '
@@ -301,6 +318,7 @@ Partial Class FormAMECadastroProfissionais
         Me.Controls.Add(Me.dgProfissionais)
         Me.Controls.Add(Me.btAtualizarProfissional)
         Me.Controls.Add(Me.btSalvarProfissional)
+        Me.Controls.Add(Me.btCancelarProfissional)
         Me.Controls.Add(Me.Label24)
         Me.Controls.Add(Me.cbEspecialidades)
         Me.Controls.Add(Me.Label48)
@@ -343,6 +361,7 @@ Partial Class FormAMECadastroProfissionais
     Friend WithEvents cbNivelautorizador As ComboBox
     Friend WithEvents Label24 As Label
     Friend WithEvents cbEspecialidades As ComboBox
+    Friend WithEvents btCancelarProfissional As Button
     Friend WithEvents btSalvarProfissional As Button
     Friend WithEvents btAtualizarProfissional As Button
     Friend WithEvents dgProfissionais As DataGridView
