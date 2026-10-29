@@ -1513,6 +1513,34 @@ JOIN cod_oci_secundario ON cod_oci_secundario.cod = procedimentos_secundarios.co
     End Function
 
     Private Sub loadQueueOCI()
+        Dim idMedicoSelecionado As String = Nothing
+        Dim idCodSelecionado As Integer? = Nothing
+        Dim idItemSelecionado As Integer? = Nothing
+        Dim indiceItemSelecionado As Integer? = Nothing
+
+        ' Guarda as chaves das linhas atuais antes de recriar os DataSources.
+        ' O índice da linha não pode ser usado porque a fila é reordenada após a gravação.
+        Try
+            If dgQueueOCI.CurrentRow IsNot Nothing AndAlso dgQueueOCI.Columns.Contains("idMedico") AndAlso dgQueueOCI.Columns.Contains("idCod") Then
+                idMedicoSelecionado = Convert.ToString(dgQueueOCI.CurrentRow.Cells("idMedico").Value)
+                If Not IsDBNull(dgQueueOCI.CurrentRow.Cells("idCod").Value) Then
+                    idCodSelecionado = Convert.ToInt32(dgQueueOCI.CurrentRow.Cells("idCod").Value)
+                End If
+            End If
+
+            If dgQueueItens.CurrentRow IsNot Nothing AndAlso dgQueueItens.Columns.Contains("id") AndAlso
+               Not IsDBNull(dgQueueItens.CurrentRow.Cells("id").Value) Then
+                idItemSelecionado = Convert.ToInt32(dgQueueItens.CurrentRow.Cells("id").Value)
+                indiceItemSelecionado = dgQueueItens.CurrentRow.Index
+            End If
+        Catch
+            ' A fila pode estar sendo inicializada, sem linha selecionada ainda.
+            idMedicoSelecionado = Nothing
+            idCodSelecionado = Nothing
+            idItemSelecionado = Nothing
+            indiceItemSelecionado = Nothing
+        End Try
+
         Dim dataset As DataTable = FormAMEmain.getDataset("SELECT 
             oci_fila.id_medico_solicitante AS idMedico,
             oci_fila.cod_proced_principal AS idCod,
@@ -1552,6 +1580,56 @@ JOIN cod_oci_secundario ON cod_oci_secundario.cod = procedimentos_secundarios.co
         dgQueueOCI.Columns("total").HeaderText = "Total"
         dgQueueOCI.Columns("total").Width = 43
 
+        If Not String.IsNullOrWhiteSpace(idMedicoSelecionado) AndAlso idCodSelecionado.HasValue Then
+            Dim indiceGrupo As Integer = -1
+
+            For i As Integer = 0 To dgQueueOCI.Rows.Count - 1
+                Dim linha = dgQueueOCI.Rows(i)
+                If Convert.ToString(linha.Cells("idMedico").Value) = idMedicoSelecionado AndAlso
+                   Convert.ToInt32(linha.Cells("idCod").Value) = idCodSelecionado.Value Then
+                    indiceGrupo = i
+                    Exit For
+                End If
+            Next
+
+            If indiceGrupo >= 0 Then
+                ' Atribuir CurrentCell dispara CellEnter e carrega os itens do grupo restaurado.
+                dgQueueOCI.CurrentCell = dgQueueOCI.Rows(indiceGrupo).Cells("abrev")
+                dgQueueOCI.Rows(indiceGrupo).Selected = True
+                RestaurarItemFila(idItemSelecionado, indiceItemSelecionado)
+            End If
+        End If
+
+    End Sub
+
+    Private Sub RestaurarItemFila(idItemSelecionado As Integer?, indiceItemSelecionado As Integer?)
+        If dgQueueItens.Rows.Count = 0 OrElse Not dgQueueItens.Columns.Contains("id") Then Return
+
+        Dim indiceRestaurar As Integer = -1
+        For i As Integer = 0 To dgQueueItens.Rows.Count - 1
+            If IsDBNull(dgQueueItens.Rows(i).Cells("id").Value) Then Continue For
+
+            If idItemSelecionado.HasValue AndAlso
+               Convert.ToInt32(dgQueueItens.Rows(i).Cells("id").Value) = idItemSelecionado.Value Then
+                indiceRestaurar = i
+                Exit For
+            End If
+        Next
+
+        ' O item gravado sai da fila. Nesse caso, fica selecionado o próximo
+        ' item na mesma posição, mantendo a navegação do usuário na fila.
+        If indiceRestaurar < 0 AndAlso indiceItemSelecionado.HasValue Then
+            indiceRestaurar = Math.Min(indiceItemSelecionado.Value, dgQueueItens.Rows.Count - 1)
+        End If
+
+        If indiceRestaurar >= 0 Then
+            dgQueueItens.ClearSelection()
+            dgQueueItens.Rows(indiceRestaurar).Selected = True
+
+            If dgQueueItens.Columns.Contains("paciente") Then
+                dgQueueItens.CurrentCell = dgQueueItens.Rows(indiceRestaurar).Cells("paciente")
+            End If
+        End If
     End Sub
 
     Private Sub loadQueueItens(ByVal idMedico, ByVal idCod)
@@ -3589,6 +3667,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         End If
     End Sub
     Private Sub dgQueueOCI_CellEnter(sender As Object, e As DataGridViewCellEventArgs) Handles dgQueueOCI.CellEnter
+        If e.RowIndex < 0 OrElse e.RowIndex >= dgQueueOCI.Rows.Count Then Return
         loadQueueItens(dgQueueOCI.Rows(e.RowIndex).Cells(0).Value, dgQueueOCI.Rows(e.RowIndex).Cells(1).Value)
     End Sub
     Private Sub dgQueueItens_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgQueueItens.CellDoubleClick

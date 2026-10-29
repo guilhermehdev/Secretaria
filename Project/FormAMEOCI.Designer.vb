@@ -62,6 +62,7 @@ Partial Class FormAMEOCI
         Me.Label2 = New System.Windows.Forms.Label()
         Me.txtMunicipioNome = New System.Windows.Forms.TextBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.btPrintSUS = New System.Windows.Forms.Button()
         Me.chkSemCpf = New System.Windows.Forms.CheckBox()
         Me.btnovo = New System.Windows.Forms.Button()
         Me.btExcluirPaciente = New System.Windows.Forms.Button()
@@ -152,6 +153,8 @@ Partial Class FormAMEOCI
         Me.ConsultasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GeradorNumeraaoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ImportarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CadastroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ProfissionaisToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.RelatóriosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConsistênciaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConfiguraçõesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -187,9 +190,6 @@ Partial Class FormAMEOCI
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Button1 = New System.Windows.Forms.Button()
         Me.ToolTipSUS = New System.Windows.Forms.ToolTip(Me.components)
-        Me.CadastroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ProfissionaisToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.btPrintSUS = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -485,6 +485,19 @@ Partial Class FormAMEOCI
         Me.GroupBox2.TabIndex = 6
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Identificação do Paciente"
+        '
+        'btPrintSUS
+        '
+        Me.btPrintSUS.BackgroundImage = Global.Project.My.Resources.Resources.sus
+        Me.btPrintSUS.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
+        Me.btPrintSUS.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btPrintSUS.FlatAppearance.BorderSize = 0
+        Me.btPrintSUS.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btPrintSUS.Location = New System.Drawing.Point(140, 78)
+        Me.btPrintSUS.Name = "btPrintSUS"
+        Me.btPrintSUS.Size = New System.Drawing.Size(33, 21)
+        Me.btPrintSUS.TabIndex = 60
+        Me.btPrintSUS.UseVisualStyleBackColor = True
         '
         'chkSemCpf
         '
@@ -1514,7 +1527,7 @@ Partial Class FormAMEOCI
         Me.ConsultasToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.ConsultasToolStripMenuItem.ForeColor = System.Drawing.SystemColors.Info
         Me.ConsultasToolStripMenuItem.Name = "ConsultasToolStripMenuItem"
-        Me.ConsultasToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.ConsultasToolStripMenuItem.Size = New System.Drawing.Size(179, 22)
         Me.ConsultasToolStripMenuItem.Text = "Consultar"
         '
         'GeradorNumeraaoToolStripMenuItem
@@ -1522,7 +1535,7 @@ Partial Class FormAMEOCI
         Me.GeradorNumeraaoToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.GeradorNumeraaoToolStripMenuItem.ForeColor = System.Drawing.SystemColors.Info
         Me.GeradorNumeraaoToolStripMenuItem.Name = "GeradorNumeraaoToolStripMenuItem"
-        Me.GeradorNumeraaoToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.GeradorNumeraaoToolStripMenuItem.Size = New System.Drawing.Size(179, 22)
         Me.GeradorNumeraaoToolStripMenuItem.Text = "Gerador numeração"
         '
         'ImportarToolStripMenuItem
@@ -1530,8 +1543,25 @@ Partial Class FormAMEOCI
         Me.ImportarToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.ImportarToolStripMenuItem.ForeColor = System.Drawing.SystemColors.Info
         Me.ImportarToolStripMenuItem.Name = "ImportarToolStripMenuItem"
-        Me.ImportarToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.ImportarToolStripMenuItem.Size = New System.Drawing.Size(179, 22)
         Me.ImportarToolStripMenuItem.Text = "Importar"
+        '
+        'CadastroToolStripMenuItem
+        '
+        Me.CadastroToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.CadastroToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ProfissionaisToolStripMenuItem})
+        Me.CadastroToolStripMenuItem.ForeColor = System.Drawing.SystemColors.Info
+        Me.CadastroToolStripMenuItem.Name = "CadastroToolStripMenuItem"
+        Me.CadastroToolStripMenuItem.Size = New System.Drawing.Size(179, 22)
+        Me.CadastroToolStripMenuItem.Text = "Cadastro"
+        '
+        'ProfissionaisToolStripMenuItem
+        '
+        Me.ProfissionaisToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.ProfissionaisToolStripMenuItem.ForeColor = System.Drawing.SystemColors.Info
+        Me.ProfissionaisToolStripMenuItem.Name = "ProfissionaisToolStripMenuItem"
+        Me.ProfissionaisToolStripMenuItem.Size = New System.Drawing.Size(140, 22)
+        Me.ProfissionaisToolStripMenuItem.Text = "Profissionais"
         '
         'RelatóriosToolStripMenuItem
         '
@@ -2025,36 +2055,6 @@ Partial Class FormAMEOCI
         Me.Button1.TabIndex = 60
         Me.Button1.Text = "Button1"
         Me.Button1.UseVisualStyleBackColor = True
-        '
-        'CadastroToolStripMenuItem
-        '
-        Me.CadastroToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.CadastroToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ProfissionaisToolStripMenuItem})
-        Me.CadastroToolStripMenuItem.ForeColor = System.Drawing.SystemColors.Info
-        Me.CadastroToolStripMenuItem.Name = "CadastroToolStripMenuItem"
-        Me.CadastroToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.CadastroToolStripMenuItem.Text = "Cadastro"
-        '
-        'ProfissionaisToolStripMenuItem
-        '
-        Me.ProfissionaisToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.ProfissionaisToolStripMenuItem.ForeColor = System.Drawing.SystemColors.Info
-        Me.ProfissionaisToolStripMenuItem.Name = "ProfissionaisToolStripMenuItem"
-        Me.ProfissionaisToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.ProfissionaisToolStripMenuItem.Text = "Profissionais"
-        '
-        'btPrintSUS
-        '
-        Me.btPrintSUS.BackgroundImage = Global.Project.My.Resources.Resources.sus
-        Me.btPrintSUS.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
-        Me.btPrintSUS.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btPrintSUS.FlatAppearance.BorderSize = 0
-        Me.btPrintSUS.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btPrintSUS.Location = New System.Drawing.Point(140, 78)
-        Me.btPrintSUS.Name = "btPrintSUS"
-        Me.btPrintSUS.Size = New System.Drawing.Size(33, 21)
-        Me.btPrintSUS.TabIndex = 60
-        Me.btPrintSUS.UseVisualStyleBackColor = True
         '
         'FormAMEOCI
         '
