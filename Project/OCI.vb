@@ -5,6 +5,7 @@ Imports iTextSharp.text.pdf
 
 Public Class OCI
     Dim m As New Main
+    Private Const CPF_PADRAO_SEM_INFORMACAO As String = "00000000000"
 
     Public Sub printOCI(idOCI As Integer, pdfDestino As String)
         Dim oci = datatableOCI(idOCI)
@@ -110,12 +111,13 @@ Public Class OCI
         End If
 
         ' --- CPF ---
-        Dim cpf = New String(linha("cpf").ToString().Where(AddressOf Char.IsDigit).ToArray())
-        If Not RegistroSemCpf(oci) Then
+        Dim cpfTexto As String = If(IsDBNull(linha("cpf")), String.Empty, linha("cpf").ToString()).Trim()
+        Dim cpf = New String(cpfTexto.Where(AddressOf Char.IsDigit).ToArray())
+        If Not String.IsNullOrWhiteSpace(cpfTexto) AndAlso Not RegistroSemCpf(oci) Then
             If cpf.Length <> 11 Then
-                erros.Add($"CPF '{linha("cpf")}' inválido: deve conter 11 dígitos.")
+                erros.Add($"CPF '{cpfTexto}' inválido: deve conter 11 dígitos.")
             ElseIf Not m.ValidarCPF(cpf) Then
-                erros.Add($"CPF '{linha("cpf")}' inválido: dígitos verificadores incorretos.")
+                erros.Add($"CPF '{cpfTexto}' inválido: dígitos verificadores incorretos.")
             End If
         End If
 
@@ -191,7 +193,8 @@ Public Class OCI
             MarcarCheckBox(campos, "SEXO_F", True)
         End If
 
-        campos.SetField("CPF_PACIENTE", If(RegistroSemCpf(oci), String.Empty, oci.Rows(0)("cpf").ToString()))
+        Dim cpfPaciente As String = If(IsDBNull(oci.Rows(0)("cpf")), String.Empty, oci.Rows(0)("cpf").ToString()).Trim()
+        campos.SetField("CPF_PACIENTE", If(RegistroSemCpf(oci) OrElse String.IsNullOrWhiteSpace(cpfPaciente), CPF_PADRAO_SEM_INFORMACAO, cpfPaciente))
         campos.SetField("DN_PACIENTE", DirectCast(oci.Rows(0)("dtnasc"), Date).ToString("dd/MM/yyyy"))
 
         Dim idRaca = oci.Rows(0)("raca").ToString()
