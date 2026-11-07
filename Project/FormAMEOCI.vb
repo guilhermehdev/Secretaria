@@ -3,6 +3,7 @@ Imports System.IO
 Imports System.Runtime.InteropServices.ComTypes
 Imports System.Text
 Imports ClosedXML.Excel
+Imports System.Threading.Tasks
 
 Public Class FormAMEOCI
     Private linhas As New List(Of String)
@@ -17,6 +18,7 @@ Public Class FormAMEOCI
     Private debounceTimer As New Timer() With {.Interval = 300}
     Friend isLoading As Boolean = False
     Private isQueue As Boolean = False
+    Private competenciaHistoricoEmBusca As Boolean = False
     Friend IDpacienteSelecionado As Integer? = Nothing
     Private updateMode As Boolean = False
 
@@ -1188,7 +1190,7 @@ Public Class FormAMEOCI
     End Sub
 
     Public Sub loadComp(combobox As ComboBox)
-        Dim comboComp = FormAMEmain.getDataset("SELECT id, compet FROM oci WHERE compet IS NOT NULL AND compet <> '' GROUP BY compet ORDER BY data DESC")
+        Dim comboComp = FormAMEmain.getDataset("SELECT MAX(id) AS id, compet FROM oci WHERE compet IS NOT NULL AND compet <> '' GROUP BY compet ORDER BY MAX(data) DESC")
         Dim dtFinal As DataTable = comboComp.Clone()
 
         ' Adiciona o item TODOS como primeira linha
@@ -3157,14 +3159,34 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         End Try
     End Sub
 
-    Private Sub searchByCompetencia()
-        Try
-            FormAMEOCINumAPAC.loadNUMAPAC(dgOCIcadastradas, Nothing, Nothing, False,,,,,,, "num_apac", $"AND status <> 'BLOQ' AND status <> 'CANC' AND compet='{cbSearchCompHistorico.Text}'",, lbStatusCads)
-            ckbSearchTodos.Checked = False
-        Catch ex As Exception
+    Private Async Function searchByCompetencia() As Task
+        If competenciaHistoricoEmBusca Then Return
+        If cbSearchCompHistorico.SelectedIndex <= 0 OrElse String.IsNullOrWhiteSpace(cbSearchCompHistorico.Text) OrElse cbSearchCompHistorico.Text = "Competência" Then
+            Return
+        End If
 
+        competenciaHistoricoEmBusca = True
+        Dim competenciaSelecionada As String = cbSearchCompHistorico.Text.Trim()
+        Dim inicioBusca As DateTime = DateTime.UtcNow
+
+        Try
+            If ckbSearchTodos.Checked Then ckbSearchTodos.Checked = False
+
+            Dim filtro As String = $"AND oci.status <> 'BLOQ' AND oci.status <> 'CANC' AND oci.compet='{competenciaSelecionada.Replace("'", "''")}'"
+            Await FormAMEOCINumAPAC.loadNUMAPACAsync(
+                dgOCIcadastradas,
+                order:="oci.num_apac",
+                custom:=filtro,
+                labelCount:=lbStatusCads)
+
+            Debug.WriteLine($"Busca da competência {competenciaSelecionada} concluída em {(DateTime.UtcNow - inicioBusca).TotalMilliseconds:N0} ms.")
+        Catch ex As Exception
+            Debug.WriteLine("Erro ao buscar competência " & competenciaSelecionada & ": " & ex.ToString())
+            MsgBox("Erro ao buscar a competência " & competenciaSelecionada & ": " & ex.Message)
+        Finally
+            competenciaHistoricoEmBusca = False
         End Try
-    End Sub
+    End Function
 
     Private Sub FormAMEOCI_Click(sender As Object, e As EventArgs) Handles MyBase.Click
         popupGrid.Visible = False
@@ -3977,8 +3999,8 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             m.msgAlert("Selecione uma competência")
         End If
     End Sub
-    Private Sub cbSearchCompHistorico_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbSearchCompHistorico.SelectedValueChanged
-        searchByCompetencia()
+    Private Async Sub cbSearchCompHistorico_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbSearchCompHistorico.SelectionChangeCommitted
+        Await searchByCompetencia()
     End Sub
 
     Private Sub ProfissionaisToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ProfissionaisToolStripMenuItem.Click

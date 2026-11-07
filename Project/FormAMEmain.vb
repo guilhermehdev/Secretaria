@@ -678,6 +678,24 @@ Public Class FormAMEmain
 
     End Function
 
+    Public Function getDatasetIsolated(ByVal sql As String, Optional commandTimeout As Integer = 30) As DataTable
+        Dim dspesquisa As New DataTable
+
+        Using conexaoIsolada As New MySqlConnection("server=" & My.Settings.serverAME & "; user=" & My.Settings.userAME & "; password=" & My.Settings.passwordAME & "; database=" & My.Settings.databaseAME)
+            conexaoIsolada.Open()
+
+            Using objcomando As New MySqlCommand(sql, conexaoIsolada)
+                objcomando.CommandTimeout = commandTimeout
+
+                Using dsadapter As New MySqlDataAdapter(objcomando)
+                    dsadapter.Fill(dspesquisa)
+                End Using
+            End Using
+        End Using
+
+        Return dspesquisa
+    End Function
+
     Public Function loadComboBox(ByVal sql As String, ByVal cbox As ComboBox, ByVal field2Show As String, ByVal fieldValue As String, Optional ByVal errorMsg As Boolean = False)
         Dim dados As New DataTable
 

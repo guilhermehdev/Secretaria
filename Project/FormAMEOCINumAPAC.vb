@@ -4,106 +4,113 @@ Imports System.Text.RegularExpressions
 Imports ClosedXML.Excel
 Imports System.Text
 Imports System.Windows
+Imports System.Threading.Tasks
 
 Public Class FormAMEOCINumAPAC
     Dim m As New Main
     Dim iduser As Integer = FormAMEOCI.idUser
 
+    Private Function MontarQueryNUMAPAC(faixaIni As String, faixaFim As String, available As Boolean, user As Integer, dtIni As Date, dtFim As Date, oci As String, status As String, dtlanc As Date, order As String, custom As String, medico As String) As String
+        Dim where As String = "WHERE 1=1 "
+
+        If Not String.IsNullOrEmpty(faixaIni) AndAlso Not String.IsNullOrEmpty(faixaFim) Then
+            where &= $" AND oci.num_apac BETWEEN '{faixaIni}' AND '{faixaFim}' "
+        End If
+        If available Then
+            where &= " AND oci.status = 'DISP' "
+        End If
+        If user <> Nothing Then
+            where &= $" AND oci.id_usuario ={user} "
+        End If
+        If dtIni <> Nothing AndAlso dtFim <> Nothing Then
+            where &= $" AND oci.data BETWEEN '{dtIni.ToString("yyyy-MM-dd")}' AND '{dtFim.ToString("yyyy-MM-dd")}' "
+        End If
+        If Not String.IsNullOrWhiteSpace(oci) Then
+            where &= $" AND oci.id_cod_principal ={oci} "
+        End If
+        If Not String.IsNullOrWhiteSpace(status) Then
+            where &= $" AND oci.status ='{status}' "
+        End If
+        If dtlanc <> Nothing Then
+            where &= $" AND DATE(oci.data_lanc) ='{m.mysqlDateFormat(dtlanc)}' "
+        End If
+        If Not String.IsNullOrWhiteSpace(medico) Then
+            where &= $" AND oci.id_medico ='{medico}' "
+        End If
+
+        ' exportado fica no final para preservar os índices das colunas já
+        ' utilizados pelos menus e pelas telas que chamam esta rotina.
+        Return $"SELECT oci.id, oci.num_apac, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc AS dtnasc, oci.`data`, oci.compet, servidores.nome AS medico, oci.status, usuarios.nome AS responsavel, IF(COALESCE(oci.exportado, 0) <> 0, 'SIM', 'NÃO') AS exportado
+        FROM oci
+        LEFT JOIN pacientes ON pacientes.id = oci.id_paciente
+        LEFT JOIN servidores ON servidores.SUS = oci.id_medico
+        LEFT JOIN cod_oci_principal ON cod_oci_principal.id = oci.id_cod_principal
+        LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} {custom} ORDER BY {order}"
+    End Function
+
+    Private Sub AplicarResultadoNUMAPAC(datagridview As DataGridView, data As DataTable, labelCount As Label)
+        If data.Rows.Count > 0 Then
+            datagridview.DataSource = data
+            datagridview.Tag = data.DefaultView
+
+            datagridview.Columns("id").Visible = False
+            datagridview.Columns("num_apac").HeaderText = "Número APAC"
+            datagridview.Columns("num_apac").Width = 100
+            datagridview.Columns("oci").HeaderText = "OCI"
+            datagridview.Columns("oci").Width = 220
+            datagridview.Columns("nome").HeaderText = "Paciente"
+            datagridview.Columns("nome").Width = 250
+            datagridview.Columns("dtnasc").HeaderText = "Nascimento"
+            datagridview.Columns("dtnasc").Width = 80
+            datagridview.Columns("data").HeaderText = "Data"
+            datagridview.Columns("data").Width = 70
+            datagridview.Columns("compet").HeaderText = "Comp"
+            datagridview.Columns("compet").Width = 80
+            datagridview.Columns("medico").HeaderText = "Médico"
+            datagridview.Columns("medico").Width = 200
+            datagridview.Columns("status").HeaderText = "Status"
+            datagridview.Columns("status").Width = 60
+            datagridview.Columns("responsavel").HeaderText = "Usuário"
+            datagridview.Columns("responsavel").Width = 150
+            datagridview.Columns("exportado").HeaderText = "Exportado"
+            datagridview.Columns("exportado").Width = 65
+
+            If labelCount IsNot Nothing Then labelCount.Text = $"{data.Rows.Count} registros"
+        Else
+            datagridview.DataSource = Nothing
+            If labelCount IsNot Nothing Then labelCount.Text = "0 registros"
+        End If
+    End Sub
+
     Public Sub loadNUMAPAC(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "", Optional dtlanc As Date = Nothing, Optional order As String = "id", Optional custom As String = "", Optional medico As String = "", Optional labelCount As Label = Nothing)
-
         Try
-            Dim where As String = "WHERE 1=1 "
-
-            If Not String.IsNullOrEmpty(faixaIni) AndAlso Not String.IsNullOrEmpty(faixaFim) Then
-                where &= $" AND oci.num_apac BETWEEN '{faixaIni}' AND '{faixaFim}' "
-            End If
-            If available = True Then
-                where &= " AND oci.status = 'DISP' "
-            End If
-            If user <> Nothing Then
-                where &= $" AND oci.id_usuario ={user} "
-            End If
-            If dtIni <> Nothing AndAlso dtFim <> Nothing Then
-                where &= $" AND oci.data BETWEEN '{dtIni.ToString("yyyy-MM-dd")}' AND '{dtFim.ToString("yyyy-MM-dd")}' "
-            End If
-            If Not String.IsNullOrWhiteSpace(oci) Then
-                where &= $" AND oci.id_cod_principal ={oci} "
-            End If
-            If Not String.IsNullOrWhiteSpace(status) Then
-                where &= $" AND oci.status ='{status}' "
-            End If
-            ' Antes checava FormAMEOCI.dtpSearchData.CustomFormat (controle de OUTRA tela,
-            ' sem relação com essa busca) - se esse DateTimePicker tivesse CustomFormat
-            ' configurado no Designer (comum, independente do usuário ter escolhido algo),
-            ' essa condição virava sempre verdadeira e aplicava o filtro com "dtlanc" no
-            ' valor padrão (Date.MinValue), zerando o resultado inteiro. Agora checa o
-            ' próprio parâmetro dtlanc, igual já fazia com dtIni/dtFim acima.
-            If dtlanc <> Nothing Then
-                where &= $" AND DATE(oci.data_lanc) ='{m.mysqlDateFormat(dtlanc)}' "
-            End If
-            If Not String.IsNullOrWhiteSpace(medico) Then
-                where &= $" AND oci.id_medico ='{medico}' "
-            End If
-
-            ' exportado fica no final para preservar os índices das colunas já
-            ' utilizados pelos menus e pelas telas que chamam esta rotina.
-            Dim query = $"SELECT oci.id, oci.num_apac, cod_oci_principal.abrev AS oci, pacientes.nome, pacientes.dtnasc AS dtnasc, oci.`data`, oci.compet, servidores.nome AS medico, oci.status, usuarios.nome AS responsavel, IF(COALESCE(oci.exportado, 0) <> 0, 'SIM', 'NÃO') AS exportado
-            FROM oci 
-           LEFT JOIN pacientes ON pacientes.id = oci.id_paciente 
-           LEFT JOIN servidores ON servidores.SUS = oci.id_medico
-           LEFT JOIN cod_oci_principal ON cod_oci_principal.id = oci.id_cod_principal 
-           LEFT JOIN usuarios ON usuarios.id = oci.id_usuario {where} {custom} ORDER BY {order}"
-
+            Dim query = MontarQueryNUMAPAC(faixaIni, faixaFim, available, user, dtIni, dtFim, oci, status, dtlanc, order, custom, medico)
             Debug.Write(query)
-
-            Dim data = FormAMEmain.getDataset(query)
-
-            If data.Rows.Count > 0 Then
-
-                datagridview.DataSource = data
-                datagridview.Tag = data.DefaultView
-
-                datagridview.Columns("id").Visible = False
-                datagridview.Columns("num_apac").HeaderText = "Número APAC"
-                datagridview.Columns("num_apac").Width = 100
-                datagridview.Columns("oci").HeaderText = "OCI"
-                datagridview.Columns("oci").Width = 220
-                datagridview.Columns("nome").HeaderText = "Paciente"
-                datagridview.Columns("nome").Width = 250
-                datagridview.Columns("dtnasc").HeaderText = "Nascimento"
-                datagridview.Columns("dtnasc").Width = 80
-                datagridview.Columns("data").HeaderText = "Data"
-                datagridview.Columns("data").Width = 70
-                datagridview.Columns("compet").HeaderText = "Comp"
-                datagridview.Columns("compet").Width = 80
-                datagridview.Columns("medico").HeaderText = "Médico"
-                datagridview.Columns("medico").Width = 200
-                datagridview.Columns("status").HeaderText = "Status"
-                datagridview.Columns("status").Width = 60
-                datagridview.Columns("responsavel").HeaderText = "Usuário"
-                datagridview.Columns("responsavel").Width = 150
-                datagridview.Columns("exportado").HeaderText = "Exportado"
-                datagridview.Columns("exportado").Width = 65
-
-                ' labelCount é Optional - se quem chamou não passou (como no cbMedico_SelectedIndexChanged
-                ' que você me mostrou), ele vem Nothing e um .Text direto quebraria com
-                ' NullReferenceException, engolido silenciosamente pelo Catch abaixo.
-                If labelCount IsNot Nothing Then labelCount.Text = $"{data.Rows.Count} registros"
-
-            Else
-                datagridview.DataSource = Nothing
-                If labelCount IsNot Nothing Then labelCount.Text = "0 registros"
-            End If
-
+            AplicarResultadoNUMAPAC(datagridview, FormAMEmain.getDataset(query), labelCount)
         Catch ex As Exception
-            ' Descomentado de propósito - estava engolindo qualquer erro (SQL, coluna
-            ' inexistente, etc.) sem mostrar nada, o que mascarou o bug do dtpSearchData
-            ' por quem sabe quanto tempo. Se quiser voltar a não mostrar popup em produção,
-            ' pelo menos loga em algum lugar (Debug.WriteLine, arquivo de log) em vez de
-            ' descartar a exceção inteira.
+            Debug.WriteLine("Erro ao carregar números APAC: " & ex.ToString())
             MsgBox("Erro ao carregar números APAC: " & ex.Message)
         End Try
     End Sub
+
+    Public Async Function loadNUMAPACAsync(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "", Optional dtlanc As Date = Nothing, Optional order As String = "id", Optional custom As String = "", Optional medico As String = "", Optional labelCount As Label = Nothing) As Task
+        Try
+            Dim query = MontarQueryNUMAPAC(faixaIni, faixaFim, available, user, dtIni, dtFim, oci, status, dtlanc, order, custom, medico)
+            Debug.Write(query)
+
+            ' Usa uma conexão independente em segundo plano. FormAMEmain.getDataset
+            ' compartilha a conexão da interface e não deve ser usado em Task.Run.
+            Dim data As DataTable = Await Task.Run(Function() FormAMEmain.getDatasetIsolated(query))
+
+            If datagridview.IsDisposed OrElse Not datagridview.IsHandleCreated Then Return
+            AplicarResultadoNUMAPAC(datagridview, data, labelCount)
+        Catch ex As Exception
+            Debug.WriteLine("Erro ao carregar números APAC (assíncrono): " & ex.ToString())
+            If Not datagridview.IsDisposed Then
+                MsgBox("Erro ao carregar números APAC: " & ex.Message)
+            End If
+        End Try
+    End Function
     Private Sub FormAMEOCINumAPAC_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         FormAMEmain.loadComboBox("SELECT id, abrev FROM cod_oci_principal", cbOCI, "abrev", "id")
         FormAMEmain.loadComboBox("SELECT id, nome FROM usuarios ORDER BY nome", cbUsuarios, "nome", "id")
