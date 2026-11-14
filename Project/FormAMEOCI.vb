@@ -3999,12 +3999,12 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             m.msgAlert("Selecione uma competência")
         End If
     End Sub
-    Private Async Sub cbSearchCompHistorico_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cbSearchCompHistorico.SelectionChangeCommitted
-        Await searchByCompetencia()
-    End Sub
 
     Private Sub ProfissionaisToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ProfissionaisToolStripMenuItem.Click
         FormAMECadastroProfissionais.ShowDialog()
     End Sub
 
+    Private Async Sub cbSearchCompHistorico_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbSearchCompHistorico.SelectedValueChanged
+        Await searchByCompetencia()
+    End Sub
 End Class
