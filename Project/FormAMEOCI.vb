@@ -2821,31 +2821,42 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     Private Sub FormAMEOCI_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         onClose()
     End Sub
-    Private Sub txtCpfPaciente_TextChanged(sender As Object, e As EventArgs) Handles txtCpfPaciente.TextChanged
-        If isLoading Then Exit Sub
+    Private Async Sub txtCpfPaciente_TextChanged(sender As Object, e As EventArgs) Handles txtCpfPaciente.TextChanged
+        If isLoading OrElse chkSemCpf.Checked Then Exit Sub
 
-        If Not chkSemCpf.Checked Then
+        Dim cpfDigitos As String = New String(txtCpfPaciente.Text.Where(AddressOf Char.IsDigit).ToArray())
+        If cpfDigitos.Length <> 11 Then Exit Sub
 
-            If txtCpfPaciente.Text.Length = 11 Then
-                Try
-                    If m.ValidarCPF(txtCpfPaciente.Text) Then
-                        result = getPacientes(txtCpfPaciente.Text.Trim())
-                        resultPacientes(result)
-                        popupGrid.Visible = False
-                    Else
-                        m.msgAlert("CPF invalido!")
-                        txtCpfPaciente.Focus()
-                        txtCpfPaciente.Clear()
-                    End If
+        Try
+            isLoading = True
 
-                Catch ex As Exception
-                    m.msgAlert("CPF invalido!")
-                Finally
-                    isLoading = False
-                End Try
+            If Not m.ValidarCPF(cpfDigitos) Then
+                m.msgAlert("CPF invalido!")
+                txtCpfPaciente.Focus()
+                txtCpfPaciente.Clear()
+                Exit Sub
             End If
 
-        End If
+            ' Mantém a busca local já existente.
+            result = getPacientes(cpfDigitos)
+            If result IsNot Nothing AndAlso result.Rows.Count > 0 Then
+                resultPacientes(result)
+            End If
+            popupGrid.Visible = False
+
+            ' Consulta o CNS no CADSUS somente depois que o CPF completo e válido
+            ' estiver digitado. A rotina é assíncrona para não bloquear a tela.
+            Dim pacienteCadsus As Paciente = Await CADSUS.consultaCADSUS(cpfDigitos)
+            If pacienteCadsus IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(pacienteCadsus.CNS) Then
+                Dim cnsDigitos As String = New String(pacienteCadsus.CNS.Where(AddressOf Char.IsDigit).ToArray())
+                If cnsDigitos.Length > 0 Then txtCnsPaciente.Text = cnsDigitos
+            End If
+
+        Catch ex As Exception
+            Debug.WriteLine("Erro ao consultar CPF/CNS no CADSUS: " & ex.ToString())
+        Finally
+            isLoading = False
+        End Try
     End Sub
 
     Private Sub FormAMEOCI_KeyPress(sender As Object, e As KeyPressEventArgs) Handles MyBase.KeyPress
@@ -3866,7 +3877,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     'End Sub
 
 
-    Private Async Sub Button1_Click(sender As Object, e As EventArgs) Handles btCADSUS.Click
+    Private Async Sub Button1_Click(sender As Object, e As EventArgs)
         Dim cpfDigitos As String = New String(txtCpfPaciente.Text.Where(AddressOf Char.IsDigit).ToArray())
         Dim cnsDigitos As String = New String(txtCnsPaciente.Text.Where(AddressOf Char.IsDigit).ToArray())
         Dim nome As String = txtNomePaciente.Text.Trim()
@@ -3957,10 +3968,8 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     Private Sub chkSemCpf_CheckedChanged(sender As Object, e As EventArgs) Handles chkSemCpf.CheckedChanged
         If chkSemCpf.Checked Then
             txtCpfPaciente.Enabled = False
-            btCADSUS.Enabled = False
         Else
             txtCpfPaciente.Enabled = True
-            btCADSUS.Enabled = True
         End If
     End Sub
 
@@ -4007,4 +4016,9 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     Private Async Sub cbSearchCompHistorico_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbSearchCompHistorico.SelectedValueChanged
         Await searchByCompetencia()
     End Sub
+
+    Private Sub txtCnsPaciente_Click(sender As Object, e As EventArgs) Handles txtCnsPaciente.Click
+        Clipboard.SetText(txtCnsPaciente.Text.Replace(".", ""))
+    End Sub
+
 End Class

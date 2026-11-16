@@ -67,7 +67,6 @@ Partial Class FormAMEOCI
         Me.btnovo = New System.Windows.Forms.Button()
         Me.btExcluirPaciente = New System.Windows.Forms.Button()
         Me.txtCnsPaciente = New System.Windows.Forms.MaskedTextBox()
-        Me.btCADSUS = New System.Windows.Forms.Button()
         Me.txtNomePaciente = New System.Windows.Forms.ComboBox()
         Me.btAtualizarDados = New System.Windows.Forms.Button()
         Me.dtNascimento = New System.Windows.Forms.MaskedTextBox()
@@ -450,7 +449,6 @@ Partial Class FormAMEOCI
         Me.GroupBox2.Controls.Add(Me.btnovo)
         Me.GroupBox2.Controls.Add(Me.btExcluirPaciente)
         Me.GroupBox2.Controls.Add(Me.txtCnsPaciente)
-        Me.GroupBox2.Controls.Add(Me.btCADSUS)
         Me.GroupBox2.Controls.Add(Me.txtNomePaciente)
         Me.GroupBox2.Controls.Add(Me.btAtualizarDados)
         Me.GroupBox2.Controls.Add(Me.dtNascimento)
@@ -547,22 +545,6 @@ Partial Class FormAMEOCI
         Me.txtCnsPaciente.Name = "txtCnsPaciente"
         Me.txtCnsPaciente.Size = New System.Drawing.Size(127, 21)
         Me.txtCnsPaciente.TabIndex = 58
-        '
-        'btCADSUS
-        '
-        Me.btCADSUS.BackColor = System.Drawing.Color.DarkGreen
-        Me.btCADSUS.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btCADSUS.FlatAppearance.BorderSize = 0
-        Me.btCADSUS.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btCADSUS.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btCADSUS.ForeColor = System.Drawing.Color.White
-        Me.btCADSUS.Location = New System.Drawing.Point(427, 303)
-        Me.btCADSUS.Name = "btCADSUS"
-        Me.btCADSUS.Size = New System.Drawing.Size(106, 23)
-        Me.btCADSUS.TabIndex = 19
-        Me.btCADSUS.Text = "Buscar CADSUS"
-        Me.btCADSUS.UseVisualStyleBackColor = False
-        Me.btCADSUS.Visible = False
         '
         'txtNomePaciente
         '
@@ -2237,7 +2219,6 @@ Partial Class FormAMEOCI
     Friend WithEvents btnovo As Button
     Friend WithEvents FecharToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents btGCASPP As Button
-    Friend WithEvents btCADSUS As Button
     Friend WithEvents txtCnsPaciente As MaskedTextBox
     Friend WithEvents APACToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ConsultasToolStripMenuItem As ToolStripMenuItem
