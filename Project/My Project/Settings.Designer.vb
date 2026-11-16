@@ -281,6 +281,78 @@ Namespace My
                 Me("serverAME") = value
             End Set
         End Property
+
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("10.32.157.22")>  _
+        Public Property cnesServer() As String
+            Get
+                Return CType(Me("cnesServer"),String)
+            End Get
+            Set
+                Me("cnesServer") = value
+            End Set
+        End Property
+
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("3050")>  _
+        Public Property cnesPort() As String
+            Get
+                Return CType(Me("cnesPort"),String)
+            End Get
+            Set
+                Me("cnesPort") = value
+            End Set
+        End Property
+
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("C:\\Program Files (x86)\\Datasus\\CNES\\CNES.GDB")>  _
+        Public Property cnesDatabase() As String
+            Get
+                Return CType(Me("cnesDatabase"),String)
+            End Get
+            Set
+                Me("cnesDatabase") = value
+            End Set
+        End Property
+
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("SYSDBA")>  _
+        Public Property cnesUser() As String
+            Get
+                Return CType(Me("cnesUser"),String)
+            End Get
+            Set
+                Me("cnesUser") = value
+            End Set
+        End Property
+
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("masterkey")>  _
+        Public Property cnesPassword() As String
+            Get
+                Return CType(Me("cnesPassword"),String)
+            End Get
+            Set
+                Me("cnesPassword") = value
+            End Set
+        End Property
+
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("WIN1252")>  _
+        Public Property cnesCharset() As String
+            Get
+                Return CType(Me("cnesCharset"),String)
+            End Get
+            Set
+                Me("cnesCharset") = value
+            End Set
+        End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _

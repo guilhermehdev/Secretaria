@@ -62,7 +62,6 @@ Partial Class FormCNESPlanejamento
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.dgPlanejamento = New System.Windows.Forms.DataGridView()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
-        Me.TextBoxCPF = New System.Windows.Forms.TextBox()
         Me.TextBoxNome = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -72,6 +71,7 @@ Partial Class FormCNESPlanejamento
         Me.UploadPDFParaServidorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.FecharToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.TextBoxCPF = New System.Windows.Forms.MaskedTextBox()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.TabControl.SuspendLayout()
@@ -345,7 +345,7 @@ Partial Class FormCNESPlanejamento
         Me.tpCBOenfermeiro.Location = New System.Drawing.Point(4, 22)
         Me.tpCBOenfermeiro.Name = "tpCBOenfermeiro"
         Me.tpCBOenfermeiro.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpCBOenfermeiro.Size = New System.Drawing.Size(289, 221)
+        Me.tpCBOenfermeiro.Size = New System.Drawing.Size(384, 221)
         Me.tpCBOenfermeiro.TabIndex = 1
         Me.tpCBOenfermeiro.Text = "CBOs Enfermeiros"
         '
@@ -366,7 +366,7 @@ Partial Class FormCNESPlanejamento
         Me.tpCBOnivelSuperior.Controls.Add(Me.lbSuperior)
         Me.tpCBOnivelSuperior.Location = New System.Drawing.Point(4, 22)
         Me.tpCBOnivelSuperior.Name = "tpCBOnivelSuperior"
-        Me.tpCBOnivelSuperior.Size = New System.Drawing.Size(289, 221)
+        Me.tpCBOnivelSuperior.Size = New System.Drawing.Size(384, 221)
         Me.tpCBOnivelSuperior.TabIndex = 3
         Me.tpCBOnivelSuperior.Text = "CBOs outros nível superior"
         '
@@ -387,7 +387,7 @@ Partial Class FormCNESPlanejamento
         Me.tpCBOnivelMedio.Controls.Add(Me.lbMedio)
         Me.tpCBOnivelMedio.Location = New System.Drawing.Point(4, 22)
         Me.tpCBOnivelMedio.Name = "tpCBOnivelMedio"
-        Me.tpCBOnivelMedio.Size = New System.Drawing.Size(289, 221)
+        Me.tpCBOnivelMedio.Size = New System.Drawing.Size(384, 221)
         Me.tpCBOnivelMedio.TabIndex = 4
         Me.tpCBOnivelMedio.Text = "CBOs outros nivel médio"
         '
@@ -408,7 +408,7 @@ Partial Class FormCNESPlanejamento
         Me.tpCBOacs.Controls.Add(Me.lbACS)
         Me.tpCBOacs.Location = New System.Drawing.Point(4, 22)
         Me.tpCBOacs.Name = "tpCBOacs"
-        Me.tpCBOacs.Size = New System.Drawing.Size(289, 221)
+        Me.tpCBOacs.Size = New System.Drawing.Size(384, 221)
         Me.tpCBOacs.TabIndex = 2
         Me.tpCBOacs.Text = "CBOs ACS"
         '
@@ -455,7 +455,7 @@ Partial Class FormCNESPlanejamento
         Me.dgPlanejamento.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.dgPlanejamento.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.dgPlanejamento.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
         Me.dgPlanejamento.BackgroundColor = System.Drawing.Color.White
         Me.dgPlanejamento.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgPlanejamento.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
@@ -501,14 +501,6 @@ Partial Class FormCNESPlanejamento
         Me.GroupBox3.TabIndex = 41
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Busca "
-        '
-        'TextBoxCPF
-        '
-        Me.TextBoxCPF.Location = New System.Drawing.Point(44, 20)
-        Me.TextBoxCPF.MaxLength = 11
-        Me.TextBoxCPF.Name = "TextBoxCPF"
-        Me.TextBoxCPF.Size = New System.Drawing.Size(100, 20)
-        Me.TextBoxCPF.TabIndex = 4
         '
         'TextBoxNome
         '
@@ -573,6 +565,15 @@ Partial Class FormCNESPlanejamento
         'OpenFileDialog1
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
+        '
+        'TextBoxCPF
+        '
+        Me.TextBoxCPF.Location = New System.Drawing.Point(44, 20)
+        Me.TextBoxCPF.Mask = "000\.000\.000\-00"
+        Me.TextBoxCPF.PromptChar = Global.System.Convert.ToChar("_"c)
+        Me.TextBoxCPF.Name = "TextBoxCPF"
+        Me.TextBoxCPF.Size = New System.Drawing.Size(100, 20)
+        Me.TextBoxCPF.TabIndex = 136
         '
         'FormCNESPlanejamento
         '
@@ -651,11 +652,11 @@ Partial Class FormCNESPlanejamento
     Friend WithEvents Label1 As Label
     Friend WithEvents TextBoxNome As TextBox
     Friend WithEvents Label4 As Label
-    Friend WithEvents TextBoxCPF As TextBox
     Friend WithEvents MenuStrip1 As MenuStrip
     Friend WithEvents ConfiguraçõesToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ImportarPDFToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents FecharToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
     Friend WithEvents UploadPDFParaServidorToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents TextBoxCPF As MaskedTextBox
 End Class

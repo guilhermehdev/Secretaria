@@ -9,15 +9,102 @@ Public Class FormCNESPlanejamento
     Dim arrayOfMedicos As Array
     Dim columnIndex As Integer
     Dim main As New Main
+    Private firebirdDisponivel As Boolean
+    Private firebirdErro As String = String.Empty
+    Private formatandoCPF As Boolean
 
     Private Sub FplanejCNES_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Dim versao As Version = GetType(FormCNESPlanejamento).Assembly.GetName().Version
+        Me.Text = "CNES - Planejamento - v" & versao.ToString(3)
+
         xml.cbFormaContEstab(cbFormaContratoEstab)
         cbFormaContratoEstab.SelectedIndex = -1
         cbcbFormaContratoEmpreg.SelectedIndex = -1
         cbDetalhamento.SelectedIndex = -1
         clearLabels()
-        copyXMLfromServer()
+
+        firebirdDisponivel = CnesFirebird.TestarConexao(firebirdErro)
+        ImportarPDFToolStripMenuItem.Enabled = False
+        UploadPDFParaServidorToolStripMenuItem.Enabled = False
+
+        If Not firebirdDisponivel Then
+            MarcarFirebirdIndisponivel()
+            MessageBox.Show("Não foi possível conectar ao banco CNES Firebird." &
+                            Environment.NewLine & Environment.NewLine &
+                            firebirdErro &
+                            Environment.NewLine & Environment.NewLine &
+                            CnesFirebird.ObterDiagnostico() &
+                            Environment.NewLine &
+                            "Executável: " & Application.ExecutablePath,
+                            "Conexão com o CNES",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning)
+        Else
+            AtualizarStatusFonte()
+        End If
     End Sub
+
+    Private Sub AtualizarStatusFonte(Optional quantidade As Integer = -1)
+        If Not firebirdDisponivel Then
+            If String.IsNullOrWhiteSpace(firebirdErro) Then
+                ToolStripStatusLabel1.Text = "Fonte: Firebird indisponível"
+            Else
+                ToolStripStatusLabel1.Text = "Firebird indisponível: " & firebirdErro
+            End If
+            Return
+        End If
+
+        Dim fonte As String = "Firebird"
+        If quantidade >= 0 Then
+            ToolStripStatusLabel1.Text = "Fonte: " & fonte & " | Registros: " & quantidade
+        Else
+            ToolStripStatusLabel1.Text = "Fonte de profissionais: " & fonte
+        End If
+    End Sub
+
+    Private Sub MarcarFirebirdIndisponivel()
+        firebirdDisponivel = False
+
+        If String.IsNullOrWhiteSpace(firebirdErro) Then
+            firebirdErro = "O teste de conexão retornou falso sem uma mensagem de exceção."
+            ToolStripStatusLabel1.Text = "Firebird indisponível: " & firebirdErro
+        Else
+            ToolStripStatusLabel1.Text = "Firebird indisponível: " & firebirdErro
+        End If
+    End Sub
+
+    Private Function ConsultarProfissionaisPorBusca(cpf As String, nome As String) As DataTable
+        If firebirdDisponivel Then
+            Try
+                Return CnesFirebird.ConsultarProfissionais(cpf, nome)
+            Catch ex As Exception
+                firebirdErro = ex.Message
+                MarcarFirebirdIndisponivel()
+            End Try
+        End If
+
+        Return New DataTable()
+    End Function
+
+    Private Function ObterCodigoVinculoCNES() As String
+        If cbFormaContratoEstab.SelectedValue Is Nothing OrElse
+           cbcbFormaContratoEmpreg.SelectedValue Is Nothing OrElse
+           cbDetalhamento.SelectedValue Is Nothing Then
+            Return String.Empty
+        End If
+
+        Dim parteEstabelecimento As System.Text.RegularExpressions.Match = System.Text.RegularExpressions.Regex.Match(Convert.ToString(cbFormaContratoEstab.SelectedValue), "^\d{2}")
+        Dim parteEmpregador As System.Text.RegularExpressions.Match = System.Text.RegularExpressions.Regex.Match(Convert.ToString(cbcbFormaContratoEmpreg.SelectedValue), "^\d{2}")
+        Dim parteDetalhamento As System.Text.RegularExpressions.Match = System.Text.RegularExpressions.Regex.Match(Convert.ToString(cbDetalhamento.SelectedValue), "^\d{2}")
+
+        If Not parteEstabelecimento.Success OrElse
+           Not parteEmpregador.Success OrElse
+           Not parteDetalhamento.Success Then
+            Return String.Empty
+        End If
+
+        Return parteEstabelecimento.Value & parteEmpregador.Value & parteDetalhamento.Value
+    End Function
 
     Private Sub copyXMLfromServer()
         Try
@@ -86,6 +173,11 @@ Public Class FormCNESPlanejamento
     End Sub
 
     Private Sub cbDetalhamento_SelectionChangeCommitted(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbDetalhamento.SelectionChangeCommitted
+        If Not firebirdDisponivel Then
+            AtualizarStatusFonte()
+            Return
+        End If
+
         Dim gestao = 0
         Dim fc As String = cbFormaContratoEstab.SelectedValue & cbcbFormaContratoEmpreg.SelectedValue & cbDetalhamento.SelectedValue
         If rbPublico.Checked Then
@@ -94,8 +186,18 @@ Public Class FormCNESPlanejamento
             gestao = 1
         End If
 
-        Dim data = pdf.getProf(fc, "", "", gestao)
+        Dim data As New DataTable()
+        If firebirdDisponivel Then
+            Try
+                data = CnesFirebird.ConsultarProfissionais(codigoVinculo:=ObterCodigoVinculoCNES())
+            Catch ex As Exception
+                firebirdErro = ex.Message
+                MarcarFirebirdIndisponivel()
+                Return
+            End Try
+        End If
 
+        AplicarDescricaoTipoVinculo(data)
         dgPlanejamento.DataSource = data
         datagridConfig(False)
 
@@ -109,15 +211,126 @@ Public Class FormCNESPlanejamento
 
     Private Sub datagridConfig(Optional collumCBOvisible = True)
         Try
-            dgPlanejamento.Columns(4).Visible = collumCBOvisible
-            dgPlanejamento.Columns(0).Width = 80
-            dgPlanejamento.Columns(1).Width = 100
-            dgPlanejamento.Columns(2).Width = 250
-            dgPlanejamento.Columns(3).Width = 300
-            ToolStripStatusLabel1.Text = "Registros: " & dgPlanejamento.Rows.Count
+            dgPlanejamento.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None
+            dgPlanejamento.ScrollBars = ScrollBars.Both
+
+            ConfigurarColuna("CPF", "CPF", 100, True)
+            ConfigurarColuna("CNS", "CNS", 125, True)
+            ConfigurarColuna("NOME", "Nome", 250, True)
+            ConfigurarColuna("CNES", "CNES", 90, True)
+            ConfigurarColuna("CBO", "CBO", 70, collumCBOvisible)
+            ConfigurarColuna("DESCRICAO_CBO", "Descrição do CBO", 220, True)
+            ConfigurarColuna("Descrição", "Descrição", 220, True)
+            ConfigurarColuna("NASCIMENTO", "Nascimento", 90, True)
+            ConfigurarColuna("CARGA_HORARIA_OUTRA", "Carga outra", 90, True)
+            ConfigurarColuna("CARGA_HORARIA_AMBULATORIAL", "Carga amb.", 90, True)
+            ConfigurarColuna("CARGA_HORARIA_HOSPITALAR", "Carga hosp.", 90, True)
+            ConfigurarColuna("TIPO_SUS", "Tipo SUS", 90, False)
+            ConfigurarColuna("TIPO_VINCULO", "Vínculo", 300, True)
+            ConfigurarColuna("RAZAO_SOCIAL", "Razão social", 180, False)
+            ConfigurarColuna("NOME_FANTASIA", "Estabelecimento", 180, True)
+            ConfigurarColuna("PROFISSIONAL_ID", "Profissional ID", 100, False)
+            ConfigurarColuna("UNIDADE_ID", "Unidade ID", 100, False)
+            AtualizarStatusFonte(dgPlanejamento.Rows.Count)
         Catch ex As Exception
 
         End Try
+    End Sub
+
+    Private Sub AplicarDescricaoTipoVinculo(data As DataTable)
+        If data Is Nothing OrElse Not data.Columns.Contains("TIPO_VINCULO") Then Return
+
+        For Each linha As DataRow In data.Rows
+            If linha.IsNull("TIPO_VINCULO") Then Continue For
+
+            Dim codigo As String = linha("TIPO_VINCULO").ToString().Trim()
+            Dim descricao As String = ObterDescricaoVinculoPorCodigo(codigo)
+
+            'Se o registro corresponde à seleção atual, usamos também a
+            'descrição dos comboboxes, mantendo a mesma regra da tela.
+            If codigo = ObterCodigoVinculoCNES() Then
+                Dim descricaoSelecionada As String = ObterDescricaoVinculoSelecionado()
+                If Not String.IsNullOrWhiteSpace(descricaoSelecionada) Then
+                    descricao = descricaoSelecionada
+                End If
+            End If
+
+            If Not String.IsNullOrWhiteSpace(descricao) Then
+                linha("TIPO_VINCULO") = descricao
+            End If
+        Next
+    End Sub
+
+    Private Function ObterDescricaoVinculoPorCodigo(codigo As String) As String
+        Dim descricoes As New Dictionary(Of String, String) From {
+            {"010101", "VINCULO EMPREGATICIO / ESTATUTARIO EFETIVO / SERVIDOR PROPRIO"},
+            {"010102", "VINCULO EMPREGATICIO / ESTATUTARIO EFETIVO / SERVIDOR CEDIDO"},
+            {"010202", "VINCULO EMPREGATICIO / EMPREGADO PUBLICO CELETISTA / PROPRIO"},
+            {"010301", "VINCULO EMPREGATICIO / CONTRATADO TEMPORARIO / PUBLICO"},
+            {"010302", "VINCULO EMPREGATICIO / CONTRATADO TEMPORARIO / PRIVADO"},
+            {"010403", "VINCULO EMPREGATICIO / CARGO COMISSIONADO / SERVIDOR PUBLICO PROPRIO"},
+            {"010500", "VINCULO EMPREGATICIO / CELETISTA / NAO SE APLICA"},
+            {"020900", "AUTONOMO / PESSOA JURIDICA / NAO SE APLICA"},
+            {"021000", "AUTONOMO / PESSOA FISICA / NAO SE APLICA"},
+            {"070101", "BOLSA / BOLSISTA / PROPRIO"},
+            {"080100", "INTERMEDIADO / EMPREGADO PUBLICO CELETISTA / NAO SE APLICA"},
+            {"080200", "INTERMEDIADO / CONTRATADO TEMPORARIO / NAO SE APLICA"},
+            {"080300", "INTERMEDIADO / CARGO COMISSIONADO / NAO SE APLICA"},
+            {"080400", "INTERMEDIADO / CELETISTA / NAO SE APLICA"},
+            {"080501", "INTERMEDIADO / AUTONOMO / PESSOA JURIDICA"},
+            {"080502", "INTERMEDIADO / AUTONOMO / PESSOA FISICA"},
+            {"090100", "INFORMAL / CONTRATADO VERBALMENTE / NAO SE APLICA"},
+            {"090200", "INFORMAL / VOLUNTARIADO / NAO SE APLICA"}
+        }
+
+        If descricoes.ContainsKey(codigo) Then Return descricoes(codigo)
+        Return codigo
+    End Function
+
+    Private Function ObterDescricaoVinculoSelecionado() As String
+        Dim partes As New List(Of String)()
+
+        AdicionarParteVinculo(partes, cbFormaContratoEstab)
+        AdicionarParteVinculo(partes, cbcbFormaContratoEmpreg)
+        AdicionarParteVinculo(partes, cbDetalhamento)
+
+        If partes.Count = 0 Then Return String.Empty
+        Return String.Join(" / ", partes.ToArray())
+    End Function
+
+    Private Sub AdicionarParteVinculo(partes As List(Of String), combo As ComboBox)
+        If combo Is Nothing OrElse combo.SelectedIndex < 0 OrElse String.IsNullOrWhiteSpace(combo.Text) Then Return
+
+        Dim texto As String = combo.Text.Trim()
+        Dim separador As Integer = texto.IndexOf("-"c)
+        If separador >= 0 AndAlso separador < texto.Length - 1 Then
+            texto = texto.Substring(separador + 1).Trim()
+        End If
+
+        If Not String.IsNullOrWhiteSpace(texto) Then partes.Add(texto)
+    End Sub
+
+    Private Sub ConfigurarColuna(nome As String, cabecalho As String, largura As Integer, visivel As Boolean)
+        If Not dgPlanejamento.Columns.Contains(nome) Then Return
+
+        With dgPlanejamento.Columns(nome)
+            .HeaderText = cabecalho
+            .Width = largura
+            .Visible = visivel
+        End With
+    End Sub
+
+    Private Sub dgPlanejamento_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles dgPlanejamento.CellFormatting
+        If e.RowIndex < 0 OrElse e.ColumnIndex < 0 Then Return
+        If dgPlanejamento.Columns(e.ColumnIndex).Name <> "NASCIMENTO" Then Return
+
+        If e.Value Is Nothing OrElse e.Value Is DBNull.Value OrElse String.IsNullOrWhiteSpace(Convert.ToString(e.Value)) Then
+            e.Value = "Não informado"
+            e.FormattingApplied = True
+        ElseIf TypeOf e.Value Is DateTime Then
+            e.Value = DirectCast(e.Value, DateTime).ToString("dd/MM/yyyy")
+            e.FormattingApplied = True
+        End If
     End Sub
 
     Private Sub getByCBO(data As DataTable, CBOarray As String(), lbTotal As Label, listBox As ListBox)
@@ -227,18 +440,85 @@ Public Class FormCNESPlanejamento
     End Sub
 
     Private Sub TextBoxCPF_TextChanged(sender As Object, e As EventArgs) Handles TextBoxCPF.TextChanged
-        If TextBoxCPF.Text.Length >= 11 Then
-            dgPlanejamento.DataSource = pdf.getProfByNameORCPF(TextBoxCPF.Text)
-            datagridConfig()
+        If formatandoCPF Then Return
+
+        Dim cpf As String = SomenteDigitos(TextBoxCPF.Text)
+        If cpf.Length > 11 Then cpf = cpf.Substring(0, 11)
+
+        Dim cpfFormatado As String = FormatarCPF(cpf)
+        If TextBoxCPF.Text <> cpfFormatado Then
+            formatandoCPF = True
+            TextBoxCPF.Text = cpfFormatado
+            TextBoxCPF.SelectionStart = TextBoxCPF.TextLength
+            formatandoCPF = False
+        End If
+
+        Dim nome As String = TextBoxNome.Text.Trim()
+        If cpf.Length <> 11 AndAlso nome.Length < 5 Then
+            LimparResultadosBusca()
+            Return
+        End If
+
+        Dim data As DataTable = ConsultarProfissionaisPorBusca(If(cpf.Length = 11, cpf, String.Empty), If(nome.Length >= 5, nome, String.Empty))
+        AplicarDescricaoTipoVinculo(data)
+        dgPlanejamento.DataSource = data
+        datagridConfig()
+    End Sub
+
+    Private Sub TextBoxCPF_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TextBoxCPF.KeyPress
+        If Not Char.IsControl(e.KeyChar) AndAlso Not Char.IsDigit(e.KeyChar) Then
+            e.Handled = True
         End If
     End Sub
 
     Private Sub TextBoxNome_TextChanged(sender As Object, e As EventArgs) Handles TextBoxNome.TextChanged
-        If TextBoxNome.Text.Length >= 5 Then
-            dgPlanejamento.DataSource = pdf.getProfByNameORCPF(Nothing, TextBoxNome.Text)
-            datagridConfig()
+        Dim cpf As String = SomenteDigitos(TextBoxCPF.Text)
+        Dim nome As String = TextBoxNome.Text.Trim()
+
+        If cpf.Length <> 11 AndAlso nome.Length < 5 Then
+            LimparResultadosBusca()
+            Return
         End If
+
+        Dim data As DataTable = ConsultarProfissionaisPorBusca(If(cpf.Length = 11, cpf, String.Empty), If(nome.Length >= 5, nome, String.Empty))
+        AplicarDescricaoTipoVinculo(data)
+        dgPlanejamento.DataSource = data
+        datagridConfig()
     End Sub
+
+    Private Sub LimparResultadosBusca()
+        dgPlanejamento.DataSource = Nothing
+        lbMedicos.Items.Clear()
+        lbEnfermeiro.Items.Clear()
+        lbACS.Items.Clear()
+        lbSuperior.Items.Clear()
+        lbMedio.Items.Clear()
+        lbMedTotal.Text = "0"
+        lbEnfTotal.Text = "0"
+        lbACStotal.Text = "0"
+        lbNSTotal.Text = "0"
+        lbNMTotal.Text = "0"
+    End Sub
+
+    Private Function SomenteDigitos(valor As String) As String
+        If valor Is Nothing Then Return String.Empty
+
+        Dim resultado As New System.Text.StringBuilder()
+        For Each caractere As Char In valor
+            If caractere >= "0"c AndAlso caractere <= "9"c Then
+                resultado.Append(caractere)
+            End If
+        Next
+        Return resultado.ToString()
+    End Function
+
+    Private Function FormatarCPF(cpf As String) As String
+        If String.IsNullOrEmpty(cpf) Then Return String.Empty
+        If cpf.Length <= 3 Then Return cpf
+        If cpf.Length <= 6 Then Return cpf.Substring(0, 3) & "." & cpf.Substring(3)
+        If cpf.Length <= 9 Then Return cpf.Substring(0, 3) & "." & cpf.Substring(3, 3) & "." & cpf.Substring(6)
+        Return cpf.Substring(0, 3) & "." & cpf.Substring(3, 3) & "." & cpf.Substring(6, 3) & "-" & cpf.Substring(9)
+    End Function
 
     Private Sub dgPlanejamento_CellMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles dgPlanejamento.CellMouseClick
         If e.Button = MouseButtons.Right Then

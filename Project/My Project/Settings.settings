@@ -59,6 +59,24 @@
     <Setting Name="serverAME" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="cnesServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">10.32.157.22</Value>
+    </Setting>
+    <Setting Name="cnesPort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">3050</Value>
+    </Setting>
+    <Setting Name="cnesDatabase" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Program Files (x86)\Datasus\CNES\CNES.GDB</Value>
+    </Setting>
+    <Setting Name="cnesUser" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SYSDBA</Value>
+    </Setting>
+    <Setting Name="cnesPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)">masterkey</Value>
+    </Setting>
+    <Setting Name="cnesCharset" Type="System.String" Scope="User">
+      <Value Profile="(Default)">WIN1252</Value>
+    </Setting>
     <Setting Name="OCIcompetencia" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
