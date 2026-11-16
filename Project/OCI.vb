@@ -284,10 +284,6 @@ Public Class OCI
             campos.SetField("DESCRICAO_PROCED_SECUNDARIO_1", "Consulta médica na atenção especializada".ToUpper())
             campos.SetField("QTD_PROCED_SECUNDARIO_1", "1")
 
-            campos.SetField("CODPROCED_SECUNDARIO_2", "0211020036")
-            campos.SetField("DESCRICAO_PROCED_SECUNDARIO_2", "Eletrocardiograma".ToUpper())
-            campos.SetField("QTD_PROCED_SECUNDARIO_2", "1")
-
             Try
 
                 If procedimentoSecundario.Rows.Count > 0 Then
@@ -303,39 +299,15 @@ Public Class OCI
                         End If
                         Dim qtd = procedimentoSecundario.Rows(i)("qtd").ToString()
 
-                        Select Case i
-
-                            Case 0
-
-                                campos.SetField("CODPROCED_SECUNDARIO_1", codigo)
-                                campos.SetField("DESCRICAO_PROCED_SECUNDARIO_1", descricao)
-                                campos.SetField("QTD_PROCED_SECUNDARIO_1", qtd)
-
-                            Case 1
-
-                                campos.SetField("CODPROCED_SECUNDARIO_2", codigo)
-                                campos.SetField("DESCRICAO_PROCED_SECUNDARIO_2", descricao)
-                                campos.SetField("QTD_PROCED_SECUNDARIO_2", qtd)
-
-                            Case 2
-
-                                campos.SetField("CODPROCED_SECUNDARIO_3", codigo)
-                                campos.SetField("DESCRICAO_PROCED_SECUNDARIO_3", descricao)
-                                campos.SetField("QTD_PROCED_SECUNDARIO_3", qtd)
-
-                            Case 3
-
-                                campos.SetField("CODPROCED_SECUNDARIO_4", codigo)
-                                campos.SetField("DESCRICAO_PROCED_SECUNDARIO_4", descricao)
-                                campos.SetField("QTD_PROCED_SECUNDARIO_4", qtd)
-
-                            Case 4
-
-                                campos.SetField("CODPROCED_SECUNDARIO_5", codigo)
-                                campos.SetField("DESCRICAO_PROCED_SECUNDARIO_5", descricao)
-                                campos.SetField("QTD_PROCED_SECUNDARIO_5", qtd)
-
-                        End Select
+                        ' A consulta obrigatória ocupa a primeira posição.
+                        ' Os demais itens devem vir exclusivamente do banco,
+                        ' começando na segunda posição do formulário.
+                        Dim indiceCampo As Integer = i + 2
+                        If indiceCampo <= 5 Then
+                            campos.SetField($"CODPROCED_SECUNDARIO_{indiceCampo}", codigo)
+                            campos.SetField($"DESCRICAO_PROCED_SECUNDARIO_{indiceCampo}", descricao)
+                            campos.SetField($"QTD_PROCED_SECUNDARIO_{indiceCampo}", qtd)
+                        End If
 
                     Next
 

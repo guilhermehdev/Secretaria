@@ -141,13 +141,15 @@ Public Class FormAMEOCI
     ''' seja gravada ou exportada junto com a APAC atual.
     ''' </summary>
     Private Function ValidarProcedimentosSecundarios(Optional silencioso As Boolean = False, Optional ByRef mensagemErro As String = "") As Boolean
-        Dim idPrincipal As Integer = Convert.ToInt32(getProcedID(Convert.ToString(txtProcedimentoPrincipal.SelectedValue)))
+        Dim codigoPrincipal As String = Convert.ToString(txtProcedimentoPrincipal.SelectedValue).Trim()
+        Dim idPrincipal As Integer = Convert.ToInt32(getProcedID(codigoPrincipal))
         If idPrincipal <= 0 Then
             FalharValidacao(mensagemErro, silencioso, "Procedimento principal inválido.", txtProcedimentoPrincipal, 1)
             Return False
         End If
 
         Dim codigos As New HashSet(Of String)(StringComparer.Ordinal)
+        Dim temRaioX As Boolean = False
         For Each row As DataGridViewRow In dgvProcedimentos.Rows
             If row.IsNewRow Then Continue For
 
@@ -164,7 +166,20 @@ Public Class FormAMEOCI
                 FalharValidacao(mensagemErro, silencioso, $"O procedimento secundário {codigo} não pertence ao procedimento principal {txtProcedimentoPrincipal.SelectedValue}.", Nothing, 1)
                 Return False
             End If
+
+            ' A OCI de ortopedia (0903010011) exige, além da consulta
+            ' obrigatória, pelo menos um exame de raio-X. Os códigos de
+            ' radiografia utilizados nessa OCI pertencem ao grupo 0204.
+            If codigoPrincipal = "0903010011" AndAlso codigo.StartsWith("0204", StringComparison.Ordinal) Then
+                temRaioX = True
+            End If
         Next
+
+        If codigoPrincipal = "0903010011" AndAlso Not temRaioX Then
+            If Not silencioso Then CodProcedimento.DroppedDown = True
+            FalharValidacao(mensagemErro, silencioso, "Para a OCI de ortopedia, adicione pelo menos um procedimento de raio-X.", CodProcedimento, 1)
+            Return False
+        End If
 
         Return True
     End Function
