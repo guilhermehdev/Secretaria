@@ -284,7 +284,7 @@ Namespace My
 
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("10.32.157.22")>  _
+Global.System.Configuration.DefaultSettingValueAttribute("10.32.157.99")>  _
         Public Property cnesServer() As String
             Get
                 Return CType(Me("cnesServer"),String)

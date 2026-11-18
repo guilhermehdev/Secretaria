@@ -60,7 +60,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="cnesServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">10.32.157.22</Value>
+      <Value Profile="(Default)">10.32.157.99</Value>
     </Setting>
     <Setting Name="cnesPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">3050</Value>

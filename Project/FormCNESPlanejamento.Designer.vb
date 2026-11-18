@@ -72,6 +72,8 @@ Partial Class FormCNESPlanejamento
         Me.UploadPDFParaServidorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.FecharToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.CadastroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ProfissionaisToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.TabControl.SuspendLayout()
@@ -189,7 +191,7 @@ Partial Class FormCNESPlanejamento
         Me.lbNMTotal.AutoSize = True
         Me.lbNMTotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbNMTotal.ForeColor = System.Drawing.Color.DarkKhaki
-        Me.lbNMTotal.Location = New System.Drawing.Point(31, 107)
+        Me.lbNMTotal.Location = New System.Drawing.Point(31, 113)
         Me.lbNMTotal.Name = "lbNMTotal"
         Me.lbNMTotal.Size = New System.Drawing.Size(31, 16)
         Me.lbNMTotal.TabIndex = 135
@@ -199,7 +201,7 @@ Partial Class FormCNESPlanejamento
         '
         Me.Label26.AutoSize = True
         Me.Label26.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label26.Location = New System.Drawing.Point(65, 109)
+        Me.Label26.Location = New System.Drawing.Point(65, 115)
         Me.Label26.Name = "Label26"
         Me.Label26.Size = New System.Drawing.Size(143, 13)
         Me.Label26.TabIndex = 134
@@ -210,7 +212,7 @@ Partial Class FormCNESPlanejamento
         Me.lbNSTotal.AutoSize = True
         Me.lbNSTotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbNSTotal.ForeColor = System.Drawing.Color.SeaGreen
-        Me.lbNSTotal.Location = New System.Drawing.Point(31, 86)
+        Me.lbNSTotal.Location = New System.Drawing.Point(31, 90)
         Me.lbNSTotal.Name = "lbNSTotal"
         Me.lbNSTotal.Size = New System.Drawing.Size(31, 16)
         Me.lbNSTotal.TabIndex = 101
@@ -220,7 +222,7 @@ Partial Class FormCNESPlanejamento
         '
         Me.Label18.AutoSize = True
         Me.Label18.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label18.Location = New System.Drawing.Point(65, 88)
+        Me.Label18.Location = New System.Drawing.Point(65, 92)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(167, 13)
         Me.Label18.TabIndex = 100
@@ -231,7 +233,7 @@ Partial Class FormCNESPlanejamento
         Me.lbACStotal.AutoSize = True
         Me.lbACStotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbACStotal.ForeColor = System.Drawing.Color.DarkViolet
-        Me.lbACStotal.Location = New System.Drawing.Point(31, 128)
+        Me.lbACStotal.Location = New System.Drawing.Point(31, 136)
         Me.lbACStotal.Name = "lbACStotal"
         Me.lbACStotal.Size = New System.Drawing.Size(31, 16)
         Me.lbACStotal.TabIndex = 67
@@ -241,7 +243,7 @@ Partial Class FormCNESPlanejamento
         '
         Me.Label14.AutoSize = True
         Me.Label14.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(65, 130)
+        Me.Label14.Location = New System.Drawing.Point(65, 138)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(31, 13)
         Me.Label14.TabIndex = 66
@@ -252,7 +254,7 @@ Partial Class FormCNESPlanejamento
         Me.lbEnfTotal.AutoSize = True
         Me.lbEnfTotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbEnfTotal.ForeColor = System.Drawing.Color.IndianRed
-        Me.lbEnfTotal.Location = New System.Drawing.Point(31, 65)
+        Me.lbEnfTotal.Location = New System.Drawing.Point(31, 67)
         Me.lbEnfTotal.Name = "lbEnfTotal"
         Me.lbEnfTotal.Size = New System.Drawing.Size(31, 16)
         Me.lbEnfTotal.TabIndex = 63
@@ -273,7 +275,7 @@ Partial Class FormCNESPlanejamento
         '
         Me.Label10.AutoSize = True
         Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.Location = New System.Drawing.Point(65, 67)
+        Me.Label10.Location = New System.Drawing.Point(65, 69)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(96, 13)
         Me.Label10.TabIndex = 62
@@ -346,7 +348,7 @@ Partial Class FormCNESPlanejamento
         Me.tpCBOenfermeiro.Location = New System.Drawing.Point(4, 22)
         Me.tpCBOenfermeiro.Name = "tpCBOenfermeiro"
         Me.tpCBOenfermeiro.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpCBOenfermeiro.Size = New System.Drawing.Size(384, 221)
+        Me.tpCBOenfermeiro.Size = New System.Drawing.Size(389, 221)
         Me.tpCBOenfermeiro.TabIndex = 1
         Me.tpCBOenfermeiro.Text = "CBOs Enfermeiros"
         '
@@ -367,7 +369,7 @@ Partial Class FormCNESPlanejamento
         Me.tpCBOnivelSuperior.Controls.Add(Me.lbSuperior)
         Me.tpCBOnivelSuperior.Location = New System.Drawing.Point(4, 22)
         Me.tpCBOnivelSuperior.Name = "tpCBOnivelSuperior"
-        Me.tpCBOnivelSuperior.Size = New System.Drawing.Size(384, 221)
+        Me.tpCBOnivelSuperior.Size = New System.Drawing.Size(389, 221)
         Me.tpCBOnivelSuperior.TabIndex = 3
         Me.tpCBOnivelSuperior.Text = "CBOs outros nível superior"
         '
@@ -388,7 +390,7 @@ Partial Class FormCNESPlanejamento
         Me.tpCBOnivelMedio.Controls.Add(Me.lbMedio)
         Me.tpCBOnivelMedio.Location = New System.Drawing.Point(4, 22)
         Me.tpCBOnivelMedio.Name = "tpCBOnivelMedio"
-        Me.tpCBOnivelMedio.Size = New System.Drawing.Size(384, 221)
+        Me.tpCBOnivelMedio.Size = New System.Drawing.Size(389, 221)
         Me.tpCBOnivelMedio.TabIndex = 4
         Me.tpCBOnivelMedio.Text = "CBOs outros nivel médio"
         '
@@ -409,7 +411,7 @@ Partial Class FormCNESPlanejamento
         Me.tpCBOacs.Controls.Add(Me.lbACS)
         Me.tpCBOacs.Location = New System.Drawing.Point(4, 22)
         Me.tpCBOacs.Name = "tpCBOacs"
-        Me.tpCBOacs.Size = New System.Drawing.Size(384, 221)
+        Me.tpCBOacs.Size = New System.Drawing.Size(389, 221)
         Me.tpCBOacs.TabIndex = 2
         Me.tpCBOacs.Text = "CBOs ACS"
         '
@@ -539,7 +541,7 @@ Partial Class FormCNESPlanejamento
         '
         'MenuStrip1
         '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConfiguraçõesToolStripMenuItem, Me.FecharToolStripMenuItem})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CadastroToolStripMenuItem, Me.ConfiguraçõesToolStripMenuItem, Me.FecharToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Size = New System.Drawing.Size(1100, 24)
@@ -574,6 +576,19 @@ Partial Class FormCNESPlanejamento
         'OpenFileDialog1
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
+        '
+        'CadastroToolStripMenuItem
+        '
+        Me.CadastroToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ProfissionaisToolStripMenuItem})
+        Me.CadastroToolStripMenuItem.Name = "CadastroToolStripMenuItem"
+        Me.CadastroToolStripMenuItem.Size = New System.Drawing.Size(66, 20)
+        Me.CadastroToolStripMenuItem.Text = "Cadastro"
+        '
+        'ProfissionaisToolStripMenuItem
+        '
+        Me.ProfissionaisToolStripMenuItem.Name = "ProfissionaisToolStripMenuItem"
+        Me.ProfissionaisToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.ProfissionaisToolStripMenuItem.Text = "Profissionais"
         '
         'FormCNESPlanejamento
         '
@@ -659,4 +674,6 @@ Partial Class FormCNESPlanejamento
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
     Friend WithEvents UploadPDFParaServidorToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents TextBoxCPF As MaskedTextBox
+    Friend WithEvents CadastroToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ProfissionaisToolStripMenuItem As ToolStripMenuItem
 End Class

@@ -580,4 +580,8 @@ Public Class FormCNESPlanejamento
         ToolTip1.Active = False
     End Sub
 
+    Private Sub ProfissionaisToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ProfissionaisToolStripMenuItem.Click
+        FormCNESCadastro.Show()
+    End Sub
+
 End Class
