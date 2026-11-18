@@ -57,6 +57,55 @@
         BuscarProfissionais()
     End Sub
 
+    Private Async Sub btConsultaCADSUS_Click(sender As Object, e As EventArgs) _
+        Handles btConsultaCADSUS.Click
+
+        Dim cpf As String = SomenteDigitos(TextBoxCPFCadastro.Text)
+        If cpf.Length <> 11 Then
+            MessageBox.Show("Informe um CPF com 11 dígitos para consultar o CADSUS.",
+                            "CADSUS", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            TextBoxCPFCadastro.Focus()
+            Return
+        End If
+
+        Try
+            If Not New Main().ValidarCPF(cpf) Then
+                MessageBox.Show("O CPF informado é inválido.",
+                                "CADSUS", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                TextBoxCPFCadastro.Focus()
+                Return
+            End If
+
+            btConsultaCADSUS.Enabled = False
+            Cursor = Cursors.WaitCursor
+            Dim paciente As Paciente = Await CADSUS.consultaCADSUS(cpf)
+
+            If paciente Is Nothing Then
+                MessageBox.Show("Nenhum profissional foi encontrado no CADSUS para o CPF informado.",
+                                "CADSUS", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Return
+            End If
+
+            carregandoTela = True
+            Try
+                TextBoxCPFCadastro.Text = FormatarCPF(If(String.IsNullOrWhiteSpace(paciente.CPF), cpf, paciente.CPF))
+                TextBoxNomeCadastro.Text = If(paciente.Nome, String.Empty).Trim()
+                txtCnsCadastro.Text = FormatarCNS(paciente.CNS)
+                dtNascimento.Text = FormatarDataNascimentoCadsus(paciente.DataNascimento)
+            Finally
+                carregandoTela = False
+            End Try
+
+            MessageBox.Show("Dados do CADSUS carregados. Confira as informações antes de salvar ou atualizar.",
+                            "CADSUS", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Catch ex As Exception
+            MostrarErroCNES("Não foi possível consultar o CADSUS.", ex)
+        Finally
+            Cursor = Cursors.Default
+            btConsultaCADSUS.Enabled = True
+        End Try
+    End Sub
+
     Private Sub BuscarProfissionais()
         If carregandoTela Then Return
 
@@ -585,6 +634,21 @@
                cns.Substring(8, 4) & "," & cns.Substring(12, 3)
     End Function
 
+    Private Shared Function FormatarDataNascimentoCadsus(valor As String) As String
+        If String.IsNullOrWhiteSpace(valor) Then Return String.Empty
+
+        Dim data As DateTime
+        Dim formatos As String() = {"dd/MM/yyyy", "yyyy-MM-dd", "yyyy-MM-ddTHH:mm:ss"}
+        If DateTime.TryParseExact(valor.Trim(), formatos,
+                                  Globalization.CultureInfo.InvariantCulture,
+                                  Globalization.DateTimeStyles.None, data) OrElse
+           DateTime.TryParse(valor.Trim(), data) Then
+            Return data.ToString("dd/MM/yyyy")
+        End If
+
+        Return String.Empty
+    End Function
+
     Private Shared Function ValorLinha(linha As DataGridViewRow, coluna As String) As String
         If linha Is Nothing OrElse linha.DataGridView Is Nothing OrElse
            Not linha.DataGridView.Columns.Contains(coluna) Then Return String.Empty
@@ -616,8 +680,9 @@
     End Sub
 
     Private Sub AtualizarEstadoBotoes(profissionalSelecionado As Boolean,
-                                      vinculoSelecionado As Boolean)
-        btSalvar.Enabled = Not profissionalSelecionado
+                                      vinculoSelecionado As Boolean,
+                                      Optional modoNovo As Boolean = False)
+        btSalvar.Enabled = modoNovo
         btAtualizar.Enabled = profissionalSelecionado
         btExcluir.Enabled = profissionalSelecionado
         btSalvarVinculo.Enabled = profissionalSelecionado
@@ -638,6 +703,7 @@
             dgvVinculos.DataSource = Nothing
             LimparCamposVinculo()
             AtualizarEstadoBotoes(False, False)
+            btSalvar.Enabled = True
         Finally
             carregandoTela = False
         End Try

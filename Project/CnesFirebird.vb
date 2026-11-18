@@ -107,8 +107,8 @@ Public NotInheritable Class CnesFirebird
             "INNER JOIN LFCES021 v ON v.PROF_ID = p.PROF_ID " &
             "INNER JOIN LFCES004 e ON e.UNIDADE_ID = v.UNIDADE_ID " &
             "LEFT JOIN NFCES026 c ON c.COD_CBO = v.COD_CBO " &
-            "WHERE (p.STATUS = '1' OR (p.STATUS IS NULL AND p.STATUSMOV = '2')) " &
-            "AND (v.STATUS = '1' OR (v.STATUS IS NULL AND v.STATUSMOV = '1')) "
+            "WHERE (p.STATUS = '1' OR p.STATUS IS NULL) " &
+            "AND (v.STATUS = '1' OR v.STATUS IS NULL) "
 
         If Not String.IsNullOrWhiteSpace(cpf) Then
             sql &= "AND p.CPF_PROF = @cpf "
@@ -167,7 +167,7 @@ Public NotInheritable Class CnesFirebird
             "p.NOME_PROF AS NOME, " &
             "p.DATA_NASC AS NASCIMENTO " &
             "FROM LFCES018 p " &
-            "WHERE (p.STATUS = '1' OR (p.STATUS IS NULL AND p.STATUSMOV = '2')) "
+            "WHERE (p.STATUS = '1' OR p.STATUS IS NULL) "
 
         If Not String.IsNullOrWhiteSpace(cpf) Then
             sql &= "AND p.CPF_PROF = @cpf "
@@ -234,7 +234,7 @@ Public NotInheritable Class CnesFirebird
             "INNER JOIN LFCES004 e ON e.UNIDADE_ID = v.UNIDADE_ID " &
             "LEFT JOIN NFCES026 c ON c.COD_CBO = v.COD_CBO " &
             "WHERE v.PROF_ID = @profissionalId " &
-            "AND (v.STATUS = '1' OR (v.STATUS IS NULL AND v.STATUSMOV = '1')) " &
+            "AND (v.STATUS = '1' OR v.STATUS IS NULL) " &
             "ORDER BY e.NOME_FANTA, v.COD_CBO"
 
         Using conexao As New FbConnection(ObterStringConexao())
