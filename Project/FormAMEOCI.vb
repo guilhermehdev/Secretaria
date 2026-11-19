@@ -1678,6 +1678,10 @@ JOIN cod_oci_secundario ON cod_oci_secundario.cod = procedimentos_secundarios.co
             dgQueueItens.Columns("paciente").Width = 284
             dgQueueItens.Columns("dtnasc").HeaderText = "Data de Nascimento"
             dgQueueItens.Columns("dtnasc").Width = 90
+            If dgQueueItens.Columns.Contains("proced") Then
+                dgQueueItens.Columns("proced").HeaderText = "Procedimento"
+                dgQueueItens.Columns("proced").Width = 105
+            End If
 
             dgQueueItens.ClearSelection()
 

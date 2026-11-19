@@ -1712,6 +1712,7 @@ Partial Class FormAMEOCI
         Me.dgQueueOCI.AllowUserToResizeRows = False
         Me.dgQueueOCI.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.dgQueueOCI.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgQueueOCI.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.dgQueueOCI.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgQueueOCI.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
