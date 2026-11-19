@@ -1734,13 +1734,18 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             txtCidPrincipal.SelectedValue = row("cid_principal")
             txtCidSecundario.SelectedValue = row("cid_secundario")
 
+            'Depois de carregar a pendência, mostra os controles da identificação
+            'do paciente. A fila continua carregada e a OCI permanece marcada como
+            'originada da fila para que a gravação conclua o item correto.
+            TabControl1.SelectedTab = TabPage1
+
             ' A fila ainda não possui num_apac; portanto não é seguro buscar
             ' procedimentos secundários por paciente/data/médico. A seleção
             ' disponível para o procedimento principal permanece na tela e será
             ' vinculada à APAC quando ela for gravada.
         Else
             checkQueue()
-            colapse()
+            ' colapse()
         End If
 
         Clipboard.SetText(result(0)("dtnasc").ToString())
@@ -1760,9 +1765,9 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     Private Sub colapse()
         Try
             If colapsed Then
-                btOCIpendente.Left = -55
-                btOCIpendente.Text = "Fechar"
-                btOCIpendente.TextAlign = ContentAlignment.MiddleRight
+                'btOCIpendente.Left = -55
+                'btOCIpendente.Text = "Fechar"
+                'btOCIpendente.TextAlign = ContentAlignment.MiddleRight
                 dgQueueOCI.Width = 450
                 dgQueueItens.Width = 450
                 TabControl1.Location = New Point(457, 43)
@@ -1770,9 +1775,9 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
                 colapsed = False
             Else
-                btOCIpendente.Left = 0
-                btOCIpendente.Text = "OCIs pendentes"
-                btOCIpendente.TextAlign = ContentAlignment.MiddleLeft
+                'btOCIpendente.Left = 0
+                'btOCIpendente.Text = "OCIs pendentes"
+                'btOCIpendente.TextAlign = ContentAlignment.MiddleLeft
                 dgQueueOCI.Width = 0
                 dgQueueItens.Width = 0
                 TabControl1.Location = New Point(14, 43)
@@ -1791,18 +1796,23 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         Dim dataset = FormAMEmain.getDataset("Select COUNT(*) As total FROM oci_fila WHERE `status`=0").Rows(0).Item("total")
 
         If dataset > 0 Then
-            btOCIpendente.Visible = True
+            ' btOCIpendente.Visible = True
             Timer1.Start()
         Else
-            btOCIpendente.Visible = False
+            'btOCIpendente.Visible = False
             Timer1.Stop()
         End If
     End Sub
 
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ConfigurarAparenciaTabControl()
+
+        'A identificação do paciente é a página inicial. A fila de pendências
+        'continua disponível na quarta aba e será mostrada quando necessário.
+        TabControl1.SelectedTab = TabPage1
+
         checkQueue()
-        colapse()
+        ' colapse()
 
         If My.Settings.databaseAME = "" Then
             FormAMEbd.ShowDialog()
@@ -2014,7 +2024,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     Private Sub ConfigurarAparenciaTabControl()
         TabControl1.DrawMode = TabDrawMode.OwnerDrawFixed
         TabControl1.SizeMode = TabSizeMode.Fixed
-        TabControl1.ItemSize = New Size(170, 25)
+        TabControl1.ItemSize = New Size(125, 25)
         TabControl1.BackColor = Color.FromArgb(40, 40, 40)
         TabControl1.ForeColor = Color.White
 
@@ -2026,6 +2036,8 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         For Each pagina As TabPage In TabControl1.TabPages
             pagina.UseVisualStyleBackColor = False
         Next
+
+        TabControl1.TabIndex = 1
     End Sub
 
     Private Sub TabControl1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles TabControl1.DrawItem
@@ -3701,25 +3713,24 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
     End Sub
 
-    Private Sub btOCIpendente_Click(sender As Object, e As EventArgs) Handles btOCIpendente.Click
-        colapse()
+    Private Sub btOCIpendente_Click(sender As Object, e As EventArgs)
+        ' colapse()
         Timer1.Stop()
-        btOCIpendente.ForeColor = Color.Linen
-    End Sub
-
-    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        If btOCIpendente.ForeColor = Color.Red Then
-            btOCIpendente.ForeColor = Color.Yellow
-        Else
-            btOCIpendente.ForeColor = Color.Red
-        End If
+        'btOCIpendente.ForeColor = Color.Linen
     End Sub
     Private Sub dgQueueOCI_CellEnter(sender As Object, e As DataGridViewCellEventArgs) Handles dgQueueOCI.CellEnter
         If e.RowIndex < 0 OrElse e.RowIndex >= dgQueueOCI.Rows.Count Then Return
         loadQueueItens(dgQueueOCI.Rows(e.RowIndex).Cells(0).Value, dgQueueOCI.Rows(e.RowIndex).Cells(1).Value)
     End Sub
-    Private Sub dgQueueItens_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgQueueItens.CellDoubleClick
-        getQueueData(dgQueueItens.Rows(e.RowIndex).Cells(0).Value)
+    Private Sub dgQueueItens_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgQueueItens.CellClick
+        If e.RowIndex < 0 OrElse e.RowIndex >= dgQueueItens.Rows.Count Then Return
+        If dgQueueItens.Rows(e.RowIndex).IsNewRow Then Return
+        If Not dgQueueItens.Columns.Contains("id") Then Return
+
+        Dim idFila As Object = dgQueueItens.Rows(e.RowIndex).Cells("id").Value
+        If idFila Is Nothing OrElse IsDBNull(idFila) Then Return
+
+        getQueueData(Convert.ToInt32(idFila))
     End Sub
 
     Private Sub LimparControles(controles As Control.ControlCollection)
