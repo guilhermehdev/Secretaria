@@ -3,7 +3,6 @@ Imports System.Net
 Imports com.itextpdf.text.pdf
 
 Public Class FormCNESPlanejamento
-    Dim xml As New XML
     Dim pdf As New PDF
     Dim profs As DataTable
     Dim arrayOfMedicos As Array
@@ -12,20 +11,19 @@ Public Class FormCNESPlanejamento
     Private firebirdDisponivel As Boolean
     Private firebirdErro As String = String.Empty
     Private formatandoCPF As Boolean
+    Private carregandoFonte As Boolean
 
     Private Sub FplanejCNES_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim versao As Version = GetType(FormCNESPlanejamento).Assembly.GetName().Version
         Me.Text = "CNES - Planejamento - v" & versao.ToString(3)
 
-        xml.cbFormaContEstab(cbFormaContratoEstab)
-        cbFormaContratoEstab.SelectedIndex = -1
-        cbcbFormaContratoEmpreg.SelectedIndex = -1
-        cbDetalhamento.SelectedIndex = -1
+        InicializarFonteCNES()
+
         clearLabels()
 
         firebirdDisponivel = CnesFirebird.TestarConexao(firebirdErro)
-        ImportarPDFToolStripMenuItem.Enabled = False
-        UploadPDFParaServidorToolStripMenuItem.Enabled = False
+        'ImportarPDFToolStripMenuItem.Enabled = False
+        'UploadPDFParaServidorToolStripMenuItem.Enabled = False
 
         If Not firebirdDisponivel Then
             MarcarFirebirdIndisponivel()
@@ -40,7 +38,165 @@ Public Class FormCNESPlanejamento
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Warning)
         Else
+            CarregarFormasContratacaoEstabelecimento()
             AtualizarStatusFonte()
+        End If
+    End Sub
+
+    Private Sub CarregarFormasContratacaoEstabelecimento()
+        Try
+            Dim formas As DataTable = CnesFirebird.ConsultarFormasContratacaoEstabelecimento()
+            cbFormaContratoEstab.DataSource = formas
+            cbFormaContratoEstab.DisplayMember = "DESCRICAO"
+            cbFormaContratoEstab.ValueMember = "CODIGO"
+            cbFormaContratoEstab.SelectedIndex = -1
+
+            cbcbFormaContratoEmpreg.DataSource = Nothing
+            cbDetalhamento.DataSource = Nothing
+            cbcbFormaContratoEmpreg.SelectedIndex = -1
+            cbDetalhamento.SelectedIndex = -1
+        Catch ex As Exception
+            firebirdErro = ex.Message
+            MarcarFirebirdIndisponivel()
+        End Try
+    End Sub
+
+    Private Sub CarregarFormasContratacaoEmpregador(codigoEstabelecimento As String)
+        Try
+            Dim formas As DataTable = CnesFirebird.ConsultarFormasContratacaoEmpregador(codigoEstabelecimento)
+            cbcbFormaContratoEmpreg.DataSource = formas
+            cbcbFormaContratoEmpreg.DisplayMember = "DESCRICAO"
+            cbcbFormaContratoEmpreg.ValueMember = "CODIGO"
+            cbcbFormaContratoEmpreg.SelectedIndex = -1
+
+            cbDetalhamento.DataSource = Nothing
+            cbDetalhamento.SelectedIndex = -1
+        Catch ex As Exception
+            firebirdErro = ex.Message
+            MarcarFirebirdIndisponivel()
+        End Try
+    End Sub
+
+    Private Sub CarregarDetalhamentosVinculo(codigoEstabelecimento As String, codigoEmpregador As String)
+        Try
+            Dim detalhamentos As DataTable =
+                CnesFirebird.ConsultarDetalhamentosVinculo(codigoEstabelecimento, codigoEmpregador)
+            cbDetalhamento.DataSource = detalhamentos
+            cbDetalhamento.DisplayMember = "DESCRICAO"
+            cbDetalhamento.ValueMember = "CODIGO"
+            cbDetalhamento.SelectedIndex = -1
+        Catch ex As Exception
+            firebirdErro = ex.Message
+            MarcarFirebirdIndisponivel()
+        End Try
+    End Sub
+
+    Private Function TipoFonteNormalizado() As String
+        If String.Equals(My.Settings.tipoFonte, "Remoto", StringComparison.OrdinalIgnoreCase) Then
+            Return "Remoto"
+        End If
+
+        Return "Local"
+    End Function
+
+    Private Function ObterIpFonte(tipoFonte As String) As String
+        If String.Equals(tipoFonte, "Remoto", StringComparison.OrdinalIgnoreCase) Then
+            Return My.Settings.ipRemoto
+        End If
+
+        Return My.Settings.ipLocal
+    End Function
+
+    Private Sub InicializarFonteCNES()
+        carregandoFonte = True
+        Try
+            Dim tipoFonte As String = TipoFonteNormalizado()
+            tstBancoRemoto.SelectedItem = tipoFonte
+
+            If String.IsNullOrWhiteSpace(My.Settings.tipoFonte) Then
+                My.Settings.tipoFonte = tipoFonte
+                My.Settings.Save()
+            End If
+        Finally
+            carregandoFonte = False
+        End Try
+    End Sub
+
+    Private Function EnderecoFonteValido(valor As String) As Boolean
+        If String.IsNullOrWhiteSpace(valor) Then Return False
+
+        'Aceita IP ou nome de máquina, evitando bloquear instalações que usem
+        'DNS/hostname em vez de um endereço IPv4 literal.
+        Return System.Text.RegularExpressions.Regex.IsMatch(
+            valor.Trim(),
+            "^[A-Za-z0-9][A-Za-z0-9.-]*$"
+        )
+    End Function
+
+    Private Sub tstBancoRemoto_SelectedIndexChanged(sender As Object, e As EventArgs) _
+        Handles tstBancoRemoto.SelectedIndexChanged
+
+        If carregandoFonte OrElse tstBancoRemoto.SelectedIndex < 0 Then Return
+
+        Dim tipoAnterior As String = TipoFonteNormalizado()
+        Dim tipoNovo As String = If(String.Equals(Convert.ToString(tstBancoRemoto.SelectedItem), "Remoto", StringComparison.OrdinalIgnoreCase),
+                                    "Remoto",
+                                    "Local")
+        Dim ipAtual As String = ObterIpFonte(tipoNovo)
+        Dim descricao As String = If(tipoNovo = "Remoto", "remoto", "local")
+
+        Dim ipInformado As String = Microsoft.VisualBasic.Interaction.InputBox(
+            "Informe o IP ou nome da máquina do banco CNES " & descricao & ":",
+            "Fonte do banco CNES",
+            ipAtual)
+
+        If String.IsNullOrWhiteSpace(ipInformado) Then
+            carregandoFonte = True
+            Try
+                tstBancoRemoto.SelectedItem = tipoAnterior
+            Finally
+                carregandoFonte = False
+            End Try
+            Return
+        End If
+
+        ipInformado = ipInformado.Trim()
+        If Not EnderecoFonteValido(ipInformado) Then
+            MessageBox.Show("Informe um IP ou nome de máquina válido.",
+                            "Fonte do banco CNES",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning)
+            carregandoFonte = True
+            Try
+                tstBancoRemoto.SelectedItem = tipoAnterior
+            Finally
+                carregandoFonte = False
+            End Try
+            Return
+        End If
+
+        If tipoNovo = "Remoto" Then
+            My.Settings.ipRemoto = ipInformado
+        Else
+            My.Settings.ipLocal = ipInformado
+        End If
+
+        My.Settings.tipoFonte = tipoNovo
+        My.Settings.Save()
+
+        firebirdErro = String.Empty
+        firebirdDisponivel = CnesFirebird.TestarConexao(firebirdErro)
+        If firebirdDisponivel Then
+            AtualizarStatusFonte()
+            CarregarFormasContratacaoEstabelecimento()
+        Else
+            MarcarFirebirdIndisponivel()
+            MessageBox.Show("A fonte foi salva, mas o banco CNES não está acessível." &
+                            Environment.NewLine & Environment.NewLine &
+                            firebirdErro,
+                            "Conexão com o CNES",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning)
         End If
     End Sub
 
@@ -54,7 +210,7 @@ Public Class FormCNESPlanejamento
             Return
         End If
 
-        Dim fonte As String = "Firebird"
+        Dim fonte As String = "Firebird (" & TipoFonteNormalizado() & ")"
         If quantidade >= 0 Then
             ToolStripStatusLabel1.Text = "Fonte: " & fonte & " | Registros: " & quantidade
         Else
@@ -162,13 +318,23 @@ Public Class FormCNESPlanejamento
     End Function
 
     Private Sub cbFormaContratoEstab_SelectionChangeCommitted(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFormaContratoEstab.SelectionChangeCommitted
-        xml.cbFormaContEmpregador(cbcbFormaContratoEmpreg, cbFormaContratoEstab.SelectedValue)
-        cbcbFormaContratoEmpreg.SelectedIndex = -1
+        If Not firebirdDisponivel Then
+            AtualizarStatusFonte()
+            Return
+        End If
+
+        CarregarFormasContratacaoEmpregador(Convert.ToString(cbFormaContratoEstab.SelectedValue))
     End Sub
 
     Private Sub cbcbFormaContratoEmpreg_SelectionChangeCommitted(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbcbFormaContratoEmpreg.SelectionChangeCommitted
-        xml.cbDetalhaento(cbDetalhamento, cbFormaContratoEstab.SelectedValue, cbcbFormaContratoEmpreg.SelectedValue)
-        cbDetalhamento.SelectedIndex = -1
+        If Not firebirdDisponivel Then
+            AtualizarStatusFonte()
+            Return
+        End If
+
+        CarregarDetalhamentosVinculo(
+            Convert.ToString(cbFormaContratoEstab.SelectedValue),
+            Convert.ToString(cbcbFormaContratoEmpreg.SelectedValue))
         dgPlanejamento.DataSource = Nothing
     End Sub
 
@@ -368,7 +534,17 @@ Public Class FormCNESPlanejamento
         Dim total As Integer
         Dim listCBOS As New List(Of String)
         For Each cbo In cboCount.Keys
-            Dim partes = QuebrarTexto($"{cbo} - {xml.getCBOXML(cbo)}: {cboCount(cbo)}", listBox.Width - 20, listBox.Font)
+            Dim descricaoCbo As String = cbo.ToString()
+            If data.Columns.Contains("DESCRICAO_CBO") Then
+                Dim linhaCbo As DataRow = data.AsEnumerable().FirstOrDefault(
+                    Function(linha) Convert.ToString(linha("CBO")) = cbo.ToString() AndAlso
+                                    Not IsDBNull(linha("DESCRICAO_CBO")))
+                If linhaCbo IsNot Nothing Then
+                    descricaoCbo = Convert.ToString(linhaCbo("DESCRICAO_CBO"))
+                End If
+            End If
+
+            Dim partes = QuebrarTexto($"{cbo} - {descricaoCbo}: {cboCount(cbo)}", listBox.Width - 20, listBox.Font)
             For Each parte In partes
                 listBox.Items.Add(parte)
             Next
@@ -538,7 +714,7 @@ Public Class FormCNESPlanejamento
     Private Sub FecharToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FecharToolStripMenuItem.Click
         Me.Close()
     End Sub
-    Private Sub ImportarPDFToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportarPDFToolStripMenuItem.Click
+    Private Sub ImportarPDFToolStripMenuItem_Click(sender As Object, e As EventArgs)
         Dim filePath = Application.StartupPath & "\PDF\PROFISSIONAIS.pdf"
         OpenFileDialog1.Filter = "pdf Files (*.pdf)|*.pdf"
         OpenFileDialog1.FileName = "PROFISSIONAIS.pdf"
@@ -558,7 +734,7 @@ Public Class FormCNESPlanejamento
         End If
     End Sub
 
-    Private Sub UploadPDFParaServidorToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UploadPDFParaServidorToolStripMenuItem.Click
+    Private Sub UploadPDFParaServidorToolStripMenuItem_Click(sender As Object, e As EventArgs)
         OpenFileDialog1.Filter = "pdf Files (*.pdf)|*.pdf"
 
         OpenFileDialog1.ShowDialog()

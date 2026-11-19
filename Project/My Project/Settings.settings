@@ -62,6 +62,15 @@
     <Setting Name="cnesServer" Type="System.String" Scope="User">
       <Value Profile="(Default)">10.32.157.99</Value>
     </Setting>
+    <Setting Name="ipLocal" Type="System.String" Scope="User">
+      <Value Profile="(Default)">10.32.157.99</Value>
+    </Setting>
+    <Setting Name="ipRemoto" Type="System.String" Scope="User">
+      <Value Profile="(Default)">10.32.157.22</Value>
+    </Setting>
+    <Setting Name="tipoFonte" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Local</Value>
+    </Setting>
     <Setting Name="cnesPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">3050</Value>
     </Setting>

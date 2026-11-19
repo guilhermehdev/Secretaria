@@ -296,6 +296,42 @@ Global.System.Configuration.DefaultSettingValueAttribute("10.32.157.99")>  _
 
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("10.32.157.99")>  _
+        Public Property ipLocal() As String
+            Get
+                Return CType(Me("ipLocal"),String)
+            End Get
+            Set
+                Me("ipLocal") = value
+            End Set
+        End Property
+
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("10.32.157.22")>  _
+        Public Property ipRemoto() As String
+            Get
+                Return CType(Me("ipRemoto"),String)
+            End Get
+            Set
+                Me("ipRemoto") = value
+            End Set
+        End Property
+
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Local")>  _
+        Public Property tipoFonte() As String
+            Get
+                Return CType(Me("tipoFonte"),String)
+            End Get
+            Set
+                Me("tipoFonte") = value
+            End Set
+        End Property
+
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("3050")>  _
         Public Property cnesPort() As String
             Get

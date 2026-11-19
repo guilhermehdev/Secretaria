@@ -22,6 +22,7 @@
         dgvVinculos.DataSource = Nothing
         ConfigurarGridProfissionais()
         ConfigurarGridVinculos()
+        InicializarGridEquipes()
         LimparCamposVinculo()
         AtualizarEstadoBotoes(False, False)
         carregandoTela = False
@@ -382,16 +383,94 @@
             rbSUSNao.Checked = Not rbSUSSim.Checked
 
             PreencherCombosContrato(ValorLinha(linha, "CODIGO_VINCULO"))
-            TextBox1.Clear()
-            cbUF.SelectedIndex = -1
-            tbConselho.Clear()
+            TextBox1.Text = ValorLinha(linha, "ORGAO_EMISSOR")
+            cbUF.Text = ValorLinha(linha, "UF_CONSELHO")
+            tbConselho.Text = ValorLinha(linha, "NUMERO_CONSELHO")
             tbCNPJContratador.Text = FormatarCNPJ(ValorLinha(linha, "CNPJ_INTERMEDIADOR"))
             AtualizarObrigatoriedadeCNPJ()
         Finally
             carregandoTela = False
         End Try
 
+        CarregarEquipesDaUnidade(ValorLinha(linha, "UNIDADE_ID"), profissionalIdSelecionado)
+
         AtualizarEstadoBotoes(True, True)
+    End Sub
+
+    Private Sub InicializarGridEquipes()
+        With dgEquipes
+            .AutoGenerateColumns = True
+            .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None
+            .AllowUserToAddRows = False
+            .AllowUserToDeleteRows = False
+            .AllowUserToResizeRows = False
+            .ReadOnly = True
+            .MultiSelect = False
+            .SelectionMode = DataGridViewSelectionMode.FullRowSelect
+            .ScrollBars = ScrollBars.Both
+            .RowHeadersWidth = 4
+            .BackgroundColor = Color.FromArgb(64, 64, 64)
+            .BorderStyle = BorderStyle.None
+            .DefaultCellStyle.BackColor = Color.FromArgb(64, 64, 64)
+            .DefaultCellStyle.ForeColor = Color.White
+            .DefaultCellStyle.SelectionBackColor = Color.SteelBlue
+            .DefaultCellStyle.SelectionForeColor = Color.White
+        End With
+    End Sub
+
+    Private Sub CarregarEquipesDaUnidade(unidadeId As String, profissionalId As String)
+        InicializarGridEquipes()
+
+        If String.IsNullOrWhiteSpace(unidadeId) OrElse String.IsNullOrWhiteSpace(profissionalId) Then
+            dgEquipes.DataSource = Nothing
+            Return
+        End If
+
+        Try
+            Dim dados As DataTable = CnesFirebird.ConsultarEquipesDaUnidade(unidadeId, profissionalId)
+            dgEquipes.DataSource = dados
+            ConfigurarGridEquipes()
+        Catch ex As Exception
+            dgEquipes.DataSource = Nothing
+            MostrarErroCNES("Não foi possível consultar as equipes do estabelecimento.", ex)
+        End Try
+    End Sub
+
+    Private Sub ConfigurarGridEquipes()
+        If dgEquipes.Columns.Count = 0 Then Return
+
+        For Each coluna As String In New String() {
+            "SEQ_EQUIPE", "CODIGO_EQUIPE", "CODIGO_TIPO_EQUIPE", "CODIGO_SUBTIPO",
+            "SUBTIPO_EQUIPE", "SEGMENTO", "AREA", "VINCULADO"
+        }
+            If dgEquipes.Columns.Contains(coluna) Then
+                dgEquipes.Columns(coluna).Visible = False
+            End If
+        Next
+
+        ConfigurarColunaEquipe("INE", "INE", 85)
+        ConfigurarColunaEquipe("NOME_EQUIPE", "Nome", 130)
+        ConfigurarColunaEquipe("TIPO_EQUIPE", "Tipo", 120)
+        ConfigurarColunaEquipe("SITUACAO", "Situação", 80)
+
+        If dgEquipes.Columns.Contains("INE") AndAlso
+           dgEquipes.Columns.Contains("NOME_EQUIPE") AndAlso
+           dgEquipes.Columns.Contains("TIPO_EQUIPE") AndAlso
+           dgEquipes.Columns.Contains("SITUACAO") Then
+            dgEquipes.Columns("INE").DisplayIndex = 0
+            dgEquipes.Columns("NOME_EQUIPE").DisplayIndex = 1
+            dgEquipes.Columns("TIPO_EQUIPE").DisplayIndex = 2
+            dgEquipes.Columns("SITUACAO").DisplayIndex = 3
+        End If
+    End Sub
+
+    Private Sub ConfigurarColunaEquipe(nome As String, titulo As String, largura As Integer)
+        If Not dgEquipes.Columns.Contains(nome) Then Return
+        With dgEquipes.Columns(nome)
+            .HeaderText = titulo
+            .Width = largura
+            .Visible = True
+        End With
     End Sub
 
     Private Sub PreencherCombosContrato(codigo As String)
@@ -426,10 +505,12 @@
 
     Private Sub ConfigurarGridProfissionais()
         dgvProfissionais.AutoGenerateColumns = True
-        dgvProfissionais.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None
+        dgvProfissionais.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
         dgvProfissionais.ScrollBars = ScrollBars.Both
         dgvProfissionais.SelectionMode = DataGridViewSelectionMode.FullRowSelect
         dgvProfissionais.MultiSelect = False
+        dgvProfissionais.DefaultCellStyle.SelectionBackColor = Color.SteelBlue
+        dgvProfissionais.DefaultCellStyle.SelectionForeColor = Color.White
 
         OcultarColuna(dgvProfissionais, "PROFISSIONAL_ID")
         ConfigurarColuna(dgvProfissionais, "CPF", "CPF", 105, True)
@@ -439,6 +520,10 @@
         If dgvProfissionais.Columns.Contains("NASCIMENTO") Then
             dgvProfissionais.Columns("NASCIMENTO").DefaultCellStyle.Format = "dd/MM/yyyy"
         End If
+
+        For Each coluna As DataGridViewColumn In dgvProfissionais.Columns
+            If coluna.Visible Then coluna.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+        Next
     End Sub
 
     Private Sub ConfigurarGridVinculos()
@@ -450,7 +535,7 @@
 
         For Each coluna As String In New String() {
             "UNIDADE_ID", "COD_CBO", "RAZAO_SOCIAL", "TIPO_SUS", "CODIGO_VINCULO",
-            "CNPJ_INTERMEDIADOR",
+            "CODIGO_ORGAO_EMISSOR", "ORGAO_EMISSOR", "UF_CONSELHO", "NUMERO_CONSELHO", "CNPJ_INTERMEDIADOR",
             "TP_PRECEPTOR", "TP_RESIDENTE", "STATUS_VINCULO", "STATUSMOV_VINCULO",
             "CHECKSUM_VINCULO"}
             OcultarColuna(dgvVinculos, coluna)
@@ -598,6 +683,7 @@
 
     Private Sub LimparCamposVinculo()
         tbCNES.Clear()
+        dgEquipes.DataSource = Nothing
         cbEstabelecimento.SelectedIndex = -1
         cbCBO.SelectedIndex = -1
         nudOutro.Value = 0

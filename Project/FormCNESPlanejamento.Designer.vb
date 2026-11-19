@@ -67,13 +67,13 @@ Partial Class FormCNESPlanejamento
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
-        Me.ConfiguraçõesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ImportarPDFToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.UploadPDFParaServidorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.FecharToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.CadastroToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ProfissionaisToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ConfiguraçõesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.RemotoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.tstBancoRemoto = New System.Windows.Forms.ToolStripComboBox()
+        Me.FecharToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.TabControl.SuspendLayout()
@@ -548,35 +548,6 @@ Partial Class FormCNESPlanejamento
         Me.MenuStrip1.TabIndex = 42
         Me.MenuStrip1.Text = "MenuStrip1"
         '
-        'ConfiguraçõesToolStripMenuItem
-        '
-        Me.ConfiguraçõesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ImportarPDFToolStripMenuItem, Me.UploadPDFParaServidorToolStripMenuItem})
-        Me.ConfiguraçõesToolStripMenuItem.Name = "ConfiguraçõesToolStripMenuItem"
-        Me.ConfiguraçõesToolStripMenuItem.Size = New System.Drawing.Size(96, 20)
-        Me.ConfiguraçõesToolStripMenuItem.Text = "Configurações"
-        '
-        'ImportarPDFToolStripMenuItem
-        '
-        Me.ImportarPDFToolStripMenuItem.Name = "ImportarPDFToolStripMenuItem"
-        Me.ImportarPDFToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
-        Me.ImportarPDFToolStripMenuItem.Text = "Importar PDF"
-        '
-        'UploadPDFParaServidorToolStripMenuItem
-        '
-        Me.UploadPDFParaServidorToolStripMenuItem.Name = "UploadPDFParaServidorToolStripMenuItem"
-        Me.UploadPDFParaServidorToolStripMenuItem.Size = New System.Drawing.Size(207, 22)
-        Me.UploadPDFParaServidorToolStripMenuItem.Text = "Upload PDF para servidor"
-        '
-        'FecharToolStripMenuItem
-        '
-        Me.FecharToolStripMenuItem.Name = "FecharToolStripMenuItem"
-        Me.FecharToolStripMenuItem.Size = New System.Drawing.Size(54, 20)
-        Me.FecharToolStripMenuItem.Text = "Fechar"
-        '
-        'OpenFileDialog1
-        '
-        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
-        '
         'CadastroToolStripMenuItem
         '
         Me.CadastroToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ProfissionaisToolStripMenuItem})
@@ -587,8 +558,39 @@ Partial Class FormCNESPlanejamento
         'ProfissionaisToolStripMenuItem
         '
         Me.ProfissionaisToolStripMenuItem.Name = "ProfissionaisToolStripMenuItem"
-        Me.ProfissionaisToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.ProfissionaisToolStripMenuItem.Size = New System.Drawing.Size(140, 22)
         Me.ProfissionaisToolStripMenuItem.Text = "Profissionais"
+        '
+        'ConfiguraçõesToolStripMenuItem
+        '
+        Me.ConfiguraçõesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RemotoToolStripMenuItem})
+        Me.ConfiguraçõesToolStripMenuItem.Name = "ConfiguraçõesToolStripMenuItem"
+        Me.ConfiguraçõesToolStripMenuItem.Size = New System.Drawing.Size(103, 20)
+        Me.ConfiguraçõesToolStripMenuItem.Text = "Banco de dados"
+        '
+        'RemotoToolStripMenuItem
+        '
+        Me.RemotoToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tstBancoRemoto})
+        Me.RemotoToolStripMenuItem.Name = "RemotoToolStripMenuItem"
+        Me.RemotoToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.RemotoToolStripMenuItem.Text = "Fonte"
+        '
+        'tstBancoRemoto
+        '
+        Me.tstBancoRemoto.Items.AddRange(New Object() {"Local", "Remoto"})
+        Me.tstBancoRemoto.Name = "tstBancoRemoto"
+        Me.tstBancoRemoto.Size = New System.Drawing.Size(100, 23)
+        Me.tstBancoRemoto.Text = "Selecione"
+        '
+        'FecharToolStripMenuItem
+        '
+        Me.FecharToolStripMenuItem.Name = "FecharToolStripMenuItem"
+        Me.FecharToolStripMenuItem.Size = New System.Drawing.Size(54, 20)
+        Me.FecharToolStripMenuItem.Text = "Fechar"
+        '
+        'OpenFileDialog1
+        '
+        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
         '
         'FormCNESPlanejamento
         '
@@ -668,12 +670,12 @@ Partial Class FormCNESPlanejamento
     Friend WithEvents TextBoxNome As TextBox
     Friend WithEvents Label4 As Label
     Friend WithEvents MenuStrip1 As MenuStrip
-    Friend WithEvents ConfiguraçõesToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ImportarPDFToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents FecharToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
-    Friend WithEvents UploadPDFParaServidorToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents TextBoxCPF As MaskedTextBox
     Friend WithEvents CadastroToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ProfissionaisToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ConfiguraçõesToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents RemotoToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents tstBancoRemoto As ToolStripComboBox
 End Class

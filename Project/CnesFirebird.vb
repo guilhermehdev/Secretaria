@@ -6,8 +6,38 @@ Public NotInheritable Class CnesFirebird
     Private Sub New()
     End Sub
 
+    Private Shared Function ObterTipoFonte() As String
+        If String.Equals(My.Settings.tipoFonte, "Remoto", StringComparison.OrdinalIgnoreCase) Then
+            Return "Remoto"
+        End If
+
+        Return "Local"
+    End Function
+
+    Private Shared Function ObterServidorConfigurado() As String
+        Dim servidor As String
+
+        If ObterTipoFonte() = "Remoto" Then
+            servidor = My.Settings.ipRemoto
+        Else
+            servidor = My.Settings.ipLocal
+        End If
+
+        'Compatibilidade com instalações antigas que ainda não possuem os três
+        'novos valores gravados no arquivo de configurações do usuário.
+        If String.IsNullOrWhiteSpace(servidor) Then
+            servidor = My.Settings.cnesServer
+        End If
+
+        If String.IsNullOrWhiteSpace(servidor) Then
+            servidor = If(ObterTipoFonte() = "Remoto", "10.32.157.22", "10.32.157.99")
+        End If
+
+        Return servidor.Trim()
+    End Function
+
     Private Shared Function ObterStringConexao() As String
-        Dim servidor As String = If(String.IsNullOrWhiteSpace(My.Settings.cnesServer), "10.32.157.99", My.Settings.cnesServer)
+        Dim servidor As String = ObterServidorConfigurado()
         Dim porta As String = If(String.IsNullOrWhiteSpace(My.Settings.cnesPort), "3050", My.Settings.cnesPort)
         Dim banco As String = If(String.IsNullOrWhiteSpace(My.Settings.cnesDatabase),
                                  "C:\Program Files (x86)\Datasus\CNES\CNES.GDB",
@@ -48,7 +78,8 @@ Public NotInheritable Class CnesFirebird
                                  "C:\Program Files (x86)\Datasus\CNES\CNES.GDB",
                                  My.Settings.cnesDatabase)
 
-        Return "Servidor: " & If(String.IsNullOrWhiteSpace(My.Settings.cnesServer), "10.32.157.99", My.Settings.cnesServer) &
+        Return "Fonte: " & If(ObterTipoFonte() = "Remoto", "Remoto", "Local") & Environment.NewLine &
+               "Servidor: " & ObterServidorConfigurado() &
                ":" & If(String.IsNullOrWhiteSpace(My.Settings.cnesPort), "3050", My.Settings.cnesPort) &
                Environment.NewLine &
                "Banco: " & NormalizarCaminhoBanco(banco) &
@@ -224,6 +255,10 @@ Public NotInheritable Class CnesFirebird
             "v.CGHORAHOSP AS CARGA_HORARIA_HOSPITALAR, " &
             "v.TP_SUS_NAO_SUS AS TIPO_SUS, " &
             "v.IND_VINC AS CODIGO_VINCULO, " &
+            "v.CONSELHOID AS CODIGO_ORGAO_EMISSOR, " &
+            "o.DESCRICAO AS ORGAO_EMISSOR, " &
+            "v.SG_UF_CRM AS UF_CONSELHO, " &
+            "v.N_REGISTRO AS NUMERO_CONSELHO, " &
             "v.NU_CNPJ_DET_VINC AS CNPJ_INTERMEDIADOR, " &
             "v.TP_PRECEPTOR AS TP_PRECEPTOR, " &
             "v.TP_RESIDENTE AS TP_RESIDENTE, " &
@@ -233,6 +268,7 @@ Public NotInheritable Class CnesFirebird
             "FROM LFCES021 v " &
             "INNER JOIN LFCES004 e ON e.UNIDADE_ID = v.UNIDADE_ID " &
             "LEFT JOIN NFCES026 c ON c.COD_CBO = v.COD_CBO " &
+            "LEFT JOIN NFCES033 o ON o.CODORGEMIS = v.CONSELHOID " &
             "WHERE v.PROF_ID = @profissionalId " &
             "AND (v.STATUS = '1' OR v.STATUS IS NULL) " &
             "ORDER BY e.NOME_FANTA, v.COD_CBO"
@@ -242,6 +278,58 @@ Public NotInheritable Class CnesFirebird
 
             Using comando As New FbCommand(sql, conexao)
                 comando.Parameters.Add("@profissionalId", FbDbType.VarChar, 16).Value = profissionalId.Trim()
+
+                Using adaptador As New FbDataAdapter(comando)
+                    adaptador.Fill(tabela)
+                End Using
+            End Using
+        End Using
+
+        LimparValoresTexto(tabela)
+        Return tabela
+    End Function
+
+    ''' <summary>
+    ''' Lista as equipes do estabelecimento do vínculo selecionado e informa se
+    ''' o profissional já está relacionado a cada equipe na LFCES038.
+    ''' Nesta primeira etapa a consulta é somente leitura; a associação será
+    ''' gravada somente depois de validarmos a apresentação dos dados na tela.
+    ''' </summary>
+    Public Shared Function ConsultarEquipesDaUnidade(unidadeId As String,
+                                                      profissionalId As String) As DataTable
+        Dim tabela As New DataTable()
+        If String.IsNullOrWhiteSpace(unidadeId) Then Return tabela
+
+        Const sql As String =
+            "SELECT " &
+            "g.SEQ_EQUIPE AS SEQ_EQUIPE, " &
+            "COALESCE(i.INE, g.CO_EQUIPE) AS INE, " &
+            "g.CO_EQUIPE AS CODIGO_EQUIPE, " &
+            "g.TP_EQUIPE AS CODIGO_TIPO_EQUIPE, " &
+            "t.DS_EQUIPE AS TIPO_EQUIPE, " &
+            "g.CO_SUB_TIPO_EQUIPE AS CODIGO_SUBTIPO, " &
+            "s.DS_SUB_TIPO_EQUIPE AS SUBTIPO_EQUIPE, " &
+            "g.NM_REFERENCIA AS NOME_EQUIPE, " &
+            "i.DS_SEGMENTO AS SEGMENTO, " &
+            "i.DS_AREA AS AREA, " &
+            "CASE WHEN m.PROF_ID IS NULL THEN 'NÃO' ELSE 'SIM' END AS VINCULADO, " &
+            "CASE WHEN g.DT_DESATIVACAO IS NULL THEN 'ATIVA' ELSE 'DESATIVADA' END AS SITUACAO " &
+            "FROM LFCES037 g " &
+            "LEFT JOIN LFCES060 i ON i.SEQ_EQUIPE = g.SEQ_EQUIPE " &
+            "LEFT JOIN NFCES046 t ON t.TP_EQUIPE = g.TP_EQUIPE " &
+            "LEFT JOIN NFCES095 s ON s.CO_SUB_TIPO_EQUIPE = g.CO_SUB_TIPO_EQUIPE " &
+            "LEFT JOIN LFCES038 m ON m.SEQ_EQUIPE = g.SEQ_EQUIPE " &
+            "AND m.UNIDADE_ID = g.UNIDADE_ID " &
+            "AND m.PROF_ID = @profissionalId " &
+            "WHERE g.UNIDADE_ID = @unidadeId " &
+            "ORDER BY g.NM_REFERENCIA, g.SEQ_EQUIPE"
+
+        Using conexao As New FbConnection(ObterStringConexao())
+            conexao.Open()
+            Using comando As New FbCommand(sql, conexao)
+                comando.Parameters.Add("@unidadeId", FbDbType.VarChar, 20).Value = unidadeId.Trim()
+                comando.Parameters.Add("@profissionalId", FbDbType.VarChar, 20).Value =
+                    If(String.IsNullOrWhiteSpace(profissionalId), "", profissionalId.Trim())
 
                 Using adaptador As New FbDataAdapter(comando)
                     adaptador.Fill(tabela)

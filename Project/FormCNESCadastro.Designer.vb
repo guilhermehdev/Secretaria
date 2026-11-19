@@ -22,12 +22,15 @@ Partial Class FormCNESCadastro
     'Não o modifique usando o editor de códigos.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormCNESCadastro))
         Me.TextBoxCPFCadastro = New System.Windows.Forms.MaskedTextBox()
         Me.TextBoxNomeCadastro = New System.Windows.Forms.TextBox()
@@ -35,11 +38,18 @@ Partial Class FormCNESCadastro
         Me.Label1 = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.txtCnsCadastro = New System.Windows.Forms.MaskedTextBox()
+        Me.btSalvar = New System.Windows.Forms.Button()
+        Me.btExcluir = New System.Windows.Forms.Button()
         Me.Label17 = New System.Windows.Forms.Label()
+        Me.btAtualizar = New System.Windows.Forms.Button()
+        Me.btNovo = New System.Windows.Forms.Button()
         Me.dtNascimento = New System.Windows.Forms.MaskedTextBox()
         Me.Label25 = New System.Windows.Forms.Label()
         Me.btConsultaCADSUS = New System.Windows.Forms.Button()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.dgEquipes = New System.Windows.Forms.DataGridView()
+        Me.dgvVinculos = New System.Windows.Forms.DataGridView()
         Me.btExcluirVinculo = New System.Windows.Forms.Button()
         Me.btAtualizarVinculo = New System.Windows.Forms.Button()
         Me.tbCNPJContratador = New System.Windows.Forms.MaskedTextBox()
@@ -73,20 +83,17 @@ Partial Class FormCNESCadastro
         Me.cbcbFormaContratoEmpregCadastro = New System.Windows.Forms.ComboBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.dgvProfissionais = New System.Windows.Forms.DataGridView()
-        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
-        Me.btExcluir = New System.Windows.Forms.Button()
-        Me.btAtualizar = New System.Windows.Forms.Button()
-        Me.btNovo = New System.Windows.Forms.Button()
-        Me.btSalvar = New System.Windows.Forms.Button()
-        Me.dgvVinculos = New System.Windows.Forms.DataGridView()
+        Me.btAlterarEquipe = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
+        Me.GroupBox4.SuspendLayout()
+        CType(Me.dgEquipes, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgvVinculos, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
         CType(Me.nudOutro, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.nudHosp, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.nudAmb, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvProfissionais, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.dgvVinculos, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TextBoxCPFCadastro
@@ -156,6 +163,35 @@ Partial Class FormCNESCadastro
         Me.txtCnsCadastro.Size = New System.Drawing.Size(121, 21)
         Me.txtCnsCadastro.TabIndex = 145
         '
+        'btSalvar
+        '
+        Me.btSalvar.BackColor = System.Drawing.Color.DarkSeaGreen
+        Me.btSalvar.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btSalvar.Enabled = False
+        Me.btSalvar.FlatAppearance.BorderSize = 0
+        Me.btSalvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btSalvar.ForeColor = System.Drawing.Color.White
+        Me.btSalvar.Location = New System.Drawing.Point(87, 59)
+        Me.btSalvar.Name = "btSalvar"
+        Me.btSalvar.Size = New System.Drawing.Size(75, 23)
+        Me.btSalvar.TabIndex = 147
+        Me.btSalvar.Text = "Salvar"
+        Me.btSalvar.UseVisualStyleBackColor = False
+        '
+        'btExcluir
+        '
+        Me.btExcluir.BackColor = System.Drawing.Color.IndianRed
+        Me.btExcluir.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btExcluir.FlatAppearance.BorderSize = 0
+        Me.btExcluir.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btExcluir.ForeColor = System.Drawing.Color.White
+        Me.btExcluir.Location = New System.Drawing.Point(239, 59)
+        Me.btExcluir.Name = "btExcluir"
+        Me.btExcluir.Size = New System.Drawing.Size(75, 23)
+        Me.btExcluir.TabIndex = 146
+        Me.btExcluir.Text = "Excluir"
+        Me.btExcluir.UseVisualStyleBackColor = False
+        '
         'Label17
         '
         Me.Label17.AutoSize = True
@@ -164,6 +200,34 @@ Partial Class FormCNESCadastro
         Me.Label17.Size = New System.Drawing.Size(29, 13)
         Me.Label17.TabIndex = 144
         Me.Label17.Text = "CNS"
+        '
+        'btAtualizar
+        '
+        Me.btAtualizar.BackColor = System.Drawing.Color.Orange
+        Me.btAtualizar.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btAtualizar.FlatAppearance.BorderSize = 0
+        Me.btAtualizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btAtualizar.ForeColor = System.Drawing.Color.White
+        Me.btAtualizar.Location = New System.Drawing.Point(163, 59)
+        Me.btAtualizar.Name = "btAtualizar"
+        Me.btAtualizar.Size = New System.Drawing.Size(75, 23)
+        Me.btAtualizar.TabIndex = 145
+        Me.btAtualizar.Text = "Atualizar"
+        Me.btAtualizar.UseVisualStyleBackColor = False
+        '
+        'btNovo
+        '
+        Me.btNovo.BackColor = System.Drawing.Color.SteelBlue
+        Me.btNovo.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btNovo.FlatAppearance.BorderSize = 0
+        Me.btNovo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btNovo.ForeColor = System.Drawing.Color.White
+        Me.btNovo.Location = New System.Drawing.Point(16, 59)
+        Me.btNovo.Name = "btNovo"
+        Me.btNovo.Size = New System.Drawing.Size(70, 23)
+        Me.btNovo.TabIndex = 0
+        Me.btNovo.Text = "Novo"
+        Me.btNovo.UseVisualStyleBackColor = False
         '
         'dtNascimento
         '
@@ -241,6 +305,117 @@ Partial Class FormCNESCadastro
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Vínculo"
         '
+        'GroupBox4
+        '
+        Me.GroupBox4.Controls.Add(Me.btAlterarEquipe)
+        Me.GroupBox4.Controls.Add(Me.dgEquipes)
+        Me.GroupBox4.Location = New System.Drawing.Point(351, 192)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Size = New System.Drawing.Size(331, 151)
+        Me.GroupBox4.TabIndex = 143
+        Me.GroupBox4.TabStop = False
+        Me.GroupBox4.Text = "Equipes"
+        '
+        'dgEquipes
+        '
+        Me.dgEquipes.AllowUserToAddRows = False
+        Me.dgEquipes.AllowUserToDeleteRows = False
+        Me.dgEquipes.AllowUserToOrderColumns = True
+        Me.dgEquipes.AllowUserToResizeRows = False
+        Me.dgEquipes.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.dgEquipes.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.dgEquipes.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.dgEquipes.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgEquipes.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        Me.dgEquipes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Calibri", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.SteelBlue
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgEquipes.DefaultCellStyle = DataGridViewCellStyle2
+        Me.dgEquipes.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
+        Me.dgEquipes.Location = New System.Drawing.Point(6, 19)
+        Me.dgEquipes.MultiSelect = False
+        Me.dgEquipes.Name = "dgEquipes"
+        Me.dgEquipes.ReadOnly = True
+        Me.dgEquipes.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.ControlDark
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgEquipes.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
+        Me.dgEquipes.RowHeadersWidth = 4
+        Me.dgEquipes.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+        Me.dgEquipes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgEquipes.Size = New System.Drawing.Size(319, 81)
+        Me.dgEquipes.TabIndex = 149
+        Me.dgEquipes.TabStop = False
+        '
+        'dgvVinculos
+        '
+        Me.dgvVinculos.AllowUserToAddRows = False
+        Me.dgvVinculos.AllowUserToDeleteRows = False
+        Me.dgvVinculos.AllowUserToOrderColumns = True
+        Me.dgvVinculos.AllowUserToResizeRows = False
+        Me.dgvVinculos.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.dgvVinculos.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.dgvVinculos.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.dgvVinculos.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvVinculos.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
+        Me.dgvVinculos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        DataGridViewCellStyle5.Font = New System.Drawing.Font("Calibri", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle5.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.OrangeRed
+        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvVinculos.DefaultCellStyle = DataGridViewCellStyle5
+        Me.dgvVinculos.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
+        Me.dgvVinculos.Location = New System.Drawing.Point(11, 192)
+        Me.dgvVinculos.MultiSelect = False
+        Me.dgvVinculos.Name = "dgvVinculos"
+        Me.dgvVinculos.ReadOnly = True
+        Me.dgvVinculos.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.ControlDark
+        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvVinculos.RowHeadersDefaultCellStyle = DataGridViewCellStyle6
+        Me.dgvVinculos.RowHeadersWidth = 4
+        Me.dgvVinculos.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+        Me.dgvVinculos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgvVinculos.Size = New System.Drawing.Size(329, 145)
+        Me.dgvVinculos.TabIndex = 148
+        Me.dgvVinculos.TabStop = False
+        '
         'btExcluirVinculo
         '
         Me.btExcluirVinculo.BackColor = System.Drawing.Color.IndianRed
@@ -248,7 +423,7 @@ Partial Class FormCNESCadastro
         Me.btExcluirVinculo.FlatAppearance.BorderSize = 0
         Me.btExcluirVinculo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btExcluirVinculo.ForeColor = System.Drawing.Color.White
-        Me.btExcluirVinculo.Location = New System.Drawing.Point(133, 309)
+        Me.btExcluirVinculo.Location = New System.Drawing.Point(607, 163)
         Me.btExcluirVinculo.Name = "btExcluirVinculo"
         Me.btExcluirVinculo.Size = New System.Drawing.Size(60, 23)
         Me.btExcluirVinculo.TabIndex = 147
@@ -262,7 +437,7 @@ Partial Class FormCNESCadastro
         Me.btAtualizarVinculo.FlatAppearance.BorderSize = 0
         Me.btAtualizarVinculo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btAtualizarVinculo.ForeColor = System.Drawing.Color.White
-        Me.btAtualizarVinculo.Location = New System.Drawing.Point(72, 309)
+        Me.btAtualizarVinculo.Location = New System.Drawing.Point(546, 163)
         Me.btAtualizarVinculo.Name = "btAtualizarVinculo"
         Me.btAtualizarVinculo.Size = New System.Drawing.Size(60, 23)
         Me.btAtualizarVinculo.TabIndex = 146
@@ -284,7 +459,7 @@ Partial Class FormCNESCadastro
         Me.btSalvarVinculo.FlatAppearance.BorderSize = 0
         Me.btSalvarVinculo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btSalvarVinculo.ForeColor = System.Drawing.Color.White
-        Me.btSalvarVinculo.Location = New System.Drawing.Point(11, 309)
+        Me.btSalvarVinculo.Location = New System.Drawing.Point(485, 163)
         Me.btSalvarVinculo.Name = "btSalvarVinculo"
         Me.btSalvarVinculo.Size = New System.Drawing.Size(60, 23)
         Me.btSalvarVinculo.TabIndex = 144
@@ -312,9 +487,9 @@ Partial Class FormCNESCadastro
         '
         Me.GroupBox3.Controls.Add(Me.rbSUSSim)
         Me.GroupBox3.Controls.Add(Me.rbSUSNao)
-        Me.GroupBox3.Location = New System.Drawing.Point(208, 150)
+        Me.GroupBox3.Location = New System.Drawing.Point(239, 150)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(119, 36)
+        Me.GroupBox3.Size = New System.Drawing.Size(101, 36)
         Me.GroupBox3.TabIndex = 64
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "SUS"
@@ -322,7 +497,7 @@ Partial Class FormCNESCadastro
         'rbSUSSim
         '
         Me.rbSUSSim.AutoSize = True
-        Me.rbSUSSim.Location = New System.Drawing.Point(13, 14)
+        Me.rbSUSSim.Location = New System.Drawing.Point(5, 14)
         Me.rbSUSSim.Name = "rbSUSSim"
         Me.rbSUSSim.Size = New System.Drawing.Size(44, 17)
         Me.rbSUSSim.TabIndex = 62
@@ -333,7 +508,7 @@ Partial Class FormCNESCadastro
         '
         Me.rbSUSNao.AutoSize = True
         Me.rbSUSNao.Checked = True
-        Me.rbSUSNao.Location = New System.Drawing.Point(63, 14)
+        Me.rbSUSNao.Location = New System.Drawing.Point(49, 14)
         Me.rbSUSNao.Name = "rbSUSNao"
         Me.rbSUSNao.Size = New System.Drawing.Size(48, 17)
         Me.rbSUSNao.TabIndex = 63
@@ -352,16 +527,16 @@ Partial Class FormCNESCadastro
         '
         'nudOutro
         '
-        Me.nudOutro.Location = New System.Drawing.Point(140, 161)
+        Me.nudOutro.Location = New System.Drawing.Point(194, 163)
         Me.nudOutro.Maximum = New Decimal(New Integer() {168, 0, 0, 0})
         Me.nudOutro.Name = "nudOutro"
-        Me.nudOutro.Size = New System.Drawing.Size(60, 20)
+        Me.nudOutro.Size = New System.Drawing.Size(40, 20)
         Me.nudOutro.TabIndex = 61
         '
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(137, 147)
+        Me.Label11.Location = New System.Drawing.Point(191, 149)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(51, 13)
         Me.Label11.TabIndex = 60
@@ -369,16 +544,16 @@ Partial Class FormCNESCadastro
         '
         'nudHosp
         '
-        Me.nudHosp.Location = New System.Drawing.Point(75, 161)
+        Me.nudHosp.Location = New System.Drawing.Point(148, 163)
         Me.nudHosp.Maximum = New Decimal(New Integer() {168, 0, 0, 0})
         Me.nudHosp.Name = "nudHosp"
-        Me.nudHosp.Size = New System.Drawing.Size(60, 20)
+        Me.nudHosp.Size = New System.Drawing.Size(40, 20)
         Me.nudHosp.TabIndex = 59
         '
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(72, 147)
+        Me.Label10.Location = New System.Drawing.Point(145, 149)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(50, 13)
         Me.Label10.TabIndex = 58
@@ -386,16 +561,16 @@ Partial Class FormCNESCadastro
         '
         'nudAmb
         '
-        Me.nudAmb.Location = New System.Drawing.Point(11, 162)
+        Me.nudAmb.Location = New System.Drawing.Point(102, 163)
         Me.nudAmb.Maximum = New Decimal(New Integer() {168, 0, 0, 0})
         Me.nudAmb.Name = "nudAmb"
-        Me.nudAmb.Size = New System.Drawing.Size(60, 20)
+        Me.nudAmb.Size = New System.Drawing.Size(40, 20)
         Me.nudAmb.TabIndex = 57
         '
         'Label43
         '
         Me.Label43.AutoSize = True
-        Me.Label43.Location = New System.Drawing.Point(8, 147)
+        Me.Label43.Location = New System.Drawing.Point(99, 148)
         Me.Label43.Name = "Label43"
         Me.Label43.Size = New System.Drawing.Size(46, 13)
         Me.Label43.TabIndex = 56
@@ -404,7 +579,7 @@ Partial Class FormCNESCadastro
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(198, 108)
+        Me.Label9.Location = New System.Drawing.Point(8, 148)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(65, 13)
         Me.Label9.TabIndex = 54
@@ -416,26 +591,26 @@ Partial Class FormCNESCadastro
         Me.tbConselho.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.tbConselho.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tbConselho.ForeColor = System.Drawing.Color.Orange
-        Me.tbConselho.Location = New System.Drawing.Point(201, 123)
+        Me.tbConselho.Location = New System.Drawing.Point(12, 162)
         Me.tbConselho.MaxLength = 9
         Me.tbConselho.Name = "tbConselho"
         Me.tbConselho.ReadOnly = True
-        Me.tbConselho.Size = New System.Drawing.Size(126, 21)
+        Me.tbConselho.Size = New System.Drawing.Size(84, 21)
         Me.tbConselho.TabIndex = 53
         '
         'cbUF
         '
         Me.cbUF.FormattingEnabled = True
-        Me.cbUF.Location = New System.Drawing.Point(140, 123)
+        Me.cbUF.Location = New System.Drawing.Point(299, 123)
         Me.cbUF.Name = "cbUF"
-        Me.cbUF.Size = New System.Drawing.Size(55, 21)
+        Me.cbUF.Size = New System.Drawing.Size(41, 21)
         Me.cbUF.TabIndex = 51
         Me.cbUF.Text = "UF"
         '
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(137, 108)
+        Me.Label8.Location = New System.Drawing.Point(296, 107)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(21, 13)
         Me.Label8.TabIndex = 52
@@ -460,7 +635,7 @@ Partial Class FormCNESCadastro
         Me.TextBox1.MaxLength = 9
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.ReadOnly = True
-        Me.TextBox1.Size = New System.Drawing.Size(123, 21)
+        Me.TextBox1.Size = New System.Drawing.Size(282, 21)
         Me.TextBox1.TabIndex = 49
         '
         'cbCBO
@@ -468,7 +643,7 @@ Partial Class FormCNESCadastro
         Me.cbCBO.FormattingEnabled = True
         Me.cbCBO.Location = New System.Drawing.Point(99, 84)
         Me.cbCBO.Name = "cbCBO"
-        Me.cbCBO.Size = New System.Drawing.Size(229, 21)
+        Me.cbCBO.Size = New System.Drawing.Size(241, 21)
         Me.cbCBO.TabIndex = 47
         '
         'Label6
@@ -507,7 +682,7 @@ Partial Class FormCNESCadastro
         Me.cbEstabelecimento.FormattingEnabled = True
         Me.cbEstabelecimento.Location = New System.Drawing.Point(12, 45)
         Me.cbEstabelecimento.Name = "cbEstabelecimento"
-        Me.cbEstabelecimento.Size = New System.Drawing.Size(316, 21)
+        Me.cbEstabelecimento.Size = New System.Drawing.Size(328, 21)
         Me.cbEstabelecimento.TabIndex = 43
         '
         'Label5
@@ -562,40 +737,41 @@ Partial Class FormCNESCadastro
         Me.dgvProfissionais.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.dgvProfissionais.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvProfissionais.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.dgvProfissionais.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvProfissionais.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvProfissionais.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle7.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvProfissionais.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle7
         Me.dgvProfissionais.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        DataGridViewCellStyle5.Font = New System.Drawing.Font("Calibri", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle5.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.OrangeRed
-        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvProfissionais.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        DataGridViewCellStyle8.Font = New System.Drawing.Font("Calibri", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle8.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.OrangeRed
+        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvProfissionais.DefaultCellStyle = DataGridViewCellStyle8
         Me.dgvProfissionais.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
         Me.dgvProfissionais.Location = New System.Drawing.Point(12, 457)
         Me.dgvProfissionais.MultiSelect = False
         Me.dgvProfissionais.Name = "dgvProfissionais"
         Me.dgvProfissionais.ReadOnly = True
         Me.dgvProfissionais.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
-        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.ControlDark
-        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvProfissionais.RowHeadersDefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+        DataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.ControlDark
+        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvProfissionais.RowHeadersDefaultCellStyle = DataGridViewCellStyle9
         Me.dgvProfissionais.RowHeadersWidth = 4
         Me.dgvProfissionais.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgvProfissionais.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
@@ -603,121 +779,19 @@ Partial Class FormCNESCadastro
         Me.dgvProfissionais.TabIndex = 65
         Me.dgvProfissionais.TabStop = False
         '
-        'GroupBox4
+        'btAlterarEquipe
         '
-        Me.GroupBox4.Location = New System.Drawing.Point(351, 192)
-        Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(331, 151)
-        Me.GroupBox4.TabIndex = 143
-        Me.GroupBox4.TabStop = False
-        Me.GroupBox4.Text = "Equipes"
-        '
-        'btExcluir
-        '
-        Me.btExcluir.BackColor = System.Drawing.Color.IndianRed
-        Me.btExcluir.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btExcluir.FlatAppearance.BorderSize = 0
-        Me.btExcluir.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btExcluir.ForeColor = System.Drawing.Color.White
-        Me.btExcluir.Location = New System.Drawing.Point(239, 59)
-        Me.btExcluir.Name = "btExcluir"
-        Me.btExcluir.Size = New System.Drawing.Size(75, 23)
-        Me.btExcluir.TabIndex = 146
-        Me.btExcluir.Text = "Excluir"
-        Me.btExcluir.UseVisualStyleBackColor = False
-        '
-        'btAtualizar
-        '
-        Me.btAtualizar.BackColor = System.Drawing.Color.Orange
-        Me.btAtualizar.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btAtualizar.FlatAppearance.BorderSize = 0
-        Me.btAtualizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btAtualizar.ForeColor = System.Drawing.Color.White
-        Me.btAtualizar.Location = New System.Drawing.Point(163, 59)
-        Me.btAtualizar.Name = "btAtualizar"
-        Me.btAtualizar.Size = New System.Drawing.Size(75, 23)
-        Me.btAtualizar.TabIndex = 145
-        Me.btAtualizar.Text = "Atualizar"
-        Me.btAtualizar.UseVisualStyleBackColor = False
-        '
-        'btNovo
-        '
-        Me.btNovo.BackColor = System.Drawing.Color.SteelBlue
-        Me.btNovo.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btNovo.FlatAppearance.BorderSize = 0
-        Me.btNovo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btNovo.ForeColor = System.Drawing.Color.White
-        Me.btNovo.Location = New System.Drawing.Point(16, 59)
-        Me.btNovo.Name = "btNovo"
-        Me.btNovo.Size = New System.Drawing.Size(70, 23)
-        Me.btNovo.TabIndex = 0
-        Me.btNovo.Text = "Novo"
-        Me.btNovo.UseVisualStyleBackColor = False
-        '
-        'btSalvar
-        '
-        Me.btSalvar.BackColor = System.Drawing.Color.DarkSeaGreen
-        Me.btSalvar.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btSalvar.Enabled = False
-        Me.btSalvar.FlatAppearance.BorderSize = 0
-        Me.btSalvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btSalvar.ForeColor = System.Drawing.Color.White
-        Me.btSalvar.Location = New System.Drawing.Point(87, 59)
-        Me.btSalvar.Name = "btSalvar"
-        Me.btSalvar.Size = New System.Drawing.Size(75, 23)
-        Me.btSalvar.TabIndex = 147
-        Me.btSalvar.Text = "Salvar"
-        Me.btSalvar.UseVisualStyleBackColor = False
-        '
-        'dgvVinculos
-        '
-        Me.dgvVinculos.AllowUserToAddRows = False
-        Me.dgvVinculos.AllowUserToDeleteRows = False
-        Me.dgvVinculos.AllowUserToOrderColumns = True
-        Me.dgvVinculos.AllowUserToResizeRows = False
-        Me.dgvVinculos.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.dgvVinculos.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.dgvVinculos.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.dgvVinculos.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvVinculos.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
-        Me.dgvVinculos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Calibri", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.OrangeRed
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvVinculos.DefaultCellStyle = DataGridViewCellStyle2
-        Me.dgvVinculos.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
-        Me.dgvVinculos.Location = New System.Drawing.Point(11, 192)
-        Me.dgvVinculos.MultiSelect = False
-        Me.dgvVinculos.Name = "dgvVinculos"
-        Me.dgvVinculos.ReadOnly = True
-        Me.dgvVinculos.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
-        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.ControlDark
-        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvVinculos.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
-        Me.dgvVinculos.RowHeadersWidth = 4
-        Me.dgvVinculos.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        Me.dgvVinculos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvVinculos.Size = New System.Drawing.Size(329, 111)
-        Me.dgvVinculos.TabIndex = 148
-        Me.dgvVinculos.TabStop = False
+        Me.btAlterarEquipe.BackColor = System.Drawing.Color.Orange
+        Me.btAlterarEquipe.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btAlterarEquipe.FlatAppearance.BorderSize = 0
+        Me.btAlterarEquipe.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btAlterarEquipe.ForeColor = System.Drawing.Color.White
+        Me.btAlterarEquipe.Location = New System.Drawing.Point(6, 122)
+        Me.btAlterarEquipe.Name = "btAlterarEquipe"
+        Me.btAlterarEquipe.Size = New System.Drawing.Size(60, 23)
+        Me.btAlterarEquipe.TabIndex = 150
+        Me.btAlterarEquipe.Text = "Alterar"
+        Me.btAlterarEquipe.UseVisualStyleBackColor = False
         '
         'FormCNESCadastro
         '
@@ -736,13 +810,15 @@ Partial Class FormCNESCadastro
         Me.GroupBox1.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
+        Me.GroupBox4.ResumeLayout(False)
+        CType(Me.dgEquipes, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgvVinculos, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
         CType(Me.nudOutro, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.nudHosp, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.nudAmb, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvProfissionais, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.dgvVinculos, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -797,4 +873,6 @@ Partial Class FormCNESCadastro
     Friend WithEvents btAtualizarVinculo As Button
     Friend WithEvents btExcluirVinculo As Button
     Friend WithEvents dgvVinculos As DataGridView
+    Friend WithEvents dgEquipes As DataGridView
+    Friend WithEvents btAlterarEquipe As Button
 End Class
