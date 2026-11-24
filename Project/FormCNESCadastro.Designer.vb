@@ -48,6 +48,7 @@ Partial Class FormCNESCadastro
         Me.btConsultaCADSUS = New System.Windows.Forms.Button()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.btAlterarEquipe = New System.Windows.Forms.Button()
         Me.dgEquipes = New System.Windows.Forms.DataGridView()
         Me.dgvVinculos = New System.Windows.Forms.DataGridView()
         Me.btExcluirVinculo = New System.Windows.Forms.Button()
@@ -83,7 +84,6 @@ Partial Class FormCNESCadastro
         Me.cbcbFormaContratoEmpregCadastro = New System.Windows.Forms.ComboBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.dgvProfissionais = New System.Windows.Forms.DataGridView()
-        Me.btAlterarEquipe = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
@@ -315,6 +315,20 @@ Partial Class FormCNESCadastro
         Me.GroupBox4.TabIndex = 143
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Equipes"
+        '
+        'btAlterarEquipe
+        '
+        Me.btAlterarEquipe.BackColor = System.Drawing.Color.Orange
+        Me.btAlterarEquipe.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btAlterarEquipe.FlatAppearance.BorderSize = 0
+        Me.btAlterarEquipe.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btAlterarEquipe.ForeColor = System.Drawing.Color.White
+        Me.btAlterarEquipe.Location = New System.Drawing.Point(6, 122)
+        Me.btAlterarEquipe.Name = "btAlterarEquipe"
+        Me.btAlterarEquipe.Size = New System.Drawing.Size(60, 23)
+        Me.btAlterarEquipe.TabIndex = 150
+        Me.btAlterarEquipe.Text = "Alterar"
+        Me.btAlterarEquipe.UseVisualStyleBackColor = False
         '
         'dgEquipes
         '
@@ -778,20 +792,6 @@ Partial Class FormCNESCadastro
         Me.dgvProfissionais.Size = New System.Drawing.Size(682, 136)
         Me.dgvProfissionais.TabIndex = 65
         Me.dgvProfissionais.TabStop = False
-        '
-        'btAlterarEquipe
-        '
-        Me.btAlterarEquipe.BackColor = System.Drawing.Color.Orange
-        Me.btAlterarEquipe.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btAlterarEquipe.FlatAppearance.BorderSize = 0
-        Me.btAlterarEquipe.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btAlterarEquipe.ForeColor = System.Drawing.Color.White
-        Me.btAlterarEquipe.Location = New System.Drawing.Point(6, 122)
-        Me.btAlterarEquipe.Name = "btAlterarEquipe"
-        Me.btAlterarEquipe.Size = New System.Drawing.Size(60, 23)
-        Me.btAlterarEquipe.TabIndex = 150
-        Me.btAlterarEquipe.Text = "Alterar"
-        Me.btAlterarEquipe.UseVisualStyleBackColor = False
         '
         'FormCNESCadastro
         '

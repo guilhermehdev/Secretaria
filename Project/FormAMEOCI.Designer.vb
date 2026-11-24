@@ -1493,7 +1493,7 @@ Partial Class FormAMEOCI
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.APACToolStripMenuItem, Me.RelatóriosToolStripMenuItem, Me.ConfiguraçõesToolStripMenuItem, Me.FecharToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(577, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(578, 24)
         Me.MenuStrip1.TabIndex = 27
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -1614,7 +1614,7 @@ Partial Class FormAMEOCI
         DataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(0, Byte), Integer))
         DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
         Me.dgvSugestoes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
-        Me.dgvSugestoes.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.dgvSugestoes.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.dgvSugestoes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvSugestoes.BackgroundColor = System.Drawing.Color.White
         Me.dgvSugestoes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken
@@ -1639,7 +1639,7 @@ Partial Class FormAMEOCI
         DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.dgvSugestoes.DefaultCellStyle = DataGridViewCellStyle6
         Me.dgvSugestoes.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
-        Me.dgvSugestoes.Location = New System.Drawing.Point(794, 52)
+        Me.dgvSugestoes.Location = New System.Drawing.Point(608, 27)
         Me.dgvSugestoes.MultiSelect = False
         Me.dgvSugestoes.Name = "dgvSugestoes"
         Me.dgvSugestoes.ReadOnly = True
@@ -1665,7 +1665,7 @@ Partial Class FormAMEOCI
         Me.dgvSugestoes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvSugestoes.ShowEditingIcon = False
         Me.dgvSugestoes.ShowRowErrors = False
-        Me.dgvSugestoes.Size = New System.Drawing.Size(650, 127)
+        Me.dgvSugestoes.Size = New System.Drawing.Size(326, 109)
         Me.dgvSugestoes.TabIndex = 33
         Me.dgvSugestoes.TabStop = False
         Me.dgvSugestoes.Visible = False
@@ -1675,7 +1675,7 @@ Partial Class FormAMEOCI
         Me.StatusStrip1.BackColor = System.Drawing.Color.Black
         Me.StatusStrip1.Location = New System.Drawing.Point(0, 555)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(577, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(578, 22)
         Me.StatusStrip1.TabIndex = 52
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -1850,7 +1850,7 @@ Partial Class FormAMEOCI
         Me.TabPage1.BackColor = System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(40, Byte), Integer), CType(CType(40, Byte), Integer))
         Me.TabPage1.Controls.Add(Me.GroupBox2)
         Me.TabPage1.Controls.Add(Me.GroupBox1)
-        Me.TabPage1.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.TabPage1.Cursor = System.Windows.Forms.Cursors.Arrow
         Me.TabPage1.ForeColor = System.Drawing.Color.White
         Me.TabPage1.Location = New System.Drawing.Point(4, 25)
         Me.TabPage1.Name = "TabPage1"
@@ -2045,7 +2045,7 @@ Partial Class FormAMEOCI
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(40, Byte), Integer), CType(CType(40, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(577, 577)
+        Me.ClientSize = New System.Drawing.Size(578, 577)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.dgvSugestoes)

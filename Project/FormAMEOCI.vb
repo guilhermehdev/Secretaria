@@ -2441,11 +2441,9 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
             ' Configura grid
             dgvSugestoes.DataSource = resultado
-            If colapsed Then
-                formatGrid(New Point(38, 280))
-            Else
-                formatGrid(New Point(481, 280))
-            End If
+
+            formatGrid(New Point(30, 280))
+
 
         Catch ex As Exception
             Debug.WriteLine("Erro ao carregar sugestões: " & ex.Message)
@@ -2502,12 +2500,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
             ' Configura grid
             dgvSugestoes.DataSource = resultado
-
-            If colapsed Then
-                formatGrid(New Point(38, 318))
-            Else
-                formatGrid(New Point(481, 318))
-            End If
+            formatGrid(New Point(30, 318))
 
         Catch ex As Exception
             Debug.WriteLine("Erro ao carregar sugestões: " & ex.Message)
@@ -2600,11 +2593,9 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                 popupGrid.DataSource = result
 
                 ' Posiciona o grid logo abaixo do textbox
-                If colapsed Then
-                    popupGrid.Location = New Point(36, 268)
-                Else
-                    popupGrid.Location = New Point(480, 268)
-                End If
+
+                popupGrid.Location = New Point(30, 268)
+
                 ' ======== CONFIGURAÇÃO DE COLUNAS INDIVIDUAIS ========
 
                 For Each col As DataGridViewColumn In popupGrid.Columns
