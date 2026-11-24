@@ -116,7 +116,7 @@ Public Class FormAMEOCINumAPAC
         FormAMEmain.loadComboBox("SELECT id, nome FROM usuarios ORDER BY nome", cbUsuarios, "nome", "id")
         FormAMEOCI.loadComp(cbSearchComp)
         ToolStripStatusLabel1.Text = ""
-        FormAMEmain.loadComboBox("SELECT SUS AS id, nome FROM servidores WHERE SUS IS NOT NULL", cbMedico, "nome", "id")
+        FormAMEmain.loadComboBox("SELECT SUS AS id, nome FROM servidores WHERE SUS IS NOT NULL ORDER BY nome", cbMedico, "nome", "id")
         cbMedico.DisplayMember = "nome"
         cbMedico.ValueMember = "id"
         cbMedico.SelectedIndex = 0

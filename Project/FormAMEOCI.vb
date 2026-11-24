@@ -760,7 +760,9 @@ Public Class FormAMEOCI
             Dim selectedCIDS As Integer = txtCidSecundario.SelectedIndex
             txtProcedimentoPrincipal_SelectedValueChanged(Nothing, Nothing)
             If Not silencioso Then
-                TabControl1.SelectedTab = TabControl1.TabPages(0)  ' ativa a terceira aba (0-based)
+                'Após gravar, retorna explicitamente para a aba do paciente.
+                'Não usar TabPages(0), pois a ordem interna começa pela aba Pendentes.
+                TabControl1.SelectedTab = TabPage1
             End If
             txtCNSMedicoExecutante.SelectedIndex = selectedCNSExe
             txtNomeAutorizador.SelectedIndex = selectedAutorizador
@@ -1532,6 +1534,7 @@ JOIN cod_oci_secundario ON cod_oci_secundario.cod = procedimentos_secundarios.co
     Private Sub loadQueueOCI()
         Dim idMedicoSelecionado As String = Nothing
         Dim idCodSelecionado As Integer? = Nothing
+        Dim dataFilaSelecionada As String = Nothing
         Dim idItemSelecionado As Integer? = Nothing
         Dim indiceItemSelecionado As Integer? = Nothing
 
@@ -1542,6 +1545,9 @@ JOIN cod_oci_secundario ON cod_oci_secundario.cod = procedimentos_secundarios.co
                 idMedicoSelecionado = Convert.ToString(dgQueueOCI.CurrentRow.Cells("idMedico").Value)
                 If Not IsDBNull(dgQueueOCI.CurrentRow.Cells("idCod").Value) Then
                     idCodSelecionado = Convert.ToInt32(dgQueueOCI.CurrentRow.Cells("idCod").Value)
+                End If
+                If dgQueueOCI.Columns.Contains("dataFila") Then
+                    dataFilaSelecionada = NormalizarDataFila(dgQueueOCI.CurrentRow.Cells("dataFila").Value)
                 End If
             End If
 
@@ -1554,6 +1560,7 @@ JOIN cod_oci_secundario ON cod_oci_secundario.cod = procedimentos_secundarios.co
             ' A fila pode estar sendo inicializada, sem linha selecionada ainda.
             idMedicoSelecionado = Nothing
             idCodSelecionado = Nothing
+            dataFilaSelecionada = Nothing
             idItemSelecionado = Nothing
             indiceItemSelecionado = Nothing
         End Try
@@ -1561,6 +1568,7 @@ JOIN cod_oci_secundario ON cod_oci_secundario.cod = procedimentos_secundarios.co
         Dim dataset As DataTable = FormAMEmain.getDataset("SELECT 
             oci_fila.id_medico_solicitante AS idMedico,
             oci_fila.cod_proced_principal AS idCod,
+            oci_fila.`data` AS dataFila,
             cod_oci_principal.abrev,
             servidores.nome,
             COUNT(*) AS total
@@ -1578,6 +1586,7 @@ JOIN cod_oci_secundario ON cod_oci_secundario.cod = procedimentos_secundarios.co
         GROUP BY 
             oci_fila.id_medico_solicitante,
             oci_fila.cod_proced_principal,
+            oci_fila.`data`,
             cod_oci_principal.abrev,
             servidores.nome")
 
@@ -1590,6 +1599,9 @@ JOIN cod_oci_secundario ON cod_oci_secundario.cod = procedimentos_secundarios.co
         dgQueueOCI.DataSource = dataset
         dgQueueOCI.Columns("idMedico").Visible = False
         dgQueueOCI.Columns("idCod").Visible = False
+        dgQueueOCI.Columns("dataFila").HeaderText = "Data"
+        dgQueueOCI.Columns("dataFila").Width = 70
+        dgQueueOCI.Columns("dataFila").DefaultCellStyle.Format = "dd/MM/yyyy"
         dgQueueOCI.Columns("abrev").HeaderText = "Procedimento"
         dgQueueOCI.Columns("abrev").Width = 210
         dgQueueOCI.Columns("nome").HeaderText = "Médico"
@@ -1603,7 +1615,9 @@ JOIN cod_oci_secundario ON cod_oci_secundario.cod = procedimentos_secundarios.co
             For i As Integer = 0 To dgQueueOCI.Rows.Count - 1
                 Dim linha = dgQueueOCI.Rows(i)
                 If Convert.ToString(linha.Cells("idMedico").Value) = idMedicoSelecionado AndAlso
-                   Convert.ToInt32(linha.Cells("idCod").Value) = idCodSelecionado.Value Then
+                   Convert.ToInt32(linha.Cells("idCod").Value) = idCodSelecionado.Value AndAlso
+                   String.Equals(NormalizarDataFila(linha.Cells("dataFila").Value), dataFilaSelecionada,
+                                 StringComparison.OrdinalIgnoreCase) Then
                     indiceGrupo = i
                     Exit For
                 End If
@@ -1649,7 +1663,18 @@ JOIN cod_oci_secundario ON cod_oci_secundario.cod = procedimentos_secundarios.co
         End If
     End Sub
 
-    Private Sub loadQueueItens(ByVal idMedico, ByVal idCod)
+    Private Shared Function NormalizarDataFila(valor As Object) As String
+        If valor Is Nothing OrElse valor Is DBNull.Value Then Return String.Empty
+
+        Dim data As DateTime
+        If DateTime.TryParse(Convert.ToString(valor), data) Then
+            Return data.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
+        End If
+
+        Return Convert.ToString(valor).Trim()
+    End Function
+
+    Private Sub loadQueueItens(ByVal idMedico, ByVal idCod, ByVal dataFila)
 
         queue = FormAMEmain.getDataset($"SELECT oci_fila.*, pacientes.nome AS paciente, pacientes.dtnasc, cod_oci_principal.cod AS proced
             FROM oci_fila
@@ -1658,6 +1683,7 @@ JOIN cod_oci_secundario ON cod_oci_secundario.cod = procedimentos_secundarios.co
             WHERE oci_fila.`status`= 0 
 				AND oci_fila.id_medico_solicitante = '{idMedico}'
 				AND oci_fila.cod_proced_principal = {idCod}
+				AND DATE(oci_fila.`data`) = '{NormalizarDataFila(dataFila)}'
 				ORDER BY oci_fila.`data`")
 
         dgQueueItens.DataSource = queue
@@ -1671,9 +1697,7 @@ JOIN cod_oci_secundario ON cod_oci_secundario.cod = procedimentos_secundarios.co
             dgQueueItens.Columns("cid_secundario").Visible = False
             dgQueueItens.Columns("id_paciente").Visible = False
             dgQueueItens.Columns("status").Visible = False
-
-            dgQueueItens.Columns(3).HeaderText = "Data"
-            dgQueueItens.Columns(3).Width = 70
+            dgQueueItens.Columns("data").Visible = False
             dgQueueItens.Columns("paciente").HeaderText = "Paciente"
             dgQueueItens.Columns("paciente").Width = 284
             dgQueueItens.Columns("dtnasc").HeaderText = "Data de Nascimento"
@@ -3715,7 +3739,9 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     End Sub
     Private Sub dgQueueOCI_CellEnter(sender As Object, e As DataGridViewCellEventArgs) Handles dgQueueOCI.CellEnter
         If e.RowIndex < 0 OrElse e.RowIndex >= dgQueueOCI.Rows.Count Then Return
-        loadQueueItens(dgQueueOCI.Rows(e.RowIndex).Cells(0).Value, dgQueueOCI.Rows(e.RowIndex).Cells(1).Value)
+        loadQueueItens(dgQueueOCI.Rows(e.RowIndex).Cells("idMedico").Value,
+                       dgQueueOCI.Rows(e.RowIndex).Cells("idCod").Value,
+                       dgQueueOCI.Rows(e.RowIndex).Cells("dataFila").Value)
     End Sub
     Private Sub dgQueueItens_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgQueueItens.CellClick
         If e.RowIndex < 0 OrElse e.RowIndex >= dgQueueItens.Rows.Count Then Return

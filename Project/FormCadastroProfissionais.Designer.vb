@@ -63,7 +63,7 @@ Partial Class FormAMECadastroProfissionais
         Me.tbNomeProfissional.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.tbNomeProfissional.ForeColor = System.Drawing.SystemColors.Info
         Me.tbNomeProfissional.Location = New System.Drawing.Point(15, 34)
-        Me.tbNomeProfissional.MaxLength = 13
+        Me.tbNomeProfissional.MaxLength = 200
         Me.tbNomeProfissional.Name = "tbNomeProfissional"
         Me.tbNomeProfissional.Size = New System.Drawing.Size(308, 20)
         Me.tbNomeProfissional.TabIndex = 68
