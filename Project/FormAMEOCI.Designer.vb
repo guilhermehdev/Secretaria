@@ -178,6 +178,8 @@ Partial Class FormAMEOCI
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.cbMedicoHistorico = New System.Windows.Forms.ComboBox()
         Me.btGerarLoteAPAC = New System.Windows.Forms.Button()
         Me.Label28 = New System.Windows.Forms.Label()
         Me.lbStatusCads = New System.Windows.Forms.Label()
@@ -189,6 +191,7 @@ Partial Class FormAMEOCI
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Button1 = New System.Windows.Forms.Button()
         Me.ToolTipSUS = New System.Windows.Forms.ToolTip(Me.components)
+        Me.btImprimirDiarioMedico = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -1208,14 +1211,14 @@ Partial Class FormAMEOCI
         '
         'btAddAPAC
         '
-        Me.btAddAPAC.BackColor = System.Drawing.Color.Firebrick
+        Me.btAddAPAC.BackColor = System.Drawing.Color.Orange
         Me.btAddAPAC.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btAddAPAC.FlatAppearance.BorderSize = 0
         Me.btAddAPAC.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btAddAPAC.ForeColor = System.Drawing.Color.White
-        Me.btAddAPAC.Location = New System.Drawing.Point(389, 436)
+        Me.btAddAPAC.Location = New System.Drawing.Point(415, 436)
         Me.btAddAPAC.Name = "btAddAPAC"
-        Me.btAddAPAC.Size = New System.Drawing.Size(149, 37)
+        Me.btAddAPAC.Size = New System.Drawing.Size(123, 37)
         Me.btAddAPAC.TabIndex = 51
         Me.btAddAPAC.Text = "Exportar registros para APAC magnético"
         Me.btAddAPAC.UseVisualStyleBackColor = False
@@ -1889,6 +1892,9 @@ Partial Class FormAMEOCI
         'GroupBox5
         '
         Me.GroupBox5.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(30, Byte), Integer), CType(CType(30, Byte), Integer))
+        Me.GroupBox5.Controls.Add(Me.btImprimirDiarioMedico)
+        Me.GroupBox5.Controls.Add(Me.Label13)
+        Me.GroupBox5.Controls.Add(Me.cbMedicoHistorico)
         Me.GroupBox5.Controls.Add(Me.btGerarLoteAPAC)
         Me.GroupBox5.Controls.Add(Me.Label28)
         Me.GroupBox5.Controls.Add(Me.lbStatusCads)
@@ -1906,6 +1912,25 @@ Partial Class FormAMEOCI
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "OCI cadastradas"
         '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(166, 15)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(42, 13)
+        Me.Label13.TabIndex = 84
+        Me.Label13.Text = "Médico"
+        '
+        'cbMedicoHistorico
+        '
+        Me.cbMedicoHistorico.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.cbMedicoHistorico.ForeColor = System.Drawing.SystemColors.Info
+        Me.cbMedicoHistorico.FormattingEnabled = True
+        Me.cbMedicoHistorico.Location = New System.Drawing.Point(168, 30)
+        Me.cbMedicoHistorico.Name = "cbMedicoHistorico"
+        Me.cbMedicoHistorico.Size = New System.Drawing.Size(265, 21)
+        Me.cbMedicoHistorico.TabIndex = 83
+        '
         'btGerarLoteAPAC
         '
         Me.btGerarLoteAPAC.BackColor = System.Drawing.Color.SteelBlue
@@ -1913,17 +1938,17 @@ Partial Class FormAMEOCI
         Me.btGerarLoteAPAC.FlatAppearance.BorderSize = 0
         Me.btGerarLoteAPAC.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btGerarLoteAPAC.ForeColor = System.Drawing.Color.White
-        Me.btGerarLoteAPAC.Location = New System.Drawing.Point(389, 11)
+        Me.btGerarLoteAPAC.Location = New System.Drawing.Point(312, 436)
         Me.btGerarLoteAPAC.Name = "btGerarLoteAPAC"
-        Me.btGerarLoteAPAC.Size = New System.Drawing.Size(149, 38)
+        Me.btGerarLoteAPAC.Size = New System.Drawing.Size(103, 38)
         Me.btGerarLoteAPAC.TabIndex = 82
-        Me.btGerarLoteAPAC.Text = "Gerar lote da competência selecionada" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
+        Me.btGerarLoteAPAC.Text = "Gerar lote da competência"
         Me.btGerarLoteAPAC.UseVisualStyleBackColor = False
         '
         'Label28
         '
         Me.Label28.AutoSize = True
-        Me.Label28.Location = New System.Drawing.Point(210, 30)
+        Me.Label28.Location = New System.Drawing.Point(62, 16)
         Me.Label28.Name = "Label28"
         Me.Label28.Size = New System.Drawing.Size(69, 13)
         Me.Label28.TabIndex = 81
@@ -1943,7 +1968,7 @@ Partial Class FormAMEOCI
         Me.cbSearchCompHistorico.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.cbSearchCompHistorico.ForeColor = System.Drawing.SystemColors.Info
         Me.cbSearchCompHistorico.FormattingEnabled = True
-        Me.cbSearchCompHistorico.Location = New System.Drawing.Point(285, 28)
+        Me.cbSearchCompHistorico.Location = New System.Drawing.Point(64, 30)
         Me.cbSearchCompHistorico.Name = "cbSearchCompHistorico"
         Me.cbSearchCompHistorico.Size = New System.Drawing.Size(98, 21)
         Me.cbSearchCompHistorico.TabIndex = 80
@@ -1951,7 +1976,7 @@ Partial Class FormAMEOCI
         'ckbSearchTodos
         '
         Me.ckbSearchTodos.AutoSize = True
-        Me.ckbSearchTodos.Location = New System.Drawing.Point(9, 30)
+        Me.ckbSearchTodos.Location = New System.Drawing.Point(8, 32)
         Me.ckbSearchTodos.Name = "ckbSearchTodos"
         Me.ckbSearchTodos.Size = New System.Drawing.Size(56, 17)
         Me.ckbSearchTodos.TabIndex = 65
@@ -1962,7 +1987,7 @@ Partial Class FormAMEOCI
         '
         Me.dtpSearchData.Cursor = System.Windows.Forms.Cursors.Hand
         Me.dtpSearchData.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtpSearchData.Location = New System.Drawing.Point(105, 28)
+        Me.dtpSearchData.Location = New System.Drawing.Point(439, 30)
         Me.dtpSearchData.Name = "dtpSearchData"
         Me.dtpSearchData.Size = New System.Drawing.Size(99, 20)
         Me.dtpSearchData.TabIndex = 64
@@ -1970,7 +1995,7 @@ Partial Class FormAMEOCI
         'Label29
         '
         Me.Label29.AutoSize = True
-        Me.Label29.Location = New System.Drawing.Point(72, 30)
+        Me.Label29.Location = New System.Drawing.Point(436, 17)
         Me.Label29.Name = "Label29"
         Me.Label29.Size = New System.Drawing.Size(30, 13)
         Me.Label29.TabIndex = 63
@@ -2040,6 +2065,20 @@ Partial Class FormAMEOCI
         Me.Button1.TabIndex = 60
         Me.Button1.Text = "Button1"
         Me.Button1.UseVisualStyleBackColor = True
+        '
+        'btImprimirDiarioMedico
+        '
+        Me.btImprimirDiarioMedico.BackColor = System.Drawing.Color.Firebrick
+        Me.btImprimirDiarioMedico.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btImprimirDiarioMedico.FlatAppearance.BorderSize = 0
+        Me.btImprimirDiarioMedico.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btImprimirDiarioMedico.ForeColor = System.Drawing.Color.White
+        Me.btImprimirDiarioMedico.Location = New System.Drawing.Point(232, 436)
+        Me.btImprimirDiarioMedico.Name = "btImprimirDiarioMedico"
+        Me.btImprimirDiarioMedico.Size = New System.Drawing.Size(80, 38)
+        Me.btImprimirDiarioMedico.TabIndex = 85
+        Me.btImprimirDiarioMedico.Text = "Imprimir PDFs"
+        Me.btImprimirDiarioMedico.UseVisualStyleBackColor = False
         '
         'FormAMEOCI
         '
@@ -2238,4 +2277,7 @@ Partial Class FormAMEOCI
     Friend WithEvents CadastroToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ProfissionaisToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents TabPage4 As TabPage
+    Friend WithEvents Label13 As Label
+    Friend WithEvents cbMedicoHistorico As ComboBox
+    Friend WithEvents btImprimirDiarioMedico As Button
 End Class

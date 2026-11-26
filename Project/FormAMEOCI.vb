@@ -19,6 +19,7 @@ Public Class FormAMEOCI
     Friend isLoading As Boolean = False
     Private isQueue As Boolean = False
     Private competenciaHistoricoEmBusca As Boolean = False
+    Private historicoFiltrosInicializados As Boolean = False
     Friend IDpacienteSelecionado As Integer? = Nothing
     Private updateMode As Boolean = False
 
@@ -2039,6 +2040,8 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             CBOmed.SelectedIndex = -1
             txtRaca.SelectedIndex = 0
             loadComp(cbSearchCompHistorico)
+            CarregarMedicosHistorico()
+            historicoFiltrosInicializados = True
             'searchByDate()
             btAddAPAC.Text = $"Exportar registros competência " & competencia(My.Settings.OCIcompetencia)
 
@@ -3206,8 +3209,9 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             FormAMEOCINumAPAC.loadNUMAPAC(
                 datagridview:=dgOCIcadastradas,
                 status:="CONC",
-                dtlanc:=dtpSearchData.Value.Date,
+                dataOci:=dtpSearchData.Value.Date,
                 order:="data_lanc DESC",
+                medico:=ObterMedicoHistorico(),
                 labelCount:=lbStatusCads)
             ckbSearchTodos.Checked = False
 
@@ -3230,11 +3234,11 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
             If ckbSearchTodos.Checked Then ckbSearchTodos.Checked = False
 
             Dim filtro As String = $"AND oci.status <> 'BLOQ' AND oci.status <> 'CANC' AND oci.compet='{competenciaSelecionada.Replace("'", "''")}'"
-            Await FormAMEOCINumAPAC.loadNUMAPACAsync(
-                dgOCIcadastradas,
-                order:="oci.num_apac",
-                custom:=filtro,
-                labelCount:=lbStatusCads)
+            Dim medico As String = ObterMedicoHistorico()
+            If Not String.IsNullOrWhiteSpace(medico) Then
+                filtro &= $" AND oci.id_medico='{medico.Replace("'", "''")}'"
+            End If
+            Await FormAMEOCINumAPAC.loadNUMAPACAsync(dgOCIcadastradas, order:="oci.num_apac", custom:=filtro, labelCount:=lbStatusCads)
 
             Debug.WriteLine($"Busca da competência {competenciaSelecionada} concluída em {(DateTime.UtcNow - inicioBusca).TotalMilliseconds:N0} ms.")
         Catch ex As Exception
@@ -3252,13 +3256,23 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         searchByDate()
     End Sub
 
-    Public Sub loadAllOCI(dg As DataGridView)
-        FormAMEOCINumAPAC.loadNUMAPAC(dg,,,, idUser,,,, "CONC", , "oci.data_lanc DESC, id_cod_principal, pacientes.nome",,, lbStatusCads)
+    Private Sub btImprimirDiarioMedico_Click(sender As Object, e As EventArgs) Handles btImprimirDiarioMedico.Click
+        FormAMEOCINumAPAC.ExportarParaConferencia(dgOCIcadastradas, cbMedicoHistorico.Text)
+    End Sub
+
+    Public Sub loadAllOCI(dg As DataGridView, Optional medico As String = "")
+        FormAMEOCINumAPAC.loadNUMAPAC(
+            datagridview:=dg,
+            user:=idUser,
+            status:="CONC",
+            order:="oci.data_lanc DESC, id_cod_principal, pacientes.nome",
+            medico:=medico,
+            labelCount:=lbStatusCads)
     End Sub
     Private Sub ckbSearchTodos_CheckedChanged(sender As Object, e As EventArgs) Handles ckbSearchTodos.CheckedChanged
         If ckbSearchTodos.Checked Then
             LimparData()
-            loadAllOCI(dgOCIcadastradas)
+            loadAllOCI(dgOCIcadastradas, ObterMedicoHistorico())
         Else
             dgOCIcadastradas.DataSource = Nothing
             lbStatusCads.Text = "0 registros"
@@ -4062,6 +4076,56 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
     Private Async Sub cbSearchCompHistorico_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbSearchCompHistorico.SelectedValueChanged
         Await searchByCompetencia()
+    End Sub
+
+    Private Sub CarregarMedicosHistorico()
+        Dim medicos As DataTable = FormAMEmain.getDataset(
+            "SELECT SUS AS id, nome FROM servidores WHERE SUS IS NOT NULL AND SUS <> '' ORDER BY nome")
+
+        If medicos Is Nothing Then Return
+
+        Dim todos As DataRow = medicos.NewRow()
+        todos("id") = "0"
+        todos("nome") = "TODOS"
+        medicos.Rows.InsertAt(todos, 0)
+
+        cbMedicoHistorico.DataSource = medicos
+        cbMedicoHistorico.DisplayMember = "nome"
+        cbMedicoHistorico.ValueMember = "id"
+        cbMedicoHistorico.SelectedIndex = 0
+    End Sub
+
+    Private Function ObterMedicoHistorico() As String
+        If cbMedicoHistorico.SelectedIndex < 0 OrElse cbMedicoHistorico.SelectedValue Is Nothing OrElse cbMedicoHistorico.SelectedValue Is DBNull.Value Then
+            Return String.Empty
+        End If
+
+        Dim medico As String = Convert.ToString(cbMedicoHistorico.SelectedValue).Trim()
+        If medico = "0" OrElse String.Equals(cbMedicoHistorico.Text.Trim(), "TODOS", StringComparison.OrdinalIgnoreCase) Then
+            Return String.Empty
+        End If
+
+        Return medico
+    End Function
+
+    Private Async Sub cbMedicoHistorico_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbMedicoHistorico.SelectedValueChanged
+        If Not historicoFiltrosInicializados Then Return
+
+        'A alteração do combo só deve executar este fluxo quando houver um
+        'médico específico selecionado. A opção TODOS não deve criar filtro
+        'por médico nem alterar a pesquisa atual.
+        Dim medico As String = ObterMedicoHistorico()
+        If String.IsNullOrWhiteSpace(medico) Then Return
+
+        'Com uma competência selecionada, searchByCompetencia monta somente
+        'o filtro de competência + médico e não usa a data.
+        If cbSearchCompHistorico.SelectedIndex > 0 Then
+            Await searchByCompetencia()
+        Else
+            'Com a competência na primeira opção, searchByDate usa a data
+            'selecionada e mantém o filtro do médico.
+            searchByDate()
+        End If
     End Sub
 
     Private Sub txtCnsPaciente_Click(sender As Object, e As EventArgs) Handles txtCnsPaciente.Click

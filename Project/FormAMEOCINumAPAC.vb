@@ -10,7 +10,7 @@ Public Class FormAMEOCINumAPAC
     Dim m As New Main
     Dim iduser As Integer = FormAMEOCI.idUser
 
-    Private Function MontarQueryNUMAPAC(faixaIni As String, faixaFim As String, available As Boolean, user As Integer, dtIni As Date, dtFim As Date, oci As String, status As String, dtlanc As Date, order As String, custom As String, medico As String) As String
+    Private Function MontarQueryNUMAPAC(faixaIni As String, faixaFim As String, available As Boolean, user As Integer, dtIni As Date, dtFim As Date, oci As String, status As String, dtlanc As Date, order As String, custom As String, medico As String, Optional dataOci As Date = Nothing) As String
         Dim where As String = "WHERE 1=1 "
 
         If Not String.IsNullOrEmpty(faixaIni) AndAlso Not String.IsNullOrEmpty(faixaFim) Then
@@ -33,6 +33,9 @@ Public Class FormAMEOCINumAPAC
         End If
         If dtlanc <> Nothing Then
             where &= $" AND DATE(oci.data_lanc) ='{m.mysqlDateFormat(dtlanc)}' "
+        End If
+        If dataOci <> Nothing Then
+            where &= $" AND DATE(oci.`data`) ='{m.mysqlDateFormat(dataOci)}' "
         End If
         If Not String.IsNullOrWhiteSpace(medico) Then
             where &= $" AND oci.id_medico ='{medico}' "
@@ -82,9 +85,9 @@ Public Class FormAMEOCINumAPAC
         End If
     End Sub
 
-    Public Sub loadNUMAPAC(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "", Optional dtlanc As Date = Nothing, Optional order As String = "id", Optional custom As String = "", Optional medico As String = "", Optional labelCount As Label = Nothing)
+    Public Sub loadNUMAPAC(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "", Optional dtlanc As Date = Nothing, Optional order As String = "id", Optional custom As String = "", Optional medico As String = "", Optional labelCount As Label = Nothing, Optional dataOci As Date = Nothing)
         Try
-            Dim query = MontarQueryNUMAPAC(faixaIni, faixaFim, available, user, dtIni, dtFim, oci, status, dtlanc, order, custom, medico)
+            Dim query = MontarQueryNUMAPAC(faixaIni, faixaFim, available, user, dtIni, dtFim, oci, status, dtlanc, order, custom, medico, dataOci)
             Debug.Write(query)
             AplicarResultadoNUMAPAC(datagridview, FormAMEmain.getDataset(query), labelCount)
         Catch ex As Exception
@@ -93,9 +96,9 @@ Public Class FormAMEOCINumAPAC
         End Try
     End Sub
 
-    Public Async Function loadNUMAPACAsync(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "", Optional dtlanc As Date = Nothing, Optional order As String = "id", Optional custom As String = "", Optional medico As String = "", Optional labelCount As Label = Nothing) As Task
+    Public Async Function loadNUMAPACAsync(datagridview As DataGridView, Optional faixaIni As String = Nothing, Optional faixaFim As String = Nothing, Optional available As Boolean = False, Optional user As Integer = Nothing, Optional dtIni As Date = Nothing, Optional dtFim As Date = Nothing, Optional oci As String = "", Optional status As String = "", Optional dtlanc As Date = Nothing, Optional order As String = "id", Optional custom As String = "", Optional medico As String = "", Optional labelCount As Label = Nothing, Optional dataOci As Date = Nothing) As Task
         Try
-            Dim query = MontarQueryNUMAPAC(faixaIni, faixaFim, available, user, dtIni, dtFim, oci, status, dtlanc, order, custom, medico)
+            Dim query = MontarQueryNUMAPAC(faixaIni, faixaFim, available, user, dtIni, dtFim, oci, status, dtlanc, order, custom, medico, dataOci)
             Debug.Write(query)
 
             ' Usa uma conexão independente em segundo plano. FormAMEmain.getDataset
@@ -116,18 +119,47 @@ Public Class FormAMEOCINumAPAC
         FormAMEmain.loadComboBox("SELECT id, nome FROM usuarios ORDER BY nome", cbUsuarios, "nome", "id")
         FormAMEOCI.loadComp(cbSearchComp)
         ToolStripStatusLabel1.Text = ""
-        FormAMEmain.loadComboBox("SELECT SUS AS id, nome FROM servidores WHERE SUS IS NOT NULL ORDER BY nome", cbMedico, "nome", "id")
-        cbMedico.DisplayMember = "nome"
-        cbMedico.ValueMember = "id"
-        cbMedico.SelectedIndex = 0
-        cbMedico.SelectedIndex = 0
+        CarregarMedicosFiltro()
         chkDisponiveis.Checked = False
         cbOCI.SelectedIndex = 0
         cbUsuarios.SelectedIndex = -1
+
         cbSearchComp.SelectedIndex = 0
         FormAMEOCI.LimparData()
         'FormAMEOCI.loadAllOCI(dgvNumerosAPAC)
     End Sub
+
+    Private Sub CarregarMedicosFiltro()
+        Dim medicos As DataTable = FormAMEmain.getDataset(
+            "SELECT SUS AS id, nome FROM servidores WHERE SUS IS NOT NULL AND SUS <> '' ORDER BY nome")
+
+        If medicos Is Nothing Then Return
+
+        Dim todos As DataRow = medicos.NewRow()
+        todos("id") = "0"
+        todos("nome") = "TODOS"
+        medicos.Rows.InsertAt(todos, 0)
+
+        cbMedico.DataSource = medicos
+        cbMedico.DisplayMember = "nome"
+        cbMedico.ValueMember = "id"
+        cbMedico.SelectedIndex = 0
+    End Sub
+
+    Private Function ObterMedicoFiltro() As String
+        If cbMedico.SelectedIndex < 0 OrElse
+           cbMedico.SelectedValue Is Nothing OrElse
+           cbMedico.SelectedValue Is DBNull.Value Then
+            Return String.Empty
+        End If
+
+        Dim medico As String = Convert.ToString(cbMedico.SelectedValue).Trim()
+        If medico = "0" OrElse String.Equals(cbMedico.Text.Trim(), "TODOS", StringComparison.OrdinalIgnoreCase) Then
+            Return String.Empty
+        End If
+
+        Return medico
+    End Function
 
     Private Sub loadByAPACinterval()
         dgvNumerosAPAC.DataSource = Nothing
@@ -168,19 +200,13 @@ Public Class FormAMEOCINumAPAC
         chkDisponiveis.Checked = False
 
         Dim oci As String = cbOCI.SelectedValue
-        Dim medico As String = cbMedico.SelectedValue
+        Dim medico As String = ObterMedicoFiltro()
         Dim comp As String = cbSearchComp.SelectedValue
 
         If oci > 0 Then
             oci = oci
         Else
             oci = ""
-        End If
-
-        If medico > 0 Then
-            medico = medico
-        Else
-            medico = ""
         End If
 
         If cbSearchComp.SelectedValue > 0 Then
@@ -207,19 +233,13 @@ Public Class FormAMEOCINumAPAC
         chkDisponiveis.Checked = False
 
         Dim oci As String = cbOCI.SelectedValue
-        Dim medico As String = cbMedico.SelectedValue
+        Dim medico As String = ObterMedicoFiltro()
         Dim comp As String = cbSearchComp.SelectedValue
 
         If oci > 0 Then
             oci = oci
         Else
             oci = ""
-        End If
-
-        If medico > 0 Then
-            medico = medico
-        Else
-            medico = ""
         End If
 
         If cbSearchComp.SelectedValue > 0 Then
@@ -345,7 +365,7 @@ Public Class FormAMEOCINumAPAC
     Private Sub cbSearchComp_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSearchComp.SelectedIndexChanged
         Dim comp As String = ""
         Dim oci As String = cbOCI.SelectedValue
-        Dim medico As String = cbMedico.SelectedValue
+        Dim medico As String = ObterMedicoFiltro()
         chkDisponiveis.Checked = False
         Try
 
@@ -361,12 +381,6 @@ Public Class FormAMEOCINumAPAC
                 oci = ""
             End If
 
-            If medico > 0 Then
-                medico = medico
-            Else
-                medico = ""
-            End If
-
             loadNUMAPAC(dgvNumerosAPAC,,, False,,,, oci, "CONC",,, comp, medico)
         Catch ex As Exception
 
@@ -378,7 +392,7 @@ Public Class FormAMEOCINumAPAC
         Try
             Dim oci As String = cbOCI.SelectedValue
             Dim comp As String = ""
-            Dim medico As String = If(cbMedico.SelectedValue Is Nothing OrElse cbMedico.SelectedValue Is DBNull.Value, "", cbMedico.SelectedValue.ToString)
+            Dim medico As String = ObterMedicoFiltro()
             Dim dtini
             Dim dtfim
 
@@ -471,58 +485,67 @@ Public Class FormAMEOCINumAPAC
     End Sub
 
     Private Sub ExportarParaConferencia()
-        If dgvNumerosAPAC.RowCount = 0 Then
+        ExportarParaConferencia(dgvNumerosAPAC, cbMedico.Text)
+    End Sub
+
+    Public Shared Sub ExportarParaConferencia(datagridview As DataGridView, nomeMedico As String)
+        If datagridview Is Nothing OrElse datagridview.RowCount = 0 Then
             MsgBox("Nenhum registro para exportar.")
             Exit Sub
         End If
 
-        SaveFileDialog1.Title = "Salvar PDF"
-        SaveFileDialog1.FileName = $"{NomeSeguroParaPasta(cbMedico.Text)}_conferencia.pdf"
+        Using saveDialog As New SaveFileDialog()
+            saveDialog.Title = "Salvar PDF"
+            saveDialog.Filter = "PDF (*.pdf)|*.pdf"
+            saveDialog.DefaultExt = "pdf"
+            saveDialog.FileName = $"{NomeSeguroParaPasta(nomeMedico)}_conferencia.pdf"
 
-        If SaveFileDialog1.ShowDialog() <> DialogResult.OK Then
-            Exit Sub
-        End If
-
-        Dim pdfDestino As String = SaveFileDialog1.FileName
-        Dim pastaTemporaria As String = Path.Combine(
-            Path.GetTempPath(),
-            "OCI_Conferencia_" & Guid.NewGuid().ToString("N")
-        )
-        Dim arquivosTemporarios As New List(Of String)
-        Dim oci As New OCI
-        Dim quantidade As Integer = 0
-
-        Try
-            Directory.CreateDirectory(pastaTemporaria)
-
-            For Each row As DataGridViewRow In dgvNumerosAPAC.Rows
-                If row.IsNewRow Then Continue For
-
-                Dim nomeArquivo As String = $"{row.Cells(0).Value}-{row.Cells(3).Value}.pdf"
-                Dim pdfLocal As String = Path.Combine(pastaTemporaria, nomeArquivo)
-                oci.printOCI(CInt(row.Cells(0).Value), pdfLocal)
-                arquivosTemporarios.Add(pdfLocal)
-                quantidade += 1
-            Next
-
-            If arquivosTemporarios.Count = 0 OrElse Not oci.UnirPDFs(arquivosTemporarios, pdfDestino) Then
-                MsgBox("Não foi possível unir os PDFs para conferência.")
+            If saveDialog.ShowDialog() <> DialogResult.OK Then
                 Exit Sub
             End If
 
-            If m.msgQuestion($"Deseja abrir o arquivo?", "Conferência") Then
-                Process.Start(New ProcessStartInfo(pdfDestino) With {.UseShellExecute = True})
-            End If
-        Catch ex As Exception
-            MsgBox("Não foi possível exportar os PDFs:" & vbCrLf & ex.Message)
-        Finally
-            If Directory.Exists(pastaTemporaria) Then
-                Try
-                    Directory.Delete(pastaTemporaria, True)
-                Catch
-                End Try
-            End If
-        End Try
+            Dim pdfDestino As String = saveDialog.FileName
+            Dim pastaTemporaria As String = Path.Combine(
+                Path.GetTempPath(),
+                "OCI_Conferencia_" & Guid.NewGuid().ToString("N")
+            )
+            Dim arquivosTemporarios As New List(Of String)
+            Dim oci As New OCI
+            Dim quantidade As Integer = 0
+
+            Try
+                Directory.CreateDirectory(pastaTemporaria)
+
+                For Each row As DataGridViewRow In datagridview.Rows
+                    If row.IsNewRow Then Continue For
+
+                    Dim nomeArquivo As String = $"{row.Cells(0).Value}-{row.Cells(3).Value}.pdf"
+                    Dim pdfLocal As String = Path.Combine(pastaTemporaria, nomeArquivo)
+                    oci.printOCI(CInt(row.Cells(0).Value), pdfLocal)
+                    arquivosTemporarios.Add(pdfLocal)
+                    quantidade += 1
+                Next
+
+                If arquivosTemporarios.Count = 0 OrElse Not oci.UnirPDFs(arquivosTemporarios, pdfDestino) Then
+                    MsgBox("Não foi possível unir os PDFs para conferência.")
+                    Exit Sub
+                End If
+
+                Dim main As New Main()
+                If main.msgQuestion("Deseja abrir o arquivo?", "Conferência") Then
+                    Process.Start(New ProcessStartInfo(pdfDestino) With {.UseShellExecute = True})
+                End If
+            Catch ex As Exception
+                MsgBox("Não foi possível exportar os PDFs:" & vbCrLf & ex.Message)
+            Finally
+                If Directory.Exists(pastaTemporaria) Then
+                    Try
+                        Directory.Delete(pastaTemporaria, True)
+                    Catch
+                    End Try
+                End If
+            End Try
+        End Using
     End Sub
 
     Private Sub CopiarPdfOCIParaServidor(pdfLocal As String, medico As String, dataOCI As Date)
@@ -550,7 +573,7 @@ Public Class FormAMEOCINumAPAC
         End Try
     End Sub
 
-    Private Function NomeSeguroParaPasta(nome As String) As String
+    Private Shared Function NomeSeguroParaPasta(nome As String) As String
         Dim resultado As String = If(nome, String.Empty).Trim()
 
         For Each caractere As Char In Path.GetInvalidFileNameChars()
