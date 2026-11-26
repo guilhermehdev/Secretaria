@@ -20,6 +20,8 @@ Public Class FormAMEOCI
     Private isQueue As Boolean = False
     Private competenciaHistoricoEmBusca As Boolean = False
     Private historicoFiltrosInicializados As Boolean = False
+    Private pendentesEmAlerta As Boolean = False
+    Private pendentesTransicao As Single = 0.0F
     Friend IDpacienteSelecionado As Integer? = Nothing
     Private updateMode As Boolean = False
 
@@ -1591,6 +1593,8 @@ JOIN cod_oci_secundario ON cod_oci_secundario.cod = procedimentos_secundarios.co
             cod_oci_principal.abrev,
             servidores.nome")
 
+        AtualizarAlertaPendentes(dataset.Rows.Count)
+
         If dataset.Rows.Count = 0 Then
             dgQueueOCI.DataSource = Nothing
             dgQueueItens.DataSource = Nothing
@@ -1823,15 +1827,79 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
 
     Private Sub checkQueue()
         Dim dataset = FormAMEmain.getDataset("Select COUNT(*) As total FROM oci_fila WHERE `status`=0").Rows(0).Item("total")
+        AtualizarAlertaPendentes(Convert.ToInt32(dataset))
+    End Sub
 
-        If dataset > 0 Then
-            ' btOCIpendente.Visible = True
+    Private Sub AtualizarAlertaPendentes(total As Integer)
+        pendentesEmAlerta = total > 0
+
+        If pendentesEmAlerta AndAlso TabControl1.SelectedTab IsNot TabPage4 Then
             Timer1.Start()
         Else
-            'btOCIpendente.Visible = False
             Timer1.Stop()
+            pendentesTransicao = 0.0F
         End If
+
+        TabControl1.Invalidate()
     End Sub
+
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        If Not pendentesEmAlerta OrElse TabControl1.SelectedTab Is TabPage4 Then
+            Timer1.Stop()
+            pendentesTransicao = 0.0F
+        Else
+            'Avança gradualmente pelos três segmentos:
+            'vermelho -> laranja -> amarelo -> vermelho.
+            pendentesTransicao += 0.05F
+            If pendentesTransicao >= 3.0F Then
+                pendentesTransicao -= 3.0F
+            End If
+        End If
+
+        InvalidarAbaPendentes()
+    End Sub
+
+    Private Sub InvalidarAbaPendentes()
+        If TabControl1 Is Nothing OrElse TabControl1.IsDisposed OrElse Not TabControl1.IsHandleCreated Then Return
+
+        Dim indicePendentes As Integer = TabControl1.TabPages.IndexOf(TabPage4)
+        If indicePendentes < 0 Then Return
+
+        'Não apaga o fundo antes do redesenho; isso evita o flash da aba.
+        TabControl1.Invalidate(TabControl1.GetTabRect(indicePendentes), False)
+    End Sub
+
+    Private Function ObterCorAlertaPendentes() As Color
+        Dim etapa As Integer = CInt(Math.Floor(pendentesTransicao))
+        Dim progresso As Single = pendentesTransicao - etapa
+
+        Select Case etapa
+            Case 0
+                Return InterpolarCor(Color.Firebrick, Color.DarkOrange, progresso)
+            Case 1
+                Return InterpolarCor(Color.DarkOrange, Color.Gold, progresso)
+            Case Else
+                Return InterpolarCor(Color.Gold, Color.Firebrick, progresso)
+        End Select
+    End Function
+
+    Private Function InterpolarCor(corInicial As Color, corFinal As Color, progresso As Single) As Color
+        Dim percentual As Single = Math.Max(0.0F, Math.Min(1.0F, progresso))
+        Dim vermelho As Single = CSng(corInicial.R) + ((CSng(corFinal.R) - CSng(corInicial.R)) * percentual)
+        Dim verde As Single = CSng(corInicial.G) + ((CSng(corFinal.G) - CSng(corInicial.G)) * percentual)
+        Dim azul As Single = CSng(corInicial.B) + ((CSng(corFinal.B) - CSng(corInicial.B)) * percentual)
+
+        Return Color.FromArgb(
+            255,
+            LimitarCanalCor(vermelho),
+            LimitarCanalCor(verde),
+            LimitarCanalCor(azul))
+    End Function
+
+    Private Function LimitarCanalCor(valor As Single) As Integer
+        Dim canal As Integer = CInt(Math.Round(valor))
+        Return Math.Max(0, Math.Min(255, canal))
+    End Function
 
     Private Sub FormAMEOCI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ConfigurarAparenciaTabControl()
@@ -2053,11 +2121,22 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     End Sub
 
     Private Sub ConfigurarAparenciaTabControl()
+        Timer1.Interval = 20
         TabControl1.DrawMode = TabDrawMode.OwnerDrawFixed
         TabControl1.SizeMode = TabSizeMode.Fixed
         TabControl1.ItemSize = New Size(125, 25)
         TabControl1.BackColor = Color.FromArgb(40, 40, 40)
         TabControl1.ForeColor = Color.White
+
+        'Evita redesenho visível das bordas durante o pisca da aba.
+        Try
+            Dim propriedadeBuffer = TabControl1.GetType().GetProperty(
+                "DoubleBuffered",
+                Reflection.BindingFlags.Instance Or Reflection.BindingFlags.NonPublic)
+            propriedadeBuffer?.SetValue(TabControl1, True, Nothing)
+        Catch
+            'O buffer é apenas uma otimização visual.
+        End Try
 
         If tabControlPainter Is Nothing Then
             tabControlPainter = New TabControlBackgroundPainter()
@@ -2077,12 +2156,20 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
         Dim area As Rectangle = e.Bounds
         Dim selecionada As Boolean = (e.Index = tabControl.SelectedIndex)
 
+        Dim alertaPendentes As Boolean = pagina Is TabPage4 AndAlso pendentesEmAlerta
+        Dim corAlertaFundo As Color = ObterCorAlertaPendentes()
+        Dim corAlertaBorda As Color = InterpolarCor(corAlertaFundo, Color.White, 0.3F)
+
         Dim corFundo As Color = If(selecionada,
                                    Color.FromArgb(255, 128, 0),
-                                   Color.FromArgb(64, 64, 64))
+                                   If(alertaPendentes,
+                                      corAlertaFundo,
+                                      Color.FromArgb(64, 64, 64)))
         Dim corBorda As Color = If(selecionada,
                                    Color.FromArgb(255, 192, 0),
-                                   Color.FromArgb(40, 40, 40))
+                                   If(alertaPendentes,
+                                      corAlertaBorda,
+                                      Color.FromArgb(40, 40, 40)))
 
         Using pincel As New SolidBrush(corFundo)
             e.Graphics.FillRectangle(pincel, area)
@@ -2102,6 +2189,13 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     End Sub
 
     Private Sub TabControl1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TabControl1.SelectedIndexChanged
+        If TabControl1.SelectedTab Is TabPage4 Then
+            Timer1.Stop()
+            pendentesTransicao = 0.0F
+        ElseIf pendentesEmAlerta Then
+            Timer1.Start()
+        End If
+
         TabControl1.Invalidate()
     End Sub
 
@@ -2173,21 +2267,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
                     grafico.DrawRectangle(caneta, areaControle.X, areaControle.Y, areaControle.Width - 1, areaControle.Height - 1)
                 End Using
 
-                PintarBordasDasAbas(grafico)
             End Using
-        End Sub
-
-        Private Sub PintarBordasDasAbas(grafico As Graphics)
-            For indice As Integer = 0 To controle.TabPages.Count - 1
-                Dim areaAba As Rectangle = controle.GetTabRect(indice)
-                Dim corBorda As Color = If(indice = controle.SelectedIndex,
-                                           Color.FromArgb(255, 192, 0),
-                                           corFundo)
-
-                Using caneta As New Pen(corBorda)
-                    grafico.DrawRectangle(caneta, areaAba.X, areaAba.Y, areaAba.Width - 1, areaAba.Height - 1)
-                End Using
-            Next
         End Sub
     End Class
 

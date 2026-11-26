@@ -115,7 +115,7 @@ Partial Class FormAMEOCINumAPAC
         Me.dgvNumerosAPAC.RowHeadersWidth = 4
         Me.dgvNumerosAPAC.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.dgvNumerosAPAC.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvNumerosAPAC.Size = New System.Drawing.Size(829, 358)
+        Me.dgvNumerosAPAC.Size = New System.Drawing.Size(829, 366)
         Me.dgvNumerosAPAC.TabIndex = 33
         Me.dgvNumerosAPAC.TabStop = False
         '
@@ -162,7 +162,7 @@ Partial Class FormAMEOCINumAPAC
         Me.GroupBox1.ForeColor = System.Drawing.Color.White
         Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(841, 486)
+        Me.GroupBox1.Size = New System.Drawing.Size(841, 494)
         Me.GroupBox1.TabIndex = 34
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Números gerados"
@@ -407,9 +407,9 @@ Partial Class FormAMEOCINumAPAC
         Me.btImprimirOCI.FlatAppearance.BorderSize = 0
         Me.btImprimirOCI.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btImprimirOCI.ForeColor = System.Drawing.Color.White
-        Me.btImprimirOCI.Location = New System.Drawing.Point(753, 502)
+        Me.btImprimirOCI.Location = New System.Drawing.Point(754, 510)
         Me.btImprimirOCI.Name = "btImprimirOCI"
-        Me.btImprimirOCI.Size = New System.Drawing.Size(100, 43)
+        Me.btImprimirOCI.Size = New System.Drawing.Size(100, 34)
         Me.btImprimirOCI.TabIndex = 59
         Me.btImprimirOCI.Text = "Enviar para assinatura digital"
         Me.btImprimirOCI.UseVisualStyleBackColor = False
@@ -421,9 +421,9 @@ Partial Class FormAMEOCINumAPAC
         Me.btImprimirDia.FlatAppearance.BorderSize = 0
         Me.btImprimirDia.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btImprimirDia.ForeColor = System.Drawing.Color.White
-        Me.btImprimirDia.Location = New System.Drawing.Point(652, 502)
+        Me.btImprimirDia.Location = New System.Drawing.Point(653, 510)
         Me.btImprimirDia.Name = "btImprimirDia"
-        Me.btImprimirDia.Size = New System.Drawing.Size(100, 43)
+        Me.btImprimirDia.Size = New System.Drawing.Size(100, 34)
         Me.btImprimirDia.TabIndex = 62
         Me.btImprimirDia.Text = "Exportar para conferência"
         Me.btImprimirDia.UseVisualStyleBackColor = False
