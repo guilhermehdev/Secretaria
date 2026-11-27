@@ -463,7 +463,21 @@ Public Class FormAMEOCI
     Private Sub FalharValidacao(ByRef mensagemErro As String, silencioso As Boolean, mensagem As String, Optional foco As Control = Nothing, Optional aba As Integer = -1)
         mensagemErro = mensagem
         If silencioso Then Exit Sub
-        If aba >= 0 Then TabControl1.SelectedTab = TabControl1.TabPages(aba)
+        If aba >= 0 Then
+            'Os chamadores antigos usam os índices das abas antes da inclusão
+            'da página Pendentes. Não usar TabPages(aba), pois a fila ocupa
+            'o índice 0 atualmente.
+            Select Case aba
+                Case 0
+                    TabControl1.SelectedTab = TabPage1       'Paciente
+                Case 1
+                    TabControl1.SelectedTab = TabPage2       'Procedimentos
+                Case 2
+                    TabControl1.SelectedTab = TabPage3       'Histórico
+                Case 3
+                    TabControl1.SelectedTab = TabPage4       'Pendentes
+            End Select
+        End If
         If foco IsNot Nothing Then foco.Focus()
         MessageBox.Show(mensagem, "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning)
     End Sub
@@ -2121,7 +2135,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     End Sub
 
     Private Sub ConfigurarAparenciaTabControl()
-        Timer1.Interval = 20
+        Timer1.Interval = 18
         TabControl1.DrawMode = TabDrawMode.OwnerDrawFixed
         TabControl1.SizeMode = TabSizeMode.Fixed
         TabControl1.ItemSize = New Size(125, 25)
@@ -3440,7 +3454,7 @@ AND procedimentos_secundarios.medico_solicitante ='{medico}'")
     Public Function editOCI(idOCI As Integer) As Boolean
         updateMode = True
         If getOCIdata(idOCI) Then
-            TabControl1.SelectedTab = TabControl1.TabPages(0)
+            TabControl1.SelectedTab = TabPage1
             Return True
         Else
             Return False
